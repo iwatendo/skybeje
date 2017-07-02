@@ -1,0 +1,113 @@
+﻿
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.sbj-cact-visitor-contents {
+    width: 100%;
+    height: 100%;
+}
+
+.sbj-cact-visitor-contents-frame {
+    width: 100%;
+    height: 100%;
+}
+
+.sbj-cact-visitor-contents-video {
+    width: 100%;
+    height: 100%;
+}
+
+.sbj-cact-visitor-subtitles {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 96px;
+    text-align: center;
+}
+
+.sbj-cast-visitor-subtitles-text {
+    margin: 8px;
+    padding: 8px;
+    border: 8px;
+    color: var(--sbj-color-highlight-text);
+    text-shadow: -1px -1px 0 var(--sbj-color-default-text);
+    font-size: 32px;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-video {
+    height: 100%;
+    width: 100%;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-cact-visitor-item-port #sbj-cact-visitor-cursor-port {
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.sbj-cact-visitor-cursor {
+    position: absolute;
+    overflow: visible;
+}
+
+.sbj-cact-visitor-cursor-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0px;
+    height: 0px;
+    border-top: 8px solid var(--sbj-color-cast-cursor);
+    border-left: 8px solid var(--sbj-color-cast-cursor);
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+#sbj-cast-visitor-submenu{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom : 0px;
+    height: 52px;
+    background-color: var(--sbj-color-default-text);
+    opacity: 0.0;
+}
+
+.sbj-cact-visitor-button {
+    position: absolute;
+    background-color: var(--sbj-color-timeline-panel);
+    border-radius: 6px;
+}
+
+#sbj-cast-visitor-allout{
+    bottom: 10px;
+    right: 10px;
+}
+
+#sbj-cact-visitor-volume{
+    bottom: 10px;
+    left: 10px;
+}
+
+#sbj-cast-visitor-volume-slider{
+    position: absolute;
+    bottom:16px;
+    left:24px;
+}
+
+#sbj-cact-visitor-voice-only{
+    position: absolute;
+    margin: 0px;
+    width: 240px;
+    text-align: center;
+    top: calc(50% - 20px);
+    left: calc(50% - 120px);
+}

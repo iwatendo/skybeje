@@ -1,0 +1,27 @@
+{
+  "name": "skybeje",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "server": "node dev/Server.js",
+    "build": "webpack --colors --config ./webpack.config.dev.js && cpx \"./src/Page/**/{*.js,*.jpg,*.png,*.ico,*.html,*.css,*.map,*.key}\" ./dist",
+    "build:prod": "webpack --config ./webpack.config.prod.js && cpx \"./src/Page/**/{*.js,*.jpg,*.png,*.ico,*.html,*.css,*.map,*.key}\" ./dist",
+    "clean": "rimraf dist/*"
+  },
+  "dependencies": {
+    "co": "^4.6.0",
+    "cpx": "^1.5.0",
+    "react": "15.5.4",
+    "react-dom": "15.5.4",
+    "rimraf": "^2.6.1",
+    "ts-loader": "2.0.3",
+    "typescript": "2.3.4",
+    "webpack": "^3.0.0",
+    "youtube": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/jquery": "^2.0.41",
+    "@types/react": "15.0.24",
+    "@types/react-dom": "15.5.0",
+    "@types/youtube": "0.0.29"
+  }
+}

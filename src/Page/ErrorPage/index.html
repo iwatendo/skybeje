@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+    <title>Skybeje</title>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="../../image/favicon.ico">
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css' />
+    <link rel="stylesheet" href="styles.css">
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+    <div class="sbj-error-page-body">
+        <div class="sbj-error-page-layout mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-shadow--2dp">
+            <main class="mdl-layout__content mdl-color--grey-100">
+                <div id="sbj-error-disp" class="mdl-card__supporting-text">
+                    <h5>以下のURLでエラーが発生しました</h5>
+                    <input id="sbj-error-url" class="sbj-error-url mdl-textfield__input" type='text' readonly onclick='this.select(0,this.value.length)'>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <div id='sbj-error-msg'>
+                        <h5>
+                            申し訳ありません、お使いのブラウザに対応しておりません。<br />
+                            <br /> SkyBejeはGoogle Chromeでのみ動作します。<br /> Google Chromeでのアクセスをお願いします。<br />
+                        </h5>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="bundle.js"></script>
+
+</body>
+
+</html>

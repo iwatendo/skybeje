@@ -1,0 +1,51 @@
+﻿
+.sbj-cast-instance{
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+}
+
+.sbj-cast-instance-layout{
+	width: 100%;
+	height: 100%;
+}
+
+.sbj-cast-instance-device-select{
+    outline: 0;
+}
+
+.sbj-cast-instance--header-row{
+    padding: 0px 20px 0px 32px;
+}
+
+#sbj-cast-instance-title {
+    padding: 0px 20px 0px 0px;
+}
+
+#sbj-cast-instance-account-count{
+    margin-right: 16px;
+}
+
+#sbj-cast-instance-start{
+    margin-right: 16px;
+}
+
+#sbj-cast-instance-stop{
+    margin-right: 16px;
+}
+
+.sbj-cast-instance-option{
+    margin: 16px 0px;
+}
+
+.sbj-cast-instance-mobile-cell{
+    margin: 0px;
+    padding: 8px 24px;
+}
+
+#video {
+    width: 100%;
+    background-color: var(--sbj-color-edge-background);
+}

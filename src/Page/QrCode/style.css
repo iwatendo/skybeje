@@ -1,0 +1,10 @@
+
+#qrbase {
+    display: flex;
+    padding: 12px;
+}
+
+#qrcode {
+    background-color: var(--sbj-color-qrcode-background);
+    margin: 20px auto;
+}

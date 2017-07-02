@@ -1,0 +1,110 @@
+﻿import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+import LocalCache from "../../../../Base/Common/LocalCache";
+import SettingController, { DBEnum } from "../SettingController";
+
+
+/**
+ * プロパティ
+ */
+export interface UserSettingProp {
+    controller: SettingController;
+}
+
+
+/**
+ * ステータス
+ */
+export interface UserSettingStat {
+    enterMode: number,
+    actorChangeMode: number,
+}
+
+
+export default class UserSettingComponent extends React.Component<UserSettingProp, UserSettingStat> {
+
+    /**
+     * コンストラクタ
+     * @param props
+     * @param context
+     */
+    constructor(props?: UserSettingProp, context?: any) {
+        super(props, context);
+
+        this.state = {
+            enterMode: LocalCache.ChatEnterMode,
+            actorChangeMode: LocalCache.ActorChangeKeyMode
+        };
+
+    }
+
+
+
+    public render() {
+
+        let selectClass = "sbj-user-setting-option-select";
+        let noSelectClass = "sbj-user-setting-option-noselect";
+
+        return (
+            <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--12-col">
+                    <div className="mdl-card__supporting-text">
+                        <h5>チャット入力時のEnterキーの動作</h5>
+                        <h6>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnEnterModeSelect(0) }}>
+                                <input type="radio" name="sbj-options-chat-enter" checked={this.state.enterMode === 0}></input>
+                                <span className={this.state.enterMode === 0 ? selectClass : noSelectClass}>メッセージ送信（Sihft（Alt）+ Enterで改行）</span>
+                            </div>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnEnterModeSelect(1) }}>
+                                <input type="radio" name="sbj-options-chat-enter" checked={this.state.enterMode === 1}></input>
+                                <span className={this.state.enterMode === 1 ? selectClass : noSelectClass}>改行（Sihft（Alt）+ Enterでメッセージ送信）</span>
+                            </div>
+                        </h6>
+                    </div>
+                    <div className="mdl-card__supporting-text">
+                        <h5>アイコン及びアクター変更のショートカットキー</h5>
+                        <h6>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnActorChangeModeSelect(0) }}>
+                                <input type="radio" name="sbj-options-actorchange-key" checked={this.state.actorChangeMode === 0}></input>
+                                <span className={this.state.actorChangeMode === 0 ? selectClass : noSelectClass}>Ctrl + [方向キー]（上下でアイコン、左右でアクターを変更）</span>
+                            </div>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnActorChangeModeSelect(1) }}>
+                                <input type="radio" name="sbj-options-actorchange-key" checked={this.state.actorChangeMode === 1}></input>
+                                <span className={this.state.actorChangeMode === 1 ? selectClass : noSelectClass}>Sihft + Alt + [方向キー]（上下でアイコン、左右でアクターを変更）</span>
+                            </div>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+
+    /**
+     * エンターキーモードの設定
+     * @param enterMode 
+     */
+    public OnEnterModeSelect(enterMode: number) {
+
+        LocalCache.ChatEnterMode = enterMode;
+
+        this.setState({
+            enterMode: enterMode,
+        });
+    }
+
+
+    /**
+     * アクターチェンジモードの設定
+     * @param actorChangeMode 
+     */
+    public OnActorChangeModeSelect(actorChangeMode: number) {
+        LocalCache.ActorChangeKeyMode = actorChangeMode;
+
+        this.setState({
+            actorChangeMode: actorChangeMode,
+        });
+    }
+
+}

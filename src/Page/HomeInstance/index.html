@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+    <title>SkyBeje</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <script src='/lib/peer.js'></script>
+    <link rel='stylesheet' type='text/css' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' type='text/css' href='../common.css' />
+    <link rel='stylesheet' type='text/css' href='style.css' />
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="sbj-home-instance">
+        <header id="sbj-home-instance-header" class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+            <div class="sbj-home-instance-header-row mdl-layout__header-row">
+                <span class="mdl-layout-title">ホームインスタンス &nbsp; </span>
+                <div id="sbj-home-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
+                <button id='sbj-start-visitor' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                    <i class="material-icons">directions_walk</i>
+                    &nbsp; クライアント起動 &nbsp;
+                </button>
+                <div class="mdl-layout-spacer"></div>
+                <button id='sbj-stop-instance' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    <i class="material-icons">stop</i>
+                    &nbsp; ホームインスタンスの停止 &nbsp;
+                </button>
+            </div>
+        </header>
+
+        <main id="sbj-home-instance-main">
+            <div class="sbj-home-instance-info mdl-card__supporting-text">
+                <div>
+                    <h5 class="sbj-home-instance-info-label">
+                        招待状：
+                        <span id="sbj-home-instance-title"></span>
+                    </h5>
+                </div>
+
+                <div>
+                    <h5 class="sbj-home-instance-info-label">
+                        招待URL：
+                    </h5>
+                    <input id='sbj-invite-url' class="mdl-textfield__input" type='text' readonly onclick='this.select(0,this.value.length)'>
+                </div>
+                <div>
+                    <h6 class="sbj-home-instance-info-notes">　</h6>
+                    <h6 class="sbj-home-instance-info-notes">・上記のURLから、あなたのホームインスタンスに接続できます。招待したいメンバーに伝えてSkybejeを始めてみましょう。 </h6>
+                    <h6 class="sbj-home-instance-info-notes">・接続したメンバーは以下に表示されます。（メンバーのルーム移動はドラック＆ドロップで可能です）</h6>
+                </div>
+            </div>
+
+            <div id="sbj-home-instance-rooms">
+            </div>
+
+            <div class="sbj-home-instance-action">
+                <button id='sbj-clear-timeline' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    <i class="material-icons bottom">delete_forever</i>
+                    &nbsp; タイムラインのクリア &nbsp;
+                </button>
+            </div>
+
+        </main>
+
+        <!--ダッシュボードからの変更通知の為の入力ボックス -->
+        <input type="text" id="sbj-dashborad-change-room" hidden/>
+
+        <script src="/lib/react.min.js"></script>
+        <script src="/lib/react-dom.min.js"></script>
+        <script src="bundle.js"></script>
+
+</body>
+
+</html>

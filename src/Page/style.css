@@ -1,0 +1,54 @@
+﻿
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.sbj-logo{
+    height: 40px;
+    margin: -16px;
+}
+
+.sbj-main {
+    background: url("/image/default-startpage.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+.sbj-header .mdl-layout__header-row {
+  padding-left: 40px;
+}
+
+.sbj-container {
+  max-width: 960px;
+  width: calc(100% - 16px);
+  margin: 0 auto;
+}
+
+.sbj-content {
+  border-radius: 2px;
+  padding: 28px 54px;
+  margin-top: 120px;
+  background-color: var(--sbj-color-default-background);
+}
+
+.sbj-footer {
+  padding-left: 40px;
+}
+
+.sbj-footer .mdl-mini-footer--link-list a {
+  font-size: 13px;
+}
+
+.alpha{
+  color:var(--sbj-color-warning-text);
+  font-weight: 600;
+}
+
+a{
+  text-decoration: none;
+}
+a:link {color: var(--sbj-color-link-text);}    
+a:visited {color: var(--sbj-color-link-text);}
+a:hover {color: var(--sbj-color-link-text);} 

@@ -1,0 +1,68 @@
+﻿html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    border: 0px;
+    padding: 0;
+    width: 100%;
+    font-family: "Roboto","Hiragino Kaku Gothic ProN","Meiryo", sans-serif;
+}
+
+:root{
+    --sbj-color-default-text:rgba(0,0,0,.54);
+    --sbj-color-highlight-text: whitesmoke;
+    --sbj-color-link-text: #0099ff;
+    --sbj-color-warning-text: palevioletred;
+    
+    --sbj-color-default-background:  rgba(255,255,255,.75);
+    --sbj-color-edge-background:  rgba(0,0,0,.3);
+    --sbj-color-timeline-panel:  rgba(255,255,255,.3);
+
+    --sbj-color-menu-navi: rgba(255, 255, 255, 0.56);
+    --sbj-color-menu-navi-text: #37474F;
+    --sbj-color-menu-navi-border: darkgray;
+    --sbj-color-menu-navi-background: #00BCD4;
+    --sbj-color-menu-navi-background-hover: rgba(0, 188, 212, 0.90);
+
+    --sbj-color-timeline-ballon: #191970;
+    --sbj-color-timeline-message: whitesmoke;
+    --sbj-color-timeline-message-ignore: #444;
+    --sbj-color-timeline-name: #BBB;
+    --sbj-color-timeline-name-background: #333;
+
+    --sbj-color-image-dialog-text: #808080;
+    --sbj-color-image-dialog-append: #46B6AC;
+    --sbj-color-image-dialog-css-select: rgba(237,164,158,.9);
+
+    --sbj-color-actor-selection: lightblue;
+    --sbj-color-cast-cursor: whitesmoke;
+
+    --sbj-color-qrcode-background: white;
+}
+
+
+iframe {
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    border: 0px;
+}
+
+h1, h2, h3, h4, h5, h6,
+.mdl-button,
+.mdl-textfield__input,
+.mdl-list__item,
+.mdl-tooltip {
+    font-family: "Roboto","Hiragino Kaku Gothic ProN","Meiryo", sans-serif;
+}
+
+.mdl-tooltip{
+    font-size: 14px;
+}

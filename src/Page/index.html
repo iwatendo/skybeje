@@ -1,0 +1,70 @@
+<html lang="ja">
+
+<head>
+    <title>SkyBeje</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="/lib/split-pane.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+
+        <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100 is-upgraded" data-upgraded=",MaterialLayout">
+
+            <header class="sbj-header mdl-layout__header mdl-layout__header--scroll mdl-color--blue-grey-500 mdl-color-text--grey-800">
+                <div class="mdl-layout__header-row">
+                    <img class="sbj-logo" src="/image/logo.png"><img>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a class="mdl-navigation__link" target="_blank" href="https://bitbucket.org/iwatendo/skybeje">
+                            <i class="material-icons">link</i>
+                            Bitbucket
+                        </a>
+                        <a class="mdl-navigation__link" target="_blank" href="http://iwatendo.hateblo.jp/">
+                            <i class="material-icons">link</i>
+                            Blog
+                        </a>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="sbj-main mdl-layout__content">
+                <div class="sbj-container mdl-grid mdl-color-text--grey-600">
+
+                    <div class="sbj-content mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+                        <h3>Skybejeとは？</h3>
+                        <h5>
+                            遊ぶ・創る・伝える「場所」づくりの為の<br/>
+                            アカウント登録不要で利用できる、リアルタイムコミュニケーションサービスです。
+                        </h5>
+                        <div class="mdl-card__actions">
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick='location.href="/dashboard/"'>
+                                <i class="material-icons">play_circle_filled</i>
+                                &nbsp;始める&nbsp;
+                            </button>
+                            <span class="alpha">　※α版です。PC版のGoogle Chromeでのみ動作します。</span>
+                        </div>
+                        <h6>
+                            特徴<br/>
+                            ・外部のデータベースを使用しません。<br/> 
+                            ・プロフィールやチャットの内容は、あなたのブラウザのデータベースに保存されます。<br/> 
+                            ・NTT Communicationsの<a target="_blank" href="https://nttcom.github.io/skyway/">SkyWay</a>を利用したサービスです。<br/>
+                            ・AGPLでの<a target="_blank" href="https://bitbucket.org/iwatendo/skybeje">オープンソース</a>です。
+                        </h6>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="boot/bundle.js"></script>
+
+</body>
+
+</html>

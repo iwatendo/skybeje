@@ -1,0 +1,332 @@
+
+.sbj-layout .mdl-layout__header .mdl-layout__drawer-button{
+    color: var(--sbj-color-default-text);
+}
+
+.sbj-drawer{
+	border: none;
+}
+
+.sbj-drawer-header{
+	box-sizing: border-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+  	-webkit-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-justify-content: flex-end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
+    padding: 0px 32px 4px 32px;
+  	height: 60px;
+}
+
+.sbj-header-title{
+	width: 100%;
+	height: 100%;
+	background: url('/image/logo.png');
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.sbj-navigation{
+	-webkit-flex-grow: 1;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	padding-top: 4px !important;
+}
+
+.sbj-navigation-sub{
+	color: var(--sbj-color-highlight-text);
+	font-weight: 500;
+	padding: 12px 40px;
+	border-width: 1px;
+	border-style: solid hidden solid;
+    border-color: var(--sbj-color-menu-navi-border);	
+}
+
+.sbj-layout .sbj-navigation .mdl-navigation__link{
+	display: -webkit-flex !important;
+	display: -ms-flexbox !important;
+	display: flex !important;
+	-webkit-flex-direction: row;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	color: var(--sbj-color-menu-navi);
+	font-weight: 500;
+}
+
+.sbj-layout .sbj-navigation .mdl-navigation__link:hover{
+	background-color: var(--sbj-color-menu-navi-background-hover);
+	color: var(--sbj-color-menu-navi-text);
+}
+
+.sbj-navi-selection{
+	background-color: var(--sbj-color-menu-navi-background);
+	color: var(--sbj-color-menu-navi-text);
+}
+
+.sbj-navigation .mdl-navigation__link .material-icons{
+	font-size: 24px;
+	color: var(--sbj-color-menu-navi);
+	margin-right: 32px;
+}
+
+.sbj-content {
+	height: 100%;
+}
+
+/*-------------------------------------------------------------
+ *	ダイアログ用
+ *-------------------------------------------------------------*/
+
+.sbj-dialog{
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+    background-color: var(--sbj-dialog-background-color);
+}
+
+.sbj-dialog-background {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+}
+
+.sbj-dialog-title{
+	float:left;	
+	margin:10px 0px 0px 8px;
+}
+
+.sbj-dialog-title-icon{
+	font-size: 48px;
+	float:left;
+}
+
+.sbj-dialog-cancel{
+	min-width: 36px;
+    width: 36px;
+    padding: 0px;
+}
+
+.sbj-dialog-view{
+	width: calc(100% - 32px);
+}
+
+.sbj-dialog-attach-action-left {
+	text-align:left;
+	float: left;
+}
+
+.sbj-dialog-attach-action-right{
+	text-align:right;
+}
+
+.sbj-dialog-card.mdl-card {
+    padding: 10px;
+    width: 480px;
+    height: 540px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -270px 0 0 -240px;
+}
+
+.sbj-dialog-item-icon{
+    color: var(--sbj-color-default-text);
+}
+
+
+/*-------------------------------------------------------------
+ *	イメージダイアログ用
+ *-------------------------------------------------------------*/
+
+.sbj-image-view{
+	margin:8px;
+}
+
+.sbj-image-drop-text{
+	text-align: center;
+	width:100%;
+}
+
+.sbj-image-card.mdl-card {
+    padding: 10px;
+    width: 468px;
+    height: 572px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -286px 0 0 -234px;
+}
+
+
+.sbj-image-card > .mdl-card__title {
+    color: var(--sbj-color-image-dialog-text);
+    background-color: var(--sbj-color-image-dialog-append);
+}
+
+.sbj-image-edit-label {
+    width: 400px;
+}
+
+.sbj-image-css-selection {
+	background-color: var(--sbj-color-image-dialog-css-select);
+}
+
+.sbj-image-css-selection:hover{
+	background-color: var(--sbj-color-image-dialog-css-select);
+}
+
+#sbj-image-center{
+	position: absolute;
+    top: calc(50% - 20px);
+    left: calc(50% - 20px)
+}
+
+#sbj-image-left{
+	position: absolute;
+	top: calc(50% - 20px);
+    left: 26px;
+}
+
+#sbj-image-right{
+	position: absolute;
+	top: calc(50% - 20px);
+    right: 26px;
+}
+
+#sbj-image-top{
+	position: absolute;
+	top: calc(20% - 20px);
+    left: calc(50% - 20px)
+}
+
+#sbj-image-bottom{
+	position: absolute;
+	top: calc(80% - 20px);
+    left: calc(50% - 20px)
+}
+
+#sbj-image-cover{
+	position: absolute;
+	top: calc(80% - 20px);
+    left: 26px;
+}
+
+#sbj-image-contain{
+	position: absolute;
+	top: calc(80% - 20px);
+    left: 76px;
+}
+
+/*-------------------------------------------------------------
+ *	共通ダイアログ用
+ *-------------------------------------------------------------*/
+
+/*-------------------------------------------------------------
+ *	その他
+ *-------------------------------------------------------------*/
+
+.sbj-profile-grid{
+	margin: 20px;
+}
+
+.sbj-profile-cell{
+    max-width: 584px;
+    height: 300px;
+    margin: 8px 8px 28px 8px;}
+
+.sbj-profile{
+	width:100%;
+}
+
+#sbj-profile-note{
+	resize: none;
+}
+
+.sbj-actor{
+	width:100%;
+}
+
+.sbj-info{
+	width:100%;
+}
+
+.sbj-icon{
+	width:100%;
+	height:100%;
+}
+
+.sbj-icon-cell{
+	margin:8px;
+	width: 184px;
+	height:184px;
+	min-height: 184px;
+}
+
+.sbj-split{
+	width: 100%;
+	height: 100%;
+}
+
+
+.sbj-split-left {
+    float: left;
+    width: 360px;
+	padding: 20px;
+}
+
+.sbj-split-right {
+    overflow-y: scroll;
+    float: right;
+	padding: 20px;
+    width: calc(100% - 440px);
+    height: calc(100% - 40px);
+}
+
+#sbj-split-right-img{
+    overflow-y: hidden;
+    height: calc(100% - 40px);
+}
+
+#sbj-actor-note{
+	resize: none;
+}
+
+.sbj-main-frame{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.sbj-dashbord-export{
+	display: flex;
+}
+
+.sbj-dashbord-export-type{
+	margin: 6px 18px;
+}
+
+.sbj-user-setting-option{
+	margin: 8px 16px;
+}
+
+.sbj-user-setting-option-select{
+	font-weight: 800;
+}
+
+.sbj-user-setting-option-noselect{
+	font-weight: 400;
+}

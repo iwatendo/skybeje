@@ -1,0 +1,113 @@
+<html>
+
+<head>
+    <title>SkyBeje</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <script src='/lib/peer.js'></script>
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="/lib/split-pane.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css' />
+    <link rel='stylesheet' href='style.css' />
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+
+    <div class="sbj-cast-instance" id="sbj-cast-instance">
+
+        <div id="sbj-cast-instance-layout" class="sbj-cast-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+
+            <header class="sbj-cast-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+                <div class="sbj-cast-instance--header-row mdl-layout__header-row">
+
+                    <span id="sbj-cast-instance-title" class="mdl-layout-title">
+                        ライブキャスト
+                    </span>
+
+                    <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
+
+                    <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" hidden>
+                        <i class="material-icons">play_arrow</i>
+                        &nbsp;開始&nbsp;
+                    </button>
+
+                    <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                        <i class="material-icons">stop</i>
+                        &nbsp;停止&nbsp;
+                    </button>
+
+                    <button id="sbj-cast-instance-pause" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" hidden>
+                        <i class="material-icons">pause</i>
+                        &nbsp;一時停止&nbsp;
+                    </button>
+
+                    <button id="sbj-cast-instance-restart" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" hidden>
+                        <i class="material-icons">play_arrow</i>
+                        &nbsp;再開&nbsp;
+                    </button>
+
+                    <div class="mdl-layout-spacer"></div>
+
+                    <button id="sbj-cast-instance-cancel" class="mdl-button mdl-js-button mdl-button--raised sbj-dialog-cancel" type="button">
+                        <i class="material-icons">close</i>
+                    </button>
+
+                </div>
+            </header>
+
+            <main id="sbj-cast-instance-main" class="mdl-layout__content">
+                <div class="sbj-split-left mdl-color-text--grey-600">
+
+                    <!-- Mic -->
+                    <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
+                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
+                        <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
+                        <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
+                            <li class="mdl-menu__item"></li>
+                        </ul>
+                    </div>
+                    <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="mic-select-div">ライブキャスト中は<br/>マイクの変更はできません</span>
+
+                    <!-- Camera -->
+                    <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
+                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
+                        <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
+                        <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
+                            <li class="mdl-menu__item" onclick=""></li>
+                        </ul>
+                    </div>
+                    <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="webcam-select-div">ライブキャスト中は<br/>カメラの変更はできません</span>
+
+                    <div>
+                        <label class="sbj-cast-instance-option mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="speech_recognition">
+                            音声認識での字幕表示
+                            <input type="checkbox" id="speech_recognition" class="mdl-checkbox__input" />
+                        </label>
+
+                        <label class="sbj-cast-instance-option mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cursor_disp">
+                            接続ユーザーのカーソル表示
+                            <input type="checkbox" id="cursor_disp" class="mdl-checkbox__input" />
+                        </label>
+                    </div>
+
+                </div>
+                <div class="sbj-split-right">
+                    <h6 class="mdl-color-text--grey-600">プレビュー</h6>
+                    <!-- PreView -->
+                    <div class="mdl-list__item-primary-content">
+                        <video id='video' autoplay="true"></video>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
+    <script src="bundle.js"></script>
+
+</body>
+
+</html>

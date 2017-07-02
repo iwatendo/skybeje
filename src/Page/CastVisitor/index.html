@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title>SkyBeje</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <script src='/lib/peer.js'></script>
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="/lib/split-pane.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css' />
+    <link rel='stylesheet' href='style.css' />
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+    <div class='sbj-cact-visitor-contents'>
+
+        <input type="text" id="peerid" hidden />
+        <input type="text" id="aid" hidden />
+        <input type="text" id="iid" hidden />
+
+        <div class="sbj-cact-visitor-contents-frame">
+            <div class="sbj-cact-visitor-contents-video">
+
+                <video id='sbj-video' autoplay="true"></video>
+
+                <div id="sbj-cact-visitor-item-port">
+                    <h2 id="sbj-cact-visitor-voice-only" hidden>Voice only</h2>
+                    <div id="sbj-cact-visitor-cursor-port">
+                        <!-- React -->
+                    </div>
+                    <div id="sbj-cast-visitor-subtitles-text"></div>
+                    <div id="sbj-cast-visitor-submenu">
+                        <div id="sbj-cast-visitor-volume-slider">
+                            <input id="sbj-cast-visitor-volume-value" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="100" tabindex="0">
+                        </div>
+                        <button id="sbj-cact-visitor-volume" class="sbj-cact-visitor-button mdl-button mdl-js-button mdl-button--icon">
+                            <i id="sbj-cact-visitor-volume-on" class="material-icons">volume_up</i>
+                            <i id="sbj-cact-visitor-volume-off" hidden class="material-icons">volume_off</i>
+                        </button>
+                        <button id="sbj-cast-visitor-allout" class="sbj-cact-visitor-button mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">all_out</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
+    <script src="bundle.js"></script>
+
+</body>
+
+</html>
