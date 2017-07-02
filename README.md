@@ -25,7 +25,7 @@
 * [Node.js](https://nodejs.org/ja/)
 * [Visual Studio Code](https://www.microsoft.com/ja-jp/dev/products/code-vs.aspx)
 ### ライセンス ###
-* [GNU AFFERO GENERAL PUBLIC LICENSE Version 3 (AGPL)](https://bitbucket.org/iwatendo/skybeje/src/HEAD/LICENSE?at=master)
+* [GNU AFFERO GENERAL PUBLIC LICENSE Version 3 (AGPL)](https://github.com/iwatendo/skybeje/blob/master/LICENSE)
 * [AGPLライセンスとは？](https://www.gnu.org/licenses/agpl-3.0.html)
 ### アイコン及び画像ファイルを使わせて頂いたサイト ###
 * [The Twitter Logo Generator](http://www.twitlogo.com)
