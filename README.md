@@ -11,13 +11,13 @@
 * [adapterjs](https://github.com/webrtc/adapter) [(LICENSE)](https://github.com/webrtc/adapter/blob/master/LICENSE.md)
 * [jQuery](https://jquery.com/) [(LICENSE)](https://jquery.org/license/)
 * [jquery.qrcode.js](http://jeromeetienne.github.io/jquery-qrcode/) [(LICENSE)](https://github.com/jeromeetienne/jquery-qrcode/blob/master/MIT-LICENSE.txt)
-* [jquery.split-pane](https://github.com/shagstrom/split-pane) [LICENSE](https://github.com/shagstrom/split-pane/blob/master/LICENSE)
+* [jquery.split-pane](https://github.com/shagstrom/split-pane) [(LICENSE)](https://github.com/shagstrom/split-pane/blob/master/LICENSE)
 * [Material Design Lite](https://getmdl.io/index.html) [(LICENSE)](https://github.com/google/material-design-lite/blob/mdl-1.x/LICENSE)
 * [PeerJs (SkyWay)](https://github.com/nttcom/peerjs/) [(LICENSE)](https://github.com/nttcom/peerjs/blob/master/LICENSE)
 * [React](https://facebook.github.io/react/) [(LICENSE)](https://github.com/facebook/react/blob/master/LICENSE)
 * [WebPack](https://webpack.js.org/) [(LICENSE)](https://github.com/webpack/webpack/blob/master/LICENSE)
 * [YouTube Player API](https://developers.google.com/youtube/iframe_api_reference?hl=ja) 
-### 以下の「実験段階のWeb機能」を使用してます ###
+### 以下の「実験段階の機能」を使用してます ###
 * [\<dialog\>](https://developer.mozilla.org/ja/docs/Web/HTML/Element/dialog)
 * [CSS変数](https://developer.mozilla.org/ja/docs/Web/CSS/Using_CSS_variables)
 * [Web Speech API](https://developer.mozilla.org/ja/docs/Web/API/Web_Speech_API)
