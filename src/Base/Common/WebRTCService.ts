@@ -68,7 +68,7 @@ export default class WebRTCService {
                 }
             }
         }
-        xmlhttp.open("GET", "/skyway.key", true);
+        xmlhttp.open("GET", "/skyway.key.txt", true);
         xmlhttp.send();
     }
 

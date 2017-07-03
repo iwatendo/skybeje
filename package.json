@@ -8,7 +8,7 @@
     "webpack:release": "webpack --colors --config ./webpack.config.release.js",
     "copy:lib": "cpx \"./src/Page/Lib/*\" ./dist/lib",
     "copy:image": "cpx \"./src/Page/Image/*\" ./dist/image",
-    "copy:src": "cpx \"./src/Page/**/{bundle.js,*.html,*.css,*.map,*.key}\" ./dist",
+    "copy:src": "cpx \"./src/Page/**/{bundle.js,*.html,*.css,*.map,*.txt}\" ./dist",
     "build": "npm-run-all -s webpack copy:lib copy:image copy:src",
     "build:release": "npm-run-all -s clean webpack:release copy:lib copy:image copy:src"
   },
