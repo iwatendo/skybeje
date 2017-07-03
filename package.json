@@ -3,13 +3,19 @@
   "license": "AGPL-3.0",
   "scripts": {
     "server": "node dev/Server.js",
-    "build": "webpack --colors --config ./webpack.config.dev.js && cpx \"./src/Page/**/{*.js,*.jpg,*.png,*.ico,*.html,*.css,*.map,*.key}\" ./dist",
-    "build:prod": "webpack --config ./webpack.config.prod.js && cpx \"./src/Page/**/{*.js,*.jpg,*.png,*.ico,*.html,*.css,*.map,*.key}\" ./dist",
-    "clean": "rimraf dist/*"
+    "clean": "rimraf dist/*",
+    "webpack": "webpack --colors --config ./webpack.config.dev.js",
+    "webpack:release": "webpack --colors --config ./webpack.config.release.js",
+    "copy:lib": "cpx \"./src/Page/Lib/*\" ./dist/lib",
+    "copy:image": "cpx \"./src/Page/Image/*\" ./dist/image",
+    "copy:src": "cpx \"./src/Page/**/{bundle.js,*.html,*.css,*.map,*.key}\" ./dist",
+    "build": "npm-run-all -s webpack copy:lib copy:image copy:src",
+    "build:release": "npm-run-all -s clean webpack:release copy:lib copy:image copy:src"
   },
   "dependencies": {
     "co": "^4.6.0",
     "cpx": "^1.5.0",
+    "npm-run-all": "^4.0.2",
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "rimraf": "^2.6.1",
