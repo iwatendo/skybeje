@@ -18,8 +18,6 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public CastInstance = new CastInstanceSender();
     public CastSetting = new CastSettingSedner();
 
-    public AudioVisible: boolean = false;
-    public VideoVisible: boolean = false;
     public AudioSource: string = null;
     public VideoSource: string = null;
 
@@ -120,19 +118,11 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public SetStreaming() {
 
-        this.AudioVisible = (this.AudioSource !== "");
-        this.VideoVisible = (this.VideoSource !== "");
-
         //
-        WebRTCService.SetStreaming(
-            this.AudioVisible,
-            this.AudioSource,
-            this.VideoVisible,
-            this.VideoSource
-        );
+        WebRTCService.SetStreaming(this.AudioSource, this.VideoSource);
 
         //  オーナー 及び 接続クライアントに通知
-        this.ServerSend((this.AudioVisible || this.VideoVisible), false);
+        this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
     }
 
 

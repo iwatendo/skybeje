@@ -130,13 +130,12 @@ export default class YouTubeUtil {
         $("#youtube-player").empty().append("<div id='" + divid + "'></div>");
 
 
-        let options = {
+        let options: YT.PlayerOptions = {
             height: 0,
             width: 0,
             videoId: YouTubeUtil.VideoID,
-            playerVars: {},
-            events: {
-                'onReady': (event: YT.Events) => {
+            events:{ 
+                onReady: (event: YT.PlayerEvent) => {
                     if (YouTubeUtil.Callback) {
                         YouTubeUtil.Callback((event as any).target);
                     }

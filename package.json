@@ -13,22 +13,24 @@
     "build:release": "npm-run-all -s clean webpack:release copy:lib copy:image copy:src"
   },
   "dependencies": {
+    "@types/react": "^15.0.34",
+    "@types/react-dom": "^15.5.1",
     "co": "^4.6.0",
     "cpx": "^1.5.0",
     "npm-run-all": "^4.0.2",
     "peerjs": "^0.3.14",
-    "react": "15.5.4",
-    "react-dom": "15.5.4",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "rimraf": "^2.6.1",
-    "ts-loader": "2.0.3",
-    "typescript": "2.3.4",
+    "ts-loader": "^2.2.2",
+    "typescript": "^2.4.1",
     "webpack": "^3.0.0",
     "youtube": "^0.1.0"
   },
   "devDependencies": {
-    "@types/jquery": "^2.0.41",
-    "@types/react": "15.0.24",
-    "@types/react-dom": "15.5.0",
-    "@types/youtube": "0.0.29"
+    "@types/jquery": "^2.0.48",
+    "@types/react": "^15.0.34",
+    "@types/react-dom": "^15.5.1",
+    "@types/youtube": "^0.0.29"
   }
 }

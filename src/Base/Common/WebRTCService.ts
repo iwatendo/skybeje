@@ -330,9 +330,7 @@ export default class WebRTCService {
     public static SetPreview(videoSource: string, isPreView: boolean = false, element: HTMLElement) {
 
         if (isPreView) {
-            let constraints = {
-                video: { optional: [{ sourceId: videoSource }] }
-            };
+            let constraints = this.GetMediaTrackConstraints(videoSource, "");
 
             navigator.getUserMedia(constraints,
                 (stream) => {
@@ -355,37 +353,34 @@ export default class WebRTCService {
 
 
     /**
+     * 
+     * @param videoSource 
+     * @param audioSource 
+     */
+    public static GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
+
+        let result: MediaStreamConstraints = {
+            video: (videoSource ? { advanced: ([{ deviceId: videoSource }]) } : false),
+            audio: (audioSource ? { advanced: ([{ deviceId: audioSource }]) } : false),
+        };
+
+        return result;
+    }
+
+
+    /**
      * ストリーミング設定
-     * @param isAudio
      * @param audioSource
-     * @param isVideo
      * @param videoSource
      */
-    public static SetStreaming(isAudio: boolean, audioSource: string, isVideo: boolean, videoSource: string) {
+    public static SetStreaming(audioSource: string, videoSource: string) {
 
         this.VideoMute();
         this.AudioMute();
 
-        if (isVideo || isAudio) {
+        if (videoSource || audioSource) {
 
-            let constraints;
-
-            if (isAudio && isVideo) {
-                constraints = {
-                    audio: { optional: [{ sourceId: audioSource }] },
-                    video: { optional: [{ sourceId: videoSource }] }
-                };
-            }
-            else if (isAudio) {
-                constraints = {
-                    audio: { optional: [{ sourceId: audioSource }] },
-                };
-            }
-            else if (isVideo) {
-                constraints = {
-                    video: { optional: [{ sourceId: videoSource }] }
-                };
-            }
+            let constraints = this.GetMediaTrackConstraints(videoSource, audioSource);
 
             navigator.getUserMedia(constraints,
                 (stream) => {
