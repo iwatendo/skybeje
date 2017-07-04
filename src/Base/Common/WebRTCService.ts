@@ -23,7 +23,6 @@ export default class WebRTCService {
         LogUtil.Info("Start WebRTC : " + serviceName + (ownerid ? "(Owner : " + ownerid + ")" : ""));
 
         this.GetApiKey((apikey) => {
-
             this._peer = new Peer({ key: apikey, debug: 1 }, );
             this._service = service;
             WebRTCService._videoElement = videoElement;
@@ -60,15 +59,23 @@ export default class WebRTCService {
         xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState == 4) {
                 if (xmlhttp.status == 200) {
-                    callback(xmlhttp.responseText);
-                    return;
+                    try {
+                        let skyway = JSON.parse(xmlhttp.responseText);
+                        callback(skyway.apikey);
+                        return;
+                    }
+                    catch (e) {
+                        let errMsg = "skyway.json\n" + e.toString();
+                        LogUtil.Error(errMsg);
+                        alert(errMsg);
+                    }
                 }
                 else {
-                    alert("Skyway api key file not found");
+                    alert("skyway.json not found.");
                 }
             }
         }
-        xmlhttp.open("GET", "/skyway.key.txt", true);
+        xmlhttp.open("GET", "/skyway.json", true);
         xmlhttp.send();
     }
 
@@ -453,12 +460,12 @@ export default class WebRTCService {
     /**
      * 一時停止 / 再開
      */
-    public static set Puase(value : boolean ){
-        if (this._localStream){
-            if (this._localStream.getVideoTracks().length > 0){
+    public static set Puase(value: boolean) {
+        if (this._localStream) {
+            if (this._localStream.getVideoTracks().length > 0) {
                 this._localStream.getVideoTracks()[0].enabled = !value;
             }
-            if (this._localStream.getAudioTracks().length > 0){
+            if (this._localStream.getAudioTracks().length > 0) {
                 this._localStream.getAudioTracks()[0].enabled = !value;
             }
         }
