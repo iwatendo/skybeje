@@ -21,16 +21,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
-
         let backpanel = document.getElementById('sbj-cast-instance');
         let startButton = document.getElementById('sbj-cast-instance-start');
         let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let pauseButton = document.getElementById('sbj-cast-instance-pause');
         let pauseRestart = document.getElementById('sbj-cast-instance-restart');
-
-        startButton.hidden = false;
-        stopButton.hidden = true;
 
         //
         backpanel.onclick = (e: MouseEvent) => {
@@ -125,7 +121,11 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             WebRTCService.ChildSendAll(send);
         });
 
-        this.SetMediaDevice();
+        if (this.Controller.HasDevicePermission) {
+            this.SetMediaDevice();
+            startButton.hidden = false;
+            stopButton.hidden = true;
+        }
 
         callback();
     }

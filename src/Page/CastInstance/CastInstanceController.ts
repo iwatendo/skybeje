@@ -18,6 +18,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public CastInstance = new CastInstanceSender();
     public CastSetting = new CastSettingSedner();
 
+    public HasDevicePermission: boolean = false;
     public AudioSource: string = null;
     public VideoSource: string = null;
 
@@ -25,10 +26,12 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     /**
      *
      */
-    constructor() {
+    constructor(hasPermission: boolean) {
         super();
+        this.HasDevicePermission = hasPermission;
         this.Receiver = new CastInstanceReceiver(this);
-        this.View = new CastInstanceView(this, () => { });
+        this.View = new CastInstanceView(this, () => {
+        });
     };
 
 

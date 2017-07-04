@@ -4,5 +4,16 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import CastInstanceController from "./CastInstanceController";
 
 if (StdUtil.IsExecute()) {
-    WebRTCService.Start(new CastInstanceController(), LinkUtil.GetPeerID(), "CastInstance");
+
+    navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
+
+    navigator.getUserMedia(
+        { video: true, audio: true },
+        (stream) => {
+            WebRTCService.Start(new CastInstanceController(true), LinkUtil.GetPeerID(), "CastInstance");
+        }, (e) => {
+            alert(e);
+            WebRTCService.Start(new CastInstanceController(false), LinkUtil.GetPeerID(), "CastInstance");
+        }
+    );
 }
