@@ -1,19 +1,19 @@
 ﻿import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
+import LocalCache from "../../Base/Common/LocalCache";
 import CastInstanceController from "./CastInstanceController";
 
 if (StdUtil.IsExecute()) {
 
-    navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
+    if (!LocalCache.IsCheckDevicePermision) {
+        let reload = () => {
+            LocalCache.IsCheckDevicePermision = true;
+            location.reload();
+        };
+        navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
+        navigator.getUserMedia({ video: true, audio: true }, (stream) => { reload(); }, (err) => { reload(); });
+    }
 
-    navigator.getUserMedia(
-        { video: true, audio: true },
-        (stream) => {
-            WebRTCService.Start(new CastInstanceController(true), LinkUtil.GetPeerID(), "CastInstance");
-        }, (e) => {
-            alert(e);
-            WebRTCService.Start(new CastInstanceController(false), LinkUtil.GetPeerID(), "CastInstance");
-        }
-    );
+    WebRTCService.Start(new CastInstanceController(), LinkUtil.GetPeerID(), "CastInstance");
 }

@@ -35,6 +35,12 @@ export default class LocalCache {
     public static get BootHomeInstancePeerID(): string { return localStorage.getItem('home-instance-id'); }
 
 
+    /**
+     *  起動しているインスタンスのPeerID
+     */
+    public static set IsCheckDevicePermision(val: boolean) { localStorage.setItem('checked-device-permision', (val ? "True" : "")); }
+    public static get IsCheckDevicePermision(): boolean { return localStorage.getItem('checked-device-permision') === "True" }
+
 
 
     /**

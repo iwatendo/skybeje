@@ -121,11 +121,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             WebRTCService.ChildSendAll(send);
         });
 
-        if (this.Controller.HasDevicePermission) {
-            this.SetMediaDevice();
-            startButton.hidden = false;
-            stopButton.hidden = true;
-        }
+        this.SetMediaDevice();
 
         callback();
     }
