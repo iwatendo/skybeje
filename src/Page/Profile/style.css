@@ -42,33 +42,8 @@
     color: var(--sbj-color-default-text);
 }
 
-
 .sbj-profile-header-row{
     padding: 0px 0px 0px 16px;
-}
-
-.sbj-profile-item-left a{
-    display: flex;
-    margin: 24px;
-}
-
-.sbj-profile-item-left{
-    float: left;
-    width: 180px;
-}
-
-.sbj-profile-item-right {
-    float: right;
-    width: calc(100% - 180px);
-}
-
-
-.mdl-layout__tab-bar-button{
-    width: 0px;
-}
-
-.mdl-layout__tab-bar{
-    padding: 0 0 0 24px;
 }
 
 .sbj-profile-note{

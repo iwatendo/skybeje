@@ -24,17 +24,17 @@
 
                     <div>
                         <div class="sbj-profile-text-left">
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <div id="sbj-profile-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="sbj-profile-name" spcellcheck="false" maxlength="16"></input>
                                 <label class="mdl-textfield__label" htmlFor="sbj-profile-name">名前</label>
                             </div>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <div id="sbj-profile-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="sbj-profile-tag" spcellcheck="false" maxlength="64"></input>
                                 <label class="mdl-textfield__label" htmlFor="sbj-profile-tag">タグ</label>
                             </div>
                         </div>
                         <div class="sbj-profile-text-right">
-                            <div class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <div id="sbj-profile-note-field" class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-profile-note" spcellcheck="false" maxlength="2048"></textarea>
                                 <label class="mdl-textfield__label" htmlFor="sbj-profile-note">プロフィール</label>
                             </div>
@@ -51,7 +51,7 @@
                     <section class="mdl-layout__tab-panel is-active" id="sbj-profile-icons">
                         <div class="mdl-grid">
                             <div class="mdl-cell mdl-cell--12-col">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                <button id='sbj-profile-append-icon' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                                     <i class='material-icons'>add</i>
                                     アイコンの追加
                                 </button>

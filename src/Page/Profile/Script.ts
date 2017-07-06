@@ -4,6 +4,6 @@ import ProfileController from "./ProfileController";
 
 if (StdUtil.IsExecute()) {
 
-    let aid = Number.parseInt(LinkUtil.GetArgs('aid'));
+    let aid = LinkUtil.GetArgs('aid');
     let controller = new ProfileController(aid);
 }
