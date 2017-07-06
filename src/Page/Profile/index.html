@@ -10,6 +10,7 @@
     <link rel='stylesheet' href='/lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css' />
+    <link rel='stylesheet' href='../common.dialog.css' />
     <link rel='stylesheet' href='style.css' />
     <script src="/lib/material.min.js"></script>
 </head>
@@ -49,15 +50,14 @@
                 </header>
                 <main class="mdl-layout__content">
                     <section class="mdl-layout__tab-panel is-active" id="sbj-profile-icons">
-                        <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--12-col">
-                                <button id='sbj-profile-append-icon' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                                    <i class='material-icons'>add</i>
-                                    アイコンの追加
-                                </button>
-                            </div>
-                            <div id="sbj-panel-icons">
-                            </div>
+                        <div class="sbj-profile-icons-view-header">
+                            <button id='sbj-profile-append-icon' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                <i class='material-icons'>add</i>
+                                アイコンの追加
+                            </button>
+                        </div>
+                        <div id="sbj-profile-icons-view">
+                            <!-- React -->
                         </div>
                     </section>
                     <section class="mdl-layout__tab-panel" id="sbj-profile-actorbot">
@@ -71,10 +71,97 @@
                 </main>
             </div>
         </div>
+    </div>
 
-        <script src="/lib/react.min.js"></script>
-        <script src="/lib/react-dom.min.js"></script>
-        <script src="bundle.js"></script>
+    <!--Image Dialog-->
+    <dialog id='sbj-image-dialog' class='sbj-dialog'>
+        <div id="sbj-image-background" class="sbj-dialog-background">
+
+            <div class="sbj-image-card mdl-card mdl-shadow--2dp flexiblebox">
+
+                <!-- 上部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left">
+                        <button id='sbj-image-attach' class="mdl-button mdl-js-button mdl-button--raised">
+							<i class="material-icons">attach_file</i>
+							&nbsp;ファイル&nbsp;
+						</button>
+
+                        <button id='sbj-image-camera' class="mdl-button mdl-js-button mdl-button--raised" hidden>
+							<i class="material-icons">photo_camera</i>
+							&nbsp;カメラ&nbsp;
+						</button>
+
+                    </div>
+
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-image-cancel' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-cancel">
+							<i class="material-icons">close</i>
+						</button>
+                    </div>
+                </div>
+
+                <!--画像表示エリア-->
+                <div id="sbj-image-view" class="sbj-image-view mdl-card__title mdl-card--expand">
+                    <h4 class="sbj-image-drop-text mdl-card__title_text" id='sbj-image-drop-msg'>ここに画像をドロップできます</h4>
+                </div>
+
+                <!-- 下部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left">
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-image-css-edit" id="sbj-image-css-edit-check">
+							<input type="checkbox" id="sbj-image-css-edit" class="mdl-switch__input">
+							<span class="mdl-switch__label">CSS設定（上級向)</span>
+						</label>
+                    </div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-image-delete' tabindex=-1 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+							<i class="material-icons">delete_forever</i>&nbsp;削除&nbsp;
+						</button>
+                        <button id='sbj-image-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+							<i class="material-icons">done</i>&nbsp;更新&nbsp;
+						</button>
+                        <button id='sbj-image-done' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+							<i class="material-icons">done</i>&nbsp;追加&nbsp;
+						</button>
+                    </div>
+                </div>
+
+                <button id='sbj-image-center' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+					<span class="mdl-tooltip" for="sbj-image-center">Postion:Center</span>
+					<i class="material-icons">crop_free</i>
+				</button>
+                <button id='sbj-image-left' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+					<span class="mdl-tooltip" for="sbj-image-left">Postion:Left</span>
+					<i class="material-icons">keyboard_arrow_left</i>
+				</button>
+                <button id='sbj-image-right' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+					<span class="mdl-tooltip" for="sbj-image-right">Postion:Right</span>
+					<i class="material-icons">keyboard_arrow_right</i>
+				</button>
+                <button id='sbj-image-top' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+					<span class="mdl-tooltip" for="sbj-image-top">Postion:Top</span>
+					<i class="material-icons">keyboard_arrow_up</i>
+				</button>
+                <button id='sbj-image-bottom' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+					<span class="mdl-tooltip" for="sbj-image-bottom">Postion:Bottom</span>
+					<i class="material-icons">keyboard_arrow_down</i>
+				</button>
+                <button id='sbj-image-cover' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+					<span class="mdl-tooltip" for="sbj-image-cover">Size:Cover</span>
+					<i class="material-icons">open_with</i>
+				</button>
+                <button id='sbj-image-contain' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+					<span class="mdl-tooltip" for="sbj-image-contain">Size:Contain</span>
+					<i class="material-icons">zoom_out_map</i>
+				</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
+    <script src="bundle.js"></script>
 
 </body>
 

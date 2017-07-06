@@ -10,7 +10,6 @@ import ProfileView from "./ProfileView";
 export default class ProfileController extends AbstractServiceController<ProfileView, ProfileModel> {
 
     public Actor: Personal.Actor;
-    public Icons: Array<Personal.Icon>
 
     /**
      *
@@ -26,11 +25,8 @@ export default class ProfileController extends AbstractServiceController<Profile
                 aid = up.aid;
                 self.Model.GetActor(aid, (actor) => {
                     self.Actor = actor;
-                    self.Model.GetIconList(actor, (icons) => {
-                        self.Icons = icons;
-                        self.View = new ProfileView(self, () => {
-                        });
-                    })
+                    self.View = new ProfileView(self, () => {
+                    });
                 });
             });
         });
