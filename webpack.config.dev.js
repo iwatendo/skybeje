@@ -3,6 +3,7 @@ module.exports = {
     boot: './src/Page/Boot/Script.ts',
     errorpage: './src/Page/ErrorPage/Script.ts',
     dashboard: './src/Page/Dashboard/Script.ts',
+    profile:'./src/Page/Profile/Script.ts',
     homeinstance: './src/Page/HomeInstance/Script.ts',
     homevisitor: './src/Page/HomeVisitor/Script.ts',
     castinstance: './src/Page/CastInstance/Script.ts',

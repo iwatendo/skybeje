@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<html>
+
+<head>
+    <title>SkyBeje</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css' />
+    <link rel='stylesheet' href='style.css' />
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+
+    <div class="sbj-profile" id="sbj-profile">
+
+        <div id="sbj-profile-layout" class="sbj-profile-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+            <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+                <header class="sbj-profile-header mdl-layout__header">
+
+                    <div>
+                        <div class="sbj-profile-text-left">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="sbj-profile-name" spcellcheck="false" maxlength="16"></input>
+                                <label class="mdl-textfield__label" htmlFor="sbj-profile-name">名前</label>
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="sbj-profile-tag" spcellcheck="false" maxlength="64"></input>
+                                <label class="mdl-textfield__label" htmlFor="sbj-profile-tag">タグ</label>
+                            </div>
+                        </div>
+                        <div class="sbj-profile-text-right">
+                            <div class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-profile-note" spcellcheck="false" maxlength="2048"></textarea>
+                                <label class="mdl-textfield__label" htmlFor="sbj-profile-note">プロフィール</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sbj-profilie-tab-bar mdl-layout__tab-bar mdl-js-ripple-effect">
+                        <a href="#sbj-profile-icons" class="mdl-layout__tab is-active">アイコン</a>
+                        <a href="#sbj-profile-actorbot" class="mdl-layout__tab">アクターBOT</a>
+                        <a href="#sbj-profile-gadget" class="mdl-layout__tab">ガジェット</a>
+                    </div>
+                </header>
+                <main class="mdl-layout__content">
+                    <section class="mdl-layout__tab-panel is-active" id="sbj-profile-icons">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                    <i class='material-icons'>add</i>
+                                    アイコンの追加
+                                </button>
+                            </div>
+                            <div id="sbj-panel-icons">
+                            </div>
+                        </div>
+                    </section>
+                    <section class="mdl-layout__tab-panel" id="sbj-profile-actorbot">
+                        <div class="page-content">
+                        </div>
+                    </section>
+                    <section class="mdl-layout__tab-panel" id="sbj-profile-gadget">
+                        <div class="page-content">
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+
+        <script src="/lib/react.min.js"></script>
+        <script src="/lib/react-dom.min.js"></script>
+        <script src="bundle.js"></script>
+
+</body>
+
+</html>
