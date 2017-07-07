@@ -133,8 +133,19 @@
     border-radius: 6px;    
 }
 
+.sbj-inputpanel-icontext{
+    padding:0px;
+    clear:both;
+}
+
+.sbj-inputpanel-action{
+    padding:0px;
+    clear:both;
+    margin: 0px 0px 0px -8px;
+}
+
 .sbj-inputpanel-button{
-    padding: 0px 24px 0px 0px;
+    padding: 0px 12px;
 }
 
 .sbj-inputpanel-actor-name{
@@ -171,11 +182,6 @@
     border-radius: 8px;
     background-color: var(--sbj-color-default-background);
     float: left;
-}
-
-.sbj-inputpanel-action{
-    padding:0px;
-    clear:both;
 }
 
 textarea.sbj-inputpanel-text {
