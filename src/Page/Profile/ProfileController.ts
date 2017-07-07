@@ -32,20 +32,11 @@ export default class ProfileController extends AbstractServiceController<Profile
 
 
     /**
-     * クライアントが起動していた場合に
-     * アクターが変更があった事を通知する
+     * アクターの変更通知
      */
     public ChangeActorNotify(aid: string) {
 
-        let frame = window.parent.document.getElementById('sbj-main-home-visitor-frame') as HTMLFrameElement;
-
-        if (!frame) {
-            return;
-        }
-
-        //  ホームインスタンス側のエレメント
-        let document = frame.contentDocument;
-        let element = document.getElementById("sbj-dashborad-change-actor") as HTMLInputElement;
+        let element = window.parent.document.getElementById('sbj-dashborad-change-actor') as HTMLInputElement;
 
         if (element) {
             element.value = aid;
