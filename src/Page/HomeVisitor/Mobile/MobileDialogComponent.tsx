@@ -22,9 +22,6 @@ export interface MobileDialogProp {
 export default class MobileDialogComponent extends React.Component<MobileDialogProp, any> {
 
 
-    private _selectedIid: string = '';
-
-
     /**
      * 描画処理
      */
@@ -34,9 +31,9 @@ export default class MobileDialogComponent extends React.Component<MobileDialogP
 
         return (
             <div>
-                <h6 className="src-home-visitor-mobile-label">Android端末からライブキャストします。</h6>
+                <h6 className="sbj-home-visitor-mobile-label">Android端末からライブキャストします。</h6>
                 <div className="mdl-shadow--3dp">
-                    <iframe className="src-home-visitor-qrcode" src={linkrul}></iframe>
+                    <iframe className="sbj-home-visitor-qrcode" src={linkrul}></iframe>
                 </div>
             </div>
         );

@@ -21,12 +21,9 @@ export default class ProfileController extends AbstractServiceController<Profile
         let self = this;
 
         self.Model = new ProfileModel(self, () => {
-            self.Model.GetUserProfile((up) => {
-                aid = up.aid;
-                self.Model.GetActor(aid, (actor) => {
-                    self.Actor = actor;
-                    self.View = new ProfileView(self, () => {
-                    });
+            self.Model.GetActor(aid, (actor) => {
+                self.Actor = actor;
+                self.View = new ProfileView(self, () => {
                 });
             });
         });

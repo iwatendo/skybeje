@@ -14,6 +14,7 @@ export enum DialogMode {
 
 
 interface OnChangeItem<T> { (imageRec: T): void }
+interface OnClose { (): void }
 
 
 /**
@@ -37,6 +38,7 @@ export default abstract class AbstractDialogController<U extends IServiceControl
     private _cancelButton = document.getElementById('sbj-dialog-cancel') as HTMLButtonElement;
 
     private _owner_callback: OnChangeItem<T>;
+    private _close_callback: OnClose;
     private _item: T;
     private _dialogMode: DialogMode;
     private _controller: U;
@@ -119,7 +121,7 @@ export default abstract class AbstractDialogController<U extends IServiceControl
      * @param item 
      * @param callback 
      */
-    public Show(mode: DialogMode, item: T, callback: OnChangeItem<T>) {
+    public Show(mode: DialogMode, item: T, callback: OnChangeItem<T>, close_callback: OnClose = null) {
 
         if (this._dialog && this._dialog.open)
             return;
@@ -131,6 +133,7 @@ export default abstract class AbstractDialogController<U extends IServiceControl
 
         this.Initialize(item);
         this._owner_callback = callback;
+        this._close_callback = close_callback;
         this._dialog.showModal();
     }
 
@@ -178,6 +181,10 @@ export default abstract class AbstractDialogController<U extends IServiceControl
      * 終了処理
      */
     public Close() {
+
+        if( this._close_callback){
+            this._close_callback();
+        }
 
         if (this._dialog && this._dialog.open) {
             this._dialog.close();

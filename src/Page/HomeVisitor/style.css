@@ -203,6 +203,10 @@
     border-radius: 6px;    
 }
 
+.sbj-inputpanel-button{
+    padding: 0px 24px 0px 0px;
+}
+
 .sbj-inputpanel-actor-name{
     padding: 6px 8px 2px 8px;
     float: left;
@@ -280,6 +284,10 @@ textarea.sbj-inputpanel-text {
     font-weight: 600;
 }
 
+.sbj-home-visitor-profile-editer{
+    width: 100%;
+    height: 660px;
+}
 
 /*-----------------------------
  *  cast control panel
@@ -441,7 +449,7 @@ p.sbj-timeline-message-ignore {
     height: calc(100% - 176px);
 }
 
-.src-home-visitor-mobile-label{
+.sbj-home-visitor-mobile-label{
     margin: 0px;
 }
 
@@ -456,7 +464,7 @@ p.sbj-timeline-message-ignore {
     border-width: 1px;
 }
 
-.src-home-visitor-qrcode{
+.sbj-home-visitor-qrcode{
     width: 340px;
     height: 340px;
 }

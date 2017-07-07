@@ -46,15 +46,15 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
                 </div>
                 <div className="sbj-cast-control">
                     <div className="sbj-cast-control-action mdl-card__actions">
-                        <button className="input-send mdl-button mdl-button--colored" onClick={this.OnLiveCastCkick.bind(this)}>
+                        <button className="mdl-button mdl-button--colored" onClick={this.OnLiveCastCkick.bind(this)}>
                             <i className="material-icons">contacts</i>
                             ライブキャスト
                         </button>
-                        <button className="input-send mdl-button mdl-button--colored" onClick={this.OnLiveCastMobileCkick.bind(this)}>
+                        <button className="mdl-button mdl-button--colored" onClick={this.OnLiveCastMobileCkick.bind(this)}>
                             <i className="material-icons">android</i>
                             モバイル
                         </button>
-                        <button className="input-send mdl-button mdl-button--colored" hidden>
+                        <button className="mdl-button mdl-button--colored" hidden>
                             <i className="material-icons">library_books</i>
                             ガジェット（未実装）
                         </button>

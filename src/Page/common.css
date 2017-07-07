@@ -11,7 +11,7 @@ body {
 }
 
 :root{
-    --sbj-color-default-text: #333333;
+    --sbj-color-default-text: #555;
     --sbj-color-highlight-text: whitesmoke;
     --sbj-color-link-text: #0099ff;
     --sbj-color-warning-text: palevioletred;

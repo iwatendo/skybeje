@@ -54,7 +54,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
         });
 
         return (
-            <div className="sbj-profile-icons-view-main">
+            <div className="sbj-profile-icons-view-main mdl-grid">
                 {iconNodes}
             </div>
         );

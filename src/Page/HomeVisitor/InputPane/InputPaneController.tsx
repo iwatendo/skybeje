@@ -14,6 +14,7 @@ import IconSelectorDialog from "../IconSelector/IconSelectorDialog";
 import HomeVisitorController from "../HomeVisitorController";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
+import ProfileEditerDialog from "../ProfileEditer/ProfileEditerDialog";
 
 
 export default class InputPaneController {
@@ -22,9 +23,11 @@ export default class InputPaneController {
     private _actorNameElement = document.getElementById('sbj-inputpanel-actor-name');
     private _actorIconElement = document.getElementById('sbj-inputpanel-actor-icon');
     private _textareaElement = document.getElementById('sbj-inputpanel-text') as HTMLInputElement;
+    private _actorEditButton = document.getElementById('sbj-inputpanel-actor-edit-button');
     private _selectIconButton = document.getElementById('sbj-inputpanel-select-icon-button');
     private _selectActorButton = document.getElementById('sbj-inputpanel-select-actor-button');
     private _sendMessageButton = document.getElementById('sbj-inputpanel-send-message-button');
+
     private _unreadElement = document.getElementById('sbj-unread-count');
     private _otherRoomList = document.getElementById('sbj-inputpanel-other-room-list');
     private _otherRoomButton = document.getElementById('sbj-inputpanel-other-room-button');
@@ -50,6 +53,7 @@ export default class InputPaneController {
 
         //  イベント設定
         this._textareaElement.onkeydown = (e) => { this.OnKeyDown(e); };
+        this._actorEditButton.onclick = (e) => { this.DoShoActorEditDialog(); };
         this._actorIconElement.ondblclick = (e) => { this.DoShowIconSelectDialog(); };
         this._selectIconButton.onclick = (e) => { this.DoShowIconSelectDialog(); };
         this._selectActorButton.onclick = (e) => { this.DoShowActorSelectDialog(); };
@@ -262,6 +266,23 @@ export default class InputPaneController {
             let aid = controller.UseActor.CurrentAid;
             this.ChangeSelectionActorIcon(aid);
 
+        });
+    }
+
+    /**
+     * 
+     */
+    private DoShoActorEditDialog() {
+
+        let controller = this._controller;
+        let useActor = controller.UseActor;
+        let dialog = new ProfileEditerDialog(controller);
+        let aid = controller.UseActor.CurrentAid;
+
+        //  アクター選択ダイアログの表示
+        dialog.Show(DialogMode.View, aid, (r) => { }, () => {
+            //  名称等の再描画の為にコール
+            this.ChangeSelectionActorIcon(aid);
         });
     }
 
