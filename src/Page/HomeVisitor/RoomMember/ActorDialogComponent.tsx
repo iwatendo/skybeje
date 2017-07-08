@@ -25,18 +25,14 @@ export default class ActorDialogComponent extends React.Component<ActorDialogPro
 
         return (
             <div>
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label sbj-actor is-dirty">
-                    <input className="mdl-textfield__input" type="text" id="sbj-actor-name" disabled={true} value={actor.name}></input>
-                    <label className="mdl-textfield__label" htmlFor="sbj-actor-name">名前</label>
-                </div>
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label sbj-actor is-dirty">
-                    <input className="mdl-textfield__input" type="text" id="sbj-actor-tag" disabled={true} value={actor.tag}></input>
-                    <label className="mdl-textfield__label" htmlFor="sbj-actor-tag">タグ</label>
-                </div>
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label sbj-actor is-dirty">
-                    <textarea className="mdl-textfield__input" type="text" rows={8} id="sbj-actor-note" disabled={true} value={actor.profile}></textarea>
-                    <label className="mdl-textfield__label" htmlFor="sbj-actor-note">プロフィール</label>
-                </div>
+                <h5>
+                    <span id="sbj-actor-profile-name">{actor.name}</span>
+                    <br />
+                    <span id="sbj-actor-profile-tag">{actor.tag}</span>
+                </h5>
+                <h6>
+                    <span id="sbj-actor-profile-note">{actor.profile}</span>
+                </h6>
             </div>
         );
     }

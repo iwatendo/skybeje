@@ -115,8 +115,8 @@
     margin-top:4px;
 }
 
-#sbj-actor-note {
-    resize: none;
+#sbj-actor-profile-name{
+    font-weight: 600;
 }
 
 /*-----------------------------
