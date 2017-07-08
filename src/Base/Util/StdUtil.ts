@@ -148,17 +148,6 @@ export default class StdUtil {
 
 
     /**
-     * URLをリンクに変換して表示
-     * ※DOM操作する事に注意
-     * @param element 
-     */
-    public static AutoLink(element : HTMLElement){
-        var re = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-        element.innerHTML = element.innerHTML.replace(re, '<a href="$1" target="_blank">$1</a> ');
-    }
-
-
-    /**
      * XSS対策
      * @param ch
      */
@@ -169,6 +158,31 @@ export default class StdUtil {
         ch = ch.replace(/</g, "&lt;");
         ch = ch.replace(/>/g, "&gt;");
         return ch;
+    }
+
+
+    /**
+     * テキストを改行コードでsplit
+     * @param value 
+     */
+    public static TextLineSplit(value: string): Array<string> {
+
+        if (value.indexOf('\n') < 0) {
+            let result = new Array<string>();
+            result.push(value);
+            return result;
+        }
+        else {
+            //  改行コードがある場合の制御
+            let msgs = value.split('\n');
+
+            //  最終行が空の場合は除去
+            if (msgs[msgs.length - 1].length == 0) {
+                msgs = msgs.slice(0, msgs.length - 1);
+            }
+
+            return msgs;
+        }
     }
 
 

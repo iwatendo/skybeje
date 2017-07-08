@@ -3,6 +3,9 @@ import * as ReactDOM from 'react-dom';
 
 import * as Personal from "../../../Base/IndexedDB/Personal";
 
+import StdUtil from "../../../Base/Util/StdUtil";
+import LinkUtil from "../../../Base/Util/LinkUtil";
+
 import HomeVisitorController from "../HomeVisitorController";
 
 /**
@@ -23,6 +26,34 @@ export default class ActorDialogComponent extends React.Component<ActorDialogPro
 
         let actor = this.props.actor;
 
+        let msgs = StdUtil.TextLineSplit(actor.profile);
+        let ln = 0;
+        let dispProfile = msgs.map(line => {
+
+            let dispLine = LinkUtil.AutoLinkAnaylze(line).map((al) => {
+                if (al.isLink) {
+                    let dispurl = decodeURI(al.msg);
+                    return (
+                        <span>
+                            <a className="sbj-timeline-message-autolink" href={al.msg} target="_blank">{dispurl}</a>
+                        </span>
+                    );
+                }
+                else {
+                    return (<span>{al.msg}</span>);
+                }
+            });
+
+            ln++;
+            if (ln === msgs.length) {
+                return (<span key={ln}>{dispLine}</span>);
+            }
+            else {
+                return (<span key={ln}>{dispLine}<br /></span>);
+            }
+        });
+
+
         return (
             <div>
                 <h5>
@@ -31,7 +62,7 @@ export default class ActorDialogComponent extends React.Component<ActorDialogPro
                     <span id="sbj-actor-profile-tag">{actor.tag}</span>
                 </h5>
                 <h6>
-                    <span id="sbj-actor-profile-note">{actor.profile}</span>
+                    <span id="sbj-actor-profile-note">{dispProfile}</span>
                 </h6>
             </div>
         );

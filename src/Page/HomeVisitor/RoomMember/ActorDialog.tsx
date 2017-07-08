@@ -32,7 +32,6 @@ export default class ActorDialog extends AbstractDialogController<HomeVisitorCon
         let key = actor.aid;
         let element = this.ViewElement();
         ReactDOM.render(<ActorDialogComponent key={key} controller={this.Controller} actor={actor} />, element, () => {
-            StdUtil.AutoLink(element);
         });
     }
 

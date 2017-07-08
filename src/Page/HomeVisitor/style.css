@@ -366,6 +366,10 @@ p.sbj-timeline-message {
     margin: 2px;
 }
 
+.sbj-timeline-message-autolink{
+    color: var(--sbj-color-link-text);
+}
+
 p.sbj-timeline-message-ignore {
     text-decoration: line-through;
     color: var(--sbj-color-timeline-message-ignore);

@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 import * as Timeline from "../../../Base/IndexedDB/Timeline";
 
 import StdUtil from "../../../Base/Util/StdUtil";
+import LinkUtil from "../../../Base/Util/LinkUtil";
 
 import { UpdateTimelineSender } from "../../HomeInstance/HomeInstanceContainer";
 import { ChatMessageSender } from "../HomeVisitorContainer";
@@ -19,20 +20,6 @@ interface TimelineMsgItemProp {
     MsgGroup: TimelineMsgGroup;
 }
 
-
-/**
- * 
- */
-class AutoLinkRec {
-
-    constructor(isLink: boolean, msg: string) {
-        this.isLink = isLink;
-        this.msg = msg;
-    }
-
-    isLink: boolean;
-    msg: string;
-}
 
 export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemProp, any> {
 
@@ -62,33 +49,19 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
                 );
             }
 
-            let dispText;
-            if (tlmsg.text.indexOf('\n') < 0) {
-                let linkText = this.SetAutoLink(tlmsg.text);
-                dispText = (<span>{linkText}{button}</span>);
-            }
-            else {
-                //  改行コードがある場合の制御
-                let ln = 0;
-                let msgs = tlmsg.text.split('\n');
+            let msgs = StdUtil.TextLineSplit(tlmsg.text);
+            let ln = 0;
+            let dispText = msgs.map(n => {
 
-                //  最終行が空の場合は除去
-                if (msgs[msgs.length - 1].length == 0) {
-                    msgs = msgs.slice(0, msgs.length - 1);
+                ln += 1;
+                let linkText = this.SetAutoLink(n);
+                if (ln === msgs.length) {
+                    return (<span key={ln}>{linkText}{button}</span>);
                 }
-
-                dispText = msgs.map(n => {
-
-                    ln += 1;
-                    let linkText = this.SetAutoLink(n);
-                    if (ln === msgs.length) {
-                        return (<span key={ln}>{linkText}{button}</span>);
-                    }
-                    else {
-                        return (<span key={ln}>{linkText}<br /></span>);
-                    }
-                });
-            }
+                else {
+                    return (<span key={ln}>{linkText}<br /></span>);
+                }
+            });
 
             return (
                 <p key={tlmsg.mid} className={tmclass}>{dispText}</p>
@@ -129,39 +102,16 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
      */
     public SetAutoLink(baseText: string): JSX.Element {
 
-        let workText = baseText;
-        let linkArray = new Array<AutoLinkRec>();
-
-        while (workText.length > 0) {
-            let re = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-            let rega = re.exec(workText);
-
-            if (rega) {
-
-                //  リンク文字列が検出された場合
-
-                //  リンク文字列までは通常出力
-                linkArray.push(new AutoLinkRec(false, workText.substr(0, rega.index)));
-
-                //  リンク部分の抽出
-                let linkStr = rega[0];
-                let link = workText.substr(rega.index, linkStr.length);
-                linkArray.push(new AutoLinkRec(true, linkStr));
-
-                //  処理した部分までを削除し、リンク文字列がなくなるまでループする
-                workText = workText.substr(rega.index + linkStr.length);
-            } else {
-                //  リンク文字列が検出されなかった場合は通常出力
-                linkArray.push(new AutoLinkRec(false, workText));
-                workText = "";
-            }
-        }
+        let linkArray = LinkUtil.AutoLinkAnaylze(baseText);
 
         let result = linkArray.map((al) => {
             if (al.isLink) {
+
+                let dispurl = decodeURI(al.msg);
+
                 return (
                     <span>
-                        <a href={al.msg} target="_blank">{al.msg}</a>
+                        <a className="sbj-timeline-message-autolink" href={al.msg} target="_blank">{dispurl}</a>
                     </span>
                 );
             }
