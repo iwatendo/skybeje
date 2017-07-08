@@ -148,6 +148,17 @@ export default class StdUtil {
 
 
     /**
+     * URLをリンクに変換して表示
+     * ※DOM操作する事に注意
+     * @param element 
+     */
+    public static AutoLink(element : HTMLElement){
+        var re = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        element.innerHTML = element.innerHTML.replace(re, '<a href="$1" target="_blank">$1</a> ');
+    }
+
+
+    /**
      * XSS対策
      * @param ch
      */
