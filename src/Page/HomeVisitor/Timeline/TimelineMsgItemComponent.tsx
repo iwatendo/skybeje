@@ -1,4 +1,4 @@
-﻿import * as React from 'react';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import * as Timeline from "../../../Base/IndexedDB/Timeline";
@@ -19,6 +19,20 @@ interface TimelineMsgItemProp {
     MsgGroup: TimelineMsgGroup;
 }
 
+
+/**
+ * 
+ */
+class AutoLinkRec {
+
+    constructor(isLink: boolean, msg: string) {
+        this.isLink = isLink;
+        this.msg = msg;
+    }
+
+    isLink: boolean;
+    msg: string;
+}
 
 export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemProp, any> {
 
@@ -50,7 +64,8 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
 
             let dispText;
             if (tlmsg.text.indexOf('\n') < 0) {
-                dispText = (<span>{tlmsg.text}{button}</span>);
+                let linkText = this.SetAutoLink(tlmsg.text);
+                dispText = (<span>{linkText}{button}</span>);
             }
             else {
                 //  改行コードがある場合の制御
@@ -63,12 +78,14 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
                 }
 
                 dispText = msgs.map(n => {
+
                     ln += 1;
+                    let linkText = this.SetAutoLink(n);
                     if (ln === msgs.length) {
-                        return (<span key={ln}>{n}{button}</span>);
+                        return (<span key={ln}>{linkText}{button}</span>);
                     }
                     else {
-                        return (<span key={ln}>{n}<br /></span>);
+                        return (<span key={ln}>{linkText}<br /></span>);
                     }
                 });
             }
@@ -104,6 +121,56 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
             return (<div key="right" className='sbj-timeline-flex-right'>{spc_div}{msg_div}{image_div}</div>);
         }
 
+    }
+
+    /**
+     * AutoLinkの設定
+     * @param baseText
+     */
+    public SetAutoLink(baseText: string): JSX.Element {
+
+        let workText = baseText;
+        let linkArray = new Array<AutoLinkRec>();
+
+        while (workText.length > 0) {
+            let re = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+            let rega = re.exec(workText);
+
+            if (rega) {
+
+                //  リンク文字列が検出された場合
+
+                //  リンク文字列までは通常出力
+                linkArray.push(new AutoLinkRec(false, workText.substr(0, rega.index)));
+
+                //  リンク部分の抽出
+                let linkStr = rega[0];
+                let link = workText.substr(rega.index, linkStr.length);
+                linkArray.push(new AutoLinkRec(true, linkStr));
+
+                //  処理した部分までを削除し、リンク文字列がなくなるまでループする
+                workText = workText.substr(rega.index + linkStr.length);
+            } else {
+                //  リンク文字列が検出されなかった場合は通常出力
+                linkArray.push(new AutoLinkRec(false, workText));
+                workText = "";
+            }
+        }
+
+        let result = linkArray.map((al) => {
+            if (al.isLink) {
+                return (
+                    <span>
+                        <a href={al.msg} target="_blank">{al.msg}</a>
+                    </span>
+                );
+            }
+            else {
+                return (<span>{al.msg}</span>);
+            }
+        });
+
+        return (<span>{result}</span>);
     }
 
 
