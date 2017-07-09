@@ -17,7 +17,6 @@ import IconListView from "./IconListView";
  */
 export interface IconListProp {
     controller: ProfileController;
-    view: IconListView;
     icons: Array<Personal.Icon>;
     selectIid: string;
 }
@@ -76,7 +75,8 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
         this.setState({
             selectIid: icon.iid
         });
-        this.props.view.SelectionIid = icon.iid;
+        this.props.controller.SelectionIid = icon.iid;
+        this.props.controller.ChangeIconNotify(icon.iid);
     }
 
 
@@ -93,19 +93,21 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
      */
     public ChangeIconOrder(icons: Array<Personal.Icon>) {
 
-        let actor = this.props.controller.Actor;
+        let controller = this.props.controller;
+        let actor = controller.Actor;
 
         actor.iconIds = new Array<string>();
         icons.forEach((icon) => {
             actor.iconIds.push(icon.iid);
         });
-        this.props.controller.Model.UpdateActor(actor);
+
+        this.props.controller.Model.UpdateActor(actor, () => { });
 
         this.setState({
             icons: icons,
         }, () => {
             icons.forEach(cur => {
-                this.props.controller.Model.UpdateIcon(cur);
+                controller.Model.UpdateIcon(cur);
             });
         });
     }

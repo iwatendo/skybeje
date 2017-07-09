@@ -32,7 +32,9 @@ export default class InputPaneController {
     private _otherRoomList = document.getElementById('sbj-inputpanel-other-room-list');
     private _otherRoomButton = document.getElementById('sbj-inputpanel-other-room-button');
     private _otherRoomCount = document.getElementById('sbj-inputpanel-noread-other-room-count');
+
     private _dashboradChangeActorElement = document.getElementById('sbj-dashborad-change-actor') as HTMLInputElement;
+    private _dashboradSelectionIconElement = document.getElementById('sbj-dashborad-selection-icon') as HTMLInputElement;
 
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
@@ -64,6 +66,11 @@ export default class InputPaneController {
             this._controller.ChagneActorInfo(this._dashboradChangeActorElement.value);
             this.ChangeActor();
         }
+
+        this._dashboradSelectionIconElement.onclick = (e) => {
+            let iid = this._dashboradSelectionIconElement.value;
+            this.ChangeSelectionIcon(iid);
+        };
 
         //  初期化
         this._textareaElement.value = "";
@@ -117,7 +124,13 @@ export default class InputPaneController {
 
         this._controller.Model.GetActor(this._controller.UseActor.CurrentAid, (actor) => {
             this.SelectionActor = actor;
-            this.SetSelectionIid(actor.aid, (actor.iconIds.length > 0 ? actor.iconIds[0] : ""));
+
+            let iid = this.GetSelectionIid(actor.aid);
+            if (!iid) {
+                iid = (actor.iconIds.length > 0 ? actor.iconIds[0] : "");
+            }
+
+            this.SetSelectionIid(actor.aid, iid);
             this.DisplayActor();
         });
     }
@@ -279,6 +292,9 @@ export default class InputPaneController {
         let dialog = new ProfileEditerDialog(controller);
         let aid = controller.UseActor.CurrentAid;
 
+        //  選択しているアイコンをセット
+        this._dashboradSelectionIconElement.value = controller.UseActor.CurrentIid;
+
         //  アクター選択ダイアログの表示
         dialog.Show(DialogMode.View, aid, (r) => { }, () => {
             //  名称等の再描画の為にコール
@@ -328,12 +344,8 @@ export default class InputPaneController {
             if (iid === "" && actor.iconIds.length > 0) {
                 iid = actor.iconIds[0];
             }
-            this._controller.UseActor.CurrentIid = iid;
-            this._controller.View.CastSelector.NotifyServantToActor();
-
             this.SelectionActor = actor;
-            this.SetSelectionIid(actor.aid, iid);
-            this.DisplayActor();
+            this.ChangeSelectionIcon(iid);
 
             this._controller.View.MoveLastTimeline();
         });
@@ -341,7 +353,21 @@ export default class InputPaneController {
 
 
     /**
-     * 選択しているアイコンの変更
+     * 選択アイコンの変更
+     * @param iid 
+     */
+    public ChangeSelectionIcon(iid: string) {
+        let controller = this._controller;
+        let aid = controller.UseActor.CurrentAid
+        controller.UseActor.CurrentIid = iid;
+        controller.View.CastSelector.NotifyServantToActor();
+        this.SetSelectionIid(aid, iid);
+        this.DisplayActor();
+    }
+
+
+    /**
+     * 選択アイコンのショートカットでの変更
      * @param value 
      */
     private MoveSelectionIcon(value: number) {
@@ -361,12 +387,7 @@ export default class InputPaneController {
 
                 sel = (sel + value + iconCount) % iconCount;
                 let iid = actor.iconIds[sel];
-
-                controller.UseActor.CurrentIid = iid;
-                controller.View.CastSelector.NotifyServantToActor();
-
-                this.SetSelectionIid(actor.aid, iid);
-                this.DisplayActor();
+                this.ChangeSelectionIcon(iid);
             }
 
         });

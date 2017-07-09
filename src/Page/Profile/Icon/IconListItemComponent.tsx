@@ -68,7 +68,7 @@ export default class IconListItemComponent extends React.Component<IconListItemP
      * ダブルクリック時処理
      */
     private OnDoubleClick(event) {
-        //
+        //  
     }
 
 

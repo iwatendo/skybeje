@@ -22,8 +22,6 @@ export default class IconListView {
     private _element: HTMLElement;
     private _icons: Array<Personal.Icon>;
 
-    public SelectionIid: string;
-
     /**
      * コンストラクタ
      * @param owner 
@@ -32,7 +30,10 @@ export default class IconListView {
     public constructor(owner: ProfileController, element: HTMLElement) {
         this._owner = owner;
         this._element = element;
-        this.SelectionIid = (owner.Actor.iconIds ? owner.Actor.iconIds[0] : "");
+
+        if (!this._owner.SelectionIid) {
+            this._owner.SelectionIid = (owner.Actor.iconIds ? owner.Actor.iconIds[0] : "");
+        }
 
         let addIconElement = document.getElementById('sbj-profile-add-icon');
         let editIconElement = document.getElementById('sbj-profile-edit-icon');
@@ -65,7 +66,7 @@ export default class IconListView {
      * 
      */
     public SelectionIcon(): Personal.Icon {
-        let l = this._icons.filter(n => n.iid === this.SelectionIid);
+        let l = this._icons.filter(n => n.iid === this._owner.SelectionIid);
         return (l.length > 0 ? l[0] : null);
     }
 
@@ -75,7 +76,8 @@ export default class IconListView {
      */
     public Render() {
         let key = StdUtil.CreateUuid();
-        ReactDOM.render(<IconListComponent key={key} controller={this._owner} view={this} icons={this._icons} selectIid={this.SelectionIid} />, this._element, () => {
+        let iid = this._owner.SelectionIid;
+        ReactDOM.render(<IconListComponent key={key} controller={this._owner} icons={this._icons} selectIid={iid} />, this._element, () => {
             this._icons.map((icon) => {
                 ImageInfo.SetCss(icon.iid, icon.img);
             });

@@ -26,7 +26,7 @@ export default class ProfileEditerDialog extends AbstractDialogController<HomeVi
      */
     protected Initialize(aid: string) {
 
-        ReactDOM.render(<ProfileEditerDialogComponent key={aid} controller={this.Controller} aid={aid} />, this.ViewElement(), () => {
+        ReactDOM.render(<ProfileEditerDialogComponent key={aid} controller={this.Controller} aid={aid}/>, this.ViewElement(), () => {
         });
     }
 

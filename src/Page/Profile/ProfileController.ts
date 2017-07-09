@@ -11,6 +11,9 @@ export default class ProfileController extends AbstractServiceController<Profile
 
     public Actor: Personal.Actor;
 
+    public SelectionIid: string;
+
+
     /**
      *
      */
@@ -18,6 +21,7 @@ export default class ProfileController extends AbstractServiceController<Profile
 
         super();
 
+        this.SelectionIid = this.GetOwnaerSelectionIcon();
         let self = this;
 
         self.Model = new ProfileModel(self, () => {
@@ -40,6 +44,29 @@ export default class ProfileController extends AbstractServiceController<Profile
 
         if (element) {
             element.value = aid;
+            element.click();
+        }
+    }
+
+
+    /**
+     * 選択されているアイコンを取得する
+     */
+    public GetOwnaerSelectionIcon(): string {
+        let element = window.parent.document.getElementById('sbj-dashborad-selection-icon') as HTMLInputElement;
+        return (element ? element.value : "");
+    }
+
+
+    /**
+     * アイコンの変更通知
+     */
+    public ChangeIconNotify(iid: string) {
+
+        let element = window.parent.document.getElementById('sbj-dashborad-selection-icon') as HTMLInputElement;
+
+        if (element) {
+            element.value = iid;
             element.click();
         }
     }
