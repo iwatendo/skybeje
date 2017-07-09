@@ -7,39 +7,43 @@ import StdUtil from "../../../Base/Util/StdUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import { Order } from "../../../Base/Container/Order";
 
-import IconComponent from "../../Dashboard/Icon/IconComponent";
-import { IIConOwner } from "../../Dashboard/Icon/IIConOwner";
 import ProfileController from "../ProfileController";
+import IconListItemComponent from "./IconListItemComponent";
+import IconListView from "./IconListView";
 
 
 /**
  * プロパティ
  */
-export interface ProfileProp {
+export interface IconListProp {
     controller: ProfileController;
+    view: IconListView;
     icons: Array<Personal.Icon>;
+    selectIid: string;
 }
 
 /**
  * ステータス
  */
-export interface ProfileStat {
+export interface IconListStat {
     icons: Array<Personal.Icon>;
+    selectIid: string;
 }
 
 
-export default class ProfileComponent extends React.Component<ProfileProp, ProfileStat> implements IIConOwner {
+export default class IconListComponent extends React.Component<IconListProp, IconListStat> {
 
     /**
      * コンストラクタ
      * @param props
      * @param context
      */
-    constructor(props?: ProfileProp, context?: any) {
+    constructor(props?: IconListProp, context?: any) {
         super(props, context);
 
         this.state = {
             icons: this.props.icons,
+            selectIid: this.props.selectIid,
         };
     }
 
@@ -50,7 +54,10 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
         Order.Sort(this.state.icons);
 
         let iconNodes = this.state.icons.map((icon) => {
-            return (<IconComponent key={icon.iid} owner={this} icon={icon} />);
+
+            let isSelect = (icon.iid === this.state.selectIid);
+            return (<IconListItemComponent key={icon.iid} owner={this} icon={icon} isSelect={isSelect} />);
+
         });
 
         return (
@@ -62,33 +69,14 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
 
 
     /**
-     * 
+     * 選択アイコンの変更
      * @param icon 
      */
-    public UpdateIcon(icon: Personal.Icon) {
-        this.props.controller.Model.UpdateIcon(icon);
-    }
-
-
-    /**
-     * アイコンの削除処理
-     */
-    public DeleteIcon(icon: Personal.Icon) {
-
-        let actor = this.props.controller.Actor;
-
-        actor.iconIds = actor.iconIds.filter((n) => n !== icon.iid);
-
+    public Select(icon: Personal.Icon) {
         this.setState({
-            icons: this.state.icons.filter(n => n.iid !== icon.iid),
-        }, () => {
-            this.state.icons.map((icon) => {
-                ImageInfo.SetCss(icon.iid, icon.img);
-            });
-        })
-
-        this.props.controller.Model.UpdateActor(actor);
-        this.props.controller.Model.DeleteIcon(icon);
+            selectIid: icon.iid
+        });
+        this.props.view.SelectionIid = icon.iid;
     }
 
 

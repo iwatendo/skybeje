@@ -20,6 +20,9 @@ export default class IconListView {
 
     private _owner: ProfileController;
     private _element: HTMLElement;
+    private _icons: Array<Personal.Icon>;
+
+    public SelectionIid: string;
 
     /**
      * コンストラクタ
@@ -29,9 +32,15 @@ export default class IconListView {
     public constructor(owner: ProfileController, element: HTMLElement) {
         this._owner = owner;
         this._element = element;
+        this.SelectionIid = (owner.Actor.iconIds ? owner.Actor.iconIds[0] : "");
 
-        let addIconElement = document.getElementById('sbj-profile-append-icon');
+        let addIconElement = document.getElementById('sbj-profile-add-icon');
+        let editIconElement = document.getElementById('sbj-profile-edit-icon');
+        let deleteIconElement = document.getElementById('sbj-profile-delete-icon');
+
         addIconElement.onclick = (e) => this.OnClickAddIcon(this);
+        editIconElement.onclick = (e) => this.OnClickEditIcon(this);
+        deleteIconElement.onclick = (e) => this.OnClickDeleteIcon(this);
 
         this.Refresh();
     }
@@ -46,28 +55,70 @@ export default class IconListView {
 
         this._owner.Model.GetIconList(actor, (icons) => {
             let key = StdUtil.CreateUuid();
-            ReactDOM.render(<IconListComponent key={key} controller={this._owner} icons={icons} />, this._element, () => {
-                icons.map((icon) => {
-                    ImageInfo.SetCss(icon.iid, icon.img);
-                });
+            this._icons = icons;
+            this.Render();
+        });
+    }
+
+
+    /**
+     * 
+     */
+    public SelectionIcon(): Personal.Icon {
+        let l = this._icons.filter(n => n.iid === this.SelectionIid);
+        return (l.length > 0 ? l[0] : null);
+    }
+
+
+    /**
+     * 
+     */
+    public Render() {
+        let key = StdUtil.CreateUuid();
+        ReactDOM.render(<IconListComponent key={key} controller={this._owner} view={this} icons={this._icons} selectIid={this.SelectionIid} />, this._element, () => {
+            this._icons.map((icon) => {
+                ImageInfo.SetCss(icon.iid, icon.img);
             });
         });
-
     }
 
 
     /**
-     * 
+     * アイコンの追加処理
      */
     public OnClickAddIcon(view: IconListView) {
-        ImageDialogController.Append((img) => view.OnImage_Append(view, img));
+        ImageDialogController.Add((img) => view.AddIcon(view, img));
     }
 
 
     /**
-     * 
+     * アイコンの編集
      */
-    public OnImage_Append(view: IconListView, imgRec: ImageInfo) {
+    public OnClickEditIcon(view: IconListView) {
+        let icon = view.SelectionIcon();
+        if (icon) {
+            ImageDialogController.Edit(icon.img, (img) => this.UpdateIcon(view, icon, img));
+        }
+    }
+
+
+    /**
+     * アイコンの削除
+     */
+    public OnClickDeleteIcon(view: IconListView) {
+        let icon = view.SelectionIcon();
+        if (icon) {
+            ImageDialogController.Delete(icon.img, (img) => this.DeleteIcon(view, icon, img));
+        }
+    }
+
+
+    /**
+     * アイコンの追加
+     * @param view 
+     * @param imgRec 
+     */
+    public AddIcon(view: IconListView, imgRec: ImageInfo) {
 
         let actor = this._owner.Actor;
         let controller = view._owner;
@@ -89,6 +140,38 @@ export default class IconListView {
                 })
             })
         });
+    }
+
+
+    /**
+     * アイコンの更新
+     * @param view 
+     * @param icon 
+     * @param imgRec 
+     */
+    public UpdateIcon(view: IconListView, icon: Personal.Icon, imgRec: ImageInfo) {
+        icon.img = imgRec;
+        view._owner.Model.UpdateIcon(icon);
+        view.Refresh();
+    }
+
+
+    /**
+     * アイコン削除
+     * @param view 
+     * @param icon 
+     * @param imgRec 
+     */
+    public DeleteIcon(view: IconListView, icon: Personal.Icon, imgRec: ImageInfo) {
+
+        let owner = view._owner;
+        let actor = owner.Actor;
+
+        actor.iconIds = actor.iconIds.filter((n) => n !== icon.iid);
+        owner.Model.UpdateActor(actor);
+        owner.Model.DeleteIcon(icon);
+
+        view.Refresh();
     }
 
 }

@@ -53,6 +53,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         if (sender.type === HIContainer.TimelineSender.ID) {
             let tl = (sender as HIContainer.TimelineSender);
             this.Controller.View.SetTimeline(tl.msgs);
+            this.Controller.Bot.CheckTimeline(tl.msgs);
         }
 
 

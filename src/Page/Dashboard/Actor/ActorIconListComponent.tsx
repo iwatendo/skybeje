@@ -82,7 +82,7 @@ export default class ActorIconListComponent extends React.Component<ActorIconLis
      */
     public OnClick_AddIcon(event) {
         let prop = this.props;
-        ImageDialogController.Append((img) => this.OnImage_Append(prop, img));
+        ImageDialogController.Add((img) => this.OnImage_Append(prop, img));
     }
 
 

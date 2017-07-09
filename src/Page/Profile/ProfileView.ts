@@ -38,7 +38,7 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         tagElement.onblur = (e) => this.CheckChangeUpdate(controller);
         noteElement.onblur = (e) => this.CheckChangeUpdate(controller);
 
-        let iconElement = document.getElementById('sbj-profile-icons-view');
+        let iconElement = document.getElementById('sbj-profile-icons-list');
         this._iconListView = new IconListView(controller, iconElement);
 
         //  外部からのドラッグイベント時

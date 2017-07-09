@@ -16,7 +16,7 @@ export default class ProfileEditerDialog extends AbstractDialogController<HomeVi
      * @param controller 
      */
     public constructor(controller: HomeVisitorController) {
-        super(controller, "プロフィール", "account_box", 780, 920);
+        super(controller, "プロフィール", "account_box", 780, 1000);
     }
 
 

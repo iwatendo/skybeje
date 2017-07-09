@@ -50,14 +50,19 @@
     width: 100%;
 }
 
-.sbj-profile-icons-view-header
+.sbj-profile-icons-menu
 {
-    margin: 24px 24px 8px 24px;
+    float: left;
+    position: fixed;
+    width: 96px;
+    margin: 12px 0px;
 }
 
-#sbj-profile-icons-view
+.sbj-profile-icons-list
 {
-    margin: 8px;
+    float: right;
+    width: calc(100% - 96px);
+    margin: 4px;
 }
 
 .sbj-profile-icons-view-main{

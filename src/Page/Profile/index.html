@@ -50,18 +50,33 @@
                 </header>
                 <main class="mdl-layout__content">
                     <section class="mdl-layout__tab-panel is-active" id="sbj-profile-icons">
-                        <div class="sbj-profile-icons-view-header">
-                            <button id='sbj-profile-append-icon' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                        <div class="sbj-profile-icons-menu">
+                            <button id='sbj-profile-add-icon' class="mdl-button mdl-js-button mdl-button--primary">
                                 <i class='material-icons'>add</i>
-                                アイコンの追加
+                                追加
+                            </button>
+                            <button id='sbj-profile-edit-icon' class="mdl-button mdl-js-button mdl-button--primary">
+                                <i class='material-icons'>edit</i>
+                                訂正
+                            </button>
+                            <button id='sbj-profile-delete-icon' class="mdl-button mdl-js-button mdl-button--accent">
+                                <i class='material-icons'>delete</i>
+                                削除
                             </button>
                         </div>
-                        <div id="sbj-profile-icons-view">
+                        <div class="sbj-profile-icons-list" id="sbj-profile-icons-list">
                             <!-- React -->
                         </div>
                     </section>
                     <section class="mdl-layout__tab-panel" id="sbj-profile-actorbot">
-                        <div class="page-content">
+                        <div class="sbj-profile-actorbot-view-header">
+                            <button id='sbj-profile-add-actorbot' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                <i class='material-icons'>add</i>
+                                追加
+                            </button>
+                        </div>
+                        <div id="sbj-profile-icons-view">
+                            <!-- React -->
                         </div>
                     </section>
                     <section class="mdl-layout__tab-panel" id="sbj-profile-gadget">

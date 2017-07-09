@@ -74,7 +74,7 @@ export default class HomeImageComponent extends React.Component<HomeImageProp, H
      */
     public OnClick_Image(event) {
         let prop = this.props;
-        ImageDialogController.Edit(this.state.room.background, (img) => this.OnImageUpdate(prop, img));
+        ImageDialogController.EditDelete(this.state.room.background, (img) => this.OnImageUpdate(prop, img));
     }
 
 
