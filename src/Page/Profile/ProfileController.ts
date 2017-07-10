@@ -53,7 +53,7 @@ export default class ProfileController extends AbstractServiceController<Profile
      * 選択されているアイコンを取得する
      */
     public GetOwnaerSelectionIcon(): string {
-        let element = window.parent.document.getElementById('sbj-dashborad-selection-icon') as HTMLInputElement;
+        let element = window.parent.document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
         return (element ? element.value : "");
     }
 
@@ -61,12 +61,25 @@ export default class ProfileController extends AbstractServiceController<Profile
     /**
      * アイコンの変更通知
      */
-    public ChangeIconNotify(iid: string) {
+    public ChangeSelectionIconNotify(iid: string) {
 
-        let element = window.parent.document.getElementById('sbj-dashborad-selection-icon') as HTMLInputElement;
+        let element = window.parent.document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
 
         if (element) {
             element.value = iid;
+            element.click();
+        }
+    }
+
+
+    /**
+     * クローズ通知
+     * ※親ドキュメント側から閉じる
+     */
+    public CloseNotify(){
+        let element = window.parent.document.getElementById('sbj-profile-do-close') as HTMLInputElement;
+
+        if (element) {
             element.click();
         }
     }

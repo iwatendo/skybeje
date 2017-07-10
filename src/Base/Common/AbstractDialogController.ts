@@ -42,7 +42,8 @@ export default abstract class AbstractDialogController<U extends IServiceControl
     private _item: T;
     private _dialogMode: DialogMode;
     private _controller: U;
-
+    private _dialog_height: number;
+    private _dialog_width: number;
 
     protected get Controller() {
         return this._controller;
@@ -69,11 +70,7 @@ export default abstract class AbstractDialogController<U extends IServiceControl
         this.Title = title;
         this.Icon = icon;
 
-        //  サイズ調整
-        let card = this._sizeElement;
-        card.style.height = height.toString() + "px";
-        card.style.width = width.toString() + "px";
-        card.style.margin = "-" + (height / 2).toString() + "px 0 0 -" + (width / 2).toString() + "px";
+        this.SetDialogSize(height, width);
 
         this._dialogBackground.onclick = (ev) => {
             if (ev.target === this._dialogBackground) {
@@ -116,6 +113,24 @@ export default abstract class AbstractDialogController<U extends IServiceControl
 
 
     /**
+     * ダイアログサイズの変更
+     * @param height 
+     * @param width 
+     */
+    public SetDialogSize(height, width) {
+
+        //  サイズ調整
+        this._dialog_height = height;
+        this._dialog_width = width;
+
+        let card = this._sizeElement;
+        card.style.height = height.toString() + "px";
+        card.style.width = width.toString() + "px";
+        card.style.margin = "-" + (height / 2).toString() + "px 0 0 -" + (width / 2).toString() + "px";
+    }
+
+
+    /**
      * ダイアログの表示
      * @param mode 
      * @param item 
@@ -125,6 +140,8 @@ export default abstract class AbstractDialogController<U extends IServiceControl
 
         if (this._dialog && this._dialog.open)
             return;
+
+        this.SetDialogSize(this._dialog_height, this._dialog_width);
 
         this._doneButton.hidden = !(mode === DialogMode.Append);
         this._updateButton.hidden = !(mode === DialogMode.Edit || mode === DialogMode.EditDelete);
@@ -182,7 +199,7 @@ export default abstract class AbstractDialogController<U extends IServiceControl
      */
     public Close() {
 
-        if( this._close_callback){
+        if (this._close_callback) {
             this._close_callback();
         }
 

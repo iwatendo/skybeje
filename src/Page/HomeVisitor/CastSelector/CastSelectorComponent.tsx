@@ -5,7 +5,6 @@ import LinkUtil from "../../../Base/Util/LinkUtil";
 import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 
 import ActorSelectorDialog from "../ActorSelector/ActorSelectorDialog";
-import IconSelectorDialog from "../IconSelector/IconSelectorDialog";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";
 import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanceContainer";
