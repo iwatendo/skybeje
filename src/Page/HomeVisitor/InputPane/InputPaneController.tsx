@@ -80,7 +80,6 @@ export default class InputPaneController {
         }
 
         this._textareaElement.value = "";
-        this._profileEditDialog = new ProfileEditerDialog(controller);
         this.ChangeActor();
     }
 
@@ -300,6 +299,8 @@ export default class InputPaneController {
 
         //  選択しているアイコンをセット
         this._profileSelectionIconElement.value = controller.UseActor.CurrentIid;
+
+        this._profileEditDialog = new ProfileEditerDialog(controller);
 
         //  アクター選択ダイアログの表示
         this._profileEditDialog.Show(DialogMode.View, aid, (r) => { }, () => {
