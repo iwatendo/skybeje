@@ -59,10 +59,10 @@ export default abstract class AbstractDialogController<U extends IServiceControl
      * @param controller 
      * @param title 
      * @param icon 
-     * @param height 
      * @param width 
+     * @param height 
      */
-    public constructor(controller: U, title: string, icon: string, height: number = 540, width: number = 480) {
+    public constructor(controller: U, title: string, icon: string, width: number = 480, height: number = 540) {
 
         this._controller = controller;
         StdUtil.StopPropagation();

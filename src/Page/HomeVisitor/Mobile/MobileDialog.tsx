@@ -18,7 +18,7 @@ export default class MobileDialog extends AbstractDialogController<HomeVisitorCo
      * @param controller 
      */
     public constructor(controller: HomeVisitorController) {
-        super(controller, "モバイル", "cast", 500, 392);
+        super(controller, "モバイル", "cast", 392, 500);
     }
 
 

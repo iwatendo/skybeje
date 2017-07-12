@@ -19,7 +19,7 @@ export default class ActorSelectorDialog extends AbstractDialogController<HomeVi
      * @param controller 
      */
     public constructor(controller: HomeVisitorController) {
-        super(controller, "アクターの選択", "recent_actors", 520, 748);
+        super(controller, "アクターの選択", "recent_actors", 748, 520);
     }
 
 
