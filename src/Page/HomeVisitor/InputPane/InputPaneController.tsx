@@ -10,10 +10,10 @@ import ImageInfo from "../../../Base/Container/ImageInfo";
 import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 
 import ActorSelectorDialog from "../ActorSelector/ActorSelectorDialog";
-import IconSelectorDialog from "../IconSelector/IconSelectorDialog";
 import HomeVisitorController from "../HomeVisitorController";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
+import ProfileEditerDialog from "../ProfileEditer/ProfileEditerDialog";
 
 
 export default class InputPaneController {
@@ -22,18 +22,24 @@ export default class InputPaneController {
     private _actorNameElement = document.getElementById('sbj-inputpanel-actor-name');
     private _actorIconElement = document.getElementById('sbj-inputpanel-actor-icon');
     private _textareaElement = document.getElementById('sbj-inputpanel-text') as HTMLInputElement;
-    private _selectIconButton = document.getElementById('sbj-inputpanel-select-icon-button');
+    private _actorEditButton = document.getElementById('sbj-inputpanel-actor-edit-button');
     private _selectActorButton = document.getElementById('sbj-inputpanel-select-actor-button');
     private _sendMessageButton = document.getElementById('sbj-inputpanel-send-message-button');
+
     private _unreadElement = document.getElementById('sbj-unread-count');
     private _otherRoomList = document.getElementById('sbj-inputpanel-other-room-list');
     private _otherRoomButton = document.getElementById('sbj-inputpanel-other-room-button');
     private _otherRoomCount = document.getElementById('sbj-inputpanel-noread-other-room-count');
+
     private _dashboradChangeActorElement = document.getElementById('sbj-dashborad-change-actor') as HTMLInputElement;
+    private _profileSelectionIconElement = document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
+    private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
+
 
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _selectionIidMap: Map<string, string>;
+    private _profileEditDialog: ProfileEditerDialog;
 
     public SelectionActor: Personal.Actor;
 
@@ -50,8 +56,8 @@ export default class InputPaneController {
 
         //  イベント設定
         this._textareaElement.onkeydown = (e) => { this.OnKeyDown(e); };
-        this._actorIconElement.ondblclick = (e) => { this.DoShowIconSelectDialog(); };
-        this._selectIconButton.onclick = (e) => { this.DoShowIconSelectDialog(); };
+        this._actorEditButton.onclick = (e) => { this.DoShoActorEditDialog(); };
+        this._actorIconElement.ondblclick = (e) => { this.DoShoActorEditDialog(); };
         this._selectActorButton.onclick = (e) => { this.DoShowActorSelectDialog(); };
         this._sendMessageButton.onclick = (e) => { this.SendInputMessage(); };
 
@@ -61,7 +67,18 @@ export default class InputPaneController {
             this.ChangeActor();
         }
 
-        //  初期化
+        //  プロフィール画面からのアイコン変更通知
+        this._profileSelectionIconElement.onclick = (e) => {
+            let iid = this._profileSelectionIconElement.value;
+            this.ChangeSelectionIcon(iid);
+        };
+
+        //  プロフィール画面からのダイアログクローズ通知
+        this._profileDoCloseElement.onclick = (e) => {
+            this._profileEditDialog.Close();
+            this._textareaElement.focus();
+        }
+
         this._textareaElement.value = "";
         this.ChangeActor();
     }
@@ -113,7 +130,13 @@ export default class InputPaneController {
 
         this._controller.Model.GetActor(this._controller.UseActor.CurrentAid, (actor) => {
             this.SelectionActor = actor;
-            this.SetSelectionIid(actor.aid, (actor.iconIds.length > 0 ? actor.iconIds[0] : ""));
+
+            let iid = this.GetSelectionIid(actor.aid);
+            if (!iid) {
+                iid = (actor.iconIds.length > 0 ? actor.iconIds[0] : "");
+            }
+
+            this.SetSelectionIid(actor.aid, iid);
             this.DisplayActor();
         });
     }
@@ -186,7 +209,7 @@ export default class InputPaneController {
                     e.preventDefault();
                     return;
                 case 73: // [I]
-                    this.DoShowIconSelectDialog();
+                    this.DoShoActorEditDialog();
                     e.preventDefault();
                     return;
                 case 37: // [←]
@@ -265,6 +288,27 @@ export default class InputPaneController {
         });
     }
 
+    /**
+     * 
+     */
+    private DoShoActorEditDialog() {
+
+        let controller = this._controller;
+        let useActor = controller.UseActor;
+        let aid = controller.UseActor.CurrentAid;
+
+        //  選択しているアイコンをセット
+        this._profileSelectionIconElement.value = controller.UseActor.CurrentIid;
+
+        this._profileEditDialog = new ProfileEditerDialog(controller);
+
+        //  アクター選択ダイアログの表示
+        this._profileEditDialog.Show(DialogMode.View, aid, (r) => { }, () => {
+            //  名称等の再描画の為にコール
+            this.ChangeSelectionActorIcon(aid);
+        });
+    }
+
 
     /**
      * ショートカットキーでのアクター変更
@@ -307,12 +351,8 @@ export default class InputPaneController {
             if (iid === "" && actor.iconIds.length > 0) {
                 iid = actor.iconIds[0];
             }
-            this._controller.UseActor.CurrentIid = iid;
-            this._controller.View.CastSelector.NotifyServantToActor();
-
             this.SelectionActor = actor;
-            this.SetSelectionIid(actor.aid, iid);
-            this.DisplayActor();
+            this.ChangeSelectionIcon(iid);
 
             this._controller.View.MoveLastTimeline();
         });
@@ -320,7 +360,21 @@ export default class InputPaneController {
 
 
     /**
-     * 選択しているアイコンの変更
+     * 選択アイコンの変更
+     * @param iid 
+     */
+    public ChangeSelectionIcon(iid: string) {
+        let controller = this._controller;
+        let aid = controller.UseActor.CurrentAid
+        controller.UseActor.CurrentIid = iid;
+        controller.View.CastSelector.NotifyServantToActor();
+        this.SetSelectionIid(aid, iid);
+        this.DisplayActor();
+    }
+
+
+    /**
+     * 選択アイコンのショートカットでの変更
      * @param value 
      */
     private MoveSelectionIcon(value: number) {
@@ -340,41 +394,11 @@ export default class InputPaneController {
 
                 sel = (sel + value + iconCount) % iconCount;
                 let iid = actor.iconIds[sel];
-
-                controller.UseActor.CurrentIid = iid;
-                controller.View.CastSelector.NotifyServantToActor();
-
-                this.SetSelectionIid(actor.aid, iid);
-                this.DisplayActor();
+                this.ChangeSelectionIcon(iid);
             }
 
         });
 
-    }
-
-
-    /**
-     * アイコン選択ボタン押下時
-     */
-    private DoShowIconSelectDialog() {
-
-        let controller = this._controller;
-        let useActor = this._controller.UseActor;
-        let dialog = new IconSelectorDialog(controller);
-
-        //  アクター選択ダイアログの表示
-        dialog.Show(DialogMode.Select, useActor, (result) => {
-
-            if (result === null) {
-                return;
-            }
-
-            this.SetSelectionIid(result.CurrentAid, result.CurrentIid);
-            this.DisplayActor();
-
-            controller.View.CastSelector.NotifyServantToActor();
-
-        });
     }
 
 

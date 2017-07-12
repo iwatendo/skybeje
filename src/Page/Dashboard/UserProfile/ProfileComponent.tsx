@@ -158,7 +158,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      */
     public OnClick_AddIcon(event) {
         let prop = this.props;
-        ImageDialogController.Append((img) => this.OnImage_Append(prop, img));
+        ImageDialogController.Add((img) => this.OnImage_Append(prop, img));
     }
 
 

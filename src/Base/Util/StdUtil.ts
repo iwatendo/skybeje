@@ -162,6 +162,31 @@ export default class StdUtil {
 
 
     /**
+     * テキストを改行コードでsplit
+     * @param value 
+     */
+    public static TextLineSplit(value: string): Array<string> {
+
+        if (value.indexOf('\n') < 0) {
+            let result = new Array<string>();
+            result.push(value);
+            return result;
+        }
+        else {
+            //  改行コードがある場合の制御
+            let msgs = value.split('\n');
+
+            //  最終行が空の場合は除去
+            if (msgs[msgs.length - 1].length == 0) {
+                msgs = msgs.slice(0, msgs.length - 1);
+            }
+
+            return msgs;
+        }
+    }
+
+
+    /**
      * ページへのデフォルトドロップイベントを発生させなくする
      */
     public static StopPropagation() {

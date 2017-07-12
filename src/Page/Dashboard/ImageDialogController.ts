@@ -30,8 +30,16 @@ export default class ImageDialogController {
     /**
      * 
      */
-    public static Append(callback: OnChangeImage) {
-        this.Start(true, new ImageInfo(), callback);
+    public static Add(callback: OnChangeImage) {
+        this.Start(true, false, false, new ImageInfo(), callback);
+    }
+
+
+    /**
+     * 
+     */
+    public static EditDelete(image: ImageInfo, callback: OnChangeImage) {
+        this.Start(false, true, true, image, callback);
     }
 
 
@@ -39,17 +47,35 @@ export default class ImageDialogController {
      * 
      */
     public static Edit(image: ImageInfo, callback: OnChangeImage) {
-        this.Start(false, image, callback);
+        this.Start(false, true, false, image, callback);
     }
 
 
     /**
      * 
      */
-    private static Start(isAppend: boolean, image: ImageInfo, callback: OnChangeImage) {
-        document.getElementById('sbj-image-done').hidden = !isAppend;
-        document.getElementById('sbj-image-update').hidden = isAppend;
-        document.getElementById('sbj-image-delete').hidden = isAppend;
+    public static Delete(image: ImageInfo, callback: OnChangeImage) {
+        this.Start(false, false, true, image, callback);
+    }
+
+
+    /**
+     * 
+     * @param canAdd 
+     * @param canEdit 
+     * @param canDelete 
+     * @param image 
+     * @param callback 
+     */
+    private static Start(canAdd: boolean, canEdit: boolean, canDelete: boolean, image: ImageInfo, callback: OnChangeImage) {
+        document.getElementById('sbj-image-done').hidden = !canAdd;
+        document.getElementById('sbj-image-update').hidden = !canEdit;
+        document.getElementById('sbj-image-delete').hidden = !canDelete;
+
+        //  削除のみの場合は編集できないようにする
+        let canIconChange = (!canAdd && !canEdit && canDelete);
+        document.getElementById('sbj-image-attach').hidden = canIconChange;
+        document.getElementById('sbj-image-css-edit-check').hidden = canIconChange;
 
         //  CSS編集をOFFにする
         document.getElementById('sbj-image-css-edit-check').classList.remove('is-checked');

@@ -3,6 +3,9 @@ import * as ReactDOM from 'react-dom';
 
 import * as Personal from "../../../Base/IndexedDB/Personal";
 
+import StdUtil from "../../../Base/Util/StdUtil";
+import LinkUtil from "../../../Base/Util/LinkUtil";
+
 import HomeVisitorController from "../HomeVisitorController";
 
 /**
@@ -23,20 +26,44 @@ export default class ActorDialogComponent extends React.Component<ActorDialogPro
 
         let actor = this.props.actor;
 
+        let msgs = StdUtil.TextLineSplit(actor.profile);
+        let ln = 0;
+        let dispProfile = msgs.map(line => {
+
+            let dispLine = LinkUtil.AutoLinkAnaylze(line).map((al) => {
+                if (al.isLink) {
+                    let dispurl = decodeURI(al.msg);
+                    return (
+                        <span>
+                            <a className="sbj-timeline-message-autolink" href={al.msg} target="_blank">{dispurl}</a>
+                        </span>
+                    );
+                }
+                else {
+                    return (<span>{al.msg}</span>);
+                }
+            });
+
+            ln++;
+            if (ln === msgs.length) {
+                return (<span key={ln}>{dispLine}</span>);
+            }
+            else {
+                return (<span key={ln}>{dispLine}<br /></span>);
+            }
+        });
+
+
         return (
             <div>
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label sbj-actor is-dirty">
-                    <input className="mdl-textfield__input" type="text" id="sbj-actor-name" disabled={true} value={actor.name}></input>
-                    <label className="mdl-textfield__label" htmlFor="sbj-actor-name">名前</label>
-                </div>
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label sbj-actor is-dirty">
-                    <input className="mdl-textfield__input" type="text" id="sbj-actor-tag" disabled={true} value={actor.tag}></input>
-                    <label className="mdl-textfield__label" htmlFor="sbj-actor-tag">タグ</label>
-                </div>
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label sbj-actor is-dirty">
-                    <textarea className="mdl-textfield__input" type="text" rows={8} id="sbj-actor-note" disabled={true} value={actor.profile}></textarea>
-                    <label className="mdl-textfield__label" htmlFor="sbj-actor-note">プロフィール</label>
-                </div>
+                <h5>
+                    <span id="sbj-actor-profile-name">{actor.name}</span>
+                    <br />
+                    <span id="sbj-actor-profile-tag">{actor.tag}</span>
+                </h5>
+                <h6>
+                    <span id="sbj-actor-profile-note">{dispProfile}</span>
+                </h6>
             </div>
         );
     }

@@ -7,6 +7,7 @@ import AbstractDialogController from "../../../Base/Common/AbstractDialogControl
 
 import HomeVisitorController from "../HomeVisitorController";
 import ActorDialogComponent from "./ActorDialogComponent";
+import StdUtil from "../../../Base/Util/StdUtil";
 
 
 export default class ActorDialog extends AbstractDialogController<HomeVisitorController, Personal.Actor> {
@@ -17,7 +18,7 @@ export default class ActorDialog extends AbstractDialogController<HomeVisitorCon
      * @param controller 
      */
     public constructor(controller: HomeVisitorController) {
-        super(controller, "プロフィール／アクター", "account_box", 540, 480);
+        super(controller, "プロフィール", "account_box", 540, 480);
     }
 
 
@@ -29,7 +30,9 @@ export default class ActorDialog extends AbstractDialogController<HomeVisitorCon
 
         //  アクター情報の取得
         let key = actor.aid;
-        ReactDOM.render(<ActorDialogComponent key={key} controller={this.Controller} actor={actor} />, this.ViewElement());
+        let element = this.ViewElement();
+        ReactDOM.render(<ActorDialogComponent key={key} controller={this.Controller} actor={actor} />, element, () => {
+        });
     }
 
 }

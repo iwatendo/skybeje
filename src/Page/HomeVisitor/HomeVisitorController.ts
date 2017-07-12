@@ -17,6 +17,7 @@ import HomeVisitorReceiver from "./HomeVisitorReceiver";
 import HomeVisitorView from "./HomeVisitorView";
 import HomeVisitorModel from "./HomeVisitorModel";
 import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
+import BotController from "./BotController";
 
 
 /**
@@ -25,6 +26,7 @@ import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisi
 export default class HomeVisitorController extends AbstractServiceController<HomeVisitorView, HomeVisitorModel> {
 
     public PeerId: string;
+    public ConnStartTime: number;
     public ConnCache: ConnectionCache;
     public RoomCache: RoomCache;
     public IconCache: IconCache;
@@ -34,6 +36,8 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public Entrance: Home.Room;
     public UseActor: UseActorSender;
     public CurrentHid: string;
+
+    public Bot: BotController;
 
     /**
      *
@@ -46,6 +50,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.IconCache = new IconCache(this);
         this.TimelineCache = new TimelineCache(this);
         this.ServantCache = new ServantCache(this);
+        this.Bot = new BotController(this);
     };
 
 

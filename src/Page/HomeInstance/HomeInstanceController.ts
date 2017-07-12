@@ -125,6 +125,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     public OnChildConnection(conn: PeerJs.DataConnection) {
         super.OnChildConnection(conn);
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
+        WebRTCService.ChildSend(conn, new HIContainer.ConnInfoSender());
     }
 
 

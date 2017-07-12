@@ -99,6 +99,7 @@ export default class ChatManager {
         tlmsg.peerid = chm.peerid;
         tlmsg.aid = chm.aid;
         tlmsg.iid = chm.iid;
+        tlmsg.gid = chm.gid;
         tlmsg.name = chm.name;
         tlmsg.text = chm.text;
         tlmsg.ctime = Date.now();

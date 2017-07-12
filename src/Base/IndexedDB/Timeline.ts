@@ -8,6 +8,7 @@ export class Message {
     aid: string;
     peerid: string;
     iid: string;
+    gid: string;
     name: string;
     text: string;
     ctime: number;

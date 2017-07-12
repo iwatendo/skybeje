@@ -278,6 +278,8 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
                 else {
                     this.InputPane.DisplayUnreadCount();
                 }
+
+                //  StdUtil.AutoLink(this._timelineElement);
             });
         });
     }

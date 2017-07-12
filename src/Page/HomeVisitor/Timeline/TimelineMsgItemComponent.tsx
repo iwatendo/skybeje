@@ -1,9 +1,10 @@
-﻿import * as React from 'react';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import * as Timeline from "../../../Base/IndexedDB/Timeline";
 
 import StdUtil from "../../../Base/Util/StdUtil";
+import LinkUtil from "../../../Base/Util/LinkUtil";
 
 import { UpdateTimelineSender } from "../../HomeInstance/HomeInstanceContainer";
 import { ChatMessageSender } from "../HomeVisitorContainer";
@@ -48,30 +49,19 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
                 );
             }
 
-            let dispText;
-            if (tlmsg.text.indexOf('\n') < 0) {
-                dispText = (<span>{tlmsg.text}{button}</span>);
-            }
-            else {
-                //  改行コードがある場合の制御
-                let ln = 0;
-                let msgs = tlmsg.text.split('\n');
+            let msgs = StdUtil.TextLineSplit(tlmsg.text);
+            let ln = 0;
+            let dispText = msgs.map(n => {
 
-                //  最終行が空の場合は除去
-                if (msgs[msgs.length - 1].length == 0) {
-                    msgs = msgs.slice(0, msgs.length - 1);
+                ln += 1;
+                let linkText = this.SetAutoLink(n);
+                if (ln === msgs.length) {
+                    return (<span key={ln}>{linkText}{button}</span>);
                 }
-
-                dispText = msgs.map(n => {
-                    ln += 1;
-                    if (ln === msgs.length) {
-                        return (<span key={ln}>{n}{button}</span>);
-                    }
-                    else {
-                        return (<span key={ln}>{n}<br /></span>);
-                    }
-                });
-            }
+                else {
+                    return (<span key={ln}>{linkText}<br /></span>);
+                }
+            });
 
             return (
                 <p key={tlmsg.mid} className={tmclass}>{dispText}</p>
@@ -104,6 +94,33 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
             return (<div key="right" className='sbj-timeline-flex-right'>{spc_div}{msg_div}{image_div}</div>);
         }
 
+    }
+
+    /**
+     * AutoLinkの設定
+     * @param baseText
+     */
+    public SetAutoLink(baseText: string): JSX.Element {
+
+        let linkArray = LinkUtil.AutoLinkAnaylze(baseText);
+
+        let result = linkArray.map((al) => {
+            if (al.isLink) {
+
+                let dispurl = decodeURI(al.msg);
+
+                return (
+                    <span>
+                        <a className="sbj-timeline-message-autolink" href={al.msg} target="_blank">{dispurl}</a>
+                    </span>
+                );
+            }
+            else {
+                return (<span>{al.msg}</span>);
+            }
+        });
+
+        return (<span>{result}</span>);
     }
 
 

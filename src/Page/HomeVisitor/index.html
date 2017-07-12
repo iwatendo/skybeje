@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="/lib/split-pane.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel='stylesheet' href='../common.css' />
+    <link rel='stylesheet' href='../common.dialog.css' />
 	<link rel='stylesheet' href='style.css' />
 	<script src="/lib/split-pane.js"></script>
 	<script src="/lib/material.min.js"></script>
@@ -66,7 +67,10 @@
 				<div id="sbj-home-visitor-inputpane">
 					<div class="sbj-inputpanel" id="sbj-inputpanel">
 						<div class="mdl-card__actions sbj-inputpanel-action">
-							<div class="sbj-inputpanel-actor-name mdl-color-text--grey-700" id="sbj-inputpanel-actor-name"></div>
+							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-actor-edit-button">
+								<i class="material-icons">account_box</i>
+								<span class="mdl-color-text--grey-700" id="sbj-inputpanel-actor-name"></span>
+							</button>
 
 							<div class="sbj-unread-count">
 								<div id="sbj-inputpanel-noread-other-room-count" class="sbj-inputpanel-noread-icon material-icons mdl-badge mdl-badge--overlap"
@@ -84,20 +88,17 @@
 								</ul>
 							</div>
 						</div>
-						<div class="sbj-inputpanel-action">
+						<div class="sbj-inputpanel-icontext">
 							<div class='sbj-inputpanel-actor-icon' id='sbj-inputpanel-actor-icon'>
 							</div>
 							<textarea class='sbj-inputpanel-text' id='sbj-inputpanel-text' maxLength=1024 rows=3 spellCheck='false'>
 							</textarea>
 						</div>
 						<div class="mdl-card__actions sbj-inputpanel-action">
-							<button class="input-send mdl-button mdl-button--colored" id="sbj-inputpanel-select-icon-button">
-								<i class="material-icons">portrait</i>アイコン
-							</button>
-							<button class="input-send mdl-button mdl-button--colored" id="sbj-inputpanel-select-actor-button">
+							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-select-actor-button">
 								<i class="material-icons">recent_actors</i>アクター
 							</button>
-							<button class="input-send mdl-button mdl-button--colored" id="sbj-inputpanel-send-message-button">
+							<button class="mdl-button mdl-button--colored" id="sbj-inputpanel-send-message-button">
 								<i class="material-icons">send</i>書き込み
 							</button>
 						</div>
@@ -173,8 +174,10 @@
 		</div>
 	</dialog>
 
-	<!--ダッシュボードからの変更通知の為の入力ボックス -->
+	<!--ダッシュボードまたはプロフィール画面からの変更通知用の入力ボックス -->
 	<input type="text" id="sbj-dashborad-change-actor" hidden/>
+	<input type="text" id="sbj-profile-selection-icon" hidden/>
+	<input type="text" id="sbj-profile-do-close" hidden/>
 
 	<script src="/lib/react.min.js"></script>
 	<script src="/lib/react-dom.min.js"></script>

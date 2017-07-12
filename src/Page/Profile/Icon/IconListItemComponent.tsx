@@ -7,44 +7,24 @@ import LogUtil from "../../../Base/Util/LogUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import { Order, IOrder } from "../../../Base/Container/Order";
 
-import ImageDialogController from "../ImageDialogController";
-import { IIConOwner } from "../Icon/IIConOwner";
+import ImageDialogController from "../../Dashboard/ImageDialogController";
+import IconListComponent from "./IconListComponent";
 
 
 /**
  * 
  */
-export interface IconProp {
-    owner: IIConOwner;
+export interface IconListItemProp {
+    owner: IconListComponent;
     icon: Personal.Icon;
+    isSelect: boolean;
 }
 
 
 /**
  * 
  */
-export interface IconStat {
-    icon: Personal.Icon;
-}
-
-
-/**
- * 
- */
-export default class IconComponent extends React.Component<IconProp, IconStat>{
-
-
-    /**
-     * 
-     */
-    constructor(props?: IconProp, context?: any) {
-        super(props, context);
-
-        this.state = {
-            icon: this.props.icon
-        };
-
-    }
+export default class IconListItemComponent extends React.Component<IconListItemProp, any>{
 
 
     /**
@@ -59,9 +39,13 @@ export default class IconComponent extends React.Component<IconProp, IconStat>{
             return (<div></div>);
         }
         else {
+
+            let iconCellClass = "sbj-icon-cell " + (this.props.isSelect ? "mdl-card mdl-shadow--8dp" : "");
+            let iconClass = (this.props.isSelect ? "sbj-icon-select" : "sbj-icon") + " mdl-card--expand";
+
             return (
-                <div className="sbj-icon-cell mdl-card mdl-shadow--4dp" onDoubleClick={this.OnDoubleClick.bind(this)} draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.OnDrop.bind(this)}>
-                    <div className="sbj-icon mdl-card--expand" id={id}>
+                <div className={iconCellClass} onClick={this.onClick.bind(this)} onDoubleClick={this.OnDoubleClick.bind(this)} draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.OnDrop.bind(this)}>
+                    <div className={iconClass} id={id}>
                     </div>
                 </div>
             );
@@ -70,29 +54,22 @@ export default class IconComponent extends React.Component<IconProp, IconStat>{
 
 
     /**
-     * ダブルクリック時処理
+     * アイコン選択時イベント
+     * @param evnet 
      */
-    private OnDoubleClick(event) {
-        let prop = this.props;
-        ImageDialogController.EditDelete(prop.icon.img, (img) => this.OnImageEdit(prop, img));
+    private onClick(evnet) {
+        if (!this.props.isSelect) {
+            this.props.owner.Select(this.props.icon);
+        }
     }
 
 
     /**
-     * 画像編集時イベント
+     * ダブルクリック時処理
      */
-    public OnImageEdit(prop: IconProp, image: ImageInfo) {
-
-        let icon = prop.icon;
-
-        if (image === null) {
-            prop.owner.DeleteIcon(icon);
-        }
-        else {
-            icon.img = image;
-            prop.owner.UpdateIcon(icon);
-        }
-
+    private OnDoubleClick(event) {
+        //  プロフィール編集画面を閉じる
+        this.props.owner.props.controller.CloseNotify();
     }
 
 

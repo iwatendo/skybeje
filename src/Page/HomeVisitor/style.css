@@ -1,74 +1,4 @@
 /*-----------------------------
- *  Common Dialog
- *---------------------------*/
-
-.sbj-dialog{
-	width: 100%;
-	height: 100%;
-	margin: 0px;
-	border: 0px;
-	padding: 0px;
-    background-color: var(--sbj-color-edge-background);
-}
-
-.sbj-dialog-background {
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    border: 0px;
-    padding: 0px;
-}
-
-.sbj-dialog-title{
-	float:left;	
-	margin:10px 0px 0px 8px;
-}
-
-.sbj-dialog-title-icon{
-	font-size: 48px;
-	float:left;
-}
-
-.sbj-dialog-cancel{
-	min-width: 36px;
-    width: 36px;
-    padding: 0px;
-}
-
-.sbj-dialog-view{
-	width: calc(100% - 32px);
-}
-
-.sbj-dialog-attach-action-left {
-	text-align:left;
-	float: left;
-}
-
-.sbj-dialog-attach-action-right{
-	text-align:right;
-}
-
-.sbj-dialog-card.mdl-card {
-    padding: 10px;
-    width: 480px;
-    height: 540px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -270px 0 0 -240px;
-}
-
-.sbj-dialog-scroll-list{
-    overflow-y: scroll;
-    width: calc(100% - 32px);
-    height:350px;
-}
-
-.sbj-dialog-item-icon{
-    color: var(--sbj-color-default-text);
-}
-
-/*-----------------------------
  *  ActorSelectorDialog
  *---------------------------*/
 
@@ -185,8 +115,8 @@
     margin-top:4px;
 }
 
-#sbj-actor-note {
-    resize: none;
+#sbj-actor-profile-name{
+    font-weight: 600;
 }
 
 /*-----------------------------
@@ -201,6 +131,21 @@
     background-color: var(--sbj-color-default-background);
     padding-left: 12px;
     border-radius: 6px;    
+}
+
+.sbj-inputpanel-icontext{
+    padding:0px;
+    clear:both;
+}
+
+.sbj-inputpanel-action{
+    padding:0px;
+    clear:both;
+    margin: 0px 0px 0px -8px;
+}
+
+.sbj-inputpanel-button{
+    padding: 0px 12px;
 }
 
 .sbj-inputpanel-actor-name{
@@ -239,11 +184,6 @@
     float: left;
 }
 
-.sbj-inputpanel-action{
-    padding:0px;
-    clear:both;
-}
-
 textarea.sbj-inputpanel-text {
     width: calc(100% - 128px);
     height:58px;
@@ -280,6 +220,10 @@ textarea.sbj-inputpanel-text {
     font-weight: 600;
 }
 
+.sbj-home-visitor-profile-editer{
+    width: 100%;
+    height: 660px;
+}
 
 /*-----------------------------
  *  cast control panel
@@ -422,6 +366,10 @@ p.sbj-timeline-message {
     margin: 2px;
 }
 
+.sbj-timeline-message-autolink{
+    color: var(--sbj-color-link-text);
+}
+
 p.sbj-timeline-message-ignore {
     text-decoration: line-through;
     color: var(--sbj-color-timeline-message-ignore);
@@ -441,7 +389,7 @@ p.sbj-timeline-message-ignore {
     height: calc(100% - 176px);
 }
 
-.src-home-visitor-mobile-label{
+.sbj-home-visitor-mobile-label{
     margin: 0px;
 }
 
@@ -456,7 +404,7 @@ p.sbj-timeline-message-ignore {
     border-width: 1px;
 }
 
-.src-home-visitor-qrcode{
+.sbj-home-visitor-qrcode{
     width: 340px;
     height: 340px;
 }
