@@ -5,6 +5,7 @@ import * as Personal from "../../../Base/IndexedDB/Personal";
 import * as Timeline from "../../../Base/IndexedDB/Timeline";
 
 import StdUtil from "../../../Base/Util/StdUtil";
+import LinkUtil from "../../../Base/Util/LinkUtil";
 import LocalCache from "../../../Base/Common/LocalCache";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import { DialogMode } from "../../../Base/Common/AbstractDialogController";
@@ -35,11 +36,12 @@ export default class InputPaneController {
     private _profileSelectionIconElement = document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
     private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
 
+    private _profileFrame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
+
 
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _selectionIidMap: Map<string, string>;
-    private _profileEditDialog: ProfileEditerDialog;
 
     public SelectionActor: Personal.Actor;
 
@@ -75,7 +77,8 @@ export default class InputPaneController {
 
         //  プロフィール画面からのダイアログクローズ通知
         this._profileDoCloseElement.onclick = (e) => {
-            this._profileEditDialog.Close();
+            this._profileFrame.hidden = true;
+            this.ChangeSelectionActorIcon(controller.UseActor.CurrentAid); //   名称等の再描画の為にコール
             this._textareaElement.focus();
         }
 
@@ -297,16 +300,17 @@ export default class InputPaneController {
         let useActor = controller.UseActor;
         let aid = controller.UseActor.CurrentAid;
 
-        //  選択しているアイコンをセット
-        this._profileSelectionIconElement.value = controller.UseActor.CurrentIid;
+        let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
 
-        this._profileEditDialog = new ProfileEditerDialog(controller);
+        if (this._profileFrame.src != src) {
+            this._profileFrame.src = src;
+        }
+        else {
+            //  選択しているアイコンをセット
+            this._profileSelectionIconElement.value = controller.UseActor.CurrentIid;
+        }
 
-        //  アクター選択ダイアログの表示
-        this._profileEditDialog.Show(DialogMode.View, aid, (r) => { }, () => {
-            //  名称等の再描画の為にコール
-            this.ChangeSelectionActorIcon(aid);
-        });
+        this._profileFrame.hidden = false;
     }
 
 
