@@ -142,6 +142,31 @@
     left: 76px;
 }
 
+
+/*-------------------------------------------------------------
+ *	ガイド用
+ *-------------------------------------------------------------*/
+
+.sbj-guide-view{
+	margin:8px;
+}
+
+.sbj-guide-card.mdl-card {
+    padding: 10px;
+    width: 468px;
+    height: 572px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -286px 0 0 -234px;
+}
+
+.sbj-guide-card > .mdl-card__title {
+    color: var(--sbj-color-guide-dialog-text);
+    background-color: var(--sbj-color-guide-dialog-append);
+}
+
+
 /*-------------------------------------------------------------
  *	アイコン用
  *-------------------------------------------------------------*/
@@ -152,9 +177,10 @@
 }
 
 .sbj-icon-select{
-	width: calc(100% - 6px);
-	height: calc(100% - 6px);
-	border: 3px;
+	width: 100%;
+	height: calc(100% - 3px);
+	border: 0px;
+	border-bottom: 3px;
 	border-style: solid;
 	border-color: var(--sbj-color-icon-selection);
 }

@@ -16,6 +16,7 @@ export class Actor implements IOrder {
         this.tag = "";
         this.profile = "";
         this.iconIds = new Array<string>();
+        this.guideIds = new Array<string>();
         this.order = 0;
     }
 
@@ -25,6 +26,7 @@ export class Actor implements IOrder {
     tag: string;
     profile: string;
     iconIds: Array<string>;
+    guideIds: Array<string>;
     order: number;
 
     /**
@@ -37,6 +39,10 @@ export class Actor implements IOrder {
     }
 }
 
+
+/**
+ * アイコン
+ */
 export class Icon implements IOrder {
 
     constructor() {
@@ -50,9 +56,42 @@ export class Icon implements IOrder {
     img: ImageInfo;
 }
 
+
+/**
+ * ガイド情報
+ */
+export class Guide implements IOrder{
+
+    constructor() {
+        this.gid = "";
+        this.aid = "";
+        this.iid = "";
+        this.order = 0;
+        this.matchoption = 0;
+        this.rescheckoption = 0;
+        this.keyword = "";
+        this.note = "";
+        this.url = "";
+        this.embedstatus = "";
+    }
+
+    gid: string;
+    aid: string;
+    iid: string;
+    order: number;
+    matchoption : number;
+    rescheckoption : number;
+    img: ImageInfo;
+    keyword:string;
+    note:string;
+    url:string;
+    embedstatus:string;
+}
+
 export class Data {
     Actors: Array<Actor>;
     Icons: Array<Icon>;
+    Guide: Array<Guide>;
 }
 
 export class DB extends Database<Data> {
@@ -61,6 +100,7 @@ export class DB extends Database<Data> {
     public static NOTE = "プロフィール／アクター";
     public static ACTOR: string = 'actor';
     public static ICON: string = 'icon';
+    public static GUIDE: string = 'guide';
 
 
     /**
@@ -70,6 +110,7 @@ export class DB extends Database<Data> {
         super(DB.NAME);
         this.SetStoreList(DB.ACTOR);
         this.SetStoreList(DB.ICON);
+        this.SetStoreList(DB.GUIDE);
     }
 
     public GetName(): string { return DB.NAME; }
@@ -84,6 +125,10 @@ export class DB extends Database<Data> {
             data.Actors = result;
             this.ReadAll<Icon>(DB.ICON, (result: Array<Icon>) => {
                 data.Icons = result;
+                this.ReadAll<Guide>(DB.GUIDE, (result: Array<Guide>) => {
+                    data.Guide = result;
+                    onload(data);
+                });
                 onload(data);
             });
         });
@@ -92,7 +137,9 @@ export class DB extends Database<Data> {
     public WriteAllData(data: Data, callback: DBI.OnWriteComplete) {
         this.WriteAll<Actor>(DB.ACTOR, (n) => n.aid, data.Actors, () => {
             this.WriteAll<Icon>(DB.ICON, (n) => n.iid, data.Icons, () => {
-                callback();
+                this.WriteAll<Icon>(DB.GUIDE, (n) => n.iid, data.Icons, () => {
+                    callback();
+                });
             });
         });
     }

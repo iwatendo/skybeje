@@ -52,6 +52,7 @@ export class ChatMessageSender extends Sender {
         this.aid = "";
         this.peerid = "";
         this.iid = "";
+        this.gid = "";
         this.name = "";
         this.text = "";
     }
@@ -61,6 +62,8 @@ export class ChatMessageSender extends Sender {
     public peerid: string;
 
     public iid: string;
+
+    public gid: string;
 
     public name: string;
 

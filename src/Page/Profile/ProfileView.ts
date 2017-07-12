@@ -8,12 +8,14 @@ import StdUtil from "../../Base/Util/StdUtil";
 import ProfileController from "./ProfileController";
 import IconListView from "./Icon/IconListView";
 import ImageUtil from "../../Base/Util/ImageUtil";
+import GuideListView from "./Guide/GuideListView";
 
 
 export default class ProfileView extends AbstractServiceView<ProfileController> {
 
     private _actor: Personal.Actor;
     private _iconListView: IconListView;
+    private _guideListView: GuideListView;
 
     /**
      * 初期化処理
@@ -38,8 +40,8 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         tagElement.onblur = (e) => this.CheckChangeUpdate(controller);
         noteElement.onblur = (e) => this.CheckChangeUpdate(controller);
 
-        let iconElement = document.getElementById('sbj-profile-icons-list');
-        this._iconListView = new IconListView(controller, iconElement);
+        this._iconListView = new IconListView(controller, document.getElementById('sbj-profile-icons-list'));
+        this._guideListView = new GuideListView(controller,document.getElementById('sbj-profile-guides-list'))
 
         //  外部からのドラッグイベント時
         document.getElementById("sbj-profile").addEventListener('dragover', (event: DragEvent) => {

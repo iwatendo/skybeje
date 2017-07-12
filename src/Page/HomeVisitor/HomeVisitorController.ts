@@ -26,6 +26,7 @@ import BotController from "./BotController";
 export default class HomeVisitorController extends AbstractServiceController<HomeVisitorView, HomeVisitorModel> {
 
     public PeerId: string;
+    public ConnStartTime: number;
     public ConnCache: ConnectionCache;
     public RoomCache: RoomCache;
     public IconCache: IconCache;

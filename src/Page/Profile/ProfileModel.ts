@@ -70,6 +70,7 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
 
     /**
      * アクター情報取得
+     * @param aid
      * @param callback 
      */
     public GetActor(aid: string, callback: OnRead<Personal.Actor>) {
@@ -80,6 +81,7 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
     /**
      * アクター情報の更新
      * @param actor 
+     * @param callback 
      */
     public UpdateActor(actor: Personal.Actor, callback: OnWrite = null) {
         this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, callback);
@@ -90,6 +92,7 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
     /**
      * アクターの削除（付随するアイコンも削除）
      * @param actor 
+     * @param callback 
      */
     public DeleteActorIcon(actor: Personal.Actor, callback: OnWrite = null) {
 
@@ -107,9 +110,9 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
 
 
     /**
-     * 指定されたAIDのアイコンリストを取得します
-     * @param pid 
-     * @param OnRead 
+     * 指定アクターのアイコンリストを取得します
+     * @param actor 
+     * @param callback 
      */
     public GetIconList(actor: Personal.Actor, callback: OnRead<Array<Personal.Icon>>) {
 
@@ -175,5 +178,76 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
     public DeleteIcon(icon: Personal.Icon, callback: OnWrite = null) {
         this._personalDB.Delete<Personal.Icon>(Personal.DB.ICON, icon.iid, callback);
     }
+
+
+    /**
+     * 指定アクターのガイドIDを取得します
+     * @param actor 
+     * @param callback 
+     */
+    public GetGuideList(actor: Personal.Actor, callback: OnRead<Array<Personal.Guide>>) {
+
+        if (actor === null) {
+            return;
+        }
+        let result = new Array<Personal.Guide>();
+
+        let guides = actor.guideIds;
+        let loop: number = 0;
+        let max: number = (guides ? guides.length : 0);
+
+        let loopCall = (guide) => {
+            result.push(guide);
+            loop += 1;
+            if (loop < max) {
+                this.GetGuide(guides[loop], loopCall);
+            }
+            else {
+                callback(result);
+            }
+        };
+
+        if (max === 0) {
+            callback(result);
+        }
+        else {
+            this.GetGuide(guides[0], loopCall)
+        }
+    }
+
+
+    /**
+     * ガイドの取得
+     * @param iid 
+     * @param callback 
+     */
+    public GetGuide(iid: string, callback: OnRead<Personal.Guide>) {
+        this._personalDB.Read(Personal.DB.GUIDE, iid, callback);
+    }
+
+
+    /**
+     * ガイドの更新
+     * @param guide 
+     * @param callback 
+     */
+    public UpdateGuide(guide: Personal.Guide, callback: OnWrite = null) {
+        this._personalDB.Write<Personal.Guide>(Personal.DB.GUIDE, guide.gid, guide, () => {
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+
+    /**
+     * ガイドの削除
+     * @param guide 
+     * @param callback 
+     */
+    public DeleteGuide(guide: Personal.Guide, callback: OnWrite = null) {
+        this._personalDB.Delete<Personal.Guide>(Personal.DB.GUIDE, guide.gid, callback);
+    }
+
 
 }

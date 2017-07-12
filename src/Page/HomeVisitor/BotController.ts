@@ -4,10 +4,11 @@ import * as Personal from "../../Base/IndexedDB/Personal";
 import * as Timeline from "../../Base/IndexedDB/Timeline";
 
 import WebRTCService from "../../Base/Common/WebRTCService";
-
-import HomeVisitorController from "./HomeVisitorController";
 import BotUtil from "../../Base/Util/BotUtil";
+
+import RoomCache from "./Cache/RoomCache";
 import { ChatMessageSender } from "./HomeVisitorContainer";
+import HomeVisitorController from "./HomeVisitorController";
 
 
 export default class BotController {
@@ -33,10 +34,13 @@ export default class BotController {
      */
     public CheckTimeline(tlmsgs: Array<Timeline.Message>) {
 
+        if (!this.Controller.ConnStartTime)
+            return;
+
         //  古いメッセージが来るケースもある為
         //  BOT判定済みの最終発言メッセージの時間を保持しておく
         tlmsgs.forEach(tlmsg => {
-            if (this._lastTime < tlmsg.ctime) {
+            if (this._lastTime < tlmsg.ctime && this.Controller.ConnStartTime < tlmsg.ctime) {
                 this._lastTime = tlmsg.ctime;
                 this.CheckTimeLine(tlmsg);
             }
@@ -50,15 +54,84 @@ export default class BotController {
      */
     public CheckTimeLine(tlmsg: Timeline.Message) {
 
-        this.Controller.UseActor.ActorPeers.map(ap => {
+        let controller = this.Controller;
+
+        controller.UseActor.ActorPeers.map(ap => {
 
             let actor = ap.actor;
-            
-            //  仮実装
-            if (actor.tag === "dicebot") {
-                this.DiceBotCheckMessage(actor, tlmsg);
-            }
+            controller.RoomCache.GetRoomByActorId(actor.aid, (room) => {
+                if (room.hid === tlmsg.hid) {
+                    this.CheckGuideList(actor, tlmsg);
+                }
+            });
         });
+
+    }
+
+
+    /**
+     * 
+     * @param actor 
+     * @param tlmsg 
+     */
+    public CheckGuideList(actor: Personal.Actor, tlmsg: Timeline.Message) {
+
+        //  UIの仕様が確定するまで隠し機能とする
+        if (actor.tag === "dicebot") {
+            this.DiceBotCheckMessage(actor, tlmsg);
+        }
+
+        if (!actor.guideIds || actor.guideIds.length === 0) {
+            return;
+        }
+
+        actor.guideIds.forEach((gid) => {
+            this.Controller.Model.GetGuide(gid, (guide) => {
+                this.CheckGuide(actor, tlmsg, guide);
+            });
+        });
+
+    }
+
+
+
+    /**
+     * ガイドチェック
+     * @param actor 
+     * @param tlmsg 
+     * @param guide 
+     */
+    public CheckGuide(actor: Personal.Actor, tlmsg: Timeline.Message, guide: Personal.Guide) {
+
+        //  自身のガイドBOTのメッセージはチェック対象外とする
+        if (guide.gid === tlmsg.gid) {
+            return;
+        }
+
+        let isMatch = false;
+        switch (guide.matchoption) {
+            case 0: isMatch = (tlmsg.text.indexOf(guide.keyword) >= 0); break;  //  「部分一致」
+            case 1: isMatch = (tlmsg.text === guide.keyword); break;            //  「完全一致」
+        }
+
+        let isResCheck = false;
+        switch (guide.rescheckoption) {
+            case 0: isResCheck = true; break;                         //  「全て」
+            case 1: isResCheck = (tlmsg.aid === guide.aid); break;    //  「自分のみ」
+            case 2: isResCheck = (tlmsg.aid !== guide.aid); break;    //  「自分以外」
+        }
+
+        if (isMatch && isResCheck) {
+            let sender = new ChatMessageSender();
+            sender.aid = guide.aid;
+            sender.iid = guide.iid;
+            sender.gid = guide.gid;
+            sender.name = actor.name;
+            sender.text = guide.note;
+            sender.peerid = this.Controller.PeerId;
+            WebRTCService.OwnerSend(sender);
+        }
+
     }
 
 
@@ -75,6 +148,7 @@ export default class BotController {
                 let sender = new ChatMessageSender();
                 sender.aid = actor.aid;
                 sender.iid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+                sender.gid = "dicebot";
                 sender.name = actor.name;
                 sender.text = result;
                 sender.peerid = this.Controller.PeerId;

@@ -117,4 +117,15 @@ export default class HomeVisitorModel extends AbstractServiceModel<HomeVisitorCo
         }
     }
 
+
+    /**
+     * ガイド情報の取得
+     * @param gid 
+     * @param callback 
+     */
+    public GetGuide(gid: string, callback: OnRead<Personal.Guide>) {
+        this._personalDB.Read(Personal.DB.GUIDE, gid, callback);
+    }
+    
+
 }

@@ -13,6 +13,8 @@ export default class ProfileController extends AbstractServiceController<Profile
 
     public SelectionIid: string;
 
+    public SelectionGid: string;
+
 
     /**
      *

@@ -44,13 +44,13 @@
 
                     <div class="sbj-profilie-tab-bar mdl-layout__tab-bar mdl-js-ripple-effect">
                         <a href="#sbj-profile-icons" class="mdl-layout__tab is-active">アイコン</a>
-                        <a href="#sbj-profile-actorbot" class="mdl-layout__tab">アクターBOT</a>
+                        <a href="#sbj-profile-guide" class="mdl-layout__tab">ガイドボット</a>
                         <a href="#sbj-profile-gadget" class="mdl-layout__tab">ガジェット</a>
                     </div>
                 </header>
                 <main class="mdl-layout__content">
                     <section class="mdl-layout__tab-panel is-active" id="sbj-profile-icons">
-                        <div class="sbj-profile-icons-menu">
+                        <div class="sbj-profile-sub-menu">
                             <button id='sbj-profile-add-icon' class="mdl-button mdl-js-button mdl-button--primary">
                                 <i class='material-icons'>add</i>
                                 追加
@@ -64,18 +64,26 @@
                                 削除
                             </button>
                         </div>
-                        <div class="sbj-profile-icons-list" id="sbj-profile-icons-list">
+                        <div class="sbj-profile-sub-list" id="sbj-profile-icons-list">
                             <!-- React -->
                         </div>
                     </section>
-                    <section class="mdl-layout__tab-panel" id="sbj-profile-actorbot">
-                        <div class="sbj-profile-actorbot-view-header">
-                            <button id='sbj-profile-add-actorbot' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                    <section class="mdl-layout__tab-panel" id="sbj-profile-guide">
+                        <div class="sbj-profile-sub-menu">
+                            <button id='sbj-profile-add-guide' class="mdl-button mdl-js-button mdl-button--primary">
                                 <i class='material-icons'>add</i>
                                 追加
                             </button>
+                            <button id='sbj-profile-edit-guide' class="mdl-button mdl-js-button mdl-button--primary">
+                                <i class='material-icons'>edit</i>
+                                訂正
+                            </button>
+                            <button id='sbj-profile-delete-guide' class="mdl-button mdl-js-button mdl-button--accent">
+                                <i class='material-icons'>delete</i>
+                                削除
+                            </button>
                         </div>
-                        <div id="sbj-profile-icons-view">
+                        <div class="sbj-profile-sub-list" id="sbj-profile-guides-list">
                             <!-- React -->
                         </div>
                     </section>
@@ -170,6 +178,90 @@
 					<span class="mdl-tooltip" for="sbj-image-contain">Size:Contain</span>
 					<i class="material-icons">zoom_out_map</i>
 				</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!--Bot Dialog-->
+    <dialog id='sbj-guide-dialog' class='sbj-dialog'>
+        <div id="sbj-guide-background" class="sbj-dialog-background">
+
+            <div class="sbj-guide-card mdl-card mdl-shadow--2dp flexiblebox">
+
+                <!-- 上部ボタン郡 -->
+                <div class="mdl-card__actions">
+
+					<div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
+						<i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon">event_note</i>
+						<h4 class="sbj-dialog-title">
+							<span id="sbj-dialog-title-value">ガイドボット</span>
+						</h4>
+					</div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-guide-cancel' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-cancel">
+							<i class="material-icons">close</i>
+						</button>
+                    </div>
+                </div>
+
+                <div id="sbj-guide-main" class="sbj-guide-main mdl-card--expand">
+
+                    <div class="sbj-guide-options">
+                        <span>キーワード　：</span>
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-match-options-0">
+                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-match-options" id="sbj-gaide-match-options-0"  value="0" checked>
+                            <span class="mdl-radio__label">部分一致</span>
+                        </label>
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-match-options-1">
+                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-match-options" id="sbj-gaide-match-options-1" value="1">
+                            <span class="mdl-radio__label">完全一致</span>
+                        </label>
+                    </div>
+
+                    <div class="sbj-guide-options">
+                        <span>チェック対象：</span>
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-0">
+                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-0" value="0" checked>
+                            <span class="mdl-radio__label">全員</span>
+                        </label>
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-1">
+                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-1" value="1">
+                            <span class="mdl-radio__label">自分のみ</span>
+                        </label>
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-2">
+                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-2" value="2">
+                            <span class="mdl-radio__label">自分以外</span>
+                        </label>
+                    </div>
+
+                    <div id="sbj-guide-keywaord-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sbj-gaide-keyword" spellcheck=false maxlength="16"></input>
+                        <label class="mdl-textfield__label" htmlFor="sbj-guide-name">キーワード</label>
+                    </div>
+
+                    <div id="sbj-guide-note-field" class="sbj-guide-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-gaide-note" spellcheck=false maxlength="2048"></textarea>
+                        <label class="mdl-textfield__label" htmlFor="sbj-guide-note">ガイド</label>
+                    </div>
+
+                </div>
+
+                <!-- 下部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left">
+                    </div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-guide-delete' tabindex=-1 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+							<i class="material-icons">delete_forever</i>&nbsp;削除&nbsp;
+						</button>
+                        <button id='sbj-guide-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+							<i class="material-icons">done</i>&nbsp;更新&nbsp;
+						</button>
+                        <button id='sbj-guide-done' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+							<i class="material-icons">done</i>&nbsp;追加&nbsp;
+						</button>
+                    </div>
+                </div>
             </div>
         </div>
     </dialog>

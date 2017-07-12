@@ -5,6 +5,22 @@ import Sender from "../../Base/Container/Sender";
 import ActorPeer from "../../Base/Container/ActorPeer";
 
 
+
+/**
+ * 接続開始時間の通知
+ */
+export class ConnInfoSender extends Sender {
+    public static ID = "ConnInfo";
+
+    constructor() {
+        super(ConnInfoSender.ID);
+        this.starttime = Date.now();
+    }
+
+    starttime: number;
+}
+
+
 /**
  * 強制終了通知
  */

@@ -18,6 +18,12 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      */
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
+        //  インスタンス接続開始時間の保持
+        if (sender.type === HIContainer.ConnInfoSender.ID) {
+            this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
+            return;
+        }
+
         //  エントランスの表示
         if (sender.type === HIContainer.EntranceSender.ID) {
             let room = (sender as HIContainer.EntranceSender).room;
