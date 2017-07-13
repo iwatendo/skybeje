@@ -133,6 +133,14 @@ export default class StdUtil {
 
 
     /**
+     * ユニークキーの生成
+     */
+    public static UniqKey():string{
+        return this.CreateUuid();
+    }
+
+
+    /**
      * XSS対策及び改行コード変換
      * @param msg
      */
