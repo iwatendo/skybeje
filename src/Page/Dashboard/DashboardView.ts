@@ -11,8 +11,7 @@ import DashboardController from "./DashboardController";
 import { INaviContainer } from "./INaviContainer";
 
 import NotImplementView from "./NotImplement/NotImplementView";
-import ProfileView from "./UserProfile/ProfileView";
-import ActorView from "./Actor/ActorView";
+import ProfileView from "./Profile/ProfileView";
 import EntranceView from "./Home/EntranceView";
 import RoomView from "./Home/RoomView";
 import HomeEditDialogController from "./Home/HomeEditDialog/HomeEditDialogController";
@@ -22,11 +21,8 @@ import BootInstanceView from "./BootInstance/BootInstanceView";
 
 export enum NaviEnum {
     Profile = 1,
-    Actor = 2,
     Home = 3,
     Room = 4,
-    Item = 5,
-    Friend = 6,
     Instance = 7,
     Visitor = 8,
     Setting = 9,
@@ -79,11 +75,8 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         let result = new Map<NaviEnum, HTMLElement>();
 
         result.set(NaviEnum.Profile, document.getElementById('sbj-navi-profile'));
-        result.set(NaviEnum.Actor, document.getElementById('sbj-navi-actor'));
         result.set(NaviEnum.Home, document.getElementById('sbj-navi-home'));
         result.set(NaviEnum.Room, document.getElementById('sbj-navi-room'));
-        result.set(NaviEnum.Item, document.getElementById('sbj-navi-item'));
-        result.set(NaviEnum.Friend, document.getElementById('sbj-navi-friend'));
         result.set(NaviEnum.Setting, document.getElementById('sbj-navi-setting'));
         result.set(NaviEnum.Instance, document.getElementById('sbj-navi-home-instance'));
         result.set(NaviEnum.Visitor, document.getElementById('sbj-navi-home-visitor'));
@@ -248,11 +241,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 disp = DispEnum.Local;
                 this._naviView = new ProfileView(this.Controller, mainElement);
                 break;
-            case NaviEnum.Actor:
-                title = "アクター";
-                disp = DispEnum.Local;
-                this._naviView = new ActorView(this.Controller, mainElement);
-                break;
             case NaviEnum.Home:
                 title = "招待状";
                 disp = DispEnum.Local;
@@ -262,16 +250,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 title = "ルーム";
                 disp = DispEnum.Local;
                 this._naviView = new RoomView(this.Controller, mainElement);
-                break;
-            case NaviEnum.Item:
-                title = "ガジェット";
-                disp = DispEnum.Local;
-                this._naviView = new NotImplementView(mainElement);
-                break;
-            case NaviEnum.Friend:
-                title = "フレンド";
-                disp = DispEnum.Local;
-                this._naviView = new NotImplementView(mainElement);
                 break;
             case NaviEnum.Setting:
                 title = "設定";

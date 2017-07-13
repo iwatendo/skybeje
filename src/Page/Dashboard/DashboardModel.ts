@@ -144,44 +144,21 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
 
 
     /**
-     * プロフィール＋アイコンデータの取得
+     * アクターの取得
+     * @param aid 
      * @param callback 
      */
-    public GetUserProfileInfo(callback: OnRead2<Personal.Actor, Array<Personal.Icon>>) {
-
-        //
-        this.GetUserProfile((profile) => {
-
-            if (!profile) {
-                profile = new Personal.Actor();
-                profile.aid = StdUtil.CreateUuid();
-                profile.isUserProfile = true;
-                profile.order = 0;
-            }
-
-            this.GetIconList(profile, (icons) => {
-                callback(profile, icons);
-            });
-        });
+    public GetActor(aid: string, callback: OnRead<Personal.Actor>) {
+        this.PersonalDB.Read(Personal.DB.ACTOR, aid, callback);
     }
 
 
     /**
-     * アクター情報の一覧とアイコンを全て取得
+     * アクターの一覧取得
      * @param callback 
      */
-    public GetActorsInfo(callback: OnRead2<Array<Personal.Actor>, Array<Personal.Icon>>) {
-
-        this.PersonalDB.ReadAll(Personal.DB.ACTOR, (actors) => {
-
-            //  ユーザープロフィール以外を取得
-            actors = actors.filter(n => !n.isUserProfile);
-
-            this.PersonalDB.ReadAll(Personal.DB.ICON, (icons) => {
-                callback(actors, icons);
-            });
-        });
-
+    public GetActors(callback: OnRead<Array<Personal.Actor>>) {
+        this.PersonalDB.ReadAll(Personal.DB.ACTOR, callback);
     }
 
 
@@ -196,10 +173,10 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
 
 
     /**
-     * アクターの削除（付随するアイコンも削除）
+     * アクターの削除（付随データも削除します）
      * @param actor 
      */
-    public DeleteActorIcon(actor: Personal.Actor, callback: OnWrite = null) {
+    public DeleteActor(actor: Personal.Actor, callback: OnWrite = null) {
 
         this.PersonalDB.Delete<Personal.Actor>(Personal.DB.ACTOR, actor.aid, () => {
 
@@ -207,6 +184,13 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
             this.GetIconList(actor, (icons) => {
                 icons.map(icon => {
                     this.DeleteIcon(icon);
+                });
+            });
+
+            //  削除されたアクターが保持するガイド情報も削除
+            this.GetGuideList(actor, (guides) => {
+                guides.map(guide => {
+                    this.DeleteGuide(guide);
                 });
             });
         });
@@ -282,6 +266,62 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
      */
     public DeleteIcon(icon: Personal.Icon, callback: OnWrite = null) {
         this.PersonalDB.Delete<Personal.Icon>(Personal.DB.ICON, icon.iid, callback);
+    }
+
+
+    /**
+     * ガイド情報の取得
+     * @param gid 
+     * @param callback 
+     */
+    public GetGuide(gid: string, callback: OnRead<Personal.Guide>) {
+        this.PersonalDB.Read(Personal.DB.ICON, gid, callback);
+    }
+
+
+    /**
+     * ガイドの削除
+     * @param guide 
+     * @param callback 
+     */
+    public DeleteGuide(guide: Personal.Guide, callback: OnWrite = null) {
+        this.PersonalDB.Delete<Personal.Guide>(Personal.DB.GUIDE, guide.gid, callback);
+    }
+
+
+    /**
+     * 指定アクターが保持するガイド一覧を取得します
+     * @param actor 
+     * @param callback 
+     */
+    public GetGuideList(actor: Personal.Actor, callback: OnRead<Array<Personal.Guide>>) {
+
+        if (actor === null) {
+            return;
+        }
+        let result = new Array<Personal.Guide>();
+
+        let guides = actor.guideIds;
+        let loop: number = 0;
+        let max: number = guides.length;
+
+        let loopCall = (guide) => {
+            result.push(guide);
+            loop += 1;
+            if (loop < max) {
+                this.GetGuide(guides[loop], loopCall);
+            }
+            else {
+                callback(result);
+            }
+        };
+
+        if (max === 0) {
+            callback(result);
+        }
+        else {
+            this.GetGuide(guides[0], loopCall)
+        }
     }
 
 

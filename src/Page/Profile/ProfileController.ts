@@ -28,6 +28,11 @@ export default class ProfileController extends AbstractServiceController<Profile
 
         self.Model = new ProfileModel(self, () => {
             self.Model.GetActor(aid, (actor) => {
+                if (!actor) {
+                    actor = new Personal.Actor();
+                    actor.aid = aid;
+                    actor.name = "新規アクター";
+                }
                 self.Actor = actor;
                 self.View = new ProfileView(self, () => {
                 });
@@ -78,7 +83,7 @@ export default class ProfileController extends AbstractServiceController<Profile
      * クローズ通知
      * ※親ドキュメント側から閉じる
      */
-    public CloseNotify(){
+    public CloseNotify() {
         let element = window.parent.document.getElementById('sbj-profile-do-close') as HTMLInputElement;
 
         if (element) {
