@@ -9,6 +9,7 @@ import { DragAction } from "../INaviContainer";
 import DashboardController from "../DashboardController";
 import ProfileItemComponent from "./ProfileItemComponent";
 import ProfileView from "./ProfileView";
+import ImageInfo from "../../../Base/Container/ImageInfo";
 
 
 /**
@@ -26,14 +27,11 @@ export interface ProfileProp {
  */
 export interface ProfileStat {
     actors: Array<Personal.Actor>;
+    selectedActor: string;
 }
 
 
 export default class ProfileComponent extends React.Component<ProfileProp, ProfileStat> {
-
-
-    private _selectedActor: string = '';
-
 
     /**
      * コンストラクタ
@@ -43,27 +41,31 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
     constructor(props?: ProfileProp, context?: any) {
         super(props, context);
 
-        this.state = {
-            actors: props.actors,
-        };
-
+        let selectedActor = "";
 
         if (this.props.actors.length > 0) {
             Order.Sort(this.props.actors);
-            this._selectedActor = this.props.actors[0].aid;
+            selectedActor = this.props.actors[0].aid;
         }
+
+        this.state = {
+            actors: props.actors,
+            selectedActor: selectedActor,
+        };
+
     }
 
 
     public render() {
 
-        this.state.actors.sort((a, b) => (a.order - b.order));
+        let userProfile = this.state.actors.filter(n => n.isUserProfile)[0];
+        let isUserProfileSelect = (this.state.selectedActor === userProfile.aid);
+        let userProfileItem = (<ProfileItemComponent key={userProfile.aid} owner={this} actor={userProfile} isSelect={isUserProfileSelect} />)
 
-        let userProfile = this.props.actors.filter(n => n.isUserProfile)[0];
-        let userProfileItem = (<ProfileItemComponent key={userProfile.aid} owner={this} actor={userProfile} isSelect={false} />)
-
+        let canEdit = false;
         let actorItems = this.state.actors.filter(n => !n.isUserProfile).map((actor) => {
-            let isSelect = (this._selectedActor === actor.aid);
+            let isSelect = (this.state.selectedActor === actor.aid);
+            if (isSelect) canEdit = true;
             return (<ProfileItemComponent key={actor.aid} owner={this} actor={actor} isSelect={isSelect} />);
         });
 
@@ -74,7 +76,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
                 <div className="mdl-grid">
                     <div className="mdl-cell mdl-cell--12-col">
                         <h5 className="sbj-dashboard-profile-label">ユーザープロフィール</h5>
-                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" onClick={(e) => this.EditProfile(userProfile)}>
+                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" onClick={(e) => this.EditProfile(userProfile.aid)}>
                             <i className='material-icons'>edit</i>
                             &nbsp;編集&nbsp;
                         </button>
@@ -86,11 +88,11 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
                             <i className='material-icons'>add</i>
                             &nbsp;追加&nbsp;
                         </button>
-                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" onClick={this.OnClick_EditActor.bind(this)}>
+                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" disabled={!canEdit} onClick={this.OnClick_EditActor.bind(this)}>
                             <i className='material-icons'>edit</i>
                             &nbsp;編集&nbsp;
                         </button>
-                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--accent" onClick={this.OnClick_DeleteActor.bind(this)}>
+                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--accent" disabled={!canEdit} onClick={this.OnClick_DeleteActor.bind(this)}>
                             <i className='material-icons'>delete</i>
                             &nbsp;削除&nbsp;
                         </button>
@@ -107,7 +109,9 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * アクターの選択
      */
     public SelectActor(actor: Personal.Actor) {
-        this._selectedActor = actor.aid;
+        this.setState({
+            selectedActor: actor.aid
+        });
     }
 
 
@@ -115,8 +119,39 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * プロフィールの編集
      * @param actor 
      */
-    public EditProfile(actor: Personal.Actor) {
-        this.props.view.DoShoActorEditDialog(actor.aid);
+    public EditProfile(aid: string) {
+
+        this.props.view.DoShoActorEditDialog(aid, () => {
+
+            this.props.controller.Model.GetActor(aid, (actor) => {
+
+                if (!actor) {
+                    return;
+                }
+
+                //  更新データの差替え
+                let newActors = this.state.actors.filter((a) => a.aid != aid);
+                newActors.push(actor);
+                Order.Sort(newActors);
+
+                this.setState({
+                    actors: newActors,
+                    selectedActor: aid,
+                }, () => {
+                    let iid = (actor.iconIds.length > 0 ? actor.iconIds[0] : "");
+                    this.props.controller.Model.GetIcon(iid, (icon) => {
+                        let img = (icon == null ? null : icon.img);
+                        ImageInfo.SetCss("sbj-icon-img-" + iid.toString(), img);
+                    });
+
+                    this.props.controller.ChangeActorNotify(aid);
+                    
+                });
+
+            });
+
+        });
+
     }
 
 
@@ -125,12 +160,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      */
     public OnClick_AddActor(event) {
         let prop = this.props;
-
-        let newActor = new Personal.Actor();
-        newActor.name = "";
-        newActor.aid = StdUtil.CreateUuid();
-        newActor.order = Order.New(this.state.actors);
-        this.EditProfile(newActor);
+        this.EditProfile(StdUtil.CreateUuid());
     }
 
 
@@ -139,7 +169,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * @param event 
      */
     public OnClick_EditActor(event) {
-        this.props.view.DoShoActorEditDialog(this._selectedActor);
+        this.EditProfile(this.state.selectedActor);
     }
 
 
@@ -148,8 +178,11 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * @param event 
      */
     public OnClick_DeleteActor(event) {
-        if (this._selectedActor) {
-            this.props.controller.Model.GetActor(this._selectedActor, (actor) => {
+        if (this.state.selectedActor) {
+            this.props.controller.Model.GetActor(this.state.selectedActor, (actor) => {
+                if (actor.isUserProfile) {
+                    return;
+                }
                 if (window.confirm('削除したアクターは元に戻せません。\n削除してよろしいですか？')) {
                     this.DeleteActor(actor);
                 }
@@ -166,19 +199,6 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
             actors: this.state.actors.filter((n) => n.aid !== actor.aid),
         });
         this.props.controller.Model.DeleteActor(actor);
-    }
-
-
-    /**
-     * アクター情報変更時処理
-     */
-    public UpdateActor(actor: Personal.Actor) {
-        this.props.controller.Model.UpdateActor(actor);
-
-        let list = this.state.actors.filter(n => n.aid !== actor.aid);
-        list.push(actor);
-
-        this.setState({ actors: list });
     }
 
 

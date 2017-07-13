@@ -22,6 +22,7 @@ export default class ProfileView implements INaviContainer {
 
     private _profileSelectionIconElement = document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
     private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
+    private _editCallback;
 
     /**
      * 
@@ -38,7 +39,9 @@ export default class ProfileView implements INaviContainer {
         //  プロフィール画面からのダイアログクローズ通知
         this._profileDoCloseElement.onclick = (e) => {
             document.getElementById('sbj-profile-frame').hidden = true;
-            this.Refresh();
+            if (this._editCallback) {
+                this._editCallback();
+            }
         }
 
     }
@@ -47,23 +50,18 @@ export default class ProfileView implements INaviContainer {
     /**
      * 
      */
-    public DoShoActorEditDialog(aid: string) {
+    public DoShoActorEditDialog(aid: string, callback) {
 
         let controller = this._owner;
         let frame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
         let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
+        this._editCallback = callback;
 
-
-        if (frame.src == src) {
+        frame.onload = (e) => {
             frame.hidden = false;
-        }
-        else {
-            frame.onload = (e) => {
-                frame.hidden = false;
-                frame.onload = null;
-            };
-            frame.src = src;
-        }
+            frame.onload = null;
+        };
+        frame.src = src;
     }
 
 

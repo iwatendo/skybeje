@@ -155,7 +155,20 @@
 
 .sbj-dashboard-profile-card{
 	display: flex;
+	min-width: 450px;
 }
+
+.sbj-dashboard-profile-cell {
+	padding: 0px 0px 3px 0px;
+}
+
+.sbj-dashboard-profile-cell-select {
+	border: 0px;
+    border-bottom: 3px;
+    border-style: solid;
+    border-color: var(--sbj-color-icon-selection);
+}
+
 
 #sbj-dashboard-profile-name{
     font-weight: 600;

@@ -44,7 +44,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
         super(props, context);
 
         this.state = {
-            actor: this.props.actor,
+            actor: props.actor,
         };
     }
 
@@ -65,13 +65,12 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
         let msgs = StdUtil.TextLineSplit(actor.profile);
         let ln = 0;
         let dispProfile = msgs.map(line => {
-
             let dispLine = LinkUtil.AutoLinkAnaylze(line).map((al) => {
                 if (al.isLink) {
                     let dispurl = decodeURI(al.msg);
                     return (
                         <span>
-                            <a className="sbj-timeline-message-autolink" href={al.msg} target="_blank">{dispurl}</a>
+                            <a href={al.msg} target="_blank">{dispurl}</a>
                         </span>
                     );
                 }
@@ -89,8 +88,16 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
             }
         });
 
+        let cellClass = "mdl-cell mdl-cell--4-col mdl-card mdl-shadow--4dp";
+        if (this.props.isSelect) {
+            cellClass += " sbj-dashboard-profile-cell-select";
+        }
+        else{
+            cellClass += " sbj-dashboard-profile-cell";
+        }
+
         return (
-            <div className="mdl-cell mdl-cell--6-col mdl-card mdl-shadow--4dp" onClick={this.OnClick.bind(this)} onDoubleClick={this.OnDoubleClick.bind(this)} draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.OnDrop.bind(this)}>
+            <div className={cellClass} onClick={this.OnClick.bind(this)} onDoubleClick={this.OnDoubleClick.bind(this)} draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.OnDrop.bind(this)}>
                 <div className="sbj-dashboard-profile-card">
                     {image_div}
                     <div className='sbj-dashboard-profile-text'>
@@ -120,7 +127,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
      */
     private OnDoubleClick(event) {
         let actor = this.props.actor;
-        this.props.owner.props.view.DoShoActorEditDialog(actor.aid);
+        this.props.owner.EditProfile(actor.aid);
     }
 
 

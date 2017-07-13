@@ -299,28 +299,36 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
         if (actor === null) {
             return;
         }
+
         let result = new Array<Personal.Guide>();
 
         let guides = actor.guideIds;
-        let loop: number = 0;
-        let max: number = guides.length;
 
-        let loopCall = (guide) => {
-            result.push(guide);
-            loop += 1;
-            if (loop < max) {
-                this.GetGuide(guides[loop], loopCall);
-            }
-            else {
+        if (guides) {
+
+            let loop: number = 0;
+            let max: number = guides.length;
+
+            let loopCall = (guide) => {
+                result.push(guide);
+                loop += 1;
+                if (loop < max) {
+                    this.GetGuide(guides[loop], loopCall);
+                }
+                else {
+                    callback(result);
+                }
+            };
+
+            if (max === 0) {
                 callback(result);
             }
-        };
-
-        if (max === 0) {
-            callback(result);
+            else {
+                this.GetGuide(guides[0], loopCall)
+            }
         }
         else {
-            this.GetGuide(guides[0], loopCall)
+            callback(result);
         }
     }
 
