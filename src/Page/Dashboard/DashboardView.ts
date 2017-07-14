@@ -12,15 +12,15 @@ import { INaviContainer } from "./INaviContainer";
 
 import NotImplementView from "./NotImplement/NotImplementView";
 import ProfileView from "./Profile/ProfileView";
-import HomeEditDialogController from "./Home/HomeEditDialog/HomeEditDialogController";
+import RoomEditDialogController from "./Room/RoomEditDialog/RoomEditDialogController";
 import SettingController from "./Setting/SettingController";
 import BootInstanceView from "./BootInstance/BootInstanceView";
-import HomeView from "./Home/HomeView";
+import RoomView from "./Room/RoomView";
 
 
 export enum NaviEnum {
     Profile = 1,
-    Room = 4,
+    Room = 2,
     Instance = 7,
     Visitor = 8,
     Setting = 9,
@@ -118,9 +118,13 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
             //  PeerIDが消された場合、ホームインスタンスを停止する
             if (!peerid) {
-                this.RemoveHomeInstance();
+                this.RemoveHomeInstance(() => {
+                    this.DoNaviClick(NaviEnum.Instance);
+                });
             }
-            this.DoNaviClick(NaviEnum.Instance);
+            else {
+                this.DoNaviClick(NaviEnum.Instance);
+            }
         };
 
 
@@ -155,7 +159,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         document.getElementById("sbj-main-home-livecast-hide").onclick = (e) => {
             this.DoNaviClick(NaviEnum.Visitor);
         };
-        
+
     }
 
 
@@ -193,15 +197,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
 
     /**
-     * イメージダイアログのコールバック先
-     * @param image 
-     */
-    private OnImageChage(image: ImageInfo) {
-        LogUtil.Info(image.src);
-    }
-
-
-    /**
      * ナビボタン押下時の画面切り替え処理
      * @param navi 
      */
@@ -221,7 +216,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             case NaviEnum.Room:
                 title = "ルーム";
                 disp = DispEnum.Local;
-                this._naviView = new HomeView(this.Controller, mainElement);
+                this._naviView = new RoomView(this.Controller, mainElement);
                 break;
             case NaviEnum.Setting:
                 title = "設定";
@@ -319,19 +314,28 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
     /**
      * 
+     * @param url 
+     * @param callback 
      */
-    public StartHomeInstance(url: string) {
+    public StartHomeInstance(url: string, callback = null) {
 
-        let frmae = document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement;
-        frmae.setAttribute('src', url);
+        let frame = document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement;
+
+        frame.onload = (e) => {
+            if (callback) callback();
+            frame.onload = null;
+        };
+
+        frame.setAttribute('src', url);
 
     }
+
 
     /**
      * 
      */
-    public RemoveHomeInstance() {
-        this.StartHomeInstance("");
+    public RemoveHomeInstance(callback) {
+        this.StartHomeInstance("", callback);
     }
 
 

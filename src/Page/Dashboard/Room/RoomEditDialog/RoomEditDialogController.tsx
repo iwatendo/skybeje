@@ -7,10 +7,10 @@ import StdUtil from "../../../../Base/Util/StdUtil";
 
 import AbstractDialogController from "../../../../Base/Common/AbstractDialogController";
 import DashboardController from "../../DashboardController";
-import HomeEditDialogComponent from "./HomeEditDialogComponent";
+import RoomEditDialogComponent from "./RoomEditDialogComponent";
 
 
-export default class HomeEditDialogController extends AbstractDialogController<DashboardController, Home.Room> {
+export default class RoomEditDialogController extends AbstractDialogController<DashboardController, Home.Room> {
 
 
     /**
@@ -28,7 +28,7 @@ export default class HomeEditDialogController extends AbstractDialogController<D
     protected Initialize(info: Home.Room) {
         this.SetResult(info);
         let key = StdUtil.CreateUuid();
-        ReactDOM.render(<HomeEditDialogComponent key={key} owner={this} info={info} />, this.ViewElement());
+        ReactDOM.render(<RoomEditDialogComponent key={key} owner={this} room={info} />, this.ViewElement());
     }
 
 }

@@ -10,14 +10,14 @@ import { Order } from "../../../Base/Container/Order";
 import ImageDialogController from "../ImageDialogController";
 import { IIConOwner } from "../Icon/IIConOwner";
 import IconComponent from "../Icon/IconComponent";
-import HomeComponent from "./HomeComponent";
+import RoomComponent from "./RoomComponent";
 
 
 /**
  * プロパティ
  */
-export interface HomeImageProp {
-    owner: HomeComponent;
+export interface RoomImageProp {
+    owner: RoomComponent;
     room: Home.Room;
 }
 
@@ -25,19 +25,19 @@ export interface HomeImageProp {
 /**
  * ステータス
  */
-export interface HomeImageStat {
+export interface RoomImageStat {
     room: Home.Room;
 }
 
 
-export default class HomeImageComponent extends React.Component<HomeImageProp, HomeImageStat> {
+export default class RoomImageComponent extends React.Component<RoomImageProp, RoomImageStat> {
 
     /**
      * コンストラクタ
      * @param props
      * @param context
      */
-    constructor(props?: HomeImageProp, context?: any) {
+    constructor(props?: RoomImageProp, context?: any) {
         super(props, context);
 
         this.state = {
@@ -81,7 +81,7 @@ export default class HomeImageComponent extends React.Component<HomeImageProp, H
     /**
      * 
      */
-    public OnImageUpdate(prop: HomeImageProp, imageRec: ImageInfo) {
+    public OnImageUpdate(prop: RoomImageProp, imageRec: ImageInfo) {
 
         let room = this.state.room;
 

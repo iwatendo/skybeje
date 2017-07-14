@@ -7,13 +7,13 @@ import ImageUtil from "../../../Base/Util/ImageUtil";
 import * as Home from "../../../Base/IndexedDB/Home";
 
 import { INaviContainer, DragAction } from "../INaviContainer";
-import HomeComponent from "./HomeComponent";
+import RoomComponent from "./RoomComponent";
 import DashboardController from "../DashboardController";
 
 /**
  * 
  */
-export default class HomeView implements INaviContainer {
+export default class RoomView implements INaviContainer {
 
     private _owner: DashboardController;
     private _element: HTMLElement;
@@ -48,7 +48,7 @@ export default class HomeView implements INaviContainer {
     private Initialize(rooms: Array<Home.Room>) {
 
         let key = StdUtil.CreateUuid();
-        ReactDOM.render(<HomeComponent key={key} controller={this} rooms={rooms} />, this._element, () => {
+        ReactDOM.render(<RoomComponent key={key} controller={this} rooms={rooms} />, this._element, () => {
             if (rooms && rooms.length > 0) {
                 this.SetImageCss(rooms[0]);
             }

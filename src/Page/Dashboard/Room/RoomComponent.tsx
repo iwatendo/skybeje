@@ -10,17 +10,17 @@ import ImageInfo from "../../../Base/Container/ImageInfo";
 
 import { DragAction } from "../INaviContainer";
 import ImageDialogController from "../ImageDialogController";
-import HomeItemComponent from "./HomeItemComponent";
-import HomeImageComponent from "./HomeImageComponent";
-import HomeEditDialogController from "./HomeEditDialog/HomeEditDialogController";
-import HomeView from "./HomeView";
+import RoomItemComponent from "./RoomItemComponent";
+import RoomImageComponent from "./RoomImageComponent";
+import RoomEditDialogController from "./RoomEditDialog/RoomEditDialogController";
+import RoomView from "./RoomView";
 
 
 /**
  * プロパティ
  */
-export interface HomeProp {
-    controller: HomeView;
+export interface RoomProp {
+    controller: RoomView;
     rooms: Array<Home.Room>;
 }
 
@@ -28,12 +28,12 @@ export interface HomeProp {
 /**
  * 
  */
-export interface HomeStat {
+export interface RoomStat {
     rooms: Array<Home.Room>;
 }
 
 
-export default class HomeComponent extends React.Component<HomeProp, HomeStat> {
+export default class RoomComponent extends React.Component<RoomProp, RoomStat> {
 
 
     private _selectedRoom: string = '';
@@ -43,7 +43,7 @@ export default class HomeComponent extends React.Component<HomeProp, HomeStat> {
      * @param props
      * @param context
      */
-    constructor(props?: HomeProp, context?: any) {
+    constructor(props?: RoomProp, context?: any) {
         super(props, context);
 
         if (this.props.rooms.length > 0) {
@@ -63,7 +63,7 @@ export default class HomeComponent extends React.Component<HomeProp, HomeStat> {
 
         let HomeListNodes = this.state.rooms.map((room) => {
             let isSelect = (this._selectedRoom === room.hid);
-            return (<HomeItemComponent key={room.hid} owner={this} room={room} isSelect={isSelect} />);
+            return (<RoomItemComponent key={room.hid} owner={this} room={room} isSelect={isSelect} />);
         });
 
         let room: Home.Room = this.state.rooms.find((n) => (n.hid === this._selectedRoom));
@@ -85,7 +85,7 @@ export default class HomeComponent extends React.Component<HomeProp, HomeStat> {
                 </div>
 
                 <div className="sbj-split-right" id='sbj-split-right-img'>
-                    <HomeImageComponent key={key} owner={this} room={room} />
+                    <RoomImageComponent key={key} owner={this} room={room} />
                 </div>
 
             </div>
@@ -111,7 +111,7 @@ export default class HomeComponent extends React.Component<HomeProp, HomeStat> {
      */
     public OnClick_AddHome(event) {
         let prop = this.props;
-        let dialog = new HomeEditDialogController(null);
+        let dialog = new RoomEditDialogController(null);
 
         dialog.Show(DialogMode.Append, this.NewRoom(), (room) => {
             this.props.controller.UpdateRoom(room);

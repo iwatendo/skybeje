@@ -194,6 +194,10 @@
 	margin: 0px;
 }
 
+.sbj-dashboard-room{
+	width: 100%;
+}
+
 .sbj-dashbord-export{
 	display: flex;
 }
