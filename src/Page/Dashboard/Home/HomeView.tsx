@@ -13,7 +13,7 @@ import DashboardController from "../DashboardController";
 /**
  * 
  */
-export default abstract class HomeView implements INaviContainer {
+export default class HomeView implements INaviContainer {
 
     private _owner: DashboardController;
     private _element: HTMLElement;
@@ -48,7 +48,7 @@ export default abstract class HomeView implements INaviContainer {
     private Initialize(rooms: Array<Home.Room>) {
 
         let key = StdUtil.CreateUuid();
-        ReactDOM.render(<HomeComponent key={key} btnTitle={this.GetAddBtnTitle()} controller={this} rooms={rooms} />, this._element, () => {
+        ReactDOM.render(<HomeComponent key={key} controller={this} rooms={rooms} />, this._element, () => {
             if (rooms && rooms.length > 0) {
                 this.SetImageCss(rooms[0]);
             }
@@ -98,19 +98,6 @@ export default abstract class HomeView implements INaviContainer {
             this._dragFromOutSizeAction();
         }
     }
-
-
-    public abstract IsEntrance(): boolean;
-
-
-    public abstract GetAddBtnTitle(): string;
-
-
-    public abstract GetAppendModeDialogTitle(): string;
-
-
-    public abstract GetEditModeDialogTitle(): string;
-
 
 }
 

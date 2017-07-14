@@ -116,7 +116,7 @@ export default class HomeItemComponent extends React.Component<HomeItemProp, Hom
 
         let preHome = this.state.room;
         let dialog = new HomeEditDialogController(null);
-        dialog.Title = this.props.owner.props.controller.GetEditModeDialogTitle();
+        dialog.Title = "ルーム編集";
 
         //  デフォルトルームの場合は削除不可
         let mode = (preHome.isDefault ? DialogMode.Edit : DialogMode.EditDelete);

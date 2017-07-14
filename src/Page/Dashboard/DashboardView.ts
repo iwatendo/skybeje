@@ -12,10 +12,10 @@ import { INaviContainer } from "./INaviContainer";
 
 import NotImplementView from "./NotImplement/NotImplementView";
 import ProfileView from "./Profile/ProfileView";
-import RoomView from "./Home/RoomView";
 import HomeEditDialogController from "./Home/HomeEditDialog/HomeEditDialogController";
 import SettingController from "./Setting/SettingController";
 import BootInstanceView from "./BootInstance/BootInstanceView";
+import HomeView from "./Home/HomeView";
 
 
 export enum NaviEnum {
@@ -221,7 +221,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             case NaviEnum.Room:
                 title = "ルーム";
                 disp = DispEnum.Local;
-                this._naviView = new RoomView(this.Controller, mainElement);
+                this._naviView = new HomeView(this.Controller, mainElement);
                 break;
             case NaviEnum.Setting:
                 title = "設定";

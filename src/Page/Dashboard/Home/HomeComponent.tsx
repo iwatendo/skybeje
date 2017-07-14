@@ -20,7 +20,6 @@ import HomeView from "./HomeView";
  * プロパティ
  */
 export interface HomeProp {
-    btnTitle: string;
     controller: HomeView;
     rooms: Array<Home.Room>;
 }
@@ -77,7 +76,7 @@ export default class HomeComponent extends React.Component<HomeProp, HomeStat> {
                     <div className="mdl-card__supporting-text">
                         <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={this.OnClick_AddHome.bind(this)}>
                             <i className='material-icons'>add</i>
-                            &nbsp;{this.props.btnTitle}&nbsp;
+                            &nbsp;ルーム追加&nbsp;
                         </button>
                         <ul className="mdl-list">
                             {HomeListNodes}
@@ -113,7 +112,6 @@ export default class HomeComponent extends React.Component<HomeProp, HomeStat> {
     public OnClick_AddHome(event) {
         let prop = this.props;
         let dialog = new HomeEditDialogController(null);
-        dialog.Title = this.props.controller.GetAppendModeDialogTitle();
 
         dialog.Show(DialogMode.Append, this.NewRoom(), (room) => {
             this.props.controller.UpdateRoom(room);
