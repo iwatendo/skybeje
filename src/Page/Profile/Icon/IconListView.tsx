@@ -76,7 +76,7 @@ export default class IconListView {
      */
     public Render() {
         let key = StdUtil.CreateUuid();
-        let iid = this._owner.SelectionIid;
+        let iid = (this._owner.SelectionIid ? this._owner.SelectionIid : "");
         ReactDOM.render(<IconListComponent key={key} controller={this._owner} icons={this._icons} selectIid={iid} />, this._element, () => {
             this._icons.map((icon) => {
                 ImageInfo.SetCss(icon.iid, icon.img);

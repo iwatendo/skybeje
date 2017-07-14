@@ -52,45 +52,6 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
 
 
     /**
-     * エントランス情報の取得
-     * @param hid 
-     * @param callback 
-     */
-    public GetEntrance(hid: string, callback: OnRead<Home.Room>) {
-        this.HomeDB.Read(Home.DB.ENTRANCE, hid, callback);
-    }
-
-
-    /**
-     * エントランスリストの取得
-     * @param callback 
-     */
-    public GetEntrances(callback: OnRead<Array<Home.Room>>) {
-        this.HomeDB.ReadAll(Home.DB.ENTRANCE, callback);
-    }
-
-
-    /**
-     * エントランス情報の書込み
-     * @param entrance 
-     * @param callback 
-     */
-    public UpdateEntrance(entrance: Home.Room, callback: OnWrite = null) {
-        this.HomeDB.Write<Home.Room>(Home.DB.ENTRANCE, entrance.hid, entrance, callback);
-    }
-
-
-    /**
-     * エントランス情報の削除
-     * @param entrance 
-     * @param callback 
-     */
-    public DeleteEntrance(entrance: Home.Room, callback: OnWrite = null) {
-        this.HomeDB.Delete<Home.Room>(Home.DB.ENTRANCE, entrance.hid, callback);
-    }
-
-
-    /**
      * ルームリストの取得
      * @param hid 
      * @param callback 
@@ -353,20 +314,9 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
         guest.profile = "";
         guest.iconIds.push(icon.iid);
 
-        //  招待状
-        let entrance = new Home.Room();
-        entrance.name = "Skybejeにようこそ";
-        entrance.hid = StdUtil.CreateUuid();
-        entrance.order = 1;
-        entrance.tag = "お試しルーム";
-        entrance.text = "SkybejeはNTTCommunicationのSkywayを使用した\n新しい形のリアルタイムコミュニケーションサービスです。";
-        entrance.isDefault = true;
-        entrance.background = new ImageInfo();
-        entrance.background.src = "/image/default-entrance.jpg";
-
         //
         let room1 = new Home.Room();
-        room1.name = "デフォルトルーム";
+        room1.name = "エントランス";
         room1.hid = StdUtil.CreateUuid();
         room1.order = 1;
         room1.tag = "ユーザーが最初に配置される部屋";
@@ -377,7 +327,7 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
 
         //  
         let room2 = new Home.Room();
-        room2.name = "リビングルーム";
+        room2.name = "リビング";
         room2.hid = StdUtil.CreateUuid();
         room2.order = 2;
         room2.tag = "オーナーの操作で入れる部屋";
@@ -388,12 +338,10 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
 
         this.UpdateActor(guest, () => {
             this.UpdateIcon(icon, () => {
-                this.UpdateEntrance(entrance, () => {
-                    this.UpdateRoom(room1, () => {
-                        this.UpdateRoom(room2, () => {
-                            callback();
-                            LocalCache.InitializedSkybeje = true;
-                        });
+                this.UpdateRoom(room1, () => {
+                    this.UpdateRoom(room2, () => {
+                        callback();
+                        LocalCache.InitializedSkybeje = true;
                     });
                 });
             });

@@ -35,35 +35,6 @@ export class ForcedTerminationSender extends Sender {
 
 
 /**
- * エントランス情報の要求通知
- */
-export class GetEntranceSender extends Sender {
-
-    public static ID = "GetEntrance";
-
-    constructor() {
-        super(GetEntranceSender.ID)
-    }
-
-}
-
-
-/**
- * エントランス情報
- */
-export class EntranceSender extends Sender {
-
-    public static ID = "Entrance";
-
-    constructor() {
-        super(EntranceSender.ID);
-    }
-
-    room: Home.Room;
-}
-
-
-/**
  * ルーム情報の要求通知
  */
 export class GetRoomSender extends Sender {

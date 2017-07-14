@@ -18,11 +18,6 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
      */
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
-        //  エントランスの要求
-        if (sender.type === HIContainer.GetEntranceSender.ID) {
-            this.Controller.SendEntrance(conn);
-        }
-
         //  ルームの要求
         if (sender.type === HIContainer.GetRoomSender.ID) {
             this.Controller.SendRoom(conn, sender as HIContainer.GetRoomSender);

@@ -12,17 +12,15 @@ import { INaviContainer } from "./INaviContainer";
 
 import NotImplementView from "./NotImplement/NotImplementView";
 import ProfileView from "./Profile/ProfileView";
-import EntranceView from "./Home/EntranceView";
-import RoomView from "./Home/RoomView";
-import HomeEditDialogController from "./Home/HomeEditDialog/HomeEditDialogController";
+import RoomEditDialogController from "./Room/RoomEditDialog/RoomEditDialogController";
 import SettingController from "./Setting/SettingController";
 import BootInstanceView from "./BootInstance/BootInstanceView";
+import RoomView from "./Room/RoomView";
 
 
 export enum NaviEnum {
     Profile = 1,
-    Home = 3,
-    Room = 4,
+    Room = 2,
     Instance = 7,
     Visitor = 8,
     Setting = 9,
@@ -75,7 +73,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         let result = new Map<NaviEnum, HTMLElement>();
 
         result.set(NaviEnum.Profile, document.getElementById('sbj-navi-profile'));
-        result.set(NaviEnum.Home, document.getElementById('sbj-navi-home'));
         result.set(NaviEnum.Room, document.getElementById('sbj-navi-room'));
         result.set(NaviEnum.Setting, document.getElementById('sbj-navi-setting'));
         result.set(NaviEnum.Instance, document.getElementById('sbj-navi-home-instance'));
@@ -121,9 +118,13 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
             //  PeerIDが消された場合、ホームインスタンスを停止する
             if (!peerid) {
-                this.RemoveHomeInstance();
+                this.RemoveHomeInstance(() => {
+                    this.DoNaviClick(NaviEnum.Instance);
+                });
             }
-            this.DoNaviClick(NaviEnum.Instance);
+            else {
+                this.DoNaviClick(NaviEnum.Instance);
+            }
         };
 
 
@@ -159,26 +160,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             this.DoNaviClick(NaviEnum.Visitor);
         };
 
-
-        //  エントランスID
-        document.getElementById("sbj-main-home-entrance-edit").onclick = (e) => {
-
-            let hid = document.getElementById("sbj-main-home-entrance-edit").textContent;
-
-            this.Controller.Model.GetEntrance(hid, (preEntrance) => {
-
-                let dialog = new HomeEditDialogController(null);
-
-                dialog.Show(DialogMode.Edit, preEntrance, (curEntrance) => {
-                    if (curEntrance) {
-                        this.Controller.Model.UpdateEntrance(curEntrance, () => {
-                            //  
-                        });
-                    }
-                });
-
-            });
-        };
     }
 
 
@@ -216,15 +197,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
 
     /**
-     * イメージダイアログのコールバック先
-     * @param image 
-     */
-    private OnImageChage(image: ImageInfo) {
-        LogUtil.Info(image.src);
-    }
-
-
-    /**
      * ナビボタン押下時の画面切り替え処理
      * @param navi 
      */
@@ -240,11 +212,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 title = "プロフィール";
                 disp = DispEnum.Local;
                 this._naviView = new ProfileView(this.Controller, mainElement);
-                break;
-            case NaviEnum.Home:
-                title = "招待状";
-                disp = DispEnum.Local;
-                this._naviView = new EntranceView(this.Controller, mainElement);
                 break;
             case NaviEnum.Room:
                 title = "ルーム";
@@ -347,19 +314,28 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
     /**
      * 
+     * @param url 
+     * @param callback 
      */
-    public StartHomeInstance(url: string) {
+    public StartHomeInstance(url: string, callback = null) {
 
-        let frmae = document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement;
-        frmae.setAttribute('src', url);
+        let frame = document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement;
+
+        frame.onload = (e) => {
+            if (callback) callback();
+            frame.onload = null;
+        };
+
+        frame.setAttribute('src', url);
 
     }
+
 
     /**
      * 
      */
-    public RemoveHomeInstance() {
-        this.StartHomeInstance("");
+    public RemoveHomeInstance(callback) {
+        this.StartHomeInstance("", callback);
     }
 
 
@@ -382,8 +358,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
 
         if (isRemove) {
-            //  招待を受けて起動した場合で、
-            //  招待ページに入室しなかった場合 及び 退室時はトップページに遷移する。
             if (document.getElementById('sbj-navi-home-instance-disp').hidden) {
                 location.href = LinkUtil.CreateLink("/");
                 return;

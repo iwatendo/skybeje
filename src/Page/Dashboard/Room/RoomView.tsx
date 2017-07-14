@@ -7,13 +7,13 @@ import ImageUtil from "../../../Base/Util/ImageUtil";
 import * as Home from "../../../Base/IndexedDB/Home";
 
 import { INaviContainer, DragAction } from "../INaviContainer";
-import HomeComponent from "./HomeComponent";
+import RoomComponent from "./RoomComponent";
 import DashboardController from "../DashboardController";
 
 /**
  * 
  */
-export default abstract class HomeView implements INaviContainer {
+export default class RoomView implements INaviContainer {
 
     private _owner: DashboardController;
     private _element: HTMLElement;
@@ -35,17 +35,9 @@ export default abstract class HomeView implements INaviContainer {
      */
     public Refresh() {
 
-        if (this.IsEntrance()) {
-            this._owner.Model.GetEntrances((rooms) => {
-                this.Initialize(rooms);
-            });
-        }
-        else {
-            this._owner.Model.GetRooms((rooms) => {
-                this.Initialize(rooms);
-            });
-        }
-
+        this._owner.Model.GetRooms((rooms) => {
+            this.Initialize(rooms);
+        });
     }
 
 
@@ -56,7 +48,7 @@ export default abstract class HomeView implements INaviContainer {
     private Initialize(rooms: Array<Home.Room>) {
 
         let key = StdUtil.CreateUuid();
-        ReactDOM.render(<HomeComponent key={key} btnTitle={this.GetAddBtnTitle()} controller={this} rooms={rooms} />, this._element, () => {
+        ReactDOM.render(<RoomComponent key={key} controller={this} rooms={rooms} />, this._element, () => {
             if (rooms && rooms.length > 0) {
                 this.SetImageCss(rooms[0]);
             }
@@ -69,12 +61,7 @@ export default abstract class HomeView implements INaviContainer {
      * @param info 
      */
     public UpdateRoom(info: Home.Room) {
-        if (this.IsEntrance()) {
-            this._owner.Model.UpdateEntrance(info);
-        }
-        else {
-            this._owner.Model.UpdateRoom(info);
-        }
+        this._owner.Model.UpdateRoom(info);
     }
 
 
@@ -84,12 +71,7 @@ export default abstract class HomeView implements INaviContainer {
      */
     public DeleteRoom(info: Home.Room) {
 
-        if (this.IsEntrance()) {
-            this._owner.Model.DeleteEntrance(info);
-        }
-        else {
-            this._owner.Model.DeleteRoom(info);
-        }
+        this._owner.Model.DeleteRoom(info);
 
         ImageInfo.SetCss('sbj-split-right-img', new ImageInfo());
     }
@@ -116,19 +98,6 @@ export default abstract class HomeView implements INaviContainer {
             this._dragFromOutSizeAction();
         }
     }
-
-
-    public abstract IsEntrance(): boolean;
-
-
-    public abstract GetAddBtnTitle(): string;
-
-
-    public abstract GetAppendModeDialogTitle(): string;
-
-
-    public abstract GetEditModeDialogTitle(): string;
-
 
 }
 

@@ -45,19 +45,10 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         this.SetInviteUrl(peerid);
         this.NotifyDashbord(peerid);
 
-        this.Controller.Model.GetEntrance((entrance) => {
-
-            if (entrance) {
-                let title = entrance.name;
-                document.getElementById("sbj-home-instance-title").textContent = title;
-            }
-
-            this.Controller.Model.GetRooms((rooms) => {
-                let element = document.getElementById("sbj-home-instance-rooms");
-                this.Controller.Room = new RoomView(this.Controller, element, rooms);
-                callback();
-            });
-
+        this.Controller.Model.GetRooms((rooms) => {
+            let element = document.getElementById("sbj-home-instance-rooms");
+            this.Controller.Room = new RoomView(this.Controller, element, rooms);
+            callback();
         });
 
     }
@@ -105,7 +96,6 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         let element = window.parent.document.getElementById('sbj-main-home-visitor-start');
 
         if (element) {
-            element.textContent = LinkUtil.GetArgs('hid');
             element.click();
         }
 

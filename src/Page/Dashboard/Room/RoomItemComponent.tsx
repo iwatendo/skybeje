@@ -9,16 +9,16 @@ import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 
 import ImageDialogController from "../ImageDialogController";
 import DashboardController from "../DashboardController";
-import HomeEditDialogController from "./HomeEditDialog/HomeEditDialogController";
-import HomeView from "./HomeView";
-import HomeComponent from "./HomeComponent";
+import RoomEditDialogController from "./RoomEditDialog/RoomEditDialogController";
+import RoomView from "./RoomView";
+import RoomComponent from "./RoomComponent";
 
 
 /**
  * 
  */
-export interface HomeItemProp {
-    owner: HomeComponent;
+export interface RoomItemProp {
+    owner: RoomComponent;
     room: Home.Room,
     isSelect: boolean,
 }
@@ -27,7 +27,7 @@ export interface HomeItemProp {
 /**
  * 
  */
-export interface HomeItemStat {
+export interface RoomItemStat {
     room: Home.Room,
 }
 
@@ -35,14 +35,14 @@ export interface HomeItemStat {
 /**
  * 
  */
-export default class HomeItemComponent extends React.Component<HomeItemProp, HomeItemStat>{
+export default class RoomItemComponent extends React.Component<RoomItemProp, RoomItemStat>{
 
     /**
      * コンストラクタ
      * @param props
      * @param context
      */
-    constructor(props?: HomeItemProp, context?: any) {
+    constructor(props?: RoomItemProp, context?: any) {
         super(props, context);
 
         this.state = {
@@ -115,8 +115,8 @@ export default class HomeItemComponent extends React.Component<HomeItemProp, Hom
     private OnClickShowMenu(ev) {
 
         let preHome = this.state.room;
-        let dialog = new HomeEditDialogController(null);
-        dialog.Title = this.props.owner.props.controller.GetEditModeDialogTitle();
+        let dialog = new RoomEditDialogController(null);
+        dialog.Title = "ルーム編集";
 
         //  デフォルトルームの場合は削除不可
         let mode = (preHome.isDefault ? DialogMode.Edit : DialogMode.EditDelete);

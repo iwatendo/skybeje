@@ -65,10 +65,17 @@
     margin-left: 5px;
 }
 
+.sbj-home-visitor-connecting{
+    margin: 20px;
+}
+
 #sbj-home-visitor-gadget-component{
     left: 50%;
 }
 
+#sbj-home-visitor-title{
+    margin: 0px 24px 0px 0px;
+}
 
 #sbj-home-visitor-timeline-component {
     width: 100%;
@@ -85,11 +92,6 @@
 /*-----------------------------
  * 
  *---------------------------*/
-
-.sbj-entrance{
-    width: 100%;
-    height: 100%;
-}
 
 .sbj-invitation-box{
     padding: 24px;
