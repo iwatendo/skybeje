@@ -11,7 +11,6 @@ import HomeInstanceController from "./HomeInstanceController";
 
 export default class HomeInstanceModel extends AbstractServiceModel<HomeInstanceController> {
 
-    private _hid: string;
     private _homeDB: Home.DB;
     private _timelineDB: Timeline.DB;
 
@@ -21,8 +20,6 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
      * @param callback 
      */
     protected Initialize(callback: OnModelLoad) {
-
-        this._hid = LinkUtil.GetArgs('hid');
 
         this._homeDB = new Home.DB();
         this._timelineDB = new Timeline.DB();
@@ -36,15 +33,6 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
             });
         });
 
-    }
-
-
-    /**
-     * エントランス情報の取得
-     * @param callback 
-     */
-    public GetEntrance(callback: OnRead<Home.Room>) {
-        this._homeDB.Read(Home.DB.ENTRANCE, this._hid, callback);
     }
 
 

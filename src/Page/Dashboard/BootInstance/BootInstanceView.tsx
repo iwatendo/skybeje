@@ -1,12 +1,9 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Home from "../../../Base/IndexedDB/Home";
-
 import StdUtil from "../../../Base/Util/StdUtil";
-import LocalCache from "../../../Base/Common/LocalCache";
 import LinkUtil from "../../../Base/Util/LinkUtil";
-import ImageInfo from "../../../Base/Container/ImageInfo";
+import LocalCache from "../../../Base/Common/LocalCache";
 
 import DashboardController from "../DashboardController";
 import { INaviContainer, DragAction } from "../INaviContainer";
@@ -36,25 +33,8 @@ export default class BootInstanceView implements INaviContainer {
      */
     public Refresh() {
 
-        this._owner.Model.GetEntrances((rooms) => {
-            let bootDuplication = (LocalCache.BootHomeInstancePeerID ? true : false);
-            this.Initialize(rooms, bootDuplication);
-        });
-    }
-
-
-    /**
-     * 
-     * @param rooms 
-     */
-    private Initialize(rooms: Array<Home.Room>, bootDuplication: boolean) {
-
-        let key = StdUtil.CreateUuid();
-        ReactDOM.render(<BootInstanceComponent key={key} controller={this} rooms={rooms} bootDuplication={bootDuplication} />, this._element, () => {
-            if (rooms && rooms.length > 0) {
-                this.SetImageCss(rooms[0]);
-            }
-        });
+        let bootDuplication = (LocalCache.BootHomeInstancePeerID ? true : false);
+        ReactDOM.render(<BootInstanceComponent controller={this} bootDuplication={bootDuplication} />, this._element);
     }
 
 
@@ -74,23 +54,17 @@ export default class BootInstanceView implements INaviContainer {
     }
 
 
-
-    public SetImageCss(info: Home.Room) {
-        ImageInfo.SetCss('sbj-split-right-img', info.background);
-    }
-
-
     /**
      * ホームインスタンスの起動
      * @param hid 
      * @param isForce 
      */
-    public StartHomeInstance(hid: string, isForce: boolean) {
+    public StartHomeInstance(isForce: boolean) {
 
         if (!isForce && LocalCache.BootHomeInstancePeerID) {
             this.Refresh();
         } else {
-            let url = LinkUtil.CreateLink('../HomeInstance/?hid=' + hid);
+            let url = LinkUtil.CreateLink('../HomeInstance/');
             this._owner.View.StartHomeInstance(url);
         }
     }

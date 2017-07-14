@@ -35,17 +35,9 @@ export default abstract class HomeView implements INaviContainer {
      */
     public Refresh() {
 
-        if (this.IsEntrance()) {
-            this._owner.Model.GetEntrances((rooms) => {
-                this.Initialize(rooms);
-            });
-        }
-        else {
-            this._owner.Model.GetRooms((rooms) => {
-                this.Initialize(rooms);
-            });
-        }
-
+        this._owner.Model.GetRooms((rooms) => {
+            this.Initialize(rooms);
+        });
     }
 
 
@@ -69,12 +61,7 @@ export default abstract class HomeView implements INaviContainer {
      * @param info 
      */
     public UpdateRoom(info: Home.Room) {
-        if (this.IsEntrance()) {
-            this._owner.Model.UpdateEntrance(info);
-        }
-        else {
-            this._owner.Model.UpdateRoom(info);
-        }
+        this._owner.Model.UpdateRoom(info);
     }
 
 
@@ -84,12 +71,7 @@ export default abstract class HomeView implements INaviContainer {
      */
     public DeleteRoom(info: Home.Room) {
 
-        if (this.IsEntrance()) {
-            this._owner.Model.DeleteEntrance(info);
-        }
-        else {
-            this._owner.Model.DeleteRoom(info);
-        }
+        this._owner.Model.DeleteRoom(info);
 
         ImageInfo.SetCss('sbj-split-right-img', new ImageInfo());
     }

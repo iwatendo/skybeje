@@ -16,7 +16,6 @@ export class Room implements IOrder {
 
 
 export class Data {
-    Entrance: Array<Room>;
     Rooms: Array<Room>;
 }
 
@@ -24,13 +23,11 @@ export class Data {
 export class DB extends Database<Data> {
 
     public static NAME = "Home";
-    public static NOTE = "招待状／ルーム";
-    public static ENTRANCE: string = 'entrance';
+    public static NOTE = "ルーム";
     public static ROOM: string = 'room';
 
     constructor() {
         super(DB.NAME);
-        this.SetStoreList(DB.ENTRANCE);
         this.SetStoreList(DB.ROOM);
     }
 
@@ -41,21 +38,16 @@ export class DB extends Database<Data> {
 
         let data = new Data();
 
-        this.ReadAll<Room>(DB.ENTRANCE, (result: Array<Room>) => {
-            data.Entrance = result;
-            this.ReadAll<Room>(DB.ROOM, (result: Array<Room>) => {
-                data.Rooms = result;
-                onload(data);
-            });
+        this.ReadAll<Room>(DB.ROOM, (result: Array<Room>) => {
+            data.Rooms = result;
+            onload(data);
         });
     }
 
 
     public WriteAllData(data: Data, callback: DBI.OnWriteComplete) {
-        this.WriteAll<Room>(DB.ENTRANCE, (n) => n.hid, data.Entrance, () => {
-            this.WriteAll<Room>(DB.ROOM, (n) => n.hid, data.Rooms, () => {
-                callback();
-            });
+        this.WriteAll<Room>(DB.ROOM, (n) => n.hid, data.Rooms, () => {
+            callback();
         });
     }
 
@@ -63,7 +55,6 @@ export class DB extends Database<Data> {
     public IsImportMatch(preData: any): boolean {
 
         let data: Data = preData;
-        if (data.Entrance && data.Entrance.length > 0) return true;
         if (data.Rooms && data.Rooms.length > 0) return true;
 
         return false;
@@ -72,10 +63,8 @@ export class DB extends Database<Data> {
 
     public Import(data: Data, callback: DBI.OnWriteComplete) {
 
-        this.ClearAll(DB.ENTRANCE, () => {
-            this.ClearAll(DB.ROOM, () => {
-                this.WriteAllData(data, callback);
-            });
+        this.ClearAll(DB.ROOM, () => {
+            this.WriteAllData(data, callback);
         });
 
     }

@@ -17,7 +17,6 @@ import { RoomActorMemberSender } from "../HomeInstance/HomeInstanceContainer";
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as CIContainer from "../CastInstance/CastInstanceContainer";
 import DisConnectComponent from "./DisConnect/DisConnectComponent";
-import EntranceComponent from "./Entrance/EntranceComponent";
 import { TimelineComponent } from "./Timeline/TimelineComponent";
 import { GetTimelineSender } from "./HomeVisitorContainer";
 import HomeVisitorController from "./HomeVisitorController";
@@ -28,8 +27,7 @@ import InputPaneController from "./InputPane/InputPaneController";
 
 export default class HomeVisitorView extends AbstractServiceView<HomeVisitorController> {
 
-    private _isEntrance: boolean;
-
+    private _boot: boolean = true;
     private _element = document.getElementById('sbj-home-visitor');
     private _splitElement = document.getElementById('sbj-home-visitor-split');
     private _timelineElement = document.getElementById('sbj-home-visitor-timeline-component');
@@ -66,10 +64,8 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         //  「退室」処理
         document.getElementById('sbj-home-visitor-stop').onclick = (e) => {
-            //  ページをリロードして初期化する
-            location.reload();
+            this.Controller.View.NotifyDashbord('');
         };
-
 
         //  
         callback();
@@ -157,34 +153,6 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
 
     /**
-     * 玄関（招待）ページの表示
-     */
-    public ShowEntrance(entrance: Home.Room) {
-        //  
-        ReactDOM.render(<EntranceComponent key={entrance.hid} controller={this.Controller} entrance={entrance} />, this._element, () => {
-            ImageInfo.SetCss("sbj-entrance", entrance.background);
-            this._isEntrance = true;
-        });
-    }
-
-
-    /**
-     * 招待ページからメイン画面に切替
-     */
-    public ChangeVisitorMode() {
-
-        this._element.setAttribute("hidden", "true");
-        this._head.removeAttribute("hidden");
-        this._splitElement.removeAttribute("hidden");
-
-        //  インプットパネルの生成
-        this.InputPane = new InputPaneController(this.Controller);
-
-        this._isEntrance = false;
-    }
-
-
-    /**
      * 部屋の表示
      * @param room 
      */
@@ -193,11 +161,15 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         //  
         this.Controller.CurrentHid = room.hid;
 
-        //
-        if (this._isEntrance) {
-            this.ChangeVisitorMode();
+        if (this._boot) {
+            this._element.setAttribute("hidden", "true");
+            this._head.removeAttribute("hidden");
+            this._splitElement.removeAttribute("hidden");
+            this.InputPane = new InputPaneController(this.Controller);
+            this._boot = false;
         }
 
+        //
         this.SetRoomDisplay(room);
 
         //  タイムラインデータの取得
@@ -214,7 +186,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     public SetRoomDisplay(room: Home.Room) {
 
         //  上部タイトル変更
-        let title = this.Controller.Entrance.name + "（" + room.name + "）";
+        let title = room.name;
         this._headTitleElement.textContent = title;
 
         //  部屋の背景画像変更

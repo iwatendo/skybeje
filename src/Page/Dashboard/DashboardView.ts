@@ -12,7 +12,6 @@ import { INaviContainer } from "./INaviContainer";
 
 import NotImplementView from "./NotImplement/NotImplementView";
 import ProfileView from "./Profile/ProfileView";
-import EntranceView from "./Home/EntranceView";
 import RoomView from "./Home/RoomView";
 import HomeEditDialogController from "./Home/HomeEditDialog/HomeEditDialogController";
 import SettingController from "./Setting/SettingController";
@@ -21,7 +20,6 @@ import BootInstanceView from "./BootInstance/BootInstanceView";
 
 export enum NaviEnum {
     Profile = 1,
-    Home = 3,
     Room = 4,
     Instance = 7,
     Visitor = 8,
@@ -75,7 +73,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         let result = new Map<NaviEnum, HTMLElement>();
 
         result.set(NaviEnum.Profile, document.getElementById('sbj-navi-profile'));
-        result.set(NaviEnum.Home, document.getElementById('sbj-navi-home'));
         result.set(NaviEnum.Room, document.getElementById('sbj-navi-room'));
         result.set(NaviEnum.Setting, document.getElementById('sbj-navi-setting'));
         result.set(NaviEnum.Instance, document.getElementById('sbj-navi-home-instance'));
@@ -158,27 +155,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         document.getElementById("sbj-main-home-livecast-hide").onclick = (e) => {
             this.DoNaviClick(NaviEnum.Visitor);
         };
-
-
-        //  エントランスID
-        document.getElementById("sbj-main-home-entrance-edit").onclick = (e) => {
-
-            let hid = document.getElementById("sbj-main-home-entrance-edit").textContent;
-
-            this.Controller.Model.GetEntrance(hid, (preEntrance) => {
-
-                let dialog = new HomeEditDialogController(null);
-
-                dialog.Show(DialogMode.Edit, preEntrance, (curEntrance) => {
-                    if (curEntrance) {
-                        this.Controller.Model.UpdateEntrance(curEntrance, () => {
-                            //  
-                        });
-                    }
-                });
-
-            });
-        };
+        
     }
 
 
@@ -240,11 +217,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 title = "プロフィール";
                 disp = DispEnum.Local;
                 this._naviView = new ProfileView(this.Controller, mainElement);
-                break;
-            case NaviEnum.Home:
-                title = "招待状";
-                disp = DispEnum.Local;
-                this._naviView = new EntranceView(this.Controller, mainElement);
                 break;
             case NaviEnum.Room:
                 title = "ルーム";
@@ -382,8 +354,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
 
         if (isRemove) {
-            //  招待を受けて起動した場合で、
-            //  招待ページに入室しなかった場合 及び 退室時はトップページに遷移する。
             if (document.getElementById('sbj-navi-home-instance-disp').hidden) {
                 location.href = LinkUtil.CreateLink("/");
                 return;

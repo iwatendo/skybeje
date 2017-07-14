@@ -24,13 +24,6 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             return;
         }
 
-        //  エントランスの表示
-        if (sender.type === HIContainer.EntranceSender.ID) {
-            let room = (sender as HIContainer.EntranceSender).room;
-            this.Controller.Entrance = room;
-            this.Controller.View.ShowEntrance(room);
-        }
-
         //  ルーム変更
         if (sender.type === HIContainer.RoomSender.ID) {
             let room = (sender as HIContainer.RoomSender).room;

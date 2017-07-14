@@ -8,7 +8,7 @@ import LocalCache from "../../Base/Common/LocalCache";
 import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LogUtil from "../../Base/Util/LogUtil";
 
-import { GetEntranceSender, GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServantCloseSender } from "../HomeInstance/HomeInstanceContainer";
+import { GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServantCloseSender } from "../HomeInstance/HomeInstanceContainer";
 import TimelineCache from "./Cache/TimelineCache";
 import RoomCache from "./Cache/RoomCache";
 import IconCache from "./Cache/IconCache";
@@ -18,6 +18,7 @@ import HomeVisitorView from "./HomeVisitorView";
 import HomeVisitorModel from "./HomeVisitorModel";
 import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
+import ActorPeer from "../../Base/Container/ActorPeer";
 
 
 /**
@@ -33,7 +34,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public TimelineCache: TimelineCache;
     public ServantCache: ServantCache;
 
-    public Entrance: Home.Room;
     public UseActor: UseActorSender;
     public CurrentHid: string;
 
@@ -82,8 +82,11 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public OnOwnerConnection() {
 
-        //  招待画面の情報要求
-        WebRTCService.OwnerSend(new GetEntranceSender());
+        this.Model.GetUserProfile((actor) => {
+            let useActor = new UseActorSender(actor);
+            useActor.ActorPeers.push(new ActorPeer(actor, this.PeerId));
+            this.SetUseActor(useActor);
+        });
 
     }
 

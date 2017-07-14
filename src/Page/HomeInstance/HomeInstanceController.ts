@@ -143,21 +143,6 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
 
     /**
-     * エントランス情報の送信
-     * @param conn 
-     */
-    public SendEntrance(conn: PeerJs.DataConnection) {
-
-        let sender = new HIContainer.EntranceSender();
-
-        this.Model.GetEntrance((entrance) => {
-            sender.room = entrance;
-            WebRTCService.ChildSend(conn, sender);
-        });
-    }
-
-
-    /**
      * ルーム情報の送信
      * @param conn 
      * @param req 
