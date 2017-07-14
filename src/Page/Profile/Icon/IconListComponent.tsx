@@ -44,6 +44,8 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
             icons: this.props.icons,
             selectIid: this.props.selectIid,
         };
+
+        this.Select(this.props.selectIid);
     }
 
 
@@ -71,12 +73,17 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
      * 選択アイコンの変更
      * @param icon 
      */
-    public Select(icon: Personal.Icon) {
+    public Select(iid: string) {
         this.setState({
-            selectIid: icon.iid
+            selectIid: iid
         });
-        this.props.controller.SelectionIid = icon.iid;
-        this.props.controller.ChangeSelectionIconNotify(icon.iid);
+
+        let canEdit = (iid);
+        (document.getElementById('sbj-profile-edit-icon') as HTMLInputElement).disabled = !canEdit;
+        (document.getElementById('sbj-profile-delete-icon') as HTMLInputElement).disabled = !canEdit;
+
+        this.props.controller.SelectionIid = iid;
+        this.props.controller.ChangeSelectionIconNotify(iid);
     }
 
 

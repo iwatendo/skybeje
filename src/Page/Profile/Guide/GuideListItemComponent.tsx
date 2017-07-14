@@ -97,7 +97,7 @@ export default class GuideListItemComponent extends React.Component<GuideListIte
      */
     private onClick(evnet) {
         if (!this.props.isSelect) {
-            this.props.owner.Select(this.props.guide);
+            this.props.owner.Select(this.props.guide.gid);
         }
     }
 

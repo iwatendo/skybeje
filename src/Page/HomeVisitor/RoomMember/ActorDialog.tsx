@@ -18,7 +18,7 @@ export default class ActorDialog extends AbstractDialogController<HomeVisitorCon
      * @param controller 
      */
     public constructor(controller: HomeVisitorController) {
-        super(controller, "プロフィール", "account_box", 540, 480);
+        super(controller, "プロフィール", "account_box");
     }
 
 

@@ -59,7 +59,7 @@ export default class IconListItemComponent extends React.Component<IconListItemP
      */
     private onClick(evnet) {
         if (!this.props.isSelect) {
-            this.props.owner.Select(this.props.icon);
+            this.props.owner.Select(this.props.icon.iid);
         }
     }
 

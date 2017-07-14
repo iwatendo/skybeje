@@ -6,6 +6,7 @@ import ImageInfo from "../../Base/Container/ImageInfo";
 
 import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite, OnRead2 } from "../../Base/Common/AbstractServiceModel";
 import ProfileController from "./ProfileController";
+import { Order } from "../../Base/Container/Order";
 
 
 export default class ProfileModel extends AbstractServiceModel<ProfileController> {
@@ -75,6 +76,15 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
      */
     public GetActor(aid: string, callback: OnRead<Personal.Actor>) {
         this._personalDB.Read(Personal.DB.ACTOR, aid, callback);
+    }
+
+
+    /**
+     * アクター情報一覧の取得
+     * @param callback 
+     */
+    public GetActors(callback: OnRead<Array<Personal.Actor>>){
+        this._personalDB.ReadAll(Personal.DB.ACTOR, callback);
     }
 
 

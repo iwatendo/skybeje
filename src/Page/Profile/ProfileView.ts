@@ -24,9 +24,12 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
 
         let controller = this.Controller;
         let actor = controller.Actor;
+        let backpanel = document.getElementById('sbj-profile');
+        let cancelButton = document.getElementById('sbj-profile-cancel');
         let nameElement = document.getElementById('sbj-profile-name') as HTMLInputElement;
         let tagElement = document.getElementById('sbj-profile-tag') as HTMLInputElement;
         let noteElement = document.getElementById('sbj-profile-note') as HTMLInputElement;
+
 
         nameElement.value = actor.name;
         tagElement.value = actor.tag;
@@ -41,7 +44,24 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         noteElement.onblur = (e) => this.CheckChangeUpdate(controller);
 
         this._iconListView = new IconListView(controller, document.getElementById('sbj-profile-icons-list'));
-        this._guideListView = new GuideListView(controller,document.getElementById('sbj-profile-guides-list'))
+        this._guideListView = new GuideListView(controller, document.getElementById('sbj-profile-guides-list'))
+
+        //
+        backpanel.onclick = (e: MouseEvent) => {
+            let targetClassName = (e.target as any).className;
+            if (targetClassName === "mdl-layout__container") {
+                controller.CloseNotify();
+            }
+        };
+
+        window.onresize = (e) => {
+            this.Resize();
+        };
+
+        //  キャンセルボタン押下時
+        cancelButton.onclick = (e) => {
+            controller.CloseNotify();
+        };
 
         //  外部からのドラッグイベント時
         document.getElementById("sbj-profile").addEventListener('dragover', (event: DragEvent) => {
@@ -53,7 +73,23 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
 
         });
 
+        this.Resize();
         callback();
+    }
+
+
+    public Resize() {
+
+        let height = window.innerHeight - 160;
+
+        if (height < 540) height = 540;
+        if (height > 720) height = 720;
+
+        let marginTop = (Math.round(height / 2)) * -1;
+
+        let mainpanel = document.getElementById('sbj-profile-layout') as HTMLElement;
+        mainpanel.style.height = height.toString() + "px";
+        mainpanel.style.margin = marginTop.toString() + "px 0 0 -480px";
     }
 
 
