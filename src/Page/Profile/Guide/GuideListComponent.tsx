@@ -44,6 +44,8 @@ export default class GuideListComponent extends React.Component<GuideListProp, G
             guides: this.props.guides,
             selectGid: this.props.selectGid,
         };
+
+        this.Select(this.props.selectGid);
     }
 
 
@@ -71,11 +73,16 @@ export default class GuideListComponent extends React.Component<GuideListProp, G
      * 選択ガイドの変更
      * @param guide 
      */
-    public Select(guide: Personal.Guide) {
+    public Select(gid:string) {
         this.setState({
-            selectGid: guide.gid
+            selectGid: gid
         });
-        this.props.controller.SelectionGid = guide.gid;
+
+        let canEdit = (gid);
+        (document.getElementById('sbj-profile-edit-guide') as HTMLInputElement).disabled = !canEdit;
+        (document.getElementById('sbj-profile-delete-guide') as HTMLInputElement).disabled = !canEdit;
+
+        this.props.controller.SelectionGid = gid;
     }
 
 

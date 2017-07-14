@@ -138,6 +138,7 @@ export default class IconListView {
                 actor.iconIds.push(icon.iid);
                 controller.Model.UpdateActor(actor, () => {
                     //  リストの再表示
+                    this._owner.SelectionIid = icon.iid;
                     view.Refresh();
                 })
             })
@@ -173,6 +174,7 @@ export default class IconListView {
         owner.Model.UpdateActor(actor);
         owner.Model.DeleteIcon(icon);
 
+        this._owner.SelectionIid = "";
         view.Refresh();
     }
 

@@ -139,6 +139,7 @@ export default class GuideListView {
                 actor.guideIds.push(newGuide.gid);
                 controller.Model.UpdateActor(actor, () => {
                     //  リストの再表示
+                    this._owner.SelectionGid = newGuide.gid;
                     view.Refresh();
                 })
             })
@@ -172,6 +173,7 @@ export default class GuideListView {
         owner.Model.UpdateActor(actor);
         owner.Model.DeleteGuide(guide);
 
+        this._owner.SelectionGid = "";
         view.Refresh();
     }
 
