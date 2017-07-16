@@ -1,6 +1,6 @@
 
 import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/Common/AbstractServiceModel";
-import { CastVisitorController } from "./CastVisitorController";
+import CastVisitorController from "./CastVisitorController";
 
 
 export default class CastVisitorModel extends AbstractServiceModel<CastVisitorController> {

@@ -87,6 +87,11 @@ body {
     border-radius: 6px;
 }
 
+#sbj-cast-visitor-mobile-view{
+    bottom: 10px;
+    right: 52px;
+}
+
 #sbj-cast-visitor-allout{
     bottom: 10px;
     right: 10px;
@@ -110,4 +115,13 @@ body {
     text-align: center;
     top: calc(50% - 20px);
     left: calc(50% - 120px);
+}
+
+.sbj-cast-visitor-mobile-label{
+    margin: 0px;
+}
+
+.sbj-cast-visitor-qrcode{
+    width: 340px;
+    height: 340px;
 }

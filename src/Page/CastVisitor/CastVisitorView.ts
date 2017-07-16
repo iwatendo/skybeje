@@ -4,11 +4,13 @@ import LogUtil from "../../Base/Util/LogUtil";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
-import { CastVisitorController } from "./CastVisitorController";
+import CastVisitorController from "./CastVisitorController";
 import { CastCursorSender, CastSettingSedner } from "../CastInstance/CastInstanceContainer";
 import { CastCursor, CursorController } from "./Cursor/CurosrController";
 import { Icon } from "../../Base/IndexedDB/Personal";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";
+import MobileDialog from "./Mobile/MobileDialog";
+import { DialogMode } from "../../Base/Common/AbstractDialogController";
 
 
 /**
@@ -40,6 +42,13 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         //  別タブで開かれたステージはサブメニューは表示しない
         if (LinkUtil.GetArgs("allout")) {
             document.getElementById('sbj-cast-visitor-allout').hidden = true;
+            document.getElementById('sbj-cast-visitor-mobile-view').hidden = true;
+        }
+
+
+        //  mobileViewボタン
+        document.getElementById('sbj-cast-visitor-mobile-view').onclick = (e) => {
+            this.DoShowQrCodeDialog();
         }
 
         //  alloutボタン押下時の場合は別タブで開く
@@ -131,6 +140,22 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         if (!sender.dispSubtitles) {
             this.SubTitles.Clear();
         }
+    }
+
+
+    /**
+     * 
+     */
+    public DoShowQrCodeDialog() {
+
+        let catUrl = window.location.href;
+
+        if (!catUrl.indexOf("mute")) { catUrl += "&mute=1"; }
+        catUrl += "&allout=1";
+
+        let dialog = new MobileDialog(this.Controller);
+        dialog.Show(DialogMode.View, catUrl, () => { });
+
     }
 
 }

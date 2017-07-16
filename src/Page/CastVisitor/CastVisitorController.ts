@@ -10,7 +10,7 @@ import { CastVisitorReceiver } from "./CastVisitorReceiver";
 import { GetCastInfoSedner } from "../CastInstance/CastInstanceContainer";
 
 
-export class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
+export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
 
     public ConnCache: ConnectionCache;
     public View: CastVisitorView;
