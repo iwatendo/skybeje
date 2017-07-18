@@ -3,7 +3,7 @@ import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import LogUtil from "../../Base/Util/LogUtil";
 import WebRTCService from "../../Base/Common/WebRTCService";
-import { CastVisitorController } from "./CastVisitorController";
+import CastVisitorController from "./CastVisitorController";
 import { CastVisitorView } from "./CastVisitorView";
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as HVContainer from "../HomeVisitor/HomeVisitorContainer";
