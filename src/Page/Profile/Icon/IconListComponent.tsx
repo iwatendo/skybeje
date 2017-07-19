@@ -44,8 +44,6 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
             icons: this.props.icons,
             selectIid: this.props.selectIid,
         };
-
-        this.Select(this.props.selectIid);
     }
 
 

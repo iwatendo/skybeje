@@ -10,7 +10,6 @@ import LocalCache from "../../../Base/Common/LocalCache";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 
-import ActorSelectorDialog from "../ActorSelector/ActorSelectorDialog";
 import HomeVisitorController from "../HomeVisitorController";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";

@@ -1,5 +1,6 @@
 ﻿
 import * as Timeline from "../../Base/IndexedDB/Timeline";
+import * as Personal from "../../Base/IndexedDB/Personal";
 import * as Home from "../../Base/IndexedDB/Home";
 
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
@@ -153,7 +154,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             actors.forEach((actor) => {
                 if (actor.isUserProfile) {
                     useActor.CurrentAid = actor.aid;
-                    useActor.CurrentIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+                    useActor.CurrentIid = Personal.Actor.TopIconId(actor);
                 }
                 if (actor.isUserProfile || actor.isUsing) {
                     useActor.ActorPeers.push(new ActorPeer(actor, this.PeerId));
@@ -260,7 +261,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
         this.Model.GetActor(aid, (actor) => {
             this.UseActor.CurrentAid = actor.aid;
-            this.UseActor.CurrentIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+            this.UseActor.CurrentIid = Personal.Actor.TopIconId(actor);
             this.View.InputPane.ChangeActor();
             this.RoomCache.GetRoomByActorId(aid, (room) => {
                 this.View.SetRoomInfo(room);
