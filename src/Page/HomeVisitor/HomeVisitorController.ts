@@ -7,6 +7,9 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
 import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LogUtil from "../../Base/Util/LogUtil";
+import ActorPeer from "../../Base/Container/ActorPeer";
+import { OnRead } from "../../Base/Common/AbstractServiceModel";
+import { Order } from "../../Base/Container/Order";
 
 import { GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServantCloseSender } from "../HomeInstance/HomeInstanceContainer";
 import TimelineCache from "./Cache/TimelineCache";
@@ -18,7 +21,6 @@ import HomeVisitorView from "./HomeVisitorView";
 import HomeVisitorModel from "./HomeVisitorModel";
 import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
-import ActorPeer from "../../Base/Container/ActorPeer";
 
 
 /**
@@ -63,7 +65,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
         //  
         this.PeerId = peer.id;
-        this.UseActor = new UseActorSender(null);
+        this.UseActor = new UseActorSender();
 
         //  DB接続
         this.Model = new HomeVisitorModel(this, () => {
@@ -81,13 +83,9 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 
      */
     public OnOwnerConnection() {
-
-        this.Model.GetUserProfile((actor) => {
-            let useActor = new UseActorSender(actor);
-            useActor.ActorPeers.push(new ActorPeer(actor, this.PeerId));
-            this.SetUseActor(useActor);
+        this.GetUseActor((ua) => {
+            this.SetUseActor(ua);
         });
-
     }
 
 
@@ -118,6 +116,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         }
     }
 
+
     /**
      * 
      * @param conn 
@@ -141,6 +140,31 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
     }
 
+
+    /**
+     * 
+     * @param callback 
+     */
+    public GetUseActor(callback: OnRead<UseActorSender>) {
+
+        this.Model.GetActors((actors) => {
+            Order.Sort(actors);
+            let useActor = new UseActorSender();
+            actors.forEach((actor) => {
+                if (actor.isUserProfile) {
+                    useActor.CurrentAid = actor.aid;
+                    useActor.CurrentIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+                }
+                if (actor.isUserProfile || actor.isUsing) {
+                    useActor.ActorPeers.push(new ActorPeer(actor, this.PeerId));
+                }
+            });
+            callback(useActor);
+        });
+
+    }
+
+
     /**
      * 
      */
@@ -151,20 +175,46 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
 
     /**
-     * ダッシュボードで、プロフィール/アクター情報が変更された場合の処理
+     * アクター情報及び使用アクターに変更があった場合に
+     * 変更内容をホームインスタンスに通知
      * @param aid 
      */
     public ChagneActorInfo(aid: string) {
 
-        this.UseActor.ActorPeers.forEach((ap) => {
+        let useActor = this.UseActor;
+        let peerId = this.PeerId;
 
-            //  UseActorに含まれていた場合、IndexedDBからデータを取り直してインスタンス側に通知する
-            if (ap.actor.aid === aid) {
-                this.Model.GetActor(aid, (newActor) => {
-                    ap.actor = newActor;
-                    this.SetUseActor(this.UseActor);
-                });
+        this.Model.GetActor(aid, (actor) => {
+
+            let preUsing = false;
+            let newApList = new Array<ActorPeer>();
+
+            //  アクターデータの差替え
+            useActor.ActorPeers.forEach((ap) => {
+                if (ap.actor.aid === aid) {
+                    preUsing = true;
+                    if (actor.isUserProfile || actor.isUsing) {
+                        ap.actor = actor;
+                        newApList.push(ap);
+                    }
+                }
+                else {
+                    newApList.push(ap);
+                }
+            });
+
+            //  新しく配置されたアクターの場合
+            if (!preUsing && actor.isUsing) {
+                newApList.push(new ActorPeer(actor, peerId));
             }
+
+            //  カレントのアクターが配置解除された場合、別のアクターに切替える
+            if (newApList.filter((ap) => ap.actor.aid === useActor.CurrentAid).length === 0) {
+                this.ChangeCurrentActor(newApList[0].actor.aid);
+            }
+
+            useActor.ActorPeers = newApList;
+            this.SetUseActor(useActor);
         });
 
     }

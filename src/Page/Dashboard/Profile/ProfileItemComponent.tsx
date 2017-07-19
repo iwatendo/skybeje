@@ -20,6 +20,7 @@ export interface ProfileItemProp {
     actor: Personal.Actor,
     isConnected: boolean,
     isSelect: boolean,
+    isMultipleActor: boolean,
 }
 
 
@@ -55,7 +56,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
      */
     public render() {
 
-        let actor = this.props.actor;
+        let actor = this.state.actor;
         let iids = actor.iconIds;
         let iid = (iids.length > 0 ? iids[0] : "");
 
@@ -97,12 +98,12 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
             cellClass += " sbj-dashboard-profile-cell";
         }
 
-        let isUse = (actor.isUse ? true : false);
+        let isUse = (actor.isUsing ? true : false);
         let isUseBtn = (isUse ? "check_box" : "check_box_outline_blank");
 
         //  アクター選択可否
         //  クライアント接続がある事かつ、ユーザープロフィールまたは、使用可能なアクターである事
-        let canActorSelect = this.props.isConnected && (actor.isUserProfile || isUse);
+        let canActorSelect = this.props.isMultipleActor && this.props.isConnected && (actor.isUserProfile || isUse);
 
         return (
             <div className={cellClass} onClick={this.OnClick.bind(this)} draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.OnDrop.bind(this)}>
@@ -164,7 +165,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
      */
     private OnUseClick(event) {
         let actor = this.state.actor;
-        actor.isUse = !(actor.isUse ? true : false);
+        actor.isUsing = !(actor.isUsing ? true : false);
         this.setState({
             actor: actor,
         });
@@ -175,7 +176,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
         });
     }
 
-    
+
     /**
      * 選択
      * @param event 

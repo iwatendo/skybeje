@@ -12,13 +12,9 @@ export class UseActorSender extends Sender {
 
     public static ID = "UseActor";
 
-    constructor(actor: Personal.Actor) {
+    constructor() {
         super(UseActorSender.ID);
         this.ActorPeers = new Array<ActorPeer>();
-        if (actor) {
-            this.CurrentAid = actor.aid;
-            this.CurrentIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
-        }
     }
 
     /**

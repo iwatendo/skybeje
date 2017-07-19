@@ -60,15 +60,16 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
     public render() {
 
         let userProfile = this.state.actors.filter(n => n.isUserProfile)[0];
+        let isMultipleActor = (this.state.actors.length > 1);
         let isUserProfileSelect = (this.state.selectedActor === userProfile.aid);
         let isConnected = (this.props.isConnected);
-        let userProfileItem = (<ProfileItemComponent key={userProfile.aid} owner={this} actor={userProfile} isConnected={isConnected} isSelect={isUserProfileSelect} />)
+        let userProfileItem = (<ProfileItemComponent key={Personal.Actor.HashCode(userProfile)} owner={this} actor={userProfile} isConnected={isConnected} isMultipleActor={isMultipleActor} isSelect={isUserProfileSelect} />)
 
         let canEdit = false;
         let actorItems = this.state.actors.filter(n => !n.isUserProfile).map((actor) => {
             let isSelect = (this.state.selectedActor === actor.aid);
             if (isSelect) canEdit = true;
-            return (<ProfileItemComponent key={actor.aid} owner={this} isConnected={isConnected} actor={actor} isSelect={isSelect} />);
+            return (<ProfileItemComponent key={Personal.Actor.HashCode(actor)} owner={this} actor={actor} isConnected={isConnected} isMultipleActor={isMultipleActor} isSelect={isSelect} />);
         });
 
         let profileFrame = (<iframe id="sbj-profile-frame" className="sbj-profile-frame" hidden></iframe>);
@@ -78,7 +79,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
                 <div className="sbj-dashboard-profile-gird">
                     <div className="sbj-dashboard-profile-label-card">
                         <h5 className="sbj-dashboard-profile-label">ユーザープロフィール</h5>
-                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised" onClick={this.OnClick_Back.bind(this)}　hidden={!isConnected}>
+                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised" onClick={this.OnClick_Back.bind(this)} hidden={!isConnected}>
                             <i className='material-icons'>arrow_back</i>
                             &nbsp;戻る&nbsp;
                         </button>
@@ -117,11 +118,10 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
     public Close() {
         if (this.props.isConnected) {
             this.setState({ selectedActor: "" },
-             () => { this.props.controller.View.DoNaviClick(NaviEnum.Visitor); }
+                () => { this.props.controller.View.DoNaviClick(NaviEnum.Visitor); }
             );
         }
     }
-
 
 
     /**
@@ -178,7 +178,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * 「戻る」ボタン押下時処理
      * @param ev 
      */
-    public OnClick_Back(ev){
+    public OnClick_Back(ev) {
         this.Close();
     }
 
