@@ -39,7 +39,7 @@ export default class DisConnectComponent extends React.Component<DisConnectProp,
      */
     private OnQuitClick(e) {
         //  ダッシュボード側に通知
-        this.props.controller.View.NotifyDashbord('');
+        this.props.controller.NotifyDashbord('');
     };
 
 }

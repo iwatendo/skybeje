@@ -10,6 +10,7 @@ import DashboardController from "../DashboardController";
 import ProfileItemComponent from "./ProfileItemComponent";
 import ProfileView from "./ProfileView";
 import ImageInfo from "../../../Base/Container/ImageInfo";
+import { NaviEnum } from "../DashboardView";
 
 
 /**
@@ -19,6 +20,7 @@ export interface ProfileProp {
     controller: DashboardController;
     view: ProfileView;
     actors: Array<Personal.Actor>;
+    isConnected: boolean,
 }
 
 
@@ -52,7 +54,6 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
             actors: props.actors,
             selectedActor: selectedActor,
         };
-
     }
 
 
@@ -60,41 +61,30 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
 
         let userProfile = this.state.actors.filter(n => n.isUserProfile)[0];
         let isUserProfileSelect = (this.state.selectedActor === userProfile.aid);
-        let userProfileItem = (<ProfileItemComponent key={userProfile.aid} owner={this} actor={userProfile} isSelect={isUserProfileSelect} />)
+        let isConnected = (this.props.isConnected);
+        let userProfileItem = (<ProfileItemComponent key={userProfile.aid} owner={this} actor={userProfile} isConnected={isConnected} isSelect={isUserProfileSelect} />)
 
         let canEdit = false;
         let actorItems = this.state.actors.filter(n => !n.isUserProfile).map((actor) => {
             let isSelect = (this.state.selectedActor === actor.aid);
             if (isSelect) canEdit = true;
-            return (<ProfileItemComponent key={actor.aid} owner={this} actor={actor} isSelect={isSelect} />);
+            return (<ProfileItemComponent key={actor.aid} owner={this} isConnected={isConnected} actor={actor} isSelect={isSelect} />);
         });
 
         let profileFrame = (<iframe id="sbj-profile-frame" className="sbj-profile-frame" hidden></iframe>);
 
         return (
-            <div className="sbj-dashboard-profile">
-                <div className="mdl-grid">
-                    <div className="mdl-cell mdl-cell--12-col">
+            <div className="sbj-dashboard-profile" onClick={this.OnClick_background.bind(this)}>
+                <div className="sbj-dashboard-profile-gird">
+                    <div className="sbj-dashboard-profile-card">
                         <h5 className="sbj-dashboard-profile-label">ユーザープロフィール</h5>
-                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" onClick={(e) => this.EditProfile(userProfile.aid)}>
-                            <i className='material-icons'>edit</i>
-                            &nbsp;編集&nbsp;
-                        </button>
                     </div>
                     {userProfileItem}
-                    <div className="mdl-cell mdl-cell--12-col">
-                        <h5 className="sbj-dashboard-profile-label">アクタープロフィール</h5>
+                    <div className="sbj-dashboard-profile-card">
+                        <h5 className="sbj-dashboard-profile-label">アクター／ボット</h5>
                         <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" onClick={this.OnClick_AddActor.bind(this)}>
                             <i className='material-icons'>add</i>
                             &nbsp;追加&nbsp;
-                        </button>
-                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" disabled={!canEdit} onClick={this.OnClick_EditActor.bind(this)}>
-                            <i className='material-icons'>edit</i>
-                            &nbsp;編集&nbsp;
-                        </button>
-                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--accent" disabled={!canEdit} onClick={this.OnClick_DeleteActor.bind(this)}>
-                            <i className='material-icons'>delete</i>
-                            &nbsp;削除&nbsp;
                         </button>
                     </div>
                     {actorItems}
@@ -104,6 +94,20 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
             </div>
         );
     }
+
+
+    /**
+     * バックグラウンドのクリック時処理
+     * @param event 
+     */
+    public OnClick_background(event) {
+        if (this.props.isConnected) {
+            if (event && event.target && event.target.className === 'sbj-dashboard-profile') {
+                this.props.controller.View.DoNaviClick(NaviEnum.Visitor);
+            }
+        }
+    }
+
 
     /**
      * アクターの選択
@@ -145,7 +149,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
                     });
 
                     this.props.controller.ChangeActorNotify(aid);
-                    
+
                 });
 
             });
@@ -166,28 +170,17 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
 
     /**
      * アクタープロフィールの編集
-     * @param event 
+     * @param aid 
      */
-    public OnClick_EditActor(event) {
-        this.EditProfile(this.state.selectedActor);
-    }
-
-
-    /**
-     * アクタープロフィールの編集
-     * @param event 
-     */
-    public OnClick_DeleteActor(event) {
-        if (this.state.selectedActor) {
-            this.props.controller.Model.GetActor(this.state.selectedActor, (actor) => {
-                if (actor.isUserProfile) {
-                    return;
-                }
-                if (window.confirm('削除したアクターは元に戻せません。\n削除してよろしいですか？')) {
-                    this.DeleteActor(actor);
-                }
-            });
-        }
+    public DeleteProfile(aid: string) {
+        this.props.controller.Model.GetActor(aid, (actor) => {
+            if (actor.isUserProfile) {
+                return;
+            }
+            if (window.confirm('削除したアクターは元に戻せません。\n削除してよろしいですか？')) {
+                this.DeleteActor(actor);
+            }
+        });
     }
 
 

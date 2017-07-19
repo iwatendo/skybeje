@@ -219,4 +219,55 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
     }
 
+
+    /**
+     * ダッシュボードへ起動したインスンタンスIDを通知
+     */
+    public NotifyDashbord(peerid: string) {
+        let element = window.parent.document.getElementById('sbj-main-home-visitor-id');
+        if (element) {
+            element.textContent = peerid;
+            element.click();
+        }
+    }
+
+
+    /**
+     * ダッシュボード側へ選択アクターを通知
+     * @param aid 
+     * @param isOpenProfile 
+     */
+    public NotifyShowProfile(aid:string, isOpenProfile:boolean) {
+        let element = window.parent.document.getElementById('sbj-main-home-visitor-profile-id');
+        if (element) {
+            element.textContent = aid;
+            element.click();
+        }
+    }
+
+
+    /**
+     * ダッシュボードへライブキャストの起動を通知
+     */
+    public NotifyLivecast(peerid: string) {
+
+        let element = window.parent.document.getElementById('sbj-main-home-livecast-id');
+        if (element) {
+            element.textContent = peerid;
+            element.click();
+        }
+    }
+
+
+    /**
+     * ダッシュボードへ、ライブキャストのハイド通知
+     */
+    public NotifyLivecastHide() {
+
+        let element = window.parent.document.getElementById('sbj-main-home-livecast-hide');
+        if (element) {
+            element.click();
+        }
+    }
+
 };

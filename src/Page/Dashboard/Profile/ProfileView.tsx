@@ -22,6 +22,7 @@ export default class ProfileView implements INaviContainer {
 
     private _profileSelectionIconElement = document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
     private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
+    private _hoveVisitorIdElement = document.getElementById('sbj-main-home-visitor-id') as HTMLInputElement;
     private _editCallback;
 
     /**
@@ -43,7 +44,6 @@ export default class ProfileView implements INaviContainer {
                 this._editCallback();
             }
         }
-
     }
 
 
@@ -70,9 +70,11 @@ export default class ProfileView implements INaviContainer {
      */
     public Refresh() {
 
+        let isConnected = (this._hoveVisitorIdElement.textContent.length > 0);
+
         this._owner.Model.GetActors((actors) => {
             let key = StdUtil.CreateUuid();
-            ReactDOM.render(<ProfileComponent key={key} controller={this._owner} view={this} actors={actors} />, this._element, () => {
+            ReactDOM.render(<ProfileComponent key={key} controller={this._owner} view={this} isConnected={isConnected} actors={actors} />, this._element, () => {
                 this.SetIconImageCss(actors);
             });
         });

@@ -47,9 +47,9 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     protected Initialize(callback: OnViewLoad) {
 
         //  ダッシュボードに通知
-        this.NotifyDashbord(this.Controller.PeerId);
+        this.Controller.NotifyDashbord(this.Controller.PeerId);
         //  ライブキャストは前回分が残らないようにクリア
-        this.NotifyLivecast("");
+        this.Controller.NotifyLivecast("");
 
         this.SetSplitPane();
         this.CastSelector = new CastSelectorController(this.Controller);
@@ -64,7 +64,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         //  「退室」処理
         document.getElementById('sbj-home-visitor-stop').onclick = (e) => {
-            this.Controller.View.NotifyDashbord('');
+            this.Controller.NotifyDashbord('');
         };
 
         //  
@@ -101,50 +101,13 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
 
     /**
-     * ダッシュボードへ起動したインスンタンスIDを通知
-     */
-    public NotifyDashbord(peerid: string) {
-        let element = window.parent.document.getElementById('sbj-main-home-visitor-id');
-        if (element) {
-            element.textContent = peerid;
-            element.click();
-        }
-    }
-
-
-    /**
-     * ダッシュボードへ、ライブキャストの起動を通知
-     */
-    public NotifyLivecast(peerid: string) {
-
-        let element = window.parent.document.getElementById('sbj-main-home-livecast-id');
-        if (element) {
-            element.textContent = peerid;
-            element.click();
-        }
-    }
-
-
-    /**
-     * ダッシュボードへ、ライブキャストのハイド通知
-     */
-    public NotifyLivecastHide() {
-
-        let element = window.parent.document.getElementById('sbj-main-home-livecast-hide');
-        if (element) {
-            element.click();
-        }
-    }
-
-
-    /**
      *  親インスタンスが閉じられた場合の処理
      *  切断された時の表示
      */
     public DisConnect() {
 
         ReactDOM.render(<DisConnectComponent controller={this.Controller} />, this._element, () => {
-            this.NotifyLivecast("");
+            this.Controller.NotifyLivecast("");
             this._splitElement.setAttribute("hidden", "true");
             this._head.setAttribute("hidden", "true");
             this._element.removeAttribute("hidden");

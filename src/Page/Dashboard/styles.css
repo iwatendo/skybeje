@@ -81,9 +81,27 @@
 	height: 100%;
 }
 
- #sbj-main{
-    overflow: hidden;
+ .sbj-main,
+ .sbj-main-frame{
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
  }
+
+.sbj-main{
+	z-index: 3;
+}
+
+#sbj-main-home-visitor-frame{
+	z-index: 2;
+}
+
+#sbj-main-home-livecast-frame{
+	z-index: 4;
+}
 
 .sbj-profile-frame{
      position: absolute;
@@ -132,7 +150,17 @@
 .sbj-dashboard-profile{
 	width: 100%;
 	height: 100%;
-    overflow: auto;	
+	overflow: hidden;
+	background-color: rgba(0,0,0,0.2);
+}
+
+.sbj-dashboard-profile-gird{
+	width: 450px;
+	overflow: auto;
+	float: left;
+	background: whitesmoke;
+	height: 100%;
+	padding: 8px;
 }
 
 .sbj-dashboard-profile-label{
@@ -145,28 +173,38 @@
 	margin: 8px;
 }
 
+.sbj-dashboard-profile-edit-button{
+	float: right;
+}
+
 .sbj-dashboard-profile-img-box {
-    width: 184px;
-    height: 184px;
-    min-width: 184px;
+    width: 128px;
+    height: 128px;
+    min-width: 128px;
     margin: 8px;
 	background-size: cover;
 }
 
 .sbj-dashboard-profile-card{
 	display: flex;
-	min-width: 450px;
+	min-width: 400px;
 }
 
 .sbj-dashboard-profile-cell {
 	padding: 0px 0px 3px 0px;
+	width: 400px;
+	min-height: 140px;
+	margin:16px;
 }
 
 .sbj-dashboard-profile-cell-select {
 	border: 0px;
     border-bottom: 3px;
     border-style: solid;
-    border-color: var(--sbj-color-icon-selection);
+	border-color: var(--sbj-color-icon-selection);
+	width: 400px;
+	min-height: 140px;
+	margin:16px;
 }
 
 
@@ -174,9 +212,19 @@
     font-weight: 600;
 }
 
-.sbj-dashboard-profile-text{
-	width: calc(100% - 200px);
+.sbj-dashboard-profile-info{
+	width: calc(100% - 128px);
 	margin: 8px;
+}
+
+.sbj-dashboard-profile-text{
+	margin: 8px;
+}
+
+.sbj-dashborad-profile-action {
+	position:absolute;
+	bottom: 0;
+	right: 0;
 }
 
 .sbj-dashboard-profile-img {

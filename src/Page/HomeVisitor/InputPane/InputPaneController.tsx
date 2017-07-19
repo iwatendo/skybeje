@@ -60,7 +60,7 @@ export default class InputPaneController {
         this._textareaElement.onkeydown = (e) => { this.OnKeyDown(e); };
         this._actorEditButton.onclick = (e) => { this.DoShoActorEditDialog(); };
         this._actorIconElement.ondblclick = (e) => { this.DoShoActorEditDialog(); };
-        this._selectActorButton.onclick = (e) => { this.DoShowActorSelectDialog(); };
+        this._selectActorButton.onclick = (e) => { this.DoShowActorProfile(); };
         this._sendMessageButton.onclick = (e) => { this.SendInputMessage(); };
 
         //  ダッシュボードからの変更通知
@@ -207,14 +207,6 @@ export default class InputPaneController {
             }
 
             switch (e.keyCode) {
-                case 77: // [M]
-                    this.DoShowActorSelectDialog();
-                    e.preventDefault();
-                    return;
-                case 73: // [I]
-                    this.DoShoActorEditDialog();
-                    e.preventDefault();
-                    return;
                 case 37: // [←]
                     this.MoveSelectionActor(-1);
                     e.preventDefault();
@@ -271,24 +263,11 @@ export default class InputPaneController {
     /**
      * アクター選択ボタン押下時処理
      */
-    private DoShowActorSelectDialog() {
+    private DoShowActorProfile() {
 
         let controller = this._controller;
         let useActor = controller.UseActor;
-        let dialog = new ActorSelectorDialog(controller);
-
-        //  アクター選択ダイアログの表示
-        dialog.Show(DialogMode.Select, useActor, (result) => {
-
-            if (!result) {
-                return;
-            }
-
-            controller.SetUseActor(result);
-            let aid = controller.UseActor.CurrentAid;
-            this.ChangeSelectionActorIcon(aid);
-
-        });
+        controller.NotifyShowProfile(useActor.CurrentAid, true);
     }
 
     /**

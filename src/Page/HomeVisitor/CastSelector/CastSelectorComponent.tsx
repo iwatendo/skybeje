@@ -70,7 +70,7 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
      */
     private OnLiveCastCkick(e) {
         let peerid = this.props.controller.PeerId;
-        this.props.controller.View.NotifyLivecast(peerid);
+        this.props.controller.NotifyLivecast(peerid);
     }
 
 

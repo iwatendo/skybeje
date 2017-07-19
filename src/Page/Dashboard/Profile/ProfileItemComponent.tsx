@@ -18,6 +18,7 @@ import LinkUtil from "../../../Base/Util/LinkUtil";
 export interface ProfileItemProp {
     owner: ProfileComponent;
     actor: Personal.Actor,
+    isConnected: boolean,
     isSelect: boolean,
 }
 
@@ -88,11 +89,11 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
             }
         });
 
-        let cellClass = "mdl-cell mdl-cell--4-col mdl-card mdl-shadow--4dp";
+        let cellClass = "mdl-card mdl-shadow--4dp";
         if (this.props.isSelect) {
             cellClass += " sbj-dashboard-profile-cell-select";
         }
-        else{
+        else {
             cellClass += " sbj-dashboard-profile-cell";
         }
 
@@ -100,13 +101,22 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
             <div className={cellClass} onClick={this.OnClick.bind(this)} onDoubleClick={this.OnDoubleClick.bind(this)} draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.OnDrop.bind(this)}>
                 <div className="sbj-dashboard-profile-card">
                     {image_div}
-                    <div className='sbj-dashboard-profile-text'>
-                        <h6>
+                    <div className='sbj-dashboard-profile-info'>
+                        <h6 className='sbj-dashboard-profile-text'>
                             <span id="sbj-dashboard-profile-name">{actor.name}</span>
                             <br />
                             <span id="sbj-dashboard-profile-tag">{actor.tag}</span>
                         </h6>
-                        <span id="sbj-dashboard-profile-note">{dispProfile}</span>
+                        <div className='sbj-dashborad-profile-action'>
+                            <button className="sbj-dashboard-profile-edit-button mdl-button mdl-button--colored" onClick={this.OnEditClick.bind(this)}>
+                                <i className='material-icons'>edit</i>
+                                &nbsp;編集&nbsp;
+                            </button>
+                            <button className="sbj-dashboard-profile-edit-button mdl-button mdl-button--accent" onClick={this.OnDeleteClick.bind(this)} hidden={this.props.actor.isUserProfile}>
+                                <i className='material-icons'>delete</i>
+                                &nbsp;削除&nbsp;
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,6 +138,26 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
     private OnDoubleClick(event) {
         let actor = this.props.actor;
         this.props.owner.EditProfile(actor.aid);
+    }
+
+
+    /**
+     * 編集
+     * @param event 
+     */
+    private OnEditClick(event) {
+        let actor = this.props.actor;
+        this.props.owner.EditProfile(actor.aid);
+    }
+
+
+    /**
+     * 削除
+     * @param event 
+     */
+    private OnDeleteClick(event) {
+        let actor = this.props.actor;
+        this.props.owner.DeleteProfile(actor.aid);
     }
 
 
