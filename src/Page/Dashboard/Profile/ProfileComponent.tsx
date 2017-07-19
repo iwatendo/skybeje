@@ -76,11 +76,15 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
         return (
             <div className="sbj-dashboard-profile" onClick={this.OnClick_background.bind(this)}>
                 <div className="sbj-dashboard-profile-gird">
-                    <div className="sbj-dashboard-profile-card">
+                    <div className="sbj-dashboard-profile-label-card">
                         <h5 className="sbj-dashboard-profile-label">ユーザープロフィール</h5>
+                        <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised" onClick={this.OnClick_Back.bind(this)}　hidden={!isConnected}>
+                            <i className='material-icons'>arrow_back</i>
+                            &nbsp;戻る&nbsp;
+                        </button>
                     </div>
                     {userProfileItem}
-                    <div className="sbj-dashboard-profile-card">
+                    <div className="sbj-dashboard-profile-label-card">
                         <h5 className="sbj-dashboard-profile-label">アクター／ボット</h5>
                         <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" onClick={this.OnClick_AddActor.bind(this)}>
                             <i className='material-icons'>add</i>
@@ -101,12 +105,23 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * @param event 
      */
     public OnClick_background(event) {
-        if (this.props.isConnected) {
-            if (event && event.target && event.target.className === 'sbj-dashboard-profile') {
-                this.props.controller.View.DoNaviClick(NaviEnum.Visitor);
-            }
+        if (event && event.target && event.target.className === 'sbj-dashboard-profile') {
+            this.Close();
         }
     }
+
+
+    /**
+     * プロフィール画面を閉じる
+     */
+    public Close() {
+        if (this.props.isConnected) {
+            this.setState({ selectedActor: "" },
+             () => { this.props.controller.View.DoNaviClick(NaviEnum.Visitor); }
+            );
+        }
+    }
+
 
 
     /**
@@ -156,6 +171,15 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
 
         });
 
+    }
+
+
+    /**
+     * 「戻る」ボタン押下時処理
+     * @param ev 
+     */
+    public OnClick_Back(ev){
+        this.Close();
     }
 
 

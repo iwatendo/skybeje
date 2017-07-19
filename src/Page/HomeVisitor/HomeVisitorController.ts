@@ -211,6 +211,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.Model.GetActor(aid, (actor) => {
             this.UseActor.CurrentAid = actor.aid;
             this.UseActor.CurrentIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+            this.View.InputPane.ChangeActor();
             this.RoomCache.GetRoomByActorId(aid, (room) => {
                 this.View.SetRoomInfo(room);
                 this.View.CastSelector.NotifyServantToActor();
@@ -237,7 +238,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * @param aid 
      * @param isOpenProfile 
      */
-    public NotifyShowProfile(aid:string, isOpenProfile:boolean) {
+    public NotifyShowProfile(aid: string, isOpenProfile: boolean) {
         let element = window.parent.document.getElementById('sbj-main-home-visitor-profile-id');
         if (element) {
             element.textContent = aid;

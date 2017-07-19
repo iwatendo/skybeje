@@ -33,6 +33,7 @@ export default class InputPaneController {
     private _otherRoomCount = document.getElementById('sbj-inputpanel-noread-other-room-count');
 
     private _dashboradChangeActorElement = document.getElementById('sbj-dashborad-change-actor') as HTMLInputElement;
+    private _dashboradSelectActorElement = document.getElementById('sbj-dashborad-select-actor') as HTMLInputElement;
     private _profileSelectionIconElement = document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
     private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
 
@@ -67,6 +68,11 @@ export default class InputPaneController {
         this._dashboradChangeActorElement.onclick = (e) => {
             this._controller.ChagneActorInfo(this._dashboradChangeActorElement.value);
             this.ChangeActor();
+        }
+
+        this._dashboradSelectActorElement.onclick = (e) => {
+            let aid = this._dashboradSelectActorElement.value
+            this._controller.ChangeCurrentActor(aid);
         }
 
         //  プロフィール画面からのアイコン変更通知
