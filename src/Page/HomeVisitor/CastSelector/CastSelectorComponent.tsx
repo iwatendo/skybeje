@@ -4,7 +4,6 @@ import * as ReactDOM from 'react-dom';
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 
-import ActorSelectorDialog from "../ActorSelector/ActorSelectorDialog";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";
 import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanceContainer";
@@ -70,7 +69,7 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
      */
     private OnLiveCastCkick(e) {
         let peerid = this.props.controller.PeerId;
-        this.props.controller.View.NotifyLivecast(peerid);
+        this.props.controller.NotifyLivecast(peerid);
     }
 
 

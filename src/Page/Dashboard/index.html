@@ -64,26 +64,20 @@
 			</nav>
 
 		</div>
-		<main class="mdl-layout__content mdl-color--grey-100 sbj-content" id='sbj-main'>
+		<main class="mdl-layout__content mdl-color--grey-100 sbj-content">
+			<div class="sbj-main" id="sbj-main">
+			</div>
 			<!--React-->
-		</main>
-
-		<main class="mdl-layout__content mdl-color--grey-100 sbj-content" id='sbj-main-home-instance' hidden>
-			<iframe class="sbj-main-frame" id="sbj-main-home-instance-frame">
-			</iframe>
-		</main>
-
-		<main class="mdl-layout__content mdl-color--grey-100 sbj-content" id='sbj-main-home-visitor' hidden>
-			<iframe class="sbj-main-frame" id="sbj-main-home-visitor-frame">
-			</iframe>
-			<iframe class="sbj-main-frame" id="sbj-main-home-livecast-frame">
-			</iframe>
+			<iframe class="sbj-main-frame" id="sbj-main-home-instance-frame"></iframe>
+			<iframe class="sbj-main-frame" id="sbj-main-home-visitor-frame"></iframe>
+			<iframe class="sbj-main-frame" id="sbj-main-home-livecast-frame"></iframe>
 		</main>
 
 		<!--子フレームから操作する為の入力ボックス -->
 		<input type="text" id="sbj-main-home-instance-id" hidden/>
 		<input type="text" id="sbj-main-home-visitor-id" hidden/>
 		<input type="text" id="sbj-main-home-visitor-start" hidden/>
+		<input type="text" id="sbj-main-home-visitor-profile-id" hidden/>
 		<input type="text" id="sbj-main-home-livecast-id" hidden/>
 		<input type="text" id="sbj-main-home-livecast-hide" hidden/>
 

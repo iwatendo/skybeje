@@ -40,7 +40,7 @@ export default class ServantCache {
         }
         else {
 
-            let selectAid = this._controller.UseActor.CurrentAid;
+            let selectAid = this._controller.CurrentAid;
 
             this._controller.Model.GetUserProfile((profile) => {
 

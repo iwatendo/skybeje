@@ -39,7 +39,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let ram = (sender as HIContainer.RoomActorMemberSender);
 
             this.Controller.RoomCache.SetMember(ram);
-            let aid = this.Controller.UseActor.CurrentAid;
+            let aid = this.Controller.CurrentAid;
 
             this.Controller.RoomCache.GetRoomByActorId(aid, (room) => {
                 if (ram.hid === room.hid) {
@@ -161,11 +161,11 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         //  自身のダッシュボードへの通知
         if (cib.setting.isControlClose) {
             //  ダッシュボード側のフレームを閉じる
-            this.Controller.View.NotifyLivecast("");
+            this.Controller.NotifyLivecast("");
         }
         else if (cib.setting.isControlHide) {
             //  ダッシュボード側からフレームをハイド状態にする
-            this.Controller.View.NotifyLivecastHide();
+            this.Controller.NotifyLivecastHide();
         }
 
         //

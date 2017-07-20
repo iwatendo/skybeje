@@ -32,7 +32,7 @@ export default class IconListView {
         this._element = element;
 
         if (!this._owner.SelectionIid) {
-            this._owner.SelectionIid = (owner.Actor.iconIds ? owner.Actor.iconIds[0] : "");
+            this._owner.SelectionIid = Personal.Actor.TopIconId(owner.Actor);
         }
 
         let addIconElement = document.getElementById('sbj-profile-add-icon');

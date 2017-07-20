@@ -63,4 +63,28 @@ export default class DashboardController extends AbstractServiceController<Dashb
         }
     }
 
+
+    /**
+     * クライアントが起動していた場合に
+     * 選択しているアクターが変更された事を通知する
+     */
+    public SelectActorNotify(aid: string) {
+
+        let frame = window.parent.document.getElementById('sbj-main-home-visitor-frame') as HTMLFrameElement;
+
+        if (!frame) {
+            return;
+        }
+
+        //  ホームインスタンス側のエレメント
+        let document = frame.contentDocument;
+        let element = document.getElementById("sbj-dashborad-select-actor") as HTMLInputElement;
+
+        if (element) {
+            element.value = aid;
+            element.click();
+        }
+    }
+    
+
 }

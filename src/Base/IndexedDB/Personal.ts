@@ -2,6 +2,7 @@
 import * as DBI from "./Database";
 import ImageInfo from "../Container/ImageInfo";
 import { IOrder } from "../Container/Order";
+import StdUtil from "../Util/StdUtil";
 
 
 /**
@@ -12,6 +13,7 @@ export class Actor implements IOrder {
     constructor() {
         this.aid = "";
         this.isUserProfile = false;
+        this.isUsing = false;
         this.name = "";
         this.tag = "";
         this.profile = "";
@@ -22,6 +24,7 @@ export class Actor implements IOrder {
 
     aid: string;
     isUserProfile: boolean;
+    isUsing: boolean;
     name: string;
     tag: string;
     profile: string;
@@ -37,6 +40,31 @@ export class Actor implements IOrder {
     public static IsChange(pre: Actor, cur: Actor) {
         return !(pre.name === cur.name && pre.tag === cur.tag && pre.profile === cur.profile);
     }
+
+
+    /**
+     * 代表アイコンの取得
+     * @param act 
+     */
+    public static TopIconId(act: Actor) {
+        if (!act) {
+            return "";
+        }
+        if( act.iconIds.length === 0){
+            return "";
+        }
+        return act.iconIds[0];
+    }
+
+
+    /**
+     * ハッシュコードを生成
+     */
+    public static HashCode(act: Actor): string {
+        let value = act.name + "/n" + act.tag + "/n" + act.profile + "/n" + this.TopIconId(act);
+        return StdUtil.ToHashCode(value).toString();
+    }
+
 }
 
 
@@ -60,7 +88,7 @@ export class Icon implements IOrder {
 /**
  * ガイド情報
  */
-export class Guide implements IOrder{
+export class Guide implements IOrder {
 
     constructor() {
         this.gid = "";
@@ -79,13 +107,13 @@ export class Guide implements IOrder{
     aid: string;
     iid: string;
     order: number;
-    matchoption : number;
-    rescheckoption : number;
+    matchoption: number;
+    rescheckoption: number;
     img: ImageInfo;
-    keyword:string;
-    note:string;
-    url:string;
-    embedstatus:string;
+    keyword: string;
+    note: string;
+    url: string;
+    embedstatus: string;
 }
 
 export class Data {

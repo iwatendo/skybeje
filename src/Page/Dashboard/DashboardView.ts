@@ -147,6 +147,12 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
 
 
+        //  プロフィール表示
+        document.getElementById("sbj-main-home-visitor-profile-id").onclick = (e) => {
+            this.DoNaviClick(NaviEnum.Profile);
+        }
+
+
         //  ライブキャスト起動時処理
         document.getElementById("sbj-main-home-livecast-id").onclick = (e) => {
 
@@ -254,9 +260,9 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
 
         document.getElementById('sbj-main').hidden = (disp !== DispEnum.Local);
-        document.getElementById('sbj-header').hidden = (disp !== DispEnum.Local);
-        document.getElementById('sbj-main-home-instance').hidden = !(disp === DispEnum.HomeInstance);
-        document.getElementById('sbj-main-home-visitor').hidden = !(disp === DispEnum.HomeVisitor || disp === DispEnum.LiveCast);
+        document.getElementById('sbj-header').hidden = (disp !== DispEnum.Local || navi === NaviEnum.Profile);
+        document.getElementById('sbj-main-home-instance-frame').hidden = !(disp === DispEnum.HomeInstance);
+        document.getElementById('sbj-main-home-visitor-frame').hidden = !(disp === DispEnum.HomeVisitor || disp === DispEnum.LiveCast || navi === NaviEnum.Profile);
         document.getElementById('sbj-main-home-livecast-frame').hidden = !(disp === DispEnum.LiveCast);
 
         this.DoNaviChange(navi, title);

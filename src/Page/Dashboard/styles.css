@@ -81,9 +81,27 @@
 	height: 100%;
 }
 
- #sbj-main{
-    overflow: hidden;
+ .sbj-main,
+ .sbj-main-frame{
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
  }
+
+.sbj-main{
+	z-index: 3;
+}
+
+#sbj-main-home-visitor-frame{
+	z-index: 2;
+}
+
+#sbj-main-home-livecast-frame{
+	z-index: 4;
+}
 
 .sbj-profile-frame{
      position: absolute;
@@ -132,41 +150,63 @@
 .sbj-dashboard-profile{
 	width: 100%;
 	height: 100%;
-    overflow: auto;	
+	overflow: hidden;
+	background-color: rgba(0,0,0,0.2);
+}
+
+.sbj-dashboard-profile-gird{
+	width: 480px;
+	overflow: auto;
+	float: left;
+	background: whitesmoke;
+	height: 100%;
+	padding: 8px;
+}
+
+.sbj-dashboard-profile-label-card{
+	display: flex;
+	position: relative;
 }
 
 .sbj-dashboard-profile-label{
-	width: auto;
+	width: calc(100% - 186px);
 	margin: 16px 28px;
 	float: left;
 }
 
 .sbj-dashboard-profile-button{
 	margin: 8px;
+	position: absolute;
+	left: 338px;
 }
 
 .sbj-dashboard-profile-img-box {
-    width: 184px;
-    height: 184px;
-    min-width: 184px;
+    width: 96px;
+    height: 96px;
+    min-width: 96px;
     margin: 8px;
 	background-size: cover;
 }
 
 .sbj-dashboard-profile-card{
 	display: flex;
-	min-width: 450px;
 }
 
 .sbj-dashboard-profile-cell {
 	padding: 0px 0px 3px 0px;
+	width: 440px;
+	min-height: 140px;
+	margin:16px;
 }
 
 .sbj-dashboard-profile-cell-select {
 	border: 0px;
     border-bottom: 3px;
     border-style: solid;
-    border-color: var(--sbj-color-icon-selection);
+	border-color: var(--sbj-color-icon-selection);
+	width: 440px;
+	min-height: 140px;
+	margin:16px;
 }
 
 
@@ -174,9 +214,37 @@
     font-weight: 600;
 }
 
-.sbj-dashboard-profile-text{
-	width: calc(100% - 200px);
+.sbj-dashboard-profile-info{
+	width: calc(100% - 128px);
 	margin: 8px;
+}
+
+.sbj-dashboard-profile-info-top
+{
+	display: flex;
+	width: 100%;
+}
+
+.sbj-dashboard-profile-text{
+	margin: 8px;
+	width: calc(100% - 48px);
+}
+
+.sbj-dashborad-profile-edit{
+	width: 140px;
+	float: right;
+}
+
+.sbj-dashboard-profile-usage-button{
+	position:absolute;
+	bottom: 0px;
+	left: 8px;
+}
+
+.sbj-dashboard-profile-actor-change-button{
+	position:absolute;
+	bottom: 8px;
+	left: 128px;
 }
 
 .sbj-dashboard-profile-img {
@@ -184,10 +252,6 @@
     height: 100%;
     border-radius: 12px;
     background-color: var(--sbj-color-edge-background);
-}
-
-.sbj-dashboard-profile-name{
-	margin: 0px;
 }
 
 .sbj-dashboard-profile-name{

@@ -1,5 +1,6 @@
 ﻿
 import * as Timeline from "../../Base/IndexedDB/Timeline";
+import * as Personal from "../../Base/IndexedDB/Personal";
 import * as Home from "../../Base/IndexedDB/Home";
 
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
@@ -7,6 +8,9 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
 import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LogUtil from "../../Base/Util/LogUtil";
+import ActorPeer from "../../Base/Container/ActorPeer";
+import { OnRead } from "../../Base/Common/AbstractServiceModel";
+import { Order } from "../../Base/Container/Order";
 
 import { GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServantCloseSender } from "../HomeInstance/HomeInstanceContainer";
 import TimelineCache from "./Cache/TimelineCache";
@@ -18,7 +22,6 @@ import HomeVisitorView from "./HomeVisitorView";
 import HomeVisitorModel from "./HomeVisitorModel";
 import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
-import ActorPeer from "../../Base/Container/ActorPeer";
 
 
 /**
@@ -33,11 +36,18 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public IconCache: IconCache;
     public TimelineCache: TimelineCache;
     public ServantCache: ServantCache;
+    public Bot: BotController;
 
     public UseActor: UseActorSender;
-    public CurrentHid: string;
 
-    public Bot: BotController;
+    private _currentActor: Personal.Actor;
+    private _currentIid: string;
+    private _selectionIidMap: Map<string, string>;
+
+    public get CurrentAid(): string { return this._currentActor.aid; }
+    public get CurrentActor(): Personal.Actor { return this._currentActor; }
+    public get CurrentIid(): string { return this._currentIid; }
+    public CurrentHid: string;
 
     /**
      *
@@ -51,6 +61,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.TimelineCache = new TimelineCache(this);
         this.ServantCache = new ServantCache(this);
         this.Bot = new BotController(this);
+        this._selectionIidMap = new Map<string, string>();
     };
 
 
@@ -63,7 +74,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
         //  
         this.PeerId = peer.id;
-        this.UseActor = new UseActorSender(null);
+        this.UseActor = new UseActorSender();
 
         //  DB接続
         this.Model = new HomeVisitorModel(this, () => {
@@ -82,10 +93,13 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public OnOwnerConnection() {
 
-        this.Model.GetUserProfile((actor) => {
-            let useActor = new UseActorSender(actor);
-            useActor.ActorPeers.push(new ActorPeer(actor, this.PeerId));
-            this.SetUseActor(useActor);
+        this.GetUseActor((ua) => {
+            let aid = ua.ActorPeers[0].actor.aid;
+            this.Model.GetActor(aid, (actor) => {
+                this._currentActor = actor;
+                this._currentIid = this.GetSelectionIid(actor);
+                this.SetUseActor(ua);
+            });
         });
 
     }
@@ -118,6 +132,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         }
     }
 
+
     /**
      * 
      * @param conn 
@@ -143,6 +158,26 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
     /**
      * 
+     * @param callback 
+     */
+    public GetUseActor(callback: OnRead<UseActorSender>) {
+
+        this.Model.GetActors((actors) => {
+            Order.Sort(actors);
+            let useActor = new UseActorSender();
+            actors.forEach((actor) => {
+                if (actor.isUserProfile || actor.isUsing) {
+                    useActor.ActorPeers.push(new ActorPeer(actor, this.PeerId));
+                }
+            });
+            callback(useActor);
+        });
+
+    }
+
+
+    /**
+     * 
      */
     public SetUseActor(useActor: UseActorSender) {
         this.UseActor = useActor;
@@ -151,20 +186,46 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
 
     /**
-     * ダッシュボードで、プロフィール/アクター情報が変更された場合の処理
+     * アクター情報及び使用アクターに変更があった場合に
+     * 変更内容をホームインスタンスに通知
      * @param aid 
      */
     public ChagneActorInfo(aid: string) {
 
-        this.UseActor.ActorPeers.forEach((ap) => {
+        let useActor = this.UseActor;
+        let peerId = this.PeerId;
 
-            //  UseActorに含まれていた場合、IndexedDBからデータを取り直してインスタンス側に通知する
-            if (ap.actor.aid === aid) {
-                this.Model.GetActor(aid, (newActor) => {
-                    ap.actor = newActor;
-                    this.SetUseActor(this.UseActor);
-                });
+        this.Model.GetActor(aid, (actor) => {
+
+            let preUsing = false;
+            let newApList = new Array<ActorPeer>();
+
+            //  アクターデータの差替え
+            useActor.ActorPeers.forEach((ap) => {
+                if (ap.actor.aid === aid) {
+                    preUsing = true;
+                    if (actor.isUserProfile || actor.isUsing) {
+                        ap.actor = actor;
+                        newApList.push(ap);
+                    }
+                }
+                else {
+                    newApList.push(ap);
+                }
+            });
+
+            //  新しく配置されたアクターの場合
+            if (!preUsing && actor.isUsing) {
+                newApList.push(new ActorPeer(actor, peerId));
             }
+
+            //  カレントのアクターが配置解除された場合、別のアクターに切替える
+            if (newApList.filter((ap) => ap.actor.aid === this.CurrentAid).length === 0) {
+                this.ChangeCurrentActor(newApList[0].actor.aid);
+            }
+
+            useActor.ActorPeers = newApList;
+            this.SetUseActor(useActor);
         });
 
     }
@@ -203,20 +264,102 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
 
     /**
-     * ルーム情報表示
-     * @param roomActorMember 
+     * 発言アクターを変更
+     * @param aid 
      */
     public ChangeCurrentActor(aid: string) {
 
         this.Model.GetActor(aid, (actor) => {
-            this.UseActor.CurrentAid = actor.aid;
-            this.UseActor.CurrentIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+
+            this._currentActor = actor;
+            let iid = this.GetSelectionIid(actor);
+            this.ChangeCurrentIcon(iid);
+
+            //  表示変更
+            this.View.InputPane.DisplayActor();
+
+            //  変更したアクターの部屋へ変更
             this.RoomCache.GetRoomByActorId(aid, (room) => {
                 this.View.SetRoomInfo(room);
                 this.View.CastSelector.NotifyServantToActor();
             });
         });
+    }
 
+
+    /**
+     * 選択アイコンの取得
+     * @param aid 
+     */
+    public GetSelectionIid(actor:Personal.Actor) {
+
+        if (this._selectionIidMap.has(actor.aid)) {
+            return this._selectionIidMap.get(actor.aid);
+        }
+        else {
+            return Personal.Actor.TopIconId(actor);
+        }
+    }
+
+
+    /**
+     * 発言アクターのアイコンを変更
+     * @param iid 
+     */
+    public ChangeCurrentIcon(iid: string) {
+        this._currentIid = iid;
+        this._selectionIidMap.set(this.CurrentAid, iid);
+    }
+
+
+    /**
+     * ダッシュボードへ起動したインスンタンスIDを通知
+     */
+    public NotifyDashbord(peerid: string) {
+        let element = window.parent.document.getElementById('sbj-main-home-visitor-id');
+        if (element) {
+            element.textContent = peerid;
+            element.click();
+        }
+    }
+
+
+    /**
+     * ダッシュボード側へ選択アクターを通知
+     * @param aid 
+     * @param isOpenProfile 
+     */
+    public NotifyShowProfile(aid: string, isOpenProfile: boolean) {
+        let element = window.parent.document.getElementById('sbj-main-home-visitor-profile-id');
+        if (element) {
+            element.textContent = aid;
+            element.click();
+        }
+    }
+
+
+    /**
+     * ダッシュボードへライブキャストの起動を通知
+     */
+    public NotifyLivecast(peerid: string) {
+
+        let element = window.parent.document.getElementById('sbj-main-home-livecast-id');
+        if (element) {
+            element.textContent = peerid;
+            element.click();
+        }
+    }
+
+
+    /**
+     * ダッシュボードへ、ライブキャストのハイド通知
+     */
+    public NotifyLivecastHide() {
+
+        let element = window.parent.document.getElementById('sbj-main-home-livecast-hide');
+        if (element) {
+            element.click();
+        }
     }
 
 };
