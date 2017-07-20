@@ -181,7 +181,7 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
      * 
      */
     public IsMyChatMessage(): boolean {
-        return (this.props.MsgGroup.aid === this.props.controller.UseActor.CurrentAid);
+        return (this.props.MsgGroup.aid === this.props.controller.CurrentAid);
     }
 
 

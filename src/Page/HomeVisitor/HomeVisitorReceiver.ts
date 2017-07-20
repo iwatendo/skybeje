@@ -39,7 +39,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let ram = (sender as HIContainer.RoomActorMemberSender);
 
             this.Controller.RoomCache.SetMember(ram);
-            let aid = this.Controller.UseActor.CurrentAid;
+            let aid = this.Controller.CurrentAid;
 
             this.Controller.RoomCache.GetRoomByActorId(aid, (room) => {
                 if (ram.hid === room.hid) {

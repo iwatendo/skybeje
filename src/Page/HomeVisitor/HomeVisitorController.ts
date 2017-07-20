@@ -36,11 +36,16 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public IconCache: IconCache;
     public TimelineCache: TimelineCache;
     public ServantCache: ServantCache;
+    public Bot: BotController;
 
     public UseActor: UseActorSender;
-    public CurrentHid: string;
 
-    public Bot: BotController;
+    private _currentAid: string;
+    private _currentIid: string;
+
+    public get CurrentAid(): string { return this._currentAid; }
+    public get CurrentIid(): string { return this._currentIid; }
+    public CurrentHid: string;
 
     /**
      *
@@ -85,6 +90,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public OnOwnerConnection() {
         this.GetUseActor((ua) => {
+            this._currentAid = ua.ActorPeers[0].actor.aid;
             this.SetUseActor(ua);
         });
     }
@@ -141,7 +147,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
     }
 
-
     /**
      * 
      * @param callback 
@@ -152,10 +157,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             Order.Sort(actors);
             let useActor = new UseActorSender();
             actors.forEach((actor) => {
-                if (actor.isUserProfile) {
-                    useActor.CurrentAid = actor.aid;
-                    useActor.CurrentIid = Personal.Actor.TopIconId(actor);
-                }
                 if (actor.isUserProfile || actor.isUsing) {
                     useActor.ActorPeers.push(new ActorPeer(actor, this.PeerId));
                 }
@@ -210,7 +211,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             }
 
             //  カレントのアクターが配置解除された場合、別のアクターに切替える
-            if (newApList.filter((ap) => ap.actor.aid === useActor.CurrentAid).length === 0) {
+            if (newApList.filter((ap) => ap.actor.aid === this.CurrentAid).length === 0) {
                 this.ChangeCurrentActor(newApList[0].actor.aid);
             }
 
@@ -254,21 +255,31 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
 
     /**
-     * ルーム情報表示
-     * @param roomActorMember 
+     * 発言アクターを変更
+     * @param aid 
+     * @param iid 
      */
-    public ChangeCurrentActor(aid: string) {
+    public ChangeCurrentActor(aid: string, iid: string = null) {
 
         this.Model.GetActor(aid, (actor) => {
-            this.UseActor.CurrentAid = actor.aid;
-            this.UseActor.CurrentIid = Personal.Actor.TopIconId(actor);
+            this._currentAid = actor.aid;
+            this.ChangeCurrentIcon((iid === null ? Personal.Actor.TopIconId(actor) : iid));
             this.View.InputPane.ChangeActor();
             this.RoomCache.GetRoomByActorId(aid, (room) => {
                 this.View.SetRoomInfo(room);
                 this.View.CastSelector.NotifyServantToActor();
             });
         });
+    }
 
+
+    /**
+     * 発言アクターのアイコンを変更
+     * @param iid 
+     */
+    public ChangeCurrentIcon(iid: string) {
+        this._currentIid = iid;
+        document.getElementById('sbj-profile-selection-icon').textContent = iid;
     }
 
 

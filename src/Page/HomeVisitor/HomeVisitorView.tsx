@@ -195,7 +195,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         controller.TimelineCache.SetMessages(tlms);
 
         //  タイムラインの描画処理
-        controller.RoomCache.GetRoomByActorId(this.Controller.UseActor.CurrentAid, (room) => {
+        controller.RoomCache.GetRoomByActorId(this.Controller.CurrentAid, (room) => {
 
             let dispTlmsgs = controller.TimelineCache.GetMessages(room.hid);
 

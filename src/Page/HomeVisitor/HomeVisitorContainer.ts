@@ -22,17 +22,6 @@ export class UseActorSender extends Sender {
      */
     public ActorPeers: Array<ActorPeer>;
 
-
-    /**
-     * 現在使用しているアクターID
-     */
-    public CurrentAid: string;
-
-    /**
-     * 現在使用しているアイコンID
-     */
-    public CurrentIid: string;
-
 }
 
 

@@ -42,9 +42,7 @@ export default class InputPaneController {
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _selectionIidMap: Map<string, string>;
-
     public SelectionActor: Personal.Actor;
-
     /**
      * コンストラクタ
      * @param controller 
@@ -83,7 +81,7 @@ export default class InputPaneController {
         //  プロフィール画面からのダイアログクローズ通知
         this._profileDoCloseElement.onclick = (e) => {
             this._profileFrame.hidden = true;
-            this.ChangeSelectionActorIcon(controller.UseActor.CurrentAid); //   名称等の再描画の為にコール
+            this.ChangeSelectionActorIcon(controller.CurrentAid); //   名称等の再描画の為にコール
             this._textareaElement.focus();
         }
 
@@ -136,7 +134,7 @@ export default class InputPaneController {
      */
     public ChangeActor() {
 
-        this._controller.Model.GetActor(this._controller.UseActor.CurrentAid, (actor) => {
+        this._controller.Model.GetActor(this._controller.CurrentAid, (actor) => {
             this.SelectionActor = actor;
 
             let iid = this.GetSelectionIid(actor.aid);
@@ -271,8 +269,7 @@ export default class InputPaneController {
     private DoShowActorProfile() {
 
         let controller = this._controller;
-        let useActor = controller.UseActor;
-        controller.NotifyShowProfile(useActor.CurrentAid, true);
+        controller.NotifyShowProfile(controller.CurrentAid, true);
     }
 
     /**
@@ -282,7 +279,7 @@ export default class InputPaneController {
 
         let controller = this._controller;
         let useActor = controller.UseActor;
-        let aid = controller.UseActor.CurrentAid;
+        let aid = controller.CurrentAid;
 
         let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
 
@@ -291,7 +288,7 @@ export default class InputPaneController {
         }
         else {
             //  選択しているアイコンをセット
-            this._profileSelectionIconElement.value = controller.UseActor.CurrentIid;
+            this._profileSelectionIconElement.value = controller.CurrentIid;
         }
 
         this._profileFrame.hidden = false;
@@ -306,13 +303,13 @@ export default class InputPaneController {
 
         let useActor = this._controller.UseActor;
         let actorCount = useActor.ActorPeers.length;
-        let selActor = useActor.CurrentAid;
+        let selActor = this._controller.CurrentAid;
 
         let sel = -1;
         let pos = 0;
 
         useActor.ActorPeers.map((ap) => {
-            if (ap.actor.aid === useActor.CurrentAid) sel = pos;
+            if (ap.actor.aid === this._controller.CurrentAid) sel = pos;
             pos++;
         });
 
@@ -353,8 +350,8 @@ export default class InputPaneController {
      */
     public ChangeSelectionIcon(iid: string) {
         let controller = this._controller;
-        let aid = controller.UseActor.CurrentAid
-        controller.UseActor.CurrentIid = iid;
+        let aid = controller.CurrentAid
+        controller.ChangeCurrentIcon(iid);
         controller.View.CastSelector.NotifyServantToActor();
         this.SetSelectionIid(aid, iid);
         this.DisplayActor();
@@ -370,13 +367,13 @@ export default class InputPaneController {
         let controller = this._controller;
 
         //  アクター情報を取得
-        controller.Model.GetActor(controller.UseActor.CurrentAid, (actor) => {
+        controller.Model.GetActor(controller.CurrentAid, (actor) => {
 
             if (actor.iconIds.length === 0) {
                 return;
             }
 
-            let sel = actor.iconIds.indexOf(controller.UseActor.CurrentIid);
+            let sel = actor.iconIds.indexOf(controller.CurrentIid);
             if (sel >= 0) {
                 let iconCount = actor.iconIds.length;
 
