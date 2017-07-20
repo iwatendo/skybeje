@@ -41,8 +41,8 @@ export default class InputPaneController {
 
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
-    private _selectionIidMap: Map<string, string>;
-    public SelectionActor: Personal.Actor;
+
+    
     /**
      * コンストラクタ
      * @param controller 
@@ -50,21 +50,19 @@ export default class InputPaneController {
     constructor(controller: HomeVisitorController) {
         this._controller = controller;
         this._unreadMap = new Map<string, number>();
-        this._selectionIidMap = new Map<string, string>();
 
         document.onkeyup = this.OnOtherKeyPress;
 
         //  イベント設定
         this._textareaElement.onkeydown = (e) => { this.OnKeyDown(e); };
-        this._actorEditButton.onclick = (e) => { this.DoShoActorEditDialog(); };
-        this._actorIconElement.ondblclick = (e) => { this.DoShoActorEditDialog(); };
-        this._selectActorButton.onclick = (e) => { this.DoShowActorProfile(); };
+        this._actorEditButton.onclick = (e) => { this.DoShowProfileEditDialog(); };
+        this._actorIconElement.ondblclick = (e) => { this.DoShowProfileEditDialog(); };
+        this._selectActorButton.onclick = (e) => { this.DoShowActorSelectPanel(); };
         this._sendMessageButton.onclick = (e) => { this.SendInputMessage(); };
 
         //  ダッシュボードからの変更通知
         this._dashboradChangeActorElement.onclick = (e) => {
             this._controller.ChagneActorInfo(this._dashboradChangeActorElement.value);
-            this.ChangeActor();
         }
 
         this._dashboradSelectActorElement.onclick = (e) => {
@@ -86,66 +84,26 @@ export default class InputPaneController {
         }
 
         this._textareaElement.value = "";
-        this.ChangeActor();
-    }
-
-
-    /**
-     * 
-     * @param aid 
-     */
-    public GetSelectionIid(aid: string) {
-        if (this._selectionIidMap.has(aid)) {
-            return this._selectionIidMap.get(aid);
-        }
-        else {
-            return "";
-        }
-    }
-
-
-    /**
-     * アクター毎に選択アイコンを保持しておく
-     * @param aid 
-     * @param iid 
-     */
-    public SetSelectionIid(aid: string, iid: string) {
-        return this._selectionIidMap.set(aid, iid);
+        this.DisplayActor();
     }
 
 
     /**
      * 
      */
-    private DisplayActor() {
+    public DisplayActor() {
 
+        let actor = this._controller.CurrentActor;
         //  選択しているアクターの名称表示
-        this._actorNameElement.textContent = (this.SelectionActor ? this.SelectionActor.name : "");
+        this._actorNameElement.textContent = (actor ? actor.name : "");
 
         //  アイコン表示
-        this._controller.Model.GetIcon(this.GetSelectionIid(this.SelectionActor.aid), (icon) => {
+        this._controller.Model.GetIcon(this._controller.CurrentIid, (icon) => {
             let img = (icon ? icon.img : new ImageInfo());
             ImageInfo.SetCss('sbj-inputpanel-actor-icon', img);
         });
     }
 
-    /**
-     * アクター変更時イベント
-     */
-    public ChangeActor() {
-
-        this._controller.Model.GetActor(this._controller.CurrentAid, (actor) => {
-            this.SelectionActor = actor;
-
-            let iid = this.GetSelectionIid(actor.aid);
-            if (!iid) {
-                iid = (actor.iconIds.length > 0 ? actor.iconIds[0] : "");
-            }
-
-            this.SetSelectionIid(actor.aid, iid);
-            this.DisplayActor();
-        });
-    }
 
 
     /**
@@ -251,10 +209,11 @@ export default class InputPaneController {
         if (text && text.length > 0) {
 
             let chatMessage = new ChatMessageSender();
+            let actor = this._controller.CurrentActor;
             chatMessage.peerid = this._controller.PeerId;
-            chatMessage.aid = this.SelectionActor.aid;
-            chatMessage.name = this.SelectionActor.name;
-            chatMessage.iid = this.GetSelectionIid(this.SelectionActor.aid);
+            chatMessage.aid = actor.aid;
+            chatMessage.name = actor.name;
+            chatMessage.iid = this._controller.CurrentIid;
             chatMessage.text = text;
             this._controller.SendChatMessage(chatMessage);
 
@@ -264,18 +223,20 @@ export default class InputPaneController {
 
 
     /**
-     * アクター選択ボタン押下時処理
+     * アクター選択パネルの表示
      */
-    private DoShowActorProfile() {
+    private DoShowActorSelectPanel() {
 
         let controller = this._controller;
         controller.NotifyShowProfile(controller.CurrentAid, true);
+        this._profileFrame.src = "";
     }
 
+
     /**
-     * 
+     * プロフィール編集ダイアログの表示
      */
-    private DoShoActorEditDialog() {
+    private DoShowProfileEditDialog() {
 
         let controller = this._controller;
         let useActor = controller.UseActor;
@@ -283,15 +244,20 @@ export default class InputPaneController {
 
         let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
 
+        //  選択しているアイコンをセット
+        this._profileSelectionIconElement.value = controller.CurrentIid;
+
         if (this._profileFrame.src != src) {
+
+            this._profileFrame.onload = () => {
+                this._profileFrame.hidden = false;
+                this._profileFrame.onload = null;
+            }
             this._profileFrame.src = src;
         }
         else {
-            //  選択しているアイコンをセット
-            this._profileSelectionIconElement.value = controller.CurrentIid;
+            this._profileFrame.hidden = false;
         }
-
-        this._profileFrame.hidden = false;
     }
 
 
@@ -332,12 +298,10 @@ export default class InputPaneController {
         //  アクター情報を取得
         this._controller.Model.GetActor(aid, (actor) => {
 
-            let iid = this.GetSelectionIid(aid);
+            let iid = this._controller.CurrentIid;
             if (iid === "" && actor.iconIds.length > 0) {
                 iid = actor.iconIds[0];
             }
-            this.SelectionActor = actor;
-            this.ChangeSelectionIcon(iid);
 
             this._controller.View.MoveLastTimeline();
         });
@@ -353,7 +317,6 @@ export default class InputPaneController {
         let aid = controller.CurrentAid
         controller.ChangeCurrentIcon(iid);
         controller.View.CastSelector.NotifyServantToActor();
-        this.SetSelectionIid(aid, iid);
         this.DisplayActor();
     }
 
