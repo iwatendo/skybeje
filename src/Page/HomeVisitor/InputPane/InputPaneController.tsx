@@ -103,6 +103,8 @@ export default class InputPaneController {
         this._controller.Model.GetIcon(this._controller.CurrentIid, (icon) => {
             let img = (icon ? icon.img : new ImageInfo());
             ImageInfo.SetCss('sbj-inputpanel-actor-icon', img);
+            //  テキストエリアにフォーカスを移す
+            this._textareaElement.focus();
         });
     }
 
@@ -249,16 +251,20 @@ export default class InputPaneController {
         //  選択しているアイコンをセット
         this._profileSelectionIconElement.value = controller.CurrentIid;
 
+        let doFocus = () => { this._profileFrame.contentDocument.getElementById('sbj-profile-cancel').focus(); }
+
         if (this._profileFrame.src != src) {
 
             this._profileFrame.onload = () => {
                 this._profileFrame.hidden = false;
                 this._profileFrame.onload = null;
+                doFocus();
             }
             this._profileFrame.src = src;
         }
         else {
             this._profileFrame.hidden = false;
+            doFocus();
         }
     }
 

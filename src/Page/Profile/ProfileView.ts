@@ -73,11 +73,24 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
 
         });
 
+        //  キー入力時イベント
+        document.onkeydown = (e) => {
+            //  エスケープキーはダイアログを閉じる
+            if (e.keyCode === 27) {
+                controller.CloseNotify();
+            }
+        }
+
         this.Resize();
+        
+        nameElement.focus();
         callback();
     }
 
 
+    /**
+     * 
+     */
     public Resize() {
 
         let height = window.innerHeight - 160;

@@ -44,6 +44,7 @@ export default class ProfileView implements INaviContainer {
                 this._editCallback();
             }
         }
+
     }
 
 
@@ -76,6 +77,7 @@ export default class ProfileView implements INaviContainer {
             let key = StdUtil.CreateUuid();
             ReactDOM.render(<ProfileComponent key={key} controller={this._owner} view={this} isConnected={isConnected} actors={actors} />, this._element, () => {
                 this.SetIconImageCss(actors);
+                document.getElementById('sbj-dashboard-profile-back').focus();
             });
         });
     }

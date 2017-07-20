@@ -60,6 +60,14 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             this.Close();
         };
 
+        //  キー入力時イベント
+        document.onkeydown = (e) => {
+            //  エスケープキーはダイアログを閉じる
+            if (e.keyCode === 27) {
+                this.Close();
+            }
+        }
+
         //  ストリーミング停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.ServerSend(false, false);

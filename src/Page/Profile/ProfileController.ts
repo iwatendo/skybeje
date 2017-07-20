@@ -37,7 +37,7 @@ export default class ProfileController extends AbstractServiceController<Profile
                     //  新規アクターデータ作成
                     actor = new Personal.Actor();
                     actor.aid = aid;
-                    actor.name = "新規アクター";
+                    actor.name = "";
                     actor.order = Order.New(actors);
                 }
 

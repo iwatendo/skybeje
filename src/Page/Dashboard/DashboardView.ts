@@ -104,6 +104,16 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             }
         });
 
+        //  キー入力時イベント
+        document.onkeydown = (e) => {
+            if (e.keyCode === 27) {
+                //  ホームビジターが起動している状態でのエスケープキーは、ホームビジターを表示させる。
+                if (this.IsBootHomeVisitor()) {
+                    this.Controller.View.DoNaviClick(NaviEnum.Visitor);
+                }
+            }
+        }
+
         //  外部からのドラッグイベント
         document.getElementById("sbj-main").addEventListener('dragover', (e: DragEvent) => {
             if (this._naviView) {
@@ -150,6 +160,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         //  プロフィール表示
         document.getElementById("sbj-main-home-visitor-profile-id").onclick = (e) => {
             this.DoNaviClick(NaviEnum.Profile);
+            document.body.focus();
         }
 
 
@@ -256,6 +267,10 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 title = "ライブキャスト";
                 disp = DispEnum.LiveCast;
                 this._naviView = new NotImplementView(mainElement);
+
+                let frame = document.getElementById('sbj-main-home-livecast-frame') as HTMLFrameElement;
+                frame.contentDocument.getElementById('sbj-cast-instance-cancel').focus();
+
                 break;
         }
 
@@ -346,6 +361,14 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
 
     /**
+     * ホームビジターが起動しているか？
+     */
+    public IsBootHomeVisitor(): boolean {
+        return (!document.getElementById("sbj-navi-home-visitor-disp").hidden);
+    }
+
+
+    /**
      * 
      * @param ownerPeerId 
      */
@@ -396,10 +419,15 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         //  URLの変更があった場合のみページを書換える
         if (preUrl !== newUrl) {
             document.getElementById("sbj-navi-home-livecast-disp").hidden = isRemove;
-            frame.setAttribute('src', (isRemove ? "" : newUrl));
+            frame.onload = (e) => {
+                this.DoNaviClick(isRemove ? NaviEnum.Visitor : NaviEnum.LiveCast);
+                frame.onload = null;
+            }
+            frame.src = (isRemove ? "" : newUrl);
         }
-
-        this.DoNaviClick(isRemove ? NaviEnum.Visitor : NaviEnum.LiveCast);
+        else {
+            this.DoNaviClick(isRemove ? NaviEnum.Visitor : NaviEnum.LiveCast);
+        }
     }
 
 
