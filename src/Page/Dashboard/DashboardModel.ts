@@ -236,7 +236,7 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
      * @param callback 
      */
     public GetGuide(gid: string, callback: OnRead<Personal.Guide>) {
-        this.PersonalDB.Read(Personal.DB.ICON, gid, callback);
+        this.PersonalDB.Read(Personal.DB.GUIDE, gid, callback);
     }
 
 

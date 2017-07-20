@@ -41,8 +41,9 @@ export default class InputPaneController {
 
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
+    private _lastTlmCtime: number;
 
-    
+
     /**
      * コンストラクタ
      * @param controller 
@@ -50,6 +51,7 @@ export default class InputPaneController {
     constructor(controller: HomeVisitorController) {
         this._controller = controller;
         this._unreadMap = new Map<string, number>();
+        this._lastTlmCtime = 0;
 
         document.onkeyup = this.OnOtherKeyPress;
 
@@ -363,12 +365,14 @@ export default class InputPaneController {
         let map = this._unreadMap;
         tlms.forEach((tlm) => {
 
-            //  新規発言データのみを対象とする。
-            //  訂正データは未読対象外とする。
-            if (tlm.ctime === tlm.utime) {
-                let hid = tlm.hid;
-                let count = (map.has(hid) ? map.get(hid) + 1 : 1);
-                map.set(hid, count);
+            if (this._lastTlmCtime < tlm.ctime) {
+                //  新規発言データのみを対象とする（訂正データは対象外）
+                if (tlm.ctime === tlm.utime) {
+                    let hid = tlm.hid;
+                    let count = (map.has(hid) ? map.get(hid) + 1 : 1);
+                    map.set(hid, count);
+                    this._lastTlmCtime = tlm.ctime;
+                }
             }
         });
     }

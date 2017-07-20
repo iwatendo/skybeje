@@ -105,6 +105,8 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
         //  クライアント接続がある事かつ、ユーザープロフィールまたは、使用可能なアクターである事
         let canActorSelect = this.props.isMultipleActor && this.props.isConnected && (actor.isUserProfile || isUse);
 
+        let canDelete = (!this.props.actor.isUserProfile && !canActorSelect);
+
         return (
             <div className={cellClass} onClick={this.OnClick.bind(this)} draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.OnDrop.bind(this)}>
                 <div className="sbj-dashboard-profile-card">
@@ -121,7 +123,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
                                     <i className='material-icons'>edit</i>
                                     &nbsp;編集&nbsp;
                                 </button>
-                                <button className="sbj-dashboard-profile-edit-button mdl-button mdl-button--accent" onClick={this.OnDeleteClick.bind(this)} hidden={this.props.actor.isUserProfile}>
+                                <button className="sbj-dashboard-profile-edit-button mdl-button mdl-button--accent" onClick={this.OnDeleteClick.bind(this)} hidden={!canDelete}>
                                     <i className='material-icons'>delete</i>
                                     &nbsp;削除&nbsp;
                                 </button>

@@ -139,6 +139,7 @@ export default class IconListView {
                 controller.Model.UpdateActor(actor, () => {
                     //  リストの再表示
                     this._owner.SelectionIid = icon.iid;
+                    this._owner.ChangeSelectionIconNotify(icon.iid);
                     view.Refresh();
                 })
             })

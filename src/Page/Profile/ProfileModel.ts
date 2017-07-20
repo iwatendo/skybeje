@@ -83,7 +83,7 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
      * アクター情報一覧の取得
      * @param callback 
      */
-    public GetActors(callback: OnRead<Array<Personal.Actor>>){
+    public GetActors(callback: OnRead<Array<Personal.Actor>>) {
         this._personalDB.ReadAll(Personal.DB.ACTOR, callback);
     }
 
@@ -95,7 +95,6 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
      */
     public UpdateActor(actor: Personal.Actor, callback: OnWrite = null) {
         this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, callback);
-        this.Controller.ChangeActorNotify(actor.aid);
     }
 
 
