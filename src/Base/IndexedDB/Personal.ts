@@ -19,6 +19,7 @@ export class Actor implements IOrder {
         this.profile = "";
         this.iconIds = new Array<string>();
         this.guideIds = new Array<string>();
+        this.dispIid = "";
         this.order = 0;
     }
 
@@ -29,6 +30,7 @@ export class Actor implements IOrder {
     tag: string;
     profile: string;
     iconIds: Array<string>;
+    dispIid: string;
     guideIds: Array<string>;
     order: number;
 
@@ -41,27 +43,11 @@ export class Actor implements IOrder {
         return !(pre.name === cur.name && pre.tag === cur.tag && pre.profile === cur.profile);
     }
 
-
-    /**
-     * 代表アイコンの取得
-     * @param act 
-     */
-    public static TopIconId(act: Actor) {
-        if (!act) {
-            return "";
-        }
-        if( act.iconIds.length === 0){
-            return "";
-        }
-        return act.iconIds[0];
-    }
-
-
     /**
      * ハッシュコードを生成
      */
     public static HashCode(act: Actor): string {
-        let value = act.name + "/n" + act.tag + "/n" + act.profile + "/n" + this.TopIconId(act);
+        let value = act.name + "/n" + act.tag + "/n" + act.profile + "/n" + act.dispIid;
         return StdUtil.ToHashCode(value).toString();
     }
 

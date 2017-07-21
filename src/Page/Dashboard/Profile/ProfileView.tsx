@@ -91,7 +91,7 @@ export default class ProfileView implements INaviContainer {
 
         actors.map((actor) => {
 
-            let iid = (actor.iconIds.length > 0 ? actor.iconIds[0] : "");
+            let iid = actor.dispIid;
             if (iid) {
                 this._owner.Model.GetIcon(iid, (icon) => {
                     ImageInfo.SetCss("sbj-icon-img-" + iid.toString(), icon.img);

@@ -313,6 +313,7 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
         guest.isUserProfile = true;
         guest.profile = "";
         guest.iconIds.push(icon.iid);
+        guest.dispIid = icon.iid;
 
         //
         let room1 = new Home.Room();

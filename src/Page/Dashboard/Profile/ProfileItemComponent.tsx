@@ -57,10 +57,8 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
     public render() {
 
         let actor = this.state.actor;
-        let iids = actor.iconIds;
-        let iid = (iids.length > 0 ? iids[0] : "");
 
-        let imgIdName = "sbj-icon-img-" + iid.toString();
+        let imgIdName = "sbj-icon-img-" + actor.dispIid;
         let image_div = (<div className='sbj-dashboard-profile-img-box'><div className='sbj-dashboard-profile-img' id={imgIdName}></div></div>);
 
         let msgs = StdUtil.TextLineSplit(actor.profile);
@@ -186,7 +184,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
     private OnSelectClick(event) {
         let actor = this.props.actor;
         this.props.owner.props.controller.SelectActorNotify(actor.aid);
-        this.props.owner.Close();
+        this.props.owner.Close(false);
     }
 
 

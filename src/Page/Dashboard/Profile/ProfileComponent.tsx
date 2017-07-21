@@ -107,7 +107,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      */
     public OnClick_background(event) {
         if (event && event.target && event.target.className === 'sbj-dashboard-profile') {
-            this.Close();
+            this.Close(true);
         }
     }
 
@@ -115,10 +115,18 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
     /**
      * プロフィール画面を閉じる
      */
-    public Close() {
+    public Close(isActorRedraw: boolean) {
         if (this.props.isConnected) {
             this.setState({ selectedActor: "" },
-                () => { this.props.controller.View.DoNaviClick(NaviEnum.Visitor); }
+                () => {
+                    if (isActorRedraw) {
+                        //  Visitor側のアクター情報の再描画をする
+                        let frame = document.getElementById('sbj-main-home-visitor-frame') as HTMLFrameElement;
+                        let element = frame.contentDocument.getElementById('sbj-profile-do-close');
+                        if (element) element.click();
+                    }
+                    this.props.controller.View.DoNaviClick(NaviEnum.Visitor);
+                }
             );
         }
     }
@@ -157,7 +165,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
                     actors: newActors,
                     selectedActor: aid,
                 }, () => {
-                    let iid = (actor.iconIds.length > 0 ? actor.iconIds[0] : "");
+                    let iid = actor.dispIid;
                     this.props.controller.Model.GetIcon(iid, (icon) => {
                         let img = (icon == null ? null : icon.img);
                         ImageInfo.SetCss("sbj-icon-img-" + iid.toString(), img);
@@ -179,7 +187,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * @param ev 
      */
     public OnClick_Back(ev) {
-        this.Close();
+        this.Close(true);
     }
 
 

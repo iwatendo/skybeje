@@ -41,12 +41,9 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public UseActor: UseActorSender;
 
     private _currentActor: Personal.Actor;
-    private _currentIid: string;
-    private _selectionIidMap: Map<string, string>;
 
     public get CurrentAid(): string { return this._currentActor.aid; }
     public get CurrentActor(): Personal.Actor { return this._currentActor; }
-    public get CurrentIid(): string { return this._currentIid; }
     public CurrentHid: string;
 
     /**
@@ -61,7 +58,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.TimelineCache = new TimelineCache(this);
         this.ServantCache = new ServantCache(this);
         this.Bot = new BotController(this);
-        this._selectionIidMap = new Map<string, string>();
     };
 
 
@@ -97,7 +93,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             let aid = ua.ActorPeers[0].actor.aid;
             this.Model.GetActor(aid, (actor) => {
                 this._currentActor = actor;
-                this._currentIid = this.GetSelectionIid(actor);
                 this.SetUseActor(ua);
             });
         });
@@ -272,8 +267,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.Model.GetActor(aid, (actor) => {
 
             this._currentActor = actor;
-            let iid = this.GetSelectionIid(actor);
-            this.ChangeCurrentIcon(iid);
 
             //  表示変更
             this.View.InputPane.DisplayActor();
@@ -284,31 +277,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
                 this.View.CastSelector.NotifyServantToActor();
             });
         });
-    }
-
-
-    /**
-     * 選択アイコンの取得
-     * @param aid 
-     */
-    public GetSelectionIid(actor:Personal.Actor) {
-
-        if (this._selectionIidMap.has(actor.aid)) {
-            return this._selectionIidMap.get(actor.aid);
-        }
-        else {
-            return Personal.Actor.TopIconId(actor);
-        }
-    }
-
-
-    /**
-     * 発言アクターのアイコンを変更
-     * @param iid 
-     */
-    public ChangeCurrentIcon(iid: string) {
-        this._currentIid = iid;
-        this._selectionIidMap.set(this.CurrentAid, iid);
     }
 
 

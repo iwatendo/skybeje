@@ -77,12 +77,15 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
      */
     public Select(iid: string) {
 
-        this.props.controller.SelectionIid = iid;
-        this.props.controller.ChangeSelectionIconNotify(iid);
+        let actor = this.props.controller.Actor;
+        actor.dispIid = iid;
 
-        this.setState({
-            selectIid: iid
+        this.props.controller.Model.UpdateActor(actor, () => {
+            this.setState({
+                selectIid: iid
+            });
         });
+
     }
 
 

@@ -138,7 +138,7 @@ export default class CastSelectorController {
             if (peerElement && aidElement && iidElement) {
                 peerElement.textContent = this._ownerController.PeerId;
                 aidElement.textContent = this._ownerController.CurrentAid;
-                iidElement.textContent = this._ownerController.CurrentIid;
+                iidElement.textContent = this._ownerController.CurrentActor.dispIid;
             }
         }
     }

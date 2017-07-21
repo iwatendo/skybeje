@@ -267,9 +267,10 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 title = "ライブキャスト";
                 disp = DispEnum.LiveCast;
                 this._naviView = new NotImplementView(mainElement);
-
-                let frame = document.getElementById('sbj-main-home-livecast-frame') as HTMLFrameElement;
-                frame.contentDocument.getElementById('sbj-cast-instance-cancel').focus();
+                {
+                    let frame = document.getElementById('sbj-main-home-livecast-frame') as HTMLFrameElement;
+                    frame.contentDocument.getElementById('sbj-cast-instance-cancel').focus();
+                }
 
                 break;
         }
@@ -381,19 +382,29 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         //  PeerIDが未指定の場合は、フレームを非表示にする
         let isRemove = (ownerPeerId == null || ownerPeerId.length === 0);
 
-        if (preUrl != newUrl) {
-            document.getElementById("sbj-navi-home-visitor-disp").hidden = isRemove;
-            frame.setAttribute('src', (isRemove ? "" : newUrl));
-        }
-
-        if (isRemove) {
-            if (document.getElementById('sbj-navi-home-instance-disp').hidden) {
-                location.href = LinkUtil.CreateLink("/");
-                return;
+        //  起動後の表示制御
+        let doDispCtrl = () => {
+            if (isRemove) {
+                if (document.getElementById('sbj-navi-home-instance-disp').hidden) {
+                    location.href = LinkUtil.CreateLink("/");
+                    return;
+                }
             }
+            this.DoNaviClick(isRemove ? NaviEnum.Instance : NaviEnum.Visitor);
         }
 
-        this.DoNaviClick(isRemove ? NaviEnum.Instance : NaviEnum.Visitor);
+        //
+        if (preUrl == newUrl) {
+            doDispCtrl();
+        }
+        else {
+            document.getElementById("sbj-navi-home-visitor-disp").hidden = isRemove;
+            frame.onload = (e) => {
+                doDispCtrl();
+                frame.onload = null;
+            }
+            frame.src = (isRemove ? "" : newUrl);
+        }
     }
 
 

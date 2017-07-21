@@ -1,7 +1,7 @@
 
 import * as Personal from "../../Base/IndexedDB/Personal";
 
-import AbstractServiceModel, { OnModelLoad, OnRead } from "../../Base/Common/AbstractServiceModel";
+import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/Common/AbstractServiceModel";
 
 import HomeVisitorController from "./HomeVisitorController";
 
@@ -53,6 +53,13 @@ export default class HomeVisitorModel extends AbstractServiceModel<HomeVisitorCo
         this._personalDB.Read(Personal.DB.ACTOR, aid, callback);
     }
 
+    /**
+     * アクター情報の更新
+     * @param actor 
+     */
+    public UpdateActor(actor: Personal.Actor, callback: OnWrite = null) {
+        this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, callback);
+    }
 
     /**
      * アクター情報を全て取得

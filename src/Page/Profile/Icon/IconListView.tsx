@@ -31,10 +31,6 @@ export default class IconListView {
         this._owner = owner;
         this._element = element;
 
-        if (!this._owner.SelectionIid) {
-            this._owner.SelectionIid = Personal.Actor.TopIconId(owner.Actor);
-        }
-
         let addIconElement = document.getElementById('sbj-profile-add-icon');
         let editIconElement = document.getElementById('sbj-profile-edit-icon');
         let deleteIconElement = document.getElementById('sbj-profile-delete-icon');
@@ -66,7 +62,7 @@ export default class IconListView {
      * 
      */
     public SelectionIcon(): Personal.Icon {
-        let l = this._icons.filter(n => n.iid === this._owner.SelectionIid);
+        let l = this._icons.filter(n => n.iid === this._owner.Actor.dispIid);
         return (l.length > 0 ? l[0] : null);
     }
 
@@ -76,7 +72,7 @@ export default class IconListView {
      */
     public Render() {
         let key = StdUtil.CreateUuid();
-        let iid = (this._owner.SelectionIid ? this._owner.SelectionIid : "");
+        let iid = (this._owner.Actor.dispIid ? this._owner.Actor.dispIid : "");
         ReactDOM.render(<IconListComponent key={key} controller={this._owner} icons={this._icons} selectIid={iid} />, this._element, () => {
             this._icons.map((icon) => {
                 ImageInfo.SetCss(icon.iid, icon.img);
@@ -136,10 +132,9 @@ export default class IconListView {
                 //  プロフィールにアイコン追加して更新
                 let actor = controller.Actor;
                 actor.iconIds.push(icon.iid);
+                actor.dispIid = icon.iid;
+
                 controller.Model.UpdateActor(actor, () => {
-                    //  リストの再表示
-                    this._owner.SelectionIid = icon.iid;
-                    this._owner.ChangeSelectionIconNotify(icon.iid);
                     view.Refresh();
                 })
             })
@@ -175,7 +170,6 @@ export default class IconListView {
         owner.Model.UpdateActor(actor);
         owner.Model.DeleteIcon(icon);
 
-        this._owner.SelectionIid = "";
         view.Refresh();
     }
 

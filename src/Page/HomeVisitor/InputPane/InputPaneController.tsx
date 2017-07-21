@@ -33,7 +33,7 @@ export default class InputPaneController {
 
     private _dashboradChangeActorElement = document.getElementById('sbj-dashborad-change-actor') as HTMLInputElement;
     private _dashboradSelectActorElement = document.getElementById('sbj-dashborad-select-actor') as HTMLInputElement;
-    private _profileSelectionIconElement = document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
+    
     private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
 
     private _profileFrame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
@@ -72,12 +72,6 @@ export default class InputPaneController {
             this._controller.ChangeCurrentActor(aid);
         }
 
-        //  プロフィール画面からのアイコン変更通知
-        this._profileSelectionIconElement.onclick = (e) => {
-            let iid = this._profileSelectionIconElement.value;
-            this.ChangeSelectionIcon(iid);
-        };
-
         //  プロフィール画面からのダイアログクローズ通知
         this._profileDoCloseElement.onclick = (e) => {
             this._profileFrame.hidden = true;
@@ -100,12 +94,17 @@ export default class InputPaneController {
         this._actorNameElement.textContent = (actor ? actor.name : "");
 
         //  アイコン表示
-        this._controller.Model.GetIcon(this._controller.CurrentIid, (icon) => {
-            let img = (icon ? icon.img : new ImageInfo());
-            ImageInfo.SetCss('sbj-inputpanel-actor-icon', img);
-            //  テキストエリアにフォーカスを移す
+        let doDispIcon = (iconImg) => {
+            ImageInfo.SetCss('sbj-inputpanel-actor-icon', iconImg);
             this._textareaElement.focus();
-        });
+        }
+
+        if (actor.dispIid) {
+            this._controller.Model.GetIcon(actor.dispIid, (icon) => { doDispIcon(icon.img); });
+        }
+        else {
+            doDispIcon(new ImageInfo())
+        }
     }
 
 
@@ -217,7 +216,7 @@ export default class InputPaneController {
             chatMessage.peerid = this._controller.PeerId;
             chatMessage.aid = actor.aid;
             chatMessage.name = actor.name;
-            chatMessage.iid = this._controller.CurrentIid;
+            chatMessage.iid = actor.dispIid;
             chatMessage.text = text;
             this._controller.SendChatMessage(chatMessage);
 
@@ -247,9 +246,6 @@ export default class InputPaneController {
         let aid = controller.CurrentAid;
 
         let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
-
-        //  選択しているアイコンをセット
-        this._profileSelectionIconElement.value = controller.CurrentIid;
 
         let doFocus = () => { this._profileFrame.contentDocument.getElementById('sbj-profile-cancel').focus(); }
 
@@ -306,7 +302,7 @@ export default class InputPaneController {
         //  アクター情報を取得
         this._controller.Model.GetActor(aid, (actor) => {
 
-            let iid = this._controller.CurrentIid;
+            let iid = actor.dispIid;
             if (iid === "" && actor.iconIds.length > 0) {
                 iid = actor.iconIds[0];
             }
@@ -323,7 +319,6 @@ export default class InputPaneController {
     public ChangeSelectionIcon(iid: string) {
         let controller = this._controller;
         let aid = controller.CurrentAid
-        controller.ChangeCurrentIcon(iid);
         controller.View.CastSelector.NotifyServantToActor();
         this.DisplayActor();
     }
@@ -335,25 +330,23 @@ export default class InputPaneController {
      */
     private MoveSelectionIcon(value: number) {
 
-        let controller = this._controller;
+        let actor = this._controller.CurrentActor;
 
-        //  アクター情報を取得
-        controller.Model.GetActor(controller.CurrentAid, (actor) => {
+        if (actor.iconIds.length === 0) {
+            return;
+        }
 
-            if (actor.iconIds.length === 0) {
-                return;
-            }
+        let sel = actor.iconIds.indexOf(actor.dispIid);
+        if (sel >= 0) {
+            let iconCount = actor.iconIds.length;
 
-            let sel = actor.iconIds.indexOf(controller.CurrentIid);
-            if (sel >= 0) {
-                let iconCount = actor.iconIds.length;
+            sel = (sel + value + iconCount) % iconCount;
+            actor.dispIid = actor.iconIds[sel];
 
-                sel = (sel + value + iconCount) % iconCount;
-                let iid = actor.iconIds[sel];
-                this.ChangeSelectionIcon(iid);
-            }
-
-        });
+            this._controller.Model.UpdateActor(actor, () => {
+                this.ChangeSelectionIcon(actor.dispIid);
+            });
+        }
 
     }
 

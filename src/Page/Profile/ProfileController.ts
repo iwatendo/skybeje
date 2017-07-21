@@ -12,8 +12,6 @@ export default class ProfileController extends AbstractServiceController<Profile
 
     public Actor: Personal.Actor;
 
-    public SelectionIid: string;
-
     public SelectionGid: string;
 
 
@@ -24,7 +22,6 @@ export default class ProfileController extends AbstractServiceController<Profile
 
         super();
 
-        this.SelectionIid = this.GetOwnerSelectionIcon();
         let self = this;
         let model = self.Model;
 
@@ -58,29 +55,6 @@ export default class ProfileController extends AbstractServiceController<Profile
 
         if (element) {
             element.value = aid;
-            element.click();
-        }
-    }
-
-
-    /**
-     * 選択されているアイコンを取得する
-     */
-    public GetOwnerSelectionIcon(): string {
-        let element = window.parent.document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
-        return (element ? element.value : "");
-    }
-
-
-    /**
-     * アイコンの変更通知
-     */
-    public ChangeSelectionIconNotify(iid: string) {
-
-        let element = window.parent.document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
-
-        if (element) {
-            element.value = iid;
             element.click();
         }
     }
