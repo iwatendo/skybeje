@@ -33,6 +33,9 @@ export interface IServiceController {
     //  ストリーミング開始時・終了時イベント
     OnStreaming(isSucceed: boolean, isStreaming: boolean);
 
+    //  ストリーミング再生開始
+    OnStreamingPlay();
+
     //  データ取得時イベント
     Recv(conn: PeerJs.DataConnection, recv);
 

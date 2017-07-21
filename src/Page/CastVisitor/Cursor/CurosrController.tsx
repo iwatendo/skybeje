@@ -102,13 +102,21 @@ export class CursorController {
             return false;
         }
 
-        //  リサイズ時処理
-        let resizeFunc = () => {
-            let vdo = this.GetVideoDispOffset(this._video);
-            this._baseCursorMap.forEach((cur, key) => { this.Display(cur); });
-        }
+        window.onresize = ((ev) => { this.DisplayAll(); });
 
-        window.onresize = ((ev) => { resizeFunc(); });
+        window.onbeforeunload = (ev) => {
+            //  接続が切れた場合、カーソルを非表示にする
+            this.CastCursorSend(this._video, itemDivElement, -1, -1);
+        }
+    }
+
+
+    /**
+     * 
+     */
+    public DisplayAll() {
+        let vdo = this.GetVideoDispOffset(this._video);
+        this._baseCursorMap.forEach((cur, key) => { this.Display(cur); });
     }
 
 

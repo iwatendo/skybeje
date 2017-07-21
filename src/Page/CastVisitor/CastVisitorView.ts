@@ -113,6 +113,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         let itemport = document.getElementById('sbj-cact-visitor-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cact-visitor-cursor-port') as HTMLElement;
         this.Cursor = new CursorController(this.Controller.ConnCache, video, itemport, curport);
+        this.Cursor.DisplayAll();
     }
 
 
@@ -133,7 +134,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             }
         }
 
-        if (this.Cursor) {
+        if (!sender.dispUserCursor) {
             this.Cursor.Clear();
         }
 

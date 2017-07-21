@@ -59,4 +59,13 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     }
 
 
+    /**
+     * ストリーミングの再生開始後の処理
+     */
+    public OnStreamingPlay() {
+        if (this.View && this.View.Cursor) {
+            this.View.Cursor.DisplayAll();
+        }
+    }
+
 };

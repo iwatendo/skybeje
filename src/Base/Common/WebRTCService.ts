@@ -143,6 +143,9 @@ export default class WebRTCService {
                 }
 
                 call.on('stream', (stream) => {
+                    video.onplay = (e) => {
+                        service.OnStreamingPlay();
+                    }
                     video.setAttribute('src', URL.createObjectURL(stream));
                 });
                 this.existingCall = call;

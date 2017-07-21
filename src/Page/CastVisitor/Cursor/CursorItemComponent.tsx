@@ -40,7 +40,8 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     height: "100%",
-                    width: "100%"
+                    width: "100%",
+                    userselect: "none",
                 }
             }
             else {
@@ -48,6 +49,7 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
                     height: "100%",
                     width: "100%",
                     borderRadius: "8px",
+                    userselect: "none",
                 };
             }
 

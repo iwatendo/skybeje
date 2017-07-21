@@ -157,6 +157,13 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
 
 
     /**
+     * ストリーミングの再生開始時イベント
+     */
+    public OnStreamingPlay(){
+
+    }
+
+    /**
      * データ取得時イベント
      * @param conn
      * @param recv

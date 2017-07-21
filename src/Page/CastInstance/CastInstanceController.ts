@@ -7,7 +7,7 @@ import LogUtil from "../../Base/Util/LogUtil";
 
 import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
-import { CastInstanceSender, CastSettingSedner } from "./CastInstanceContainer";
+import { CastInstanceSender, CastSettingSedner, CastCursorSender } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 
 
@@ -21,6 +21,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public AudioSource: string = null;
     public VideoSource: string = null;
 
+    public CursorCache: Map<string, CastCursorSender>;
 
     /**
      *
@@ -28,8 +29,8 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     constructor() {
         super();
         this.Receiver = new CastInstanceReceiver(this);
-        this.View = new CastInstanceView(this, () => {
-        });
+        this.View = new CastInstanceView(this, () => { });
+        this.CursorCache = new Map<string, CastCursorSender>();
     };
 
 
@@ -100,6 +101,12 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
         super.OnChildConnection(conn);
+
+        //  配置済みカーソルの通知
+        this.CursorCache.forEach((value, key) => {
+            WebRTCService.ChildSend(conn, value);
+        });
+
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
     }
 
@@ -125,7 +132,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         //  オーナー 及び 接続クライアントに通知
         this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
     }
-
+    
 
     /**
      * ストリーミングの開始/停止の通知
@@ -156,6 +163,24 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         if (this.CastInstance) {
             this.CastInstance.setting = this.CastSetting;
             WebRTCService.OwnerSend(this.CastInstance);
+        }
+    }
+
+
+    /**
+     * カーソル配置のキャッシュ
+     * @param cursor
+     */
+    public SetCursorCache(cursor: CastCursorSender) {
+
+        let peerid = cursor.peerid;
+        if (cursor.posRx >= 0 && cursor.posRy >= 0) {
+            this.CursorCache.set(peerid, cursor);
+        }
+        else {
+            if (this.CursorCache.has(peerid)) {
+                this.CursorCache.delete(peerid);
+            }
         }
     }
 
