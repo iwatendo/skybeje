@@ -81,26 +81,26 @@ export class CursorController {
         this._connCache = connCache;
         this._video = video;
         this._cursorDispElement = cursorDivElement;
-        let mouseon: boolean = true;
 
-        //  マウスイベント設定
 
-        itemDivElement.onmouseover = (ev: MouseEvent) => {
-            mouseon = true;
-        }
+        itemDivElement.onmousedown = (ev: MouseEvent) => {
+            if (ev.buttons === 1) {
+                this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY);
+            }
+        };
 
         itemDivElement.onmousemove = (ev: MouseEvent) => {
-
-            let id = ((ev.target) as HTMLElement).id;
-            if (mouseon)
-                this.CastCursorSend(this._video, itemDivElement, ev);
+            if (ev.buttons === 1) {
+                this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY);
+            }
         };
 
-        itemDivElement.onmouseout = (ev: MouseEvent) => {
-            let id = ((ev.target) as HTMLElement).id;
-            mouseon = false;
-            this.CastCursorSend(this._video, itemDivElement, ev);
-        };
+        itemDivElement.oncontextmenu = (pv: PointerEvent) => {
+            //  右クリック時カーソルを消す。
+            this.CastCursorSend(this._video, itemDivElement, -1, -1);
+            //  コンテキストメニューのキャンセル
+            return false;
+        }
 
         //  リサイズ時処理
         let resizeFunc = () => {
@@ -178,18 +178,19 @@ export class CursorController {
     /**
      * ビデオ上のマウスカーソルの動作を検出し、CastInstanceに送信
      * 自身のキャスト上だとしても CastInstance 経由でカーソルを表示させる
-     * @param video
-     * @param cursorpost
-     * @param mv
+     * @param video 
+     * @param cursorpost 
+     * @param clientX 
+     * @param clientY 
      */
-    private CastCursorSend(video: HTMLVideoElement, cursorpost: HTMLElement, mv: MouseEvent) {
+    private CastCursorSend(video: HTMLVideoElement, cursorpost: HTMLElement, clientX: number, clientY: number) {
 
         //  座標オフセットの取得
         let vdo = this.GetVideoDispOffset(video);
 
         //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
-        let posRx: number = (mv.clientX - vdo.offsetRight) / vdo.dispWidth;
-        let posRy: number = (mv.clientY - vdo.offsetTop) / vdo.dispHeight;
+        let posRx: number = (clientX - vdo.offsetRight) / vdo.dispWidth;
+        let posRy: number = (clientY - vdo.offsetTop) / vdo.dispHeight;
 
 
         let sender = new CastCursorSender();
