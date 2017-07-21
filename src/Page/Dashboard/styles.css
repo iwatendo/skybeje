@@ -154,11 +154,11 @@
 	background-color: rgba(0,0,0,0.2);
 }
 
-.sbj-dashboard-profile-gird{
+.sbj-dashboard-profile-grid{
 	width: 480px;
 	overflow: auto;
 	float: left;
-	background: whitesmoke;
+	background: var(--sbj-color-menu-profile-grid);
 	height: 100%;
 	padding: 8px;
 }

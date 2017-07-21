@@ -44,7 +44,7 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
             if (this.IsMyChatMessage()) {
                 button = (
                     <button className='mdl-button mdl-js-button mdl-button--icon mdl-button--colored sbj-timeline-ignore' onClick={(e) => { this.OnIgnoreClick(tlmsg); }}>
-                        <i className='material-icons' id={mid}>{icon}</i>
+                        <i className='sbj-timeline-message-icon material-icons' id={mid}>{icon}</i>
                     </button>
                 );
             }

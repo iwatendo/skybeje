@@ -76,7 +76,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
 
         return (
             <div className="sbj-dashboard-profile" onClick={this.OnClick_background.bind(this)}>
-                <div className="sbj-dashboard-profile-gird">
+                <div className="sbj-dashboard-profile-grid">
                     <div className="sbj-dashboard-profile-label-card">
                         <h5 className="sbj-dashboard-profile-label">ユーザープロフィール</h5>
                         <button id="sbj-dashboard-profile-back" className="sbj-dashboard-profile-button mdl-button mdl-button--raised" onClick={this.OnClick_Back.bind(this)} hidden={!isConnected}>

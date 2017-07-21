@@ -25,8 +25,10 @@ body {
     --sbj-color-menu-navi-border: darkgray;
     --sbj-color-menu-navi-background: #00BCD4;
     --sbj-color-menu-navi-background-hover: rgba(0, 188, 212, 0.90);
+    --sbj-color-menu-profile-grid: whitesmoke;
 
     --sbj-color-timeline-ballon: #191970;
+    --sbj-color-timeline-ballon-hover: #4169e1;
     --sbj-color-timeline-message: whitesmoke;
     --sbj-color-timeline-message-ignore: #444;
     --sbj-color-timeline-name: #BBB;

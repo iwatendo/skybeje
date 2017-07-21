@@ -379,6 +379,15 @@ p.sbj-timeline-message {
     margin: 2px;
 }
 
+p.sbj-timeline-message:hover{
+    background-color: var(--sbj-color-timeline-ballon-hover);
+}
+
+i.sbj-timeline-message-icon{
+    color: var(--sbj-color-timeline-ballon);
+}
+
+
 .sbj-timeline-message-autolink{
     color: var(--sbj-color-link-text);
 }
@@ -391,7 +400,6 @@ p.sbj-timeline-message-ignore {
 .sbj-timeline-ignore{
     height: 24px;
 }
-
 
 /*-----------------------------
  *  livecast
