@@ -33,7 +33,7 @@ export default class InputPaneController {
 
     private _dashboradChangeActorElement = document.getElementById('sbj-dashborad-change-actor') as HTMLInputElement;
     private _dashboradSelectActorElement = document.getElementById('sbj-dashborad-select-actor') as HTMLInputElement;
-    
+
     private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
 
     private _profileFrame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
@@ -68,6 +68,7 @@ export default class InputPaneController {
         }
 
         this._dashboradSelectActorElement.onclick = (e) => {
+            this._profileFrame.hidden = true;
             let aid = this._dashboradSelectActorElement.value
             this._controller.ChangeCurrentActor(aid);
         }
@@ -247,21 +248,13 @@ export default class InputPaneController {
 
         let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
 
-        let doFocus = () => { this._profileFrame.contentDocument.getElementById('sbj-profile-cancel').focus(); }
-
-        if (this._profileFrame.src != src) {
-
-            this._profileFrame.onload = () => {
-                this._profileFrame.hidden = false;
-                this._profileFrame.onload = null;
-                doFocus();
-            }
-            this._profileFrame.src = src;
-        }
-        else {
+        this._profileFrame.src = null;
+        this._profileFrame.onload = () => {
             this._profileFrame.hidden = false;
-            doFocus();
+            this._profileFrame.onload = null;
+            this._profileFrame.contentDocument.getElementById('sbj-profile-cancel').focus();
         }
+        this._profileFrame.src = src;
     }
 
 
