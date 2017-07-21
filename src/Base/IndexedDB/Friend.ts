@@ -2,12 +2,7 @@
 import * as DBI from "./Database";
 
 
-export class Member {
-    mid: string;
-}
-
 export class Data {
-    Members: Array<Member>;
 }
 
 export class DB extends Database<Data> {
@@ -27,18 +22,9 @@ export class DB extends Database<Data> {
     public ReadAllData(onload: DBI.OnLoadComplete<Data>) {
 
         let data = new Data();
-
-        this.ReadAll<Member>(DB.Member, (result: Array<Member>) => {
-        data.Members = result;
-            onload(data);
-        });
     }
 
     public WriteAllData(data: Data, callback: DBI.OnWriteComplete) {
-
-        this.WriteAll<Member>(DB.Member, (n) => n.mid, data.Members, () => {
-            callback();
-        });
     }
 
 

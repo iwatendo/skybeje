@@ -47,7 +47,7 @@ export default class ExportComponent extends React.Component<ExportProp, any> {
                             <i className='material-icons'>archive</i>
                             &nbsp;エクスポート&nbsp;
                         </button>
-                        <h6 className="sbj-dashbord-export-type">招待状／ルーム</h6>
+                        <h6 className="sbj-dashbord-export-type">ルーム</h6>
                     </div>
                     <div className="sbj-dashbord-export mdl-card__supporting-text">
                         <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={this.OnExportTimelineClick.bind(this)}>

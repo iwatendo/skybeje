@@ -1,7 +1,6 @@
 import DBContainer from "../../Base/IndexedDB/DBContainer";
 import * as Personal from "../../Base/IndexedDB/Personal";
 import * as Home from "../../Base/IndexedDB/Home";
-import * as Gadget from "../../Base/IndexedDB/Gadget";
 import * as Friend from "../../Base/IndexedDB/Friend";
 import * as Timeline from "../../Base/IndexedDB/Timeline";
 
@@ -21,7 +20,6 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
 
     public get PersonalDB() { return this._dbc.PersonalDB }
     public get HomeDB() { return this._dbc.HomeDB }
-    public get GadgetDB() { return this._dbc.GadgetDB }
     public get FriendDB() { return this._dbc.FriendDB }
     public get TimelineDB() { return this._dbc.TimelineDB }
 
