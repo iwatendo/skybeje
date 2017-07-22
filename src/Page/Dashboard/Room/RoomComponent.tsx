@@ -98,7 +98,7 @@ export default class RoomComponent extends React.Component<RoomProp, RoomStat> {
         newRoom.hid = StdUtil.CreateUuid();
         newRoom.name = "";
         newRoom.tag = "";
-        newRoom.text = "";
+        newRoom.note = "";
         newRoom.order = Order.New(this.state.rooms);
         newRoom.background = new ImageInfo();
 

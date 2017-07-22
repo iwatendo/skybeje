@@ -319,7 +319,7 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
         room1.hid = StdUtil.CreateUuid();
         room1.order = 1;
         room1.tag = "ユーザーが最初に配置される部屋";
-        room1.text = "";
+        room1.note = "";
         room1.isDefault = true;
         room1.background = new ImageInfo();
         room1.background.src = "/image/default-room1.jpg";
@@ -330,7 +330,7 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
         room2.hid = StdUtil.CreateUuid();
         room2.order = 2;
         room2.tag = "オーナーの操作で入れる部屋";
-        room2.text = "";
+        room2.note = "";
         room2.isDefault = false;
         room2.background = new ImageInfo();
         room2.background.src = "/image/default-room2.jpg";

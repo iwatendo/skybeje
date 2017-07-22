@@ -4,6 +4,7 @@ module.exports = {
     errorpage: './src/Page/ErrorPage/Script.ts',
     dashboard: './src/Page/Dashboard/Script.ts',
     profile:'./src/Page/Profile/Script.ts',
+    room:'./src/Page/Room/Script.ts',
     homeinstance: './src/Page/HomeInstance/Script.ts',
     homevisitor: './src/Page/HomeVisitor/Script.ts',
     castinstance: './src/Page/CastInstance/Script.ts',

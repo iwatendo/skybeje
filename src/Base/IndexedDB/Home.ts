@@ -8,10 +8,21 @@ export class Room implements IOrder {
     hid: string;
     name: string;
     tag: string;
-    text: string;
+    note: string;
     isDefault: boolean;
     order: number;
     background: ImageInfo;
+
+    constructor() {
+        this.hid = "";
+        this.name = "";
+        this.tag = "";
+        this.note = "";
+        this.isDefault = false;
+        this.order = 0;
+        this.background = new ImageInfo();
+    }
+    
 }
 
 

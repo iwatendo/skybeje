@@ -61,7 +61,7 @@ export default class RoomEditDialogComponent extends React.Component<RoomEditDia
                     <label className="mdl-textfield__label" htmlFor="sbj-dashboard-room-tag">タグ</label>
                 </div>
                 <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label sbj-dashboard-room is-dirty">
-                    <textarea className="mdl-textfield__input" type="text" rows={8} id="sbj-dashboard-room-note" spellCheck={false} maxLength={2048} value={this.state.room.text} onChange={(e) => { this.OnChangeText(e); }} onBlur={(e) => { this.OnBlurHome(e); }}></textarea>
+                    <textarea className="mdl-textfield__input" type="text" rows={8} id="sbj-dashboard-room-note" spellCheck={false} maxLength={2048} value={this.state.room.note} onChange={(e) => { this.OnChangeText(e); }} onBlur={(e) => { this.OnBlurHome(e); }}></textarea>
                     <label className="mdl-textfield__label" htmlFor="sbj-dashboard-room-note">説明文</label>
                 </div>
             </div>
@@ -101,7 +101,7 @@ export default class RoomEditDialogComponent extends React.Component<RoomEditDia
      * プロフィール（ステータス）変更時イベント
      */
     public OnChangeText(event) {
-        this.state.room.text = event.target.value;
+        this.state.room.note = event.target.value;
         this.setState({
             room: this.state.room,
         });
