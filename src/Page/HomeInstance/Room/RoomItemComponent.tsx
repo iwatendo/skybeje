@@ -5,9 +5,11 @@ import * as Personal from "../../../Base/IndexedDB/Personal";
 import * as Home from "../../../Base/IndexedDB/Home";
 
 import StdUtil from "../../../Base/Util/StdUtil";
+import LogUtil from "../../../Base/Util/LogUtil";
+import { Order } from "../../../Base/Container/Order";
 import ActorPeer from "../../../Base/Container/ActorPeer";
 import RoomMemberComponent from "./RoomMemberComponent";
-import { RoomView } from "./RoomView";
+import { RoomView, DragItemType } from "./RoomView";
 import RoomComponent from "./RoomComponent";
 
 
@@ -41,7 +43,7 @@ export class RoomItemComponent extends React.Component<RoomItemProp, any>{
         let canDelete = !this.props.room.isDefault && (this.props.actpeers.length === 0);
 
         return (
-            <div id={this.props.room.hid} className='group-panel mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--3dp' onDrop={this.onDropMember.bind(this)}>
+            <div id={this.props.room.hid} className='group-panel mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--3dp' draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.onDrop.bind(this)}>
                 <div className="sbj-home-instance-room-header">
                     <span className="sbj-home-instance-room-title">{this.props.room.name}</span>
                     <button className="sbj-home-instance-room-edit-button mdl-button mdl-button--colored" onClick={this.OnEditClick.bind(this)}>
@@ -62,15 +64,35 @@ export class RoomItemComponent extends React.Component<RoomItemProp, any>{
 
 
     /**
+     * アクターのドラッグ開始時
+     */
+    private OnDragStart(ev: DragEvent) {
+
+        let selectdiv = ev.target as HTMLElement;
+
+        if (selectdiv.classList.contains('sbj-home-instance-room-member')) {
+            return;
+        }
+
+        let json = JSON.stringify(this.props.room);
+        //  自身のドラックアイテムと認識させる為にURLを設定
+        ev.dataTransfer.setData("text", location.href);
+        this.props.view.SetDragItem(DragItemType.Room, this);
+    }
+
+
+    /**
      * ドロップ時イベント
      * @param ev
      */
-    private onDropMember(ev: DragEvent) {
+    private onDrop(ev: DragEvent) {
 
         //  自身のドラックアイテムの場合のみ処理を実行
-        if (ev.dataTransfer.getData("text") === location.href) {
-            this.props.view.DragItem(this);
+        if (ev.dataTransfer.getData("text") !== location.href) {
+            return;
         }
+
+        this.props.view.DragItem(this);
     }
 
     /**

@@ -15,6 +15,7 @@ import { RoomActorMemberSender } from "../HomeInstanceContainer";
 import { RoomItemComponent } from "./RoomItemComponent";
 import RoomMemberComponent from "./RoomMemberComponent";
 import RoomComponent from "./RoomComponent";
+import LogUtil from "../../../Base/Util/LogUtil";
 
 
 /**
@@ -23,6 +24,11 @@ import RoomComponent from "./RoomComponent";
 export class RoomActors {
     room: Home.Room;
     actpeers: Array<ActorPeer>;
+}
+
+export enum DragItemType {
+    Room = 0,
+    Member = 1,
 }
 
 
@@ -135,41 +141,93 @@ export class RoomView {
     }
 
 
-    private _dragitem: RoomMemberComponent;
+    private _dragItemType: DragItemType;
+
+    private _dragitem: RoomMemberComponent | RoomItemComponent;
 
 
     /**
      * 
      * @param item 
      */
-    public SetDragItem(item: RoomMemberComponent) {
+    public SetDragItem(itemType: DragItemType, item: RoomMemberComponent | RoomItemComponent) {
+        this._dragItemType = itemType;
         this._dragitem = item;
     }
 
 
     /**
      * 
-     * @param roomitem 
+     * @param targetRoom 
      */
-    public DragItem(roomitem: RoomItemComponent) {
+    public DragItem(targetRoom: RoomItemComponent) {
 
-        if (!this._dragitem) return;
+        if (this._dragItemType === DragItemType.Member) {
+            //  メンバーのドラック＆ドロップ時
+            let memberComponent = this._dragitem as RoomMemberComponent;
+            let peerid = memberComponent.props.actorPeer.peerid;
+            let aid = memberComponent.props.actorPeer.actor.aid;
+            let preHid = this._dragitem.props.room.hid;
+            let newHid = targetRoom.props.room.hid;
 
-        let peerid = this._dragitem.props.actorPeer.peerid;
-        let aid = this._dragitem.props.actorPeer.actor.aid;
-        let preHid = this._dragitem.props.room.hid;
-        let newHid = roomitem.props.room.hid;
+            if (preHid !== newHid) {
 
-        if (preHid !== newHid) {
+                //  変更通知
+                this.Controller.Manager.Room.MoveRoom(peerid, aid, newHid, preHid);
 
-            //  変更通知
-            this.Controller.Manager.Room.MoveRoom(peerid, aid, newHid, preHid);
-
-            //  表示
-            this.ChangeRoomMember(preHid, this.Controller.Manager.Room.GetRoomInActors(preHid));
-            this.ChangeRoomMember(newHid, this.Controller.Manager.Room.GetRoomInActors(newHid));
+                //  表示
+                this.ChangeRoomMember(preHid, this.Controller.Manager.Room.GetRoomInActors(preHid));
+                this.ChangeRoomMember(newHid, this.Controller.Manager.Room.GetRoomInActors(newHid));
+            }
         }
 
+        if (this._dragItemType === DragItemType.Room) {
+            //  ルームのドラック＆ドロップ時は、部屋を並び替える
+            let roomComponent = this._dragitem as RoomItemComponent;
+            try {
+                let dragRoom = roomComponent.props.room;    //  移動元
+                let dropRoom = targetRoom.props.room;       //  移動先
+
+                if (dragRoom && dragRoom.hid) {
+                    this.ChangeRoomOrder(dragRoom, dropRoom);
+                }
+
+            } catch (e) {
+                LogUtil.Warning(e);
+            }
+        }
+    }
+
+
+    /**
+     * 部屋の並び順を変更
+     * @param dragRoom 
+     * @param dropRoom 
+     */
+    private ChangeRoomOrder(dragRoom: Home.Room, dropRoom: Home.Room) {
+
+        let rooms = new Array<Home.Room>();
+        let raMap = new Map<string, RoomActors>();
+
+        this._roomActors.forEach((ra) => {
+            rooms.push(ra.room);
+            raMap.set(ra.room.hid, ra);
+        })
+
+        let newList = Order.Swap(rooms, dragRoom, dropRoom);
+
+        Order.Sort(rooms);
+
+        let newDispList = new Array<RoomActors>();
+        rooms.forEach((room) => {
+            this._controller.Model.UpdateRoom(room);
+            let roomActor = raMap.get(room.hid);
+            roomActor.room = room;
+            newDispList.push(roomActor);
+        });
+
+        this._roomActors = newDispList;
+        this.Create();
     }
 
 }

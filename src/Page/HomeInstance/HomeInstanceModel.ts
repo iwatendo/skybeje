@@ -56,6 +56,16 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
 
 
     /**
+     * ルーム情報の書込み
+     * @param room 
+     * @param callback 
+     */
+    public UpdateRoom(room: Home.Room, callback: OnWrite = null) {
+        this._homeDB.Write<Home.Room>(Home.DB.ROOM, room.hid, room, callback);
+    }
+
+
+    /**
      * ルーム情報の削除
      * @param room 
      * @param callback 

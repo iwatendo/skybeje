@@ -12,15 +12,12 @@ import { INaviContainer } from "./INaviContainer";
 
 import NotImplementView from "./NotImplement/NotImplementView";
 import ProfileView from "./Profile/ProfileView";
-import RoomEditDialogController from "./Room/RoomEditDialog/RoomEditDialogController";
 import SettingController from "./Setting/SettingController";
 import BootInstanceView from "./BootInstance/BootInstanceView";
-import RoomView from "./Room/RoomView";
 
 
 export enum NaviEnum {
     Profile = 1,
-    Room = 2,
     Instance = 7,
     Visitor = 8,
     Setting = 9,
@@ -73,7 +70,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         let result = new Map<NaviEnum, HTMLElement>();
 
         result.set(NaviEnum.Profile, document.getElementById('sbj-navi-profile'));
-        result.set(NaviEnum.Room, document.getElementById('sbj-navi-room'));
         result.set(NaviEnum.Setting, document.getElementById('sbj-navi-setting'));
         result.set(NaviEnum.Instance, document.getElementById('sbj-navi-home-instance'));
         result.set(NaviEnum.Visitor, document.getElementById('sbj-navi-home-visitor'));
@@ -229,11 +225,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 title = "プロフィール";
                 disp = DispEnum.Local;
                 this._naviView = new ProfileView(this.Controller, mainElement);
-                break;
-            case NaviEnum.Room:
-                title = "ルーム";
-                disp = DispEnum.Local;
-                this._naviView = new RoomView(this.Controller, mainElement);
                 break;
             case NaviEnum.Setting:
                 title = "設定";

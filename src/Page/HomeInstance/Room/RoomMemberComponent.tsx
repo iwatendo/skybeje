@@ -6,7 +6,7 @@ import * as Home from "../../../Base/IndexedDB/Home";
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import ActorPeer from "../../../Base/Container/ActorPeer";
-import { RoomView } from "./RoomView";
+import { RoomView, DragItemType } from "./RoomView";
 
 
 interface RoomMemberProp {
@@ -61,6 +61,6 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
     private onDragStart(ev: DragEvent) {
         //  自身のドラックアイテムと認識させる為にURLを設定
         ev.dataTransfer.setData("text", location.href);
-        this.props.view.SetDragItem(this);
+        this.props.view.SetDragItem(DragItemType.Member, this);
     }
 }

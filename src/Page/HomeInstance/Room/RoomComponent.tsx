@@ -62,6 +62,22 @@ export default class RoomComponent extends React.Component<RoomProp, RoomStat> {
         );
     }
 
+
+    /**
+     * 部屋の並び順変更
+     */
+    public ChangeRoomOrder(rooms: Array<Home.Room>) {
+
+        this.setState({
+            roomActors: this.state.roomActors,
+        }, () => {
+            this.state.roomActors.forEach(cur => {
+                this.props.view.Controller.Model.UpdateRoom(cur.room);
+            });
+        });
+    }
+
+
 }
 
 
