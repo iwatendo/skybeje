@@ -13,7 +13,6 @@ import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 import HomeVisitorController from "../HomeVisitorController";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
-import ProfileEditerDialog from "../ProfileEditer/ProfileEditerDialog";
 
 
 export default class InputPaneController {

@@ -5,6 +5,16 @@
 
 }
 
+ .sbj-room-frame{
+     position: absolute;
+     top: 64px;
+     right: 0;
+     width: 100%;
+     height: calc(100% - 64px);
+	 z-index: 2;
+ }
+
+
 .sbj-home-instance-header-row{
     padding: 0px 40px 0px 32px;
 }
@@ -48,10 +58,16 @@
     margin: 0px;
 }
 
-.sbj-home-instance-room-title{
+.sbj-home-instance-room-header{
     padding: 8px;
     color: var(--sbj-color-highlight-text);
     background-color: var(--sbj-color-edge-background);
+}
+
+.sbj-home-instance-room-title{
+    position: absolute;
+    top: 15px;
+    left: 20px;
 }
 
 .sbj-home-instance-room-member{
@@ -68,4 +84,12 @@
 
 .sbj-home-instance-room-member{
     border-radius: 14px;
+}
+
+#sbj-home-instance-room-add-button{
+    margin: 0px 32px 16px;
+}
+
+.sbj-home-instance-room-edit-button{
+    float: right;
 }

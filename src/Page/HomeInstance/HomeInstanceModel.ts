@@ -56,6 +56,16 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
 
 
     /**
+     * ルーム情報の削除
+     * @param room 
+     * @param callback 
+     */
+    public DeleteRoom(room: Home.Room, callback: OnWrite = null) {
+        this._homeDB.Delete<Home.Room>(Home.DB.ROOM, room.hid, callback);
+    }
+
+
+    /**
      * タイムラインメッセージの全文取得
      * @param callback 
      */

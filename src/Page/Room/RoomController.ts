@@ -62,7 +62,7 @@ export default class RoomController extends AbstractServiceController<RoomView, 
      * ※親ドキュメント側から閉じる
      */
     public CloseNotify() {
-        let element = window.parent.document.getElementById('sbj-room-do-close') as HTMLInputElement;
+        let element = window.parent.document.getElementById('sbj-room-frame-close') as HTMLInputElement;
 
         if (element) {
             element.click();

@@ -24,6 +24,10 @@
                     &nbsp; クライアント起動 &nbsp;
                 </button>
                 <div class="mdl-layout-spacer"></div>
+                <button id='sbj-clear-timeline' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    <i class="material-icons bottom">delete_forever</i>
+                    &nbsp; タイムラインのクリア &nbsp;
+                </button>
                 <button id='sbj-stop-instance' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                     <i class="material-icons">stop</i>
                     &nbsp; ホームインスタンスの停止 &nbsp;
@@ -47,24 +51,27 @@
                 </div>
             </div>
 
+            <button id="sbj-home-instance-room-add-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                <i class='material-icons'>add</i>
+                &nbsp;ルーム追加&nbsp;
+            </button>
+
             <div id="sbj-home-instance-rooms">
             </div>
 
-            <div class="sbj-home-instance-action">
-                <button id='sbj-clear-timeline' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                    <i class="material-icons bottom">delete_forever</i>
-                    &nbsp; タイムラインのクリア &nbsp;
-                </button>
-            </div>
-
         </main>
+    </div>
 
-        <!--ダッシュボードからの変更通知の為の入力ボックス -->
-        <input type="text" id="sbj-dashborad-change-room" hidden/>
+    <!-- room edit -->
+    <iframe id="sbj-room-frame" class="sbj-room-frame" hidden>
+    </iframe>
 
-        <script src="/lib/react.min.js"></script>
-        <script src="/lib/react-dom.min.js"></script>
-        <script src="bundle.js"></script>
+    <!--ルーム編集フレームのクローズ通知用 -->
+    <input type="text" id="sbj-room-frame-close" hidden/>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
+    <script src="bundle.js"></script>
 
 </body>
 

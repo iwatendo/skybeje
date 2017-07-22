@@ -1,6 +1,8 @@
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 
+import * as Home from "../../Base/IndexedDB/Home";
+
 import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
 import StdUtil from "../../Base/Util/StdUtil";
@@ -12,6 +14,9 @@ import { RoomView } from "./Room/RoomView";
 
 
 export default class HomeInstanceView extends AbstractServiceView<HomeInstanceController> {
+
+    private _roomFrame = document.getElementById('sbj-room-frame') as HTMLFrameElement;
+
 
     /**
      * 初期化処理
@@ -33,8 +38,15 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
             this.ClearTimeline();
         };
 
-        document.getElementById('sbj-dashborad-change-room').onclick = (e) => {
+        document.getElementById('sbj-home-instance-room-add-button').onclick = (e) => {
+            //  新規追加
+            let hid = StdUtil.CreateUuid();
+            this.DoShowRoomEditDialog(hid);
+        }
 
+        //  プロフィール画面からのダイアログクローズ通知
+        document.getElementById('sbj-room-frame-close').onclick = (e) => {
+            this._roomFrame.hidden = true;
             this.Controller.Model.GetRooms((rooms) => {
                 this.Controller.Room.ChangeRoomInfo(rooms);
             });
@@ -111,5 +123,22 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
             WebRTCService.ChildSendAll(new ClearTimelineSender());
         });
     }
+
+    /**
+     * プロフィール編集ダイアログの表示
+     * @param hid 
+     */
+    public DoShowRoomEditDialog(hid: string) {
+
+        let src = LinkUtil.CreateLink("../Room/") + "?hid=" + hid;
+
+        this._roomFrame.src = null;
+        this._roomFrame.onload = () => {
+            this._roomFrame.hidden = false;
+            this._roomFrame.onload = null;
+            this._roomFrame.contentDocument.getElementById('sbj-room-cancel').focus();
+        }
+        this._roomFrame.src = src;
+    }  
 
 }

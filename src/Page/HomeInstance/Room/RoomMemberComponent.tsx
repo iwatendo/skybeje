@@ -10,7 +10,7 @@ import { RoomView } from "./RoomView";
 
 
 interface RoomMemberProp {
-    owner: RoomView;
+    view: RoomView;
     room: Home.Room;
     actorPeer: ActorPeer;
 }
@@ -61,7 +61,6 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
     private onDragStart(ev: DragEvent) {
         //  自身のドラックアイテムと認識させる為にURLを設定
         ev.dataTransfer.setData("text", location.href);
-        this.props.owner.SetDragItem(this);
+        this.props.view.SetDragItem(this);
     }
-
 }

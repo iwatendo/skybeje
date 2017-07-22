@@ -66,7 +66,8 @@ export class RoomView {
      * 生成処理（描画処理）
      */
     public Create() {
-        ReactDOM.render(<RoomComponent owner={this} roomActors={this._roomActors} />, this._element, () => {
+        let key = StdUtil.UniqKey();
+        ReactDOM.render(<RoomComponent key={key} view={this} roomActors={this._roomActors} />, this._element, () => {
             this._roomActors.forEach((ra) => {
                 ImageInfo.SetCss(ra.room.hid, ra.room.background);
             });
@@ -75,12 +76,9 @@ export class RoomView {
 
 
     /**
-     * ルーム情報の更新（ダッシュボード側の更新通知）
+     * ルーム情報の更新
      */
     public ChangeRoomInfo(rooms: Array<Home.Room>) {
-
-        //  仮に部屋が削除された場合は、インスタンス上には残す
-        //  ※ダッシュボード側で削除できないようにする
 
         rooms.forEach((curRoom) => {
 
@@ -90,7 +88,7 @@ export class RoomView {
                 let pre = pres[0];
                 let preRoom = pre.room;
 
-                //  名前か画像が変更された場合は、接続クライアントに通知する
+                //  名前か画像が変更された場合、接続クライアントに通知する
                 if (preRoom.name !== curRoom.name || !ImageInfo.Equals(preRoom.background, curRoom.background)) {
                     this.Controller.SendChnageRoom(curRoom);
                 }
@@ -110,6 +108,18 @@ export class RoomView {
         this.Create();
     }
 
+
+    /**
+     * ルーム情報の削除
+     * @param hid 
+     */
+    public DeleteRoom(room: Home.Room) {
+
+        this._roomActors = this._roomActors.filter((ra) => ra.room.hid !== room.hid);
+        this.Controller.Model.DeleteRoom(room, () => {
+            this.Create();
+        });
+    }
 
     /**
      * ルームメンバーの変更

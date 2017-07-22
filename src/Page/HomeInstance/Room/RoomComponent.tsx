@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import * as Home from "../../../Base/IndexedDB/Home";
+
 import { RoomView, RoomActors } from "./RoomView";
 import { RoomItemComponent } from "./RoomItemComponent";
 
@@ -9,7 +11,15 @@ import { RoomItemComponent } from "./RoomItemComponent";
  * 
  */
 interface RoomProp {
-    owner: RoomView;
+    view: RoomView;
+    roomActors: Array<RoomActors>
+}
+
+
+/**
+ * 
+ */
+interface RoomStat {
     roomActors: Array<RoomActors>
 }
 
@@ -17,7 +27,21 @@ interface RoomProp {
 /**
  * ルーム一覧コンポーネント
  */
-export default class RoomComponent extends React.Component<RoomProp, any> {
+export default class RoomComponent extends React.Component<RoomProp, RoomStat> {
+
+
+    /**
+     * コンストラクタ
+     * @param props
+     * @param context
+     */
+    constructor(props?: RoomProp, context?: any) {
+        super(props, context);
+
+        this.state = {
+            roomActors: this.props.roomActors,
+        };
+    }
 
 
     /**
@@ -25,8 +49,8 @@ export default class RoomComponent extends React.Component<RoomProp, any> {
      */
     public render() {
 
-        let nodes = this.props.roomActors.map((ra) => {
-            return (<RoomItemComponent key={ra.room.hid} owner={this.props.owner} room={ra.room} actpeers={ra.actpeers} />);
+        let nodes = this.state.roomActors.map((ra) => {
+            return (<RoomItemComponent key={ra.room.hid} view={this.props.view} owner={this} room={ra.room} actpeers={ra.actpeers} />);
         });
 
         return (
