@@ -134,11 +134,13 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             }
         }
 
-        if (sender.dispUserCursor) {
-            this.Cursor.ClearQueue();
-        }
-        else {
-            this.Cursor.Clear();
+        if (this.Cursor) {
+            if (sender.dispUserCursor) {
+                this.Cursor.ClearQueue();
+            }
+            else {
+                this.Cursor.Clear();
+            }
         }
 
         if (!sender.dispSubtitles) {
