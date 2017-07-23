@@ -112,9 +112,36 @@ export class CursorController {
 
 
     /**
+     * 表示のクリア処理
+     */
+    public Clear() {
+
+        this.ClearQueue();
+        this._baseCursorMap.clear();
+        this._cursorMap.clear();
+        let cursorArray = new Array<CastCursor>();
+
+        //  カーソル表示があればクリア
+        ReactDOM.render(<CursorComponent CursorList={cursorArray} />, this._cursorDispElement, (el) => {
+            this.SetCursorIcon(cursorArray);
+        });
+    };
+
+
+    /**
+     * カーソルのキュー情報をクリア
+     */
+    public ClearQueue(){
+        this._queue = null;
+        this._busy = false;
+    }
+
+
+    /**
      * 
      */
     public DisplayAll() {
+        this.ClearQueue();
         let vdo = this.GetVideoDispOffset(this._video);
         this._baseCursorMap.forEach((cur, key) => { this.Display(cur); });
     }
@@ -165,22 +192,6 @@ export class CursorController {
             this._busy = false;
         }
     }
-
-
-    /**
-     * 表示のクリア処理
-     */
-    public Clear() {
-
-        this._busy = false;
-        this._cursorMap.clear();
-        let cursorArray = new Array<CastCursor>();
-
-        //  カーソル表示があればクリア
-        ReactDOM.render(<CursorComponent CursorList={cursorArray} />, this._cursorDispElement, (el) => {
-            this.SetCursorIcon(cursorArray);
-        });
-    };
 
 
     /**
