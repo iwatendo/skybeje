@@ -167,6 +167,9 @@ export default class IconListView {
         let actor = owner.Actor;
 
         actor.iconIds = actor.iconIds.filter((n) => n !== icon.iid);
+        if (actor.dispIid === icon.iid) {
+            actor.dispIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+        }
         owner.Model.UpdateActor(actor);
         owner.Model.DeleteIcon(icon);
 
