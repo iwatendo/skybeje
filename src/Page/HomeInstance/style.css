@@ -58,6 +58,10 @@
     margin: 0px;
 }
 
+.sbj-home-instance-room-panel{
+    background-color: var(--sbj-color-room-default-background);
+}
+
 .sbj-home-instance-room-header{
     padding: 8px;
     color: var(--sbj-color-highlight-text);

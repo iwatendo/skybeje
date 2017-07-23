@@ -56,6 +56,10 @@
     margin-right: 16px;
 }
 
+.split-pane{
+    background-color: var(--sbj-color-room-default-background);
+}
+
 .sbj-split-pane-component-left{
     background-color: var(--sbj-color-timeline-panel);
     width: 50%;

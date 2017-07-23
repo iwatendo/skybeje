@@ -19,6 +19,7 @@ body {
     --sbj-color-default-background:  rgba(255,255,255,.75);
     --sbj-color-edge-background:  rgba(0,0,0,.3);
     --sbj-color-timeline-panel:  rgba(255,255,255,.3);
+    --sbj-color-room-default-background: #F5F5F5;
 
     --sbj-color-menu-navi: rgba(255, 255, 255, 0.56);
     --sbj-color-menu-navi-text: #37474F;

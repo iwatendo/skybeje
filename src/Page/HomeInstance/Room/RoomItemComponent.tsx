@@ -43,7 +43,7 @@ export class RoomItemComponent extends React.Component<RoomItemProp, any>{
         let canDelete = !this.props.room.isDefault && (this.props.actpeers.length === 0);
 
         return (
-            <div id={this.props.room.hid} className='group-panel mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--3dp' draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.onDrop.bind(this)}>
+            <div id={this.props.room.hid} className='sbj-home-instance-room-panel mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--3dp' draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.onDrop.bind(this)}>
                 <div className="sbj-home-instance-room-header">
                     <span className="sbj-home-instance-room-title">{this.props.room.name}</span>
                     <button className="sbj-home-instance-room-edit-button mdl-button mdl-button--colored" onClick={this.OnEditClick.bind(this)}>
