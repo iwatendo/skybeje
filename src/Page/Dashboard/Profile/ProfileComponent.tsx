@@ -80,7 +80,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
                     <div className="sbj-dashboard-profile-label-card">
                         <h5 className="sbj-dashboard-profile-label">ユーザープロフィール</h5>
                         <button id="sbj-dashboard-profile-back" className="sbj-dashboard-profile-button mdl-button mdl-button--raised" onClick={this.OnClick_Back.bind(this)} hidden={!isConnected}>
-                            <i className='material-icons'>arrow_back</i>
+                            <i className='material-icons'>navigate_before</i>
                             &nbsp;戻る&nbsp;
                         </button>
                     </div>
