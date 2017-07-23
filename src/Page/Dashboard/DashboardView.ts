@@ -1,6 +1,7 @@
 
 import LocalCache from "../../Base/Common/LocalCache";
 import ImageInfo from "../../Base/Container/ImageInfo";
+import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 
@@ -43,6 +44,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
     protected Initialize(callback: OnViewLoad) {
 
         this.InitializeEvent();
+        StdUtil.StopPropagation();
 
         //  URLの指定IDを取得
         let peerid = LinkUtil.GetPeerID();
