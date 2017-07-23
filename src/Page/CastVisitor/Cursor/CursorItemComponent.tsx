@@ -54,7 +54,7 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
             }
 
 
-            let imgClassName = 'sbj-cursor-img-' + cursor.iid.toString();
+            let imgClassName = 'sbj-cact-visitor-cursor-image-' + cursor.iid.toString();
 
             return (
                 <div>

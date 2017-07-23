@@ -82,15 +82,20 @@ export class CursorController {
         this._video = video;
         this._cursorDispElement = cursorDivElement;
 
+        itemDivElement.onclick = (ev: MouseEvent) => {
+
+        }
+
 
         itemDivElement.onmousedown = (ev: MouseEvent) => {
-            if (ev.buttons === 1) {
+
+            if (ev.buttons === 1 && this.IsCursorPort(ev)) {
                 this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY);
             }
         };
 
         itemDivElement.onmousemove = (ev: MouseEvent) => {
-            if (ev.buttons === 1) {
+            if (ev.buttons === 1 && this.IsCursorPort(ev)) {
                 this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY);
             }
         };
@@ -109,6 +114,28 @@ export class CursorController {
             this.CastCursorSend(this._video, itemDivElement, -1, -1);
         }
     }
+
+
+    /**
+     * カーソルポートか？
+     * @param ev 
+     */
+    public IsCursorPort(ev: MouseEvent) {
+
+        let targetId = (ev.target as any).id;
+        if (targetId === "sbj-cact-visitor-cursor-port") {
+            return true;
+        }
+
+        let targetClassName: string = (ev.target as any).className;
+
+        if (targetClassName.indexOf("sbj-cact-visitor-cursor") >= 0) {
+            return true;
+        }
+
+        return false;
+    }
+
 
 
     /**
@@ -131,7 +158,7 @@ export class CursorController {
     /**
      * カーソルのキュー情報をクリア
      */
-    public ClearQueue(){
+    public ClearQueue() {
         this._queue = null;
         this._busy = false;
     }
@@ -360,7 +387,7 @@ export class CursorController {
             return;
         }
 
-        let imgclassName = "sbj-cursor-img-" + icon.iid.toString();
+        let imgclassName = "sbj-cact-visitor-cursor-image-" + icon.iid.toString();
         document.getElementsByClassName(imgclassName);
 
         let elements = document.getElementsByClassName(imgclassName);
