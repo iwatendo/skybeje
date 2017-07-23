@@ -38,6 +38,9 @@ export default class CastSelectorController {
      */
     private Create() {
         ReactDOM.render(<CastSelectorComponent controller={this._ownerController} owner={this} servants={this._servantList} select={this._selectServant} />, this._castctrlpaneElement, () => {
+            this._servantList.forEach((svt) => {
+                this._ownerController.IconCache.GetIcon(svt.ownerPeerid, svt.ownerIid)
+            });
         });
     }
 

@@ -44,15 +44,12 @@ export default class ServantCache {
 
             this._controller.Model.GetUserProfile((profile) => {
 
-                let profileAid = profile.aid;
-                let profileIid = (profile.iconIds.length > 0 ? profile.iconIds[0] : "");
-
                 this._controller.RoomCache.GetRoomByActorId(selectAid, (room) => {
                     let servant = new ServantSender();
                     servant.servantPeerId = servantPid;
                     servant.ownerPeerid = this._controller.PeerId;
-                    servant.ownerAid = profileAid;
-                    servant.ownerIid = profileIid;
+                    servant.ownerAid = profile.aid;
+                    servant.ownerIid = profile.dispIid;
                     servant.hid = room.hid;
                     servant.clientUrl = cib.clientUrl;
                     servant.instanceUrl = cib.instanceUrl;
@@ -74,7 +71,7 @@ export default class ServantCache {
 
         //  
         this._roomServantCache.set(servant.hid, servant);
-        
+
     }
 
 
@@ -87,10 +84,10 @@ export default class ServantCache {
         let result: RoomServantSender;
 
         //
-        if(this._roomServantCache.has(hid)){
+        if (this._roomServantCache.has(hid)) {
             result = this._roomServantCache.get(hid);
         }
-        else{
+        else {
             result = new RoomServantSender();
         }
 
