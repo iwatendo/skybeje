@@ -122,7 +122,7 @@ export default class ChatManager {
 
             this._controller.ConnCache.GetExec(peerid, (conn) => {
                 if (conn && conn.open) {
-                    WebRTCService.ChildSend(conn, sender);
+                    WebRTCService.SendTo(conn, sender);
                 }
             });
         });

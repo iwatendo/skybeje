@@ -24,13 +24,13 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
             if (this.Controller.CastSetting.dispUserCursor) {
                 let cursor = sender as CastCursorSender;
                 this.Controller.SetCursorCache(cursor);
-                WebRTCService.ChildSendAll(sender);
+                WebRTCService.SendToAll(sender);
             }
         }
 
         //  キャスト情報の送信
         if (sender.type === GetCastInfoSedner.ID) {
-            WebRTCService.ChildSend(conn, this.Controller.CastSetting);
+            WebRTCService.SendTo(conn, this.Controller.CastSetting);
         }
 
     }

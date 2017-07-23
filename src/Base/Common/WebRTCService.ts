@@ -255,7 +255,7 @@ export default class WebRTCService {
      * オーナーへの送信
      * @param data
      */
-    public static OwnerSend(data: Sender) {
+    public static SendToOwner(data: Sender) {
 
         let senddata = JSON.stringify(data);
 
@@ -281,7 +281,7 @@ export default class WebRTCService {
      * @param conn
      * @param data
      */
-    public static ChildSend(conn: PeerJs.DataConnection, data: Sender) {
+    public static SendTo(conn: PeerJs.DataConnection, data: Sender) {
 
         let json = JSON.stringify(data);
 
@@ -301,7 +301,7 @@ export default class WebRTCService {
      * 全接続クライアントへの送信
      * @param data
      */
-    public static ChildSendAll(data: Sender) {
+    public static SendToAll(data: Sender) {
 
         let json = JSON.stringify(data);
 

@@ -212,7 +212,7 @@ export class CursorController {
 
         //  ququeがある場合、最後に送信する
         if (this._queue !== null && this._queue.aid === cursor.aid) {
-            WebRTCService.OwnerSend(this._queue);
+            WebRTCService.SendToOwner(this._queue);
             this._queue = null;
         }
         else {
@@ -258,7 +258,7 @@ export class CursorController {
         }
         else {
             this._busy = true;
-            WebRTCService.OwnerSend(sender);
+            WebRTCService.SendToOwner(sender);
         }
     }
 
@@ -346,7 +346,7 @@ export class CursorController {
         this._connCache.GetExec(peerid, (conn) => {
             let sender = new GetIconSender();
             sender.iid = iid;
-            WebRTCService.ChildSend(conn, sender);
+            WebRTCService.SendTo(conn, sender);
         });
 
         //  アイコンが取得できるまで、再要求しないように空アイコンをキャッシュ

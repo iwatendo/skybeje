@@ -40,7 +40,7 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             let gtl = sender as HVContainer.GetTimelineSender;
             let result = new HIContainer.TimelineSender();
             result.msgs = this.Controller.Manager.Chat.GetBeforeMessages(gtl.hid, gtl.count);
-            WebRTCService.ChildSend(conn, result);
+            WebRTCService.SendTo(conn, result);
         }
 
         //  タイムラインの更新

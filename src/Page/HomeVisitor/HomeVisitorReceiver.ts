@@ -117,7 +117,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         this.Controller.Model.GetUserProfile((profile) => {
             let result = new HVContainer.ProfileSender();
             result.profile = profile;
-            WebRTCService.ChildSend(conn, result);
+            WebRTCService.SendTo(conn, result);
         });
     }
 
@@ -131,7 +131,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         this.Controller.Model.GetActor(sender.aid, (actor) => {
             let result = new HVContainer.ActorSender();
             result.actor = actor;
-            WebRTCService.ChildSend(conn, result);
+            WebRTCService.SendTo(conn, result);
         });
     }
 
@@ -146,7 +146,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         this.Controller.Model.GetIcon(sender.iid, (icon) => {
             let result = new HVContainer.IconSender();
             result.icon = icon;
-            WebRTCService.ChildSend(conn, result);
+            WebRTCService.SendTo(conn, result);
         });
     }
 
@@ -170,7 +170,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
         //
         this.Controller.ServantCache.GetMyServant(servantPid, cib, (sender) => {
-            WebRTCService.OwnerSend(sender);
+            WebRTCService.SendToOwner(sender);
         });
 
     }

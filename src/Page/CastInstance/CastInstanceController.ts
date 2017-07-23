@@ -90,7 +90,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
             this.CastInstance.instanceUrl = location.href;
             this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
 
-            WebRTCService.OwnerSend(this.CastInstance);
+            WebRTCService.SendToOwner(this.CastInstance);
         }
     }
 
@@ -104,7 +104,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
         //  配置済みカーソルの通知
         this.CursorCache.forEach((value, key) => {
-            WebRTCService.ChildSend(conn, value);
+            WebRTCService.SendTo(conn, value);
         });
 
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
@@ -157,12 +157,12 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public SendCastInfo() {
 
         //  クライアントへの通知
-        WebRTCService.ChildSendAll(this.CastSetting);
+        WebRTCService.SendToAll(this.CastSetting);
 
         //  オーナー側への通知
         if (this.CastInstance) {
             this.CastInstance.setting = this.CastSetting;
-            WebRTCService.OwnerSend(this.CastInstance);
+            WebRTCService.SendToOwner(this.CastInstance);
         }
     }
 

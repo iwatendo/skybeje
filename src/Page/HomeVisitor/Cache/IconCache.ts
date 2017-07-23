@@ -97,7 +97,7 @@ export default class IconCache {
         this._controller.ConnCache.GetExec(peerid, (conn) => {
             let sender = new GetIconSender();
             sender.iid = iid;
-            WebRTCService.ChildSend(conn, sender);
+            WebRTCService.SendTo(conn, sender);
         });
     }
 

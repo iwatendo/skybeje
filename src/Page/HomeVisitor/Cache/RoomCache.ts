@@ -92,7 +92,7 @@ export default class RoomCache {
         else {
             this.PushQueue(hid, callback);
             let sender = new GetRoomSender(hid);
-            WebRTCService.OwnerSend(sender);
+            WebRTCService.SendToOwner(sender);
         }
     }
 

@@ -147,7 +147,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         let sender = new ServantCloseSender();
         sender.servantPeerId = conn.peer;
         sender.ownerPeerid = this.PeerId;
-        WebRTCService.OwnerSend(sender);
+        WebRTCService.SendToOwner(sender);
 
     }
 
@@ -176,7 +176,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public SetUseActor(useActor: UseActorSender) {
         this.UseActor = useActor;
-        WebRTCService.OwnerSend(useActor);
+        WebRTCService.SendToOwner(useActor);
     }
 
 
@@ -231,7 +231,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * @param chatMessage 
      */
     public SendChatMessage(chatMessage: ChatMessageSender) {
-        WebRTCService.OwnerSend(chatMessage);
+        WebRTCService.SendToOwner(chatMessage);
     }
 
 
@@ -243,7 +243,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         let sender = new GetTimelineSender();
         sender.hid = hid;
         sender.count = 256;
-        WebRTCService.OwnerSend(sender);
+        WebRTCService.SendToOwner(sender);
     }
 
 
@@ -254,7 +254,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public UpdateTimeline(tml: Timeline.Message) {
         let sender = new UpdateTimelineSender();
         sender.message = tml;
-        WebRTCService.OwnerSend(sender);
+        WebRTCService.SendToOwner(sender);
     }
 
 

@@ -220,7 +220,7 @@ export default class RoomManager {
 
             this._controller.ConnCache.GetExec(peerid, (conn) => {
                 //  各ユーザーへ通知
-                WebRTCService.ChildSend(conn, rmi);
+                WebRTCService.SendTo(conn, rmi);
             });
         });
 

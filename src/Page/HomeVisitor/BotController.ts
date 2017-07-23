@@ -129,7 +129,7 @@ export default class BotController {
             sender.name = actor.name;
             sender.text = guide.note;
             sender.peerid = this.Controller.PeerId;
-            WebRTCService.OwnerSend(sender);
+            WebRTCService.SendToOwner(sender);
         }
 
     }
@@ -152,7 +152,7 @@ export default class BotController {
                 sender.name = actor.name;
                 sender.text = result;
                 sender.peerid = this.Controller.PeerId;
-                WebRTCService.OwnerSend(sender);
+                WebRTCService.SendToOwner(sender);
             }
         }
     }

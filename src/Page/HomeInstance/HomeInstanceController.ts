@@ -42,7 +42,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
         //  通常は呼ばれない。
         //  多重起動が検出されたケースで呼ばれる為、終了通知を出す。
-        WebRTCService.OwnerSend(new HIContainer.ForcedTerminationSender());
+        WebRTCService.SendToOwner(new HIContainer.ForcedTerminationSender());
 
     }
 
@@ -125,7 +125,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     public OnChildConnection(conn: PeerJs.DataConnection) {
         super.OnChildConnection(conn);
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
-        WebRTCService.ChildSend(conn, new HIContainer.ConnInfoSender());
+        WebRTCService.SendTo(conn, new HIContainer.ConnInfoSender());
     }
 
 
@@ -154,11 +154,11 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
         this.Model.GetRoom(req.hid, (room) => {
             //  ルーム情報の通知
             sender.room = room;
-            WebRTCService.ChildSend(conn, sender);
+            WebRTCService.SendTo(conn, sender);
 
             //  ルーム内のサーバント情報の通知
             let sssender = this.Manager.Servant.GetServant(req.hid);
-            WebRTCService.ChildSend(conn, sssender);
+            WebRTCService.SendTo(conn, sssender);
         });
     }
 
@@ -170,7 +170,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     public SendChnageRoom(room: Room) {
         let sender = new HIContainer.RoomSender();
         sender.room = room;
-        WebRTCService.ChildSendAll(sender);
+        WebRTCService.SendToAll(sender);
     }
 
 };

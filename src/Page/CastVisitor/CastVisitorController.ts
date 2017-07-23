@@ -42,7 +42,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnOwnerConnection() {
 
         //  キャスト情報の要求
-        WebRTCService.OwnerSend(new GetCastInfoSedner());
+        WebRTCService.SendToOwner(new GetCastInfoSedner());
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.initializeCursor();

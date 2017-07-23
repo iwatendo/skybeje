@@ -120,7 +120,7 @@ export default class ServantManager {
             this._controller.ConnCache.GetExec(peerid, (conn) => {
                 if (conn && conn.open) {
                     let sender = this.GetServant(hid);
-                    WebRTCService.ChildSend(conn, sender);
+                    WebRTCService.SendTo(conn, sender);
                 }
             });
         });

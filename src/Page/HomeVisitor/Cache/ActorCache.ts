@@ -81,7 +81,7 @@ export default class ActorCache {
                 this.PushQueue(peerid, callback);
                 //  プロフィール要求
                 let sender = new GetProfileSender();
-                WebRTCService.ChildSend(conn, sender);
+                WebRTCService.SendTo(conn, sender);
 
             });
         }
@@ -107,7 +107,7 @@ export default class ActorCache {
                 this.PushQueue(key, callback);
                 let sender = new GetActorSender();
                 sender.aid = aid;
-                WebRTCService.ChildSend(conn, sender);
+                WebRTCService.SendTo(conn, sender);
             });
         }
 
