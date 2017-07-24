@@ -97,6 +97,7 @@ export default class GuideDialogController {
         document.getElementById('sbj-guide-done').onclick = (() => this.Done());
         document.getElementById('sbj-guide-update').onclick = (() => this.Done());
         document.getElementById('sbj-guide-delete').onclick = (() => this.Delete());
+        document.getElementById('sbj-guide-dialog-close').onclick = (() => this.Close());
         document.getElementById('sbj-guide-cancel').onclick = (() => this.Close());
     }
 
