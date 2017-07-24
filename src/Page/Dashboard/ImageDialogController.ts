@@ -152,6 +152,7 @@ export default class ImageDialogController {
         document.getElementById('sbj-image-done').onclick = (() => this.Done());
         document.getElementById('sbj-image-update').onclick = (() => this.Done());
         document.getElementById('sbj-image-delete').onclick = (() => this.Delete());
+        document.getElementById('sbj-image-close').onclick = (() => this.Close());
         document.getElementById('sbj-image-cancel').onclick = (() => this.Close());
 
         let cssEditElement = document.getElementById('sbj-image-css-edit') as HTMLInputElement;
