@@ -37,7 +37,7 @@
     margin: 8px;
 }
 
-#sbj-room-cancel{
+#sbj-room-dialog-close{
     float: right;
 }
 
@@ -77,6 +77,15 @@
 
 .sbj-room-header-row{
     padding: 0px 0px 0px 16px;
+}
+
+.sbj-room-footer{
+    background-color: var(--sbj-color-default-background);
+    padding: 16px;
+}
+
+.sbj-room-footer-action{
+    margin-left: auto;
 }
 
 .sbj-room-note{

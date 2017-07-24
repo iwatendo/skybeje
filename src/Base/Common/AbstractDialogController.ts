@@ -35,7 +35,7 @@ export default abstract class AbstractDialogController<U extends IServiceControl
     private _updateButton = document.getElementById('sbj-dialog-update') as HTMLButtonElement;
     private _deleteButton = document.getElementById('sbj-dialog-delete') as HTMLButtonElement;
     private _selectButton = document.getElementById('sbj-dialog-select') as HTMLButtonElement;
-    private _cancelButton = document.getElementById('sbj-dialog-cancel') as HTMLButtonElement;
+    private _cancelButton = document.getElementById('sbj-dialog-close') as HTMLButtonElement;
 
     private _owner_callback: OnChangeItem<T>;
     private _close_callback: OnClose;

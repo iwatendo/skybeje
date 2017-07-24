@@ -22,12 +22,13 @@ export default class RoomView extends AbstractServiceView<RoomController> {
         let controller = this.Controller;
         let actor = controller.Room;
         let backpanel = document.getElementById('sbj-room');
+        let cloaseButton = document.getElementById('sbj-room-dialog-close');
         let cancelButton = document.getElementById('sbj-room-cancel');
         let nameElement = document.getElementById('sbj-room-name') as HTMLInputElement;
         let tagElement = document.getElementById('sbj-room-tag') as HTMLInputElement;
         let textElement = document.getElementById('sbj-room-note') as HTMLInputElement;
         let editImageElement = document.getElementById('sbj-room-edit-image');
-
+        let doneButton = document.getElementById('sbj-room-update');
 
         nameElement.value = actor.name;
         tagElement.value = actor.tag;
@@ -37,9 +38,7 @@ export default class RoomView extends AbstractServiceView<RoomController> {
         if (actor.tag) document.getElementById('sbj-room-tag-field').classList.add('is-dirty');
         if (actor.note) document.getElementById('sbj-room-note-field').classList.add('is-dirty');
 
-        nameElement.onblur = (e) => this.CheckChangeUpdate(controller);
-        tagElement.onblur = (e) => this.CheckChangeUpdate(controller);
-        textElement.onblur = (e) => this.CheckChangeUpdate(controller);
+        //
         editImageElement.onclick = (e) => this.OnClickEditImage();
 
         //
@@ -55,9 +54,11 @@ export default class RoomView extends AbstractServiceView<RoomController> {
         };
 
         //  キャンセルボタン押下時
-        cancelButton.onclick = (e) => {
-            controller.CloseNotify();
-        };
+        cloaseButton.onclick = (e) => { controller.CloseNotify(); }
+        cancelButton.onclick = (e) => { controller.CloseNotify(); };
+
+        //  更新ボタン
+        doneButton.onclick = (e) => { this.RoomUpdate(this.Controller); }
 
         //  外部からのドラッグイベント時
         document.getElementById("sbj-room").addEventListener('dragover', (event: DragEvent) => {
@@ -106,23 +107,22 @@ export default class RoomView extends AbstractServiceView<RoomController> {
      * 
      * @param controller 
      */
-    private CheckChangeUpdate(controller: RoomController) {
+    private RoomUpdate(controller: RoomController) {
 
         let room = controller.Room;
         let nameElement = document.getElementById('sbj-room-name') as HTMLInputElement;
         let tagElement = document.getElementById('sbj-room-tag') as HTMLInputElement;
         let textElement = document.getElementById('sbj-room-note') as HTMLInputElement;
 
-        if (nameElement.value !== room.name
-            || tagElement.value !== room.tag
-            || textElement.value !== room.note) {
-            room.name = nameElement.value;
-            room.tag = tagElement.value;
-            room.note = textElement.value;
-            controller.Model.UpdateRoom(room);
+        room.name = nameElement.value;
+        room.tag = tagElement.value;
+        room.note = textElement.value;
+        controller.Model.UpdateRoom(room, () => {
             controller.NotifyRoomChange(room.hid);
-        }
+            controller.CloseNotify();
+        });
     }
+
 
     /**
      * 背景画像の変更
@@ -134,11 +134,10 @@ export default class RoomView extends AbstractServiceView<RoomController> {
             ImageDialogController.Edit(room.background, (img) => {
                 room.background = img;
                 this.SetImage();
-                controller.Model.UpdateRoom(room);
-                controller.NotifyRoomChange(room.hid);
             });
         }
     }
+
 
     public SetImage() {
         let img = this.Controller.Room.background;

@@ -62,7 +62,7 @@
     background-color: var(--sbj-color-edge-background);
 }
 
-.sbj-dialog-cancel{
+.sbj-dialog-close{
 	min-width: 36px;
     width: 36px;
     padding: 0px;

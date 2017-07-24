@@ -28,7 +28,7 @@
                         <h5 class="sbj-room-title">
                             ルーム情報の編集
                         </h5>
-                        <button id="sbj-room-cancel" class="mdl-button mdl-js-button mdl-button--raised sbj-dialog-cancel" type="button">
+                        <button id="sbj-room-dialog-close" class="mdl-button mdl-js-button mdl-button--raised sbj-dialog-close" type="button">
                             <i class="material-icons">close</i>
                         </button>
                     </div>
@@ -56,7 +56,18 @@
                         <i class='material-icons'>photo</i>
                         背景画像の変更
                     </button>
+
                 </main>
+                <footer class="sbj-room-footer mdl-mini-footer">
+                    <div class="sbj-room-footer-action">
+                        <button id='sbj-room-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            <i class="material-icons">done</i>&nbsp;更新&nbsp;
+                        </button>
+                        <button id='sbj-room-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                            &nbsp;キャンセル&nbsp;
+                        </button>
+                    </div>
+                </footer>                    
             </div>
         </div>
     </div>
@@ -83,7 +94,7 @@
                     </div>
 
                     <div class="sbj-dialog-attach-action-right">
-                        <button id='sbj-image-cancel' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-cancel">
+                        <button id='sbj-image-cancel' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
 							<i class="material-icons">close</i>
 						</button>
                     </div>
