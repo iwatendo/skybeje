@@ -17,6 +17,10 @@
     margin: -360px 0 0 -480px;
 }
 
+.sbj-profile-layout_content{
+    height: 365px;
+}
+
 .sbj-profile-main{
     width: 100%;
 }
@@ -37,7 +41,7 @@
     margin: 8px;
 }
 
-#sbj-profile-cancel{
+#sbj-profile-dialog-close{
     float: right;
 }
 
@@ -77,6 +81,17 @@
 
 .sbj-profile-header-row{
     padding: 0px 0px 0px 16px;
+}
+
+.sbj-profile-footer{
+    background-color: var(--sbj-color-default-background);
+    height: 36px;
+    padding: 16px;
+    display: flex;
+}
+
+.sbj-profile-footer-action{
+    margin-left: auto;
 }
 
 .sbj-profile-note{

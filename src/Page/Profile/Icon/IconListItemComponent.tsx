@@ -9,6 +9,7 @@ import { Order, IOrder } from "../../../Base/Container/Order";
 
 import ImageDialogController from "../../Dashboard/ImageDialogController";
 import IconListComponent from "./IconListComponent";
+import IconListView from "./IconListView";
 
 
 /**
@@ -68,8 +69,8 @@ export default class IconListItemComponent extends React.Component<IconListItemP
      * ダブルクリック時処理
      */
     private OnDoubleClick(event) {
-        //  プロフィール編集画面を閉じる
-        this.props.owner.props.controller.CloseNotify();
+        let controller = this.props.owner.props.controller;
+        controller.View.IconDoubleClick();
     }
 
 

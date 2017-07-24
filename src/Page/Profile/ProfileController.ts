@@ -14,6 +14,8 @@ export default class ProfileController extends AbstractServiceController<Profile
 
     public SelectionGid: string;
 
+    public IsNew: boolean;
+
 
     /**
      *
@@ -30,8 +32,12 @@ export default class ProfileController extends AbstractServiceController<Profile
 
                 let actor = actors.filter(n => n.aid === aid)[0];
 
-                if (!actor) {
+                if (actor) {
+                    this.IsNew = false;
+                }
+                else {
                     //  新規アクターデータ作成
+                    this.IsNew = true;
                     actor = new Personal.Actor();
                     actor.aid = aid;
                     actor.name = "";
