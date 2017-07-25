@@ -93,7 +93,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
         //  ライブキャストからの、起動通知 及び 設定変更通知
         if (sender.type === CIContainer.CastInstanceSender.ID) {
-            this.SendCastInstance(conn.peer, sender as CIContainer.CastInstanceSender);
+            this.SendCastInstance(conn, sender as CIContainer.CastInstanceSender);
         }
 
         //  サーバント（ライブキャストを含む）の変更通知
@@ -156,7 +156,9 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      * @param servantPid 
      * @param cib 
      */
-    private SendCastInstance(servantPid: string, cib: CIContainer.CastInstanceSender) {
+    private SendCastInstance(conn: PeerJs.DataConnection, cib: CIContainer.CastInstanceSender) {
+
+        let servantPid = conn.peer;
 
         //  自身のダッシュボードへの通知
         if (cib.setting.isControlClose) {
@@ -169,8 +171,17 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //
-        this.Controller.ServantCache.GetMyServant(servantPid, cib, (sender) => {
-            WebRTCService.SendToOwner(sender);
+        this.Controller.ServantCache.GetMyServant(servantPid, cib, (servantSender) => {
+
+            let hid = servantSender.hid;
+
+            let castroom = this.Controller.RoomCache.Get(hid, (room) => {
+                let castSender = new CIContainer.CastRoomSender();
+                castSender.room = room;
+                WebRTCService.SendTo(conn, castSender);
+            })
+
+            WebRTCService.SendToOwner(servantSender);
         });
 
     }

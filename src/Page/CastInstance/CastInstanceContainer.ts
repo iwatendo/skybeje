@@ -1,5 +1,4 @@
 import * as Home from "../../Base/IndexedDB/Home";
-import * as Timeline from "../../Base/IndexedDB/Timeline";
 
 import Sender from "../../Base/Container/Sender";
 import ActorPeer from "../../Base/Container/ActorPeer";
@@ -32,6 +31,20 @@ export class CastInstanceSender extends Sender {
     instanceUrl: string;
     clientUrl: string;
     setting: CastSettingSedner;
+}
+
+
+/**
+ * ライブキャストをルーム情報
+ */
+export class CastRoomSender extends Sender {
+    public static ID = "CastRoom";
+
+    constructor() {
+        super(CastRoomSender.ID)
+    }
+
+    room: Home.Room;
 }
 
 
@@ -92,7 +105,6 @@ export class CastCursorSender extends Sender {
     iid: string;
     posRx: number;
     posRy: number;
-
 }
 
 

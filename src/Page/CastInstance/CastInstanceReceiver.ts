@@ -7,7 +7,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 
 import CastInstanceController from "./CastInstanceController";
-import { CastCursorSender, GetCastInfoSedner, CastSettingSedner } from "./CastInstanceContainer";
+import { CastCursorSender, GetCastInfoSedner, CastSettingSedner, CastRoomSender } from "./CastInstanceContainer";
 import CastInstanceView from "./CastInstanceView";
 
 
@@ -26,6 +26,11 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
                 this.Controller.SetCursorCache(cursor);
                 WebRTCService.SendToAll(sender);
             }
+        }
+
+        if (sender.type === CastRoomSender.ID) {
+            this.Controller.CastRoom = sender as CastRoomSender;
+            this.Controller.View.SetRoom(this.Controller.CastRoom.room);
         }
 
         //  キャスト情報の送信

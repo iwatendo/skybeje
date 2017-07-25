@@ -1,4 +1,6 @@
 ﻿
+import * as Home from "../../Base/IndexedDB/Home";
+
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
@@ -27,6 +29,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let pauseButton = document.getElementById('sbj-cast-instance-pause');
         let pauseRestart = document.getElementById('sbj-cast-instance-restart');
+        let roomName = document.getElementById('sbj-livecast-room-name');
+        let accountCount = document.getElementById('sbj-cast-instance-account-count');
 
         //
         backpanel.onclick = (e: MouseEvent) => {
@@ -45,7 +49,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             this.Controller.SetStreaming();
             startButton.hidden = true;
             stopButton.hidden = false;
-            pauseButton.hidden = false;
+            accountCount.hidden = false;
+            //  pauseButton.hidden = false;
+            roomName.hidden = false;
             this.SetDisabled('mic-select');
             this.SetDisabled('webcam-select');
 
@@ -141,6 +147,16 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      */
     public SetPeerCount(count: number) {
         document.getElementById("sbj-cast-instance-account-count").setAttribute("data-badge", count.toString());
+    }
+
+
+    /**
+     * 配信ルーム名の表示
+     * @param room 
+     */
+    public SetRoom(room: Home.Room) {
+        let message = "「" + room.name + "」に\nライブキャストしています";
+        document.getElementById("sbj-livecast-room-name").innerText = message;
     }
 
 

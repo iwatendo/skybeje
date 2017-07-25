@@ -29,15 +29,15 @@
 }
 
 #sbj-cast-instance-start{
-    margin-right: 16px;
+    margin: 0px 0px 16px 0px;
 }
 
 #sbj-cast-instance-stop{
-    margin-right: 16px;
+    margin: 0px;
 }
 
 .sbj-cast-instance-option{
-    margin: 16px 0px;
+    margin: 20px 4px 0px 0px;
 }
 
 .sbj-cast-instance-mobile-cell{

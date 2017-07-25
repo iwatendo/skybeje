@@ -26,29 +26,7 @@
                         ライブキャスト
                     </span>
 
-                    <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
-
-                    <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled type="button">
-                        <i class="material-icons">play_arrow</i>
-                        &nbsp;開始&nbsp;
-                    </button>
-
-                    <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden type="button">
-                        <i class="material-icons">stop</i>
-                        &nbsp;停止&nbsp;
-                    </button>
-
-                    <button id="sbj-cast-instance-pause" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
-                        hidden>
-                        <i class="material-icons">pause</i>
-                        &nbsp;一時停止&nbsp;
-                    </button>
-
-                    <button id="sbj-cast-instance-restart" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
-                        hidden>
-                        <i class="material-icons">play_arrow</i>
-                        &nbsp;再開&nbsp;
-                    </button>
+                    <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
 
                     <div class="mdl-layout-spacer"></div>
 
@@ -62,6 +40,34 @@
             <main id="sbj-cast-instance-main" class="mdl-layout__content">
                 <div class="mdl-grid">
                     <div class="sbj-cast-instance-mobile-cell mdl-cell mdl-cell--6-col mdl-color-text--grey-600">
+                        <div>
+                            <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
+                                <i class="material-icons">play_arrow</i>
+                                &nbsp;ライブキャストの開始&nbsp;
+                            </button>
+
+                            <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                                <i class="material-icons">stop</i>
+                                &nbsp;ライブキャストの停止&nbsp;
+                            </button>
+
+                            <button id="sbj-cast-instance-pause" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                                hidden>
+                                <i class="material-icons">pause</i>
+                                &nbsp;一時停止&nbsp;
+                            </button>
+
+                            <button id="sbj-cast-instance-restart" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                                hidden>
+                                <i class="material-icons">play_arrow</i>
+                                &nbsp;再開&nbsp;
+                            </button>
+                        </div>
+
+                        <div>
+                            <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
+                        </div>
+
                         <div>
                             <!-- Mic -->
                             <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
@@ -84,6 +90,10 @@
                             </div>
                             <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="webcam-select-div">ライブキャスト中は<br/>カメラの変更はできません</span>
                         </div>
+                    </div>
+                    <div class="sbj-cast-instance-mobile-cell mdl-cell mdl-cell--6-col">
+                        <span class="mdl-color-text--grey-600">プレビュー</span>
+                        <video id='video' autoplay="true"></video>
                         <div>
                             <label class="sbj-cast-instance-option mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" hidden for="speech_recognition">
                                 音声認識での字幕表示
@@ -91,14 +101,10 @@
                             </label>
 
                             <label class="sbj-cast-instance-option mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="cursor_disp">
-                                接続ユーザーのカーソル表示
+                                接続ユーザーのカーソル表示許可
                                 <input type="checkbox" id="cursor_disp" class="mdl-checkbox__input" />
                             </label>
                         </div>
-                    </div>
-                    <div class="sbj-cast-instance-mobile-cell mdl-cell mdl-cell--6-col">
-                        <span class="mdl-color-text--grey-600">プレビュー</span>
-                        <video id='video' autoplay="true"></video>
                     </div>
                 </div>
             </main>
