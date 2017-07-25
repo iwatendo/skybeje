@@ -68,6 +68,7 @@ export default class ImageDialogController {
      * @param callback 
      */
     private static Start(canAdd: boolean, canEdit: boolean, canDelete: boolean, image: ImageInfo, callback: OnChangeImage) {
+
         document.getElementById('sbj-image-done').hidden = !canAdd;
         document.getElementById('sbj-image-update').hidden = !canEdit;
         document.getElementById('sbj-image-delete').hidden = !canDelete;
@@ -303,9 +304,9 @@ export default class ImageDialogController {
 
         if (image.src == null || image.src.length == 0) {
             imgStyle.background = "";
-            this._imageDropMsg.hidden = false;
+            this.SetEditButtonDisabled(true);
         } else {
-            this._imageDropMsg.hidden = true;
+            this.SetEditButtonDisabled(false);
         }
 
         //  画像のCSS変更
@@ -317,6 +318,17 @@ export default class ImageDialogController {
 
         this._bgposMap.forEach((value, key) => value.classList.remove('sbj-image-css-selection'));
         this._bgposMap.get(image.backgroundposition).classList.add('sbj-image-css-selection');
+    }
+
+
+    /**
+     * 追加/更新ボタンの制御
+     * @param disabled 
+     */
+    private SetEditButtonDisabled(disabled: boolean) {
+        (document.getElementById('sbj-image-done') as HTMLInputElement).disabled = disabled;
+        (document.getElementById('sbj-image-update') as HTMLInputElement).disabled = disabled;
+        this._imageDropMsg.hidden = !disabled;
     }
 
 
