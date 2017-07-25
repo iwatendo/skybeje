@@ -24,8 +24,8 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
         }
 
         //  キャスト情報の通知
-        if (sender.type === CIContainer.CastSettingSedner.ID) {
-            this.Controller.View.SetCastSetting(sender as CIContainer.CastSettingSedner);
+        if (sender.type === CIContainer.CastSettingSender.ID) {
+            this.Controller.View.SetCastSetting(sender as CIContainer.CastSettingSender);
         }
 
         //  アイコン取得

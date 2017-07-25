@@ -7,7 +7,7 @@ import LogUtil from "../../Base/Util/LogUtil";
 
 import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
-import { CastInstanceSender, CastSettingSedner, CastCursorSender, CastRoomSender } from "./CastInstanceContainer";
+import { CastInstanceSender, CastSettingSender, CastCursorSender, CastRoomSender } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 
 
@@ -16,7 +16,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public View: CastInstanceView;
 
     public CastInstance = new CastInstanceSender();
-    public CastSetting = new CastSettingSedner();
+    public CastSetting = new CastSettingSender();
     public CastRoom = new CastRoomSender();
 
     public AudioSource: string = null;

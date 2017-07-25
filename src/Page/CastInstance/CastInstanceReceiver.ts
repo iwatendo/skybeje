@@ -7,7 +7,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 
 import CastInstanceController from "./CastInstanceController";
-import { CastCursorSender, GetCastInfoSedner, CastSettingSedner, CastRoomSender } from "./CastInstanceContainer";
+import { CastCursorSender, GetCastInfoSedner, CastSettingSender, CastRoomSender } from "./CastInstanceContainer";
 import CastInstanceView from "./CastInstanceView";
 
 

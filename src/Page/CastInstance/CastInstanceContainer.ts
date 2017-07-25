@@ -25,12 +25,12 @@ export class CastInstanceSender extends Sender {
 
     constructor() {
         super(CastInstanceSender.ID)
-        this.setting = new CastSettingSedner();
+        this.setting = new CastSettingSender();
     }
 
     instanceUrl: string;
     clientUrl: string;
-    setting: CastSettingSedner;
+    setting: CastSettingSender;
 }
 
 
@@ -64,12 +64,12 @@ export class GetCastInfoSedner extends Sender {
 /**
  * 
  */
-export class CastSettingSedner extends Sender {
+export class CastSettingSender extends Sender {
 
     public static ID = "CastSetting";
 
     constructor() {
-        super(CastSettingSedner.ID);
+        super(CastSettingSender.ID);
         this.isStreaming = false;
         this.isControlClose = false;
         this.isControlHide = false;

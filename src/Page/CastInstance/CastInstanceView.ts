@@ -10,7 +10,7 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import { DeviceView } from "./Device/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
-import { CastSettingSedner, CastSpeechRecognitionSender } from "./CastInstanceContainer";
+import { CastSettingSender, CastSpeechRecognitionSender } from "./CastInstanceContainer";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 

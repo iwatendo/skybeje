@@ -5,7 +5,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import CastVisitorController from "./CastVisitorController";
-import { CastCursorSender, CastSettingSedner } from "../CastInstance/CastInstanceContainer";
+import { CastCursorSender, CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastCursor, CursorController } from "./Cursor/CurosrController";
 import { Icon } from "../../Base/IndexedDB/Personal";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";
@@ -121,7 +121,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
      * ライブキャストの設定変更
      * @param sender
      */
-    public SetCastSetting(sender: CastSettingSedner) {
+    public SetCastSetting(sender: CastSettingSender) {
 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
 
