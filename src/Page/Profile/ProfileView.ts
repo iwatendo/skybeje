@@ -2,13 +2,10 @@
 import * as Personal from "../../Base/IndexedDB/Personal";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import WebRTCService from "../../Base/Common/WebRTCService";
-import LocalCache from "../../Base/Common/LocalCache";
-import StdUtil from "../../Base/Util/StdUtil";
-import ProfileController from "./ProfileController";
-import IconListView from "./Icon/IconListView";
 import ImageUtil from "../../Base/Util/ImageUtil";
+import IconListView from "./Icon/IconListView";
 import GuideListView from "./Guide/GuideListView";
+import ProfileController from "./ProfileController";
 
 
 export default class ProfileView extends AbstractServiceView<ProfileController> {
@@ -22,23 +19,13 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
      */
     public Initialize(callback: OnViewLoad) {
 
-        let controller = this.Controller;
-        let actor = controller.Actor;
-        let backpanel = document.getElementById('sbj-profile');
-        let closelButton = document.getElementById('sbj-profile-dialog-close');
-        let cancelButton = document.getElementById('sbj-profile-cancel');
-        let nameElement = document.getElementById('sbj-profile-name') as HTMLInputElement;
-        let tagElement = document.getElementById('sbj-profile-tag') as HTMLInputElement;
-        let noteElement = document.getElementById('sbj-profile-note') as HTMLInputElement;
-        let updateButton = document.getElementById('sbj-profile-update') as HTMLInputElement;
+        let isNew = this.Controller.IsNew;
+        document.getElementById('sbj-profile-title').textContent = (isNew ? "アクターの追加" : "プロフィール更新");
+        document.getElementById('sbj-profile-append').hidden = !isNew;
+        document.getElementById('sbj-profile-update').hidden = isNew;
 
-        nameElement.value = actor.name;
-        nameElement.oninput = (e) => {
-            updateButton.disabled = (nameElement.value.length === 0);
-        }
-        tagElement.value = actor.tag;
-        noteElement.value = actor.profile;
-        updateButton.disabled = (nameElement.value.length === 0);
+        let actor = this.Controller.Actor;
+        this.SetActorInfo(actor);
 
         if (actor.name) {
             document.getElementById('sbj-profile-name-field').classList.remove('is-invalid');
@@ -47,52 +34,82 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         if (actor.tag) document.getElementById('sbj-profile-tag-field').classList.add('is-dirty');
         if (actor.profile) document.getElementById('sbj-profile-note-field').classList.add('is-dirty');
 
-        //
-        updateButton.onclick = (e) => {
-            this.UpdateActor(controller);
-        }
+        this.Resize();
+        this.SetButtonDisabled();
+        this.InitializeEvent();
+        document.getElementById('sbj-profile-name').focus();
+        callback();
+    }
 
-        this._iconListView = new IconListView(controller, document.getElementById('sbj-profile-icons-list'));
-        this._guideListView = new GuideListView(controller, document.getElementById('sbj-profile-guides-list'))
 
-        //
-        backpanel.onclick = (e: MouseEvent) => {
+    /**
+     * 各種イベントの初期化
+     */
+    public InitializeEvent() {
+
+        let controller = this.Controller;
+
+        //  更新ボタン押下時
+        document.getElementById('sbj-profile-append').onclick = (e) => { this.UpdateActor(this.Controller); }
+        document.getElementById('sbj-profile-update').onclick = (e) => { this.UpdateActor(this.Controller); }
+
+        //  ルーム名変更時
+        document.getElementById('sbj-profile-name').oninput = (e) => { this.SetButtonDisabled(); }
+
+        //  リサイズ時
+        window.onresize = (e) => { this.Resize(); };
+
+        //  キャンセルボタン押下時
+        document.getElementById('sbj-profile-cancel').onclick = (e) => { this.DoCancel(); }
+        document.getElementById('sbj-profile-dialog-close').onclick = (e) => { this.DoCancel(); };
+
+        //  エリア外クリック
+        document.getElementById('sbj-profile').onclick = (e: MouseEvent) => {
             let targetClassName = (e.target as any).className;
             if (targetClassName === "mdl-layout__container") {
                 this.DoCancel();
             }
         };
 
-        window.onresize = (e) => {
-            this.Resize();
-        };
-
-        //  キャンセルボタン押下時
-        closelButton.onclick = (e) => { this.DoCancel(); };
-        cancelButton.onclick = (e) => { this.DoCancel(); };
-
-        //  外部からのドラッグイベント時
-        document.getElementById("sbj-profile").addEventListener('dragover', (event: DragEvent) => {
-
-            //  ドラッグされた内容によって処理を分ける
-            if (ImageUtil.IsImageDrag(event)) {
-                this._iconListView.OnClickAddIcon(this._iconListView);
-            }
-
-        });
-
-        //  キー入力時イベント
+        //  ESCキーでのクローズ
         document.onkeydown = (e) => {
-            //  エスケープキーはダイアログを閉じる
             if (e.keyCode === 27) {
                 this.DoCancel();
             }
         }
 
-        this.Resize();
+        //  外部からのドラッグ時
+        document.getElementById("sbj-profile").addEventListener('dragover', (event: DragEvent) => {
+            if (ImageUtil.IsImageDrag(event)) {
+                this._iconListView.OnClickAddIcon(this._iconListView);
+            }
+        });
 
-        nameElement.focus();
-        callback();
+    }
+
+
+    /**
+     * アクター情報を画面にセット
+     * @param room 
+     */
+    public SetActorInfo(actor: Personal.Actor) {
+        (document.getElementById('sbj-profile-name') as HTMLInputElement).value = actor.name;
+        (document.getElementById('sbj-profile-tag') as HTMLInputElement).value = actor.tag;
+        (document.getElementById('sbj-profile-note') as HTMLInputElement).value = actor.profile;
+
+        this._iconListView = new IconListView(this.Controller, document.getElementById('sbj-profile-icons-list'));
+        this._guideListView = new GuideListView(this.Controller, document.getElementById('sbj-profile-guides-list'))
+    }
+
+
+    /**
+     * 
+     */
+    private SetButtonDisabled() {
+
+        let isDisabled = ((document.getElementById('sbj-profile-name') as HTMLInputElement).value.length === 0);
+        (document.getElementById('sbj-profile-append') as HTMLInputElement).disabled = isDisabled;
+        (document.getElementById('sbj-profile-update') as HTMLInputElement).disabled = isDisabled;
     }
 
 

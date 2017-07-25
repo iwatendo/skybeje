@@ -123,13 +123,16 @@ export default class BotController {
 
         if (isMatch && isResCheck) {
             let sender = new ChatMessageSender();
-            sender.aid = guide.aid;
-            sender.iid = guide.iid;
-            sender.gid = guide.gid;
-            sender.name = actor.name;
-            sender.text = guide.note;
-            sender.peerid = this.Controller.PeerId;
-            WebRTCService.SendToOwner(sender);
+
+            this.Controller.Model.GetActor(guide.aid, (actor) => {
+                sender.aid = guide.aid;
+                sender.iid = actor.dispIid;
+                sender.gid = guide.gid;
+                sender.name = actor.name;
+                sender.text = guide.note;
+                sender.peerid = this.Controller.PeerId;
+                WebRTCService.SendToOwner(sender);
+            });
         }
 
     }
@@ -147,7 +150,7 @@ export default class BotController {
             if (result) {
                 let sender = new ChatMessageSender();
                 sender.aid = actor.aid;
-                sender.iid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+                sender.iid = actor.dispIid;
                 sender.gid = "dicebot";
                 sender.name = actor.name;
                 sender.text = result;

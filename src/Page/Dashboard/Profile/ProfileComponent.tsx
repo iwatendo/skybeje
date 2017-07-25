@@ -106,7 +106,11 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * @param event 
      */
     public OnClick_background(event) {
-        if (event && event.target && event.target.className === 'sbj-dashboard-profile') {
+
+        if (event && event.target && (
+            event.target.className === 'sbj-dashboard-profile' ||
+            event.target.className === 'sbj-dashboard-profile-grid'
+        )) {
             this.Close(true);
         }
     }
