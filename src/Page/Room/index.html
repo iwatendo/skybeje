@@ -25,7 +25,7 @@
                 <header class="sbj-room-header mdl-layout__header">
 
                     <div class="sbj-room-header-title-row">
-                        <h5 class="sbj-room-title">
+                        <h5 class="sbj-room-title" id="sbj-room-title">
                             ルーム情報の編集
                         </h5>
                         <button id="sbj-room-dialog-close" class="mdl-button mdl-js-button mdl-button--raised sbj-dialog-close" type="button">
@@ -35,9 +35,9 @@
                     <div>
                         <div class="sbj-room-edit-left">
                             <div id="sbj-room-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="sbj-room-name" spellcheck=false maxlength="16" autocomplete="off" required></input>
-                                <label class="mdl-textfield__label" for="sbj-room-name">名前</label>
-                                <span class="mdl-textfield__error">名前を入力してください</span>
+                                <input class="mdl-textfield__input" type="text" id="sbj-room-name" spellcheck=false maxlength="16" autocomplete="off" required autofocus></input>
+                                <label class="mdl-textfield__label" for="sbj-room-name">ルーム名</label>
+                                <span class="mdl-textfield__error">ルーム名を入力してください</span>
                             </div>
                             <div id="sbj-room-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="sbj-room-tag" spellcheck=false maxlength="64"></input>
@@ -61,6 +61,9 @@
                 </main>
                 <footer class="sbj-room-footer mdl-mini-footer">
                     <div class="sbj-room-footer-action">
+                        <button id='sbj-room-append' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            <i class="material-icons">add</i>&nbsp;追加&nbsp;
+                        </button>
                         <button id='sbj-room-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                             <i class="material-icons">done</i>&nbsp;更新&nbsp;
                         </button>

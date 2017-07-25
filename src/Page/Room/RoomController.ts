@@ -12,6 +12,8 @@ export default class RoomController extends AbstractServiceController<RoomView, 
 
     public Room: Home.Room;
 
+    public IsNew : boolean;
+
     /**
      *
      */
@@ -27,8 +29,12 @@ export default class RoomController extends AbstractServiceController<RoomView, 
 
                 let room = rooms.filter(n => n.hid === hid)[0];
 
-                if (!room) {
+                if (room) {
+                    this.IsNew = false;
+                }
+                else{
                     //  新規ルーム作成
+                    this.IsNew = true;
                     room = new Home.Room();
                     room.hid = hid;
                     room.name = "";

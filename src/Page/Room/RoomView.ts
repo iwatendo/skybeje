@@ -2,43 +2,28 @@
 import * as Home from "../../Base/IndexedDB/Home";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import WebRTCService from "../../Base/Common/WebRTCService";
-import LocalCache from "../../Base/Common/LocalCache";
-import StdUtil from "../../Base/Util/StdUtil";
 import ImageUtil from "../../Base/Util/ImageUtil";
 import ImageInfo from "../../Base/Container/ImageInfo";
 import ImageDialogController from "../Dashboard/ImageDialogController";
-
 import RoomController from "./RoomController";
 
 
 export default class RoomView extends AbstractServiceView<RoomController> {
 
+    
     /**
      * 初期化処理
      */
     public Initialize(callback: OnViewLoad) {
 
-        let controller = this.Controller;
-        let room = controller.Room;
-        let backpanel = document.getElementById('sbj-room');
-        let cloaseButton = document.getElementById('sbj-room-dialog-close');
-        let cancelButton = document.getElementById('sbj-room-cancel');
-        let nameElement = document.getElementById('sbj-room-name') as HTMLInputElement;
-        let tagElement = document.getElementById('sbj-room-tag') as HTMLInputElement;
-        let textElement = document.getElementById('sbj-room-note') as HTMLInputElement;
-        let editImageElement = document.getElementById('sbj-room-edit-image');
-        let doneButton = document.getElementById('sbj-room-update') as HTMLInputElement;
+        let isNew = this.Controller.IsNew;
+        document.getElementById('sbj-room-title').textContent = "ルームの" + (isNew ? "追加" : "更新");
+        document.getElementById('sbj-room-append').hidden = !isNew;
+        document.getElementById('sbj-room-update').hidden = isNew;
 
-        nameElement.value = room.name;
-        tagElement.value = room.tag;
-        textElement.value = room.note;
-        
-        nameElement.oninput = (e) => {
-            doneButton.disabled = (nameElement.value.length === 0);
-        }
-        doneButton.disabled = (nameElement.value.length === 0);
+        this.SetRoomInfo(this.Controller.Room);
 
+        let room = this.Controller.Room;
         if (room.name) {
             document.getElementById('sbj-room-name-field').classList.remove('is-invalid');
             document.getElementById('sbj-room-name-field').classList.add('is-dirty');
@@ -46,50 +31,76 @@ export default class RoomView extends AbstractServiceView<RoomController> {
         if (room.tag) document.getElementById('sbj-room-tag-field').classList.add('is-dirty');
         if (room.note) document.getElementById('sbj-room-note-field').classList.add('is-dirty');
 
-        //
-        editImageElement.onclick = (e) => this.OnClickEditImage();
+        this.Resize();
+        this.SetButtonDisabled();
+        this.InitializeEvent();
 
-        //
-        backpanel.onclick = (e: MouseEvent) => {
+        document.getElementById('sbj-room-name').focus();
+
+        callback();
+    }
+
+
+    /**
+     * 各種イベントの初期化
+     */
+    public InitializeEvent() {
+
+        let controller = this.Controller;
+        let room = controller.Room;
+
+        //  更新ボタン押下時
+        document.getElementById('sbj-room-append').onclick = (e) => { this.RoomUpdate(this.Controller); }
+        document.getElementById('sbj-room-update').onclick = (e) => { this.RoomUpdate(this.Controller); }
+
+        //  画像変更ボタン押下時
+        document.getElementById('sbj-room-edit-image').onclick = (e) => { this.OnClickEditImage(); }
+
+        //  ルーム名変更時
+        document.getElementById('sbj-room-name').oninput = (e) => { this.SetButtonDisabled(); }
+
+        //  リサイズ時
+        window.onresize = (e) => { this.Resize(); };
+
+
+        //  キャンセルボタン押下時
+        document.getElementById('sbj-room-cancel').onclick = (e) => { controller.CloseNotify(); }
+        document.getElementById('sbj-room-dialog-close').onclick = (e) => { controller.CloseNotify(); };
+
+        //  エリア外クリック
+        document.getElementById('sbj-room').onclick = (e: MouseEvent) => {
             let targetClassName = (e.target as any).className;
             if (targetClassName === "mdl-layout__container") {
                 controller.CloseNotify();
             }
         };
 
-        window.onresize = (e) => {
-            this.Resize();
-        };
-
-        //  キャンセルボタン押下時
-        cloaseButton.onclick = (e) => { controller.CloseNotify(); }
-        cancelButton.onclick = (e) => { controller.CloseNotify(); };
-
-        //  更新ボタン
-        doneButton.onclick = (e) => { this.RoomUpdate(this.Controller); }
-
-        //  外部からのドラッグイベント時
-        document.getElementById("sbj-room").addEventListener('dragover', (event: DragEvent) => {
-
-            //  ドラッグされた内容によって処理を分ける
-            if (ImageUtil.IsImageDrag(event)) {
-                this.OnClickEditImage();
-            }
-
-        });
-
-        //  キー入力時イベント
+        //  ESCキーでのクローズ
         document.onkeydown = (e) => {
-            //  エスケープキーはダイアログを閉じる
             if (e.keyCode === 27) {
                 controller.CloseNotify();
             }
         }
 
-        this.Resize();
+        //  外部からのドラッグ時
+        document.getElementById("sbj-room").addEventListener('dragover', (event: DragEvent) => {
+            if (ImageUtil.IsImageDrag(event)) {
+                this.OnClickEditImage();
+            }
+        });
+
+    }
+
+
+    /**
+     * ルーム情報を画面にセット
+     * @param room 
+     */
+    public SetRoomInfo(room: Home.Room) {
+        (document.getElementById('sbj-room-name') as HTMLInputElement).value = room.name;
+        (document.getElementById('sbj-room-tag') as HTMLInputElement).value = room.tag;
+        (document.getElementById('sbj-room-note') as HTMLInputElement).value = room.note;
         this.SetImage();
-        nameElement.focus();
-        callback();
     }
 
 
@@ -108,6 +119,17 @@ export default class RoomView extends AbstractServiceView<RoomController> {
         let mainpanel = document.getElementById('sbj-room-layout') as HTMLElement;
         mainpanel.style.height = height.toString() + "px";
         mainpanel.style.margin = marginTop.toString() + "px 0 0 -480px";
+    }
+
+
+    /**
+     * 
+     */
+    private SetButtonDisabled() {
+
+        let isDisabled = ((document.getElementById('sbj-room-name') as HTMLInputElement).value.length === 0);
+        (document.getElementById('sbj-room-append') as HTMLInputElement).disabled = isDisabled;
+        (document.getElementById('sbj-room-update') as HTMLInputElement).disabled = isDisabled;
     }
 
 
@@ -147,6 +169,9 @@ export default class RoomView extends AbstractServiceView<RoomController> {
     }
 
 
+    /**
+     * 
+     */
     public SetImage() {
         let img = this.Controller.Room.background;
         ImageInfo.SetCss("sbj-room-image", img);
