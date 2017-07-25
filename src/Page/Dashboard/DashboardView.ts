@@ -248,6 +248,8 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 break;
             case NaviEnum.Visitor:
 
+                if (!this.IsBootHomeVisitor()) return;
+
                 title = "クライアント";
                 disp = DispEnum.HomeVisitor;
                 this._naviView = new NotImplementView(mainElement);
