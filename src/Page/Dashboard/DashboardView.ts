@@ -241,7 +241,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                     this._naviView = new NotImplementView(mainElement);
                 }
                 else {
-                    title = "ホームインスタンスの起動"
+                    title = "ホーム"
                     disp = DispEnum.Local;
                     this._naviView = new BootInstanceView(this.Controller, mainElement);
                 }

@@ -17,7 +17,7 @@ export default class RoomView extends AbstractServiceView<RoomController> {
     public Initialize(callback: OnViewLoad) {
 
         let isNew = this.Controller.IsNew;
-        document.getElementById('sbj-room-title').textContent = "ルームの" + (isNew ? "追加" : "更新");
+        document.getElementById('sbj-room-title').textContent = "ルームの" + (isNew ? "追加" : "編集");
         document.getElementById('sbj-room-append').hidden = !isNew;
         document.getElementById('sbj-room-update').hidden = isNew;
 
