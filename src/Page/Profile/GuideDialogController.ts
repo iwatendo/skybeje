@@ -17,6 +17,14 @@ export default class GuideDialogController {
     private _guideView = document.getElementById("sbj-guide-main");
 
 
+    private _guideAppendButton = document.getElementById('sbj-guide-append') as HTMLInputElement;
+    private _guideUpdateButton = document.getElementById('sbj-guide-update') as HTMLInputElement;
+    private _guideDeleteButton = document.getElementById('sbj-guide-delete') as HTMLInputElement;
+    private _guideDialogCloseButton = document.getElementById('sbj-guide-dialog-close') as HTMLInputElement;
+    private _guideCancelButton = document.getElementById('sbj-guide-cancel') as HTMLInputElement;
+    private _guideKeywordElement = document.getElementById("sbj-gaide-keyword") as HTMLInputElement;
+    private _guideNoteElement = document.getElementById("sbj-gaide-note") as HTMLInputElement;
+
 
     /**
      * 
@@ -51,7 +59,7 @@ export default class GuideDialogController {
      * @param callback 
      */
     private static Start(canAdd: boolean, canEdit: boolean, canDelete: boolean, guide: Personal.Guide, callback: OnChangeGuide) {
-        document.getElementById('sbj-guide-done').hidden = !canAdd;
+        document.getElementById('sbj-guide-append').hidden = !canAdd;
         document.getElementById('sbj-guide-update').hidden = !canEdit;
         document.getElementById('sbj-guide-delete').hidden = !canDelete;
 
@@ -90,15 +98,16 @@ export default class GuideDialogController {
             this._guideView.focus();
         };
 
-        this._guideView.ondrop = (event) => {
+        this._guideKeywordElement.oninput = () => { this.SetDoneDisabled(); }
+        this._guideNoteElement.oninput = () => { this.SetDoneDisabled(); }
 
-        };
+        this._guideAppendButton.onclick = (() => this.Done());
+        this._guideUpdateButton.onclick = (() => this.Done());
+        this._guideDeleteButton.onclick = (() => this.Delete());
+        this._guideDialogCloseButton.onclick = (() => this.Close());
+        this._guideCancelButton.onclick = (() => this.Close());
 
-        document.getElementById('sbj-guide-done').onclick = (() => this.Done());
-        document.getElementById('sbj-guide-update').onclick = (() => this.Done());
-        document.getElementById('sbj-guide-delete').onclick = (() => this.Delete());
-        document.getElementById('sbj-guide-dialog-close').onclick = (() => this.Close());
-        document.getElementById('sbj-guide-cancel').onclick = (() => this.Close());
+
     }
 
 
@@ -178,6 +187,19 @@ export default class GuideDialogController {
 
 
     /**
+     * 
+     */
+    private SetDoneDisabled() {
+
+        let isDoneDisabled = false;
+        if (this._guideKeywordElement.value.length === 0) isDoneDisabled = true;
+        if (this._guideNoteElement.value.length === 0) isDoneDisabled = true;
+
+        this._guideAppendButton.disabled = isDoneDisabled;
+        this._guideUpdateButton.disabled = isDoneDisabled;
+    }
+
+    /**
      * ガイドの表示
      * @param guide
      */
@@ -208,10 +230,12 @@ export default class GuideDialogController {
         let kf = document.getElementById("sbj-guide-keywaord-field")
         if (guide.keyword) { kf.classList.add("is-dirty"); } else { kf.classList.remove("is-dirty"); }
         let nf = document.getElementById("sbj-guide-note-field")
-        if (guide.keyword) { nf.classList.add("is-dirty"); } else { nf.classList.remove("is-dirty"); }
+        if (guide.note) { nf.classList.add("is-dirty"); } else { nf.classList.remove("is-dirty"); }
 
-        (document.getElementById("sbj-gaide-keyword") as HTMLInputElement).value = guide.keyword;
-        (document.getElementById("sbj-gaide-note") as HTMLInputElement).value = guide.note;
+        this._guideKeywordElement.value = guide.keyword;
+        this._guideNoteElement.value = guide.note;
+
+        this.SetDoneDisabled();
     }
 
     /**

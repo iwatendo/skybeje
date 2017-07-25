@@ -20,7 +20,7 @@ export default class RoomView extends AbstractServiceView<RoomController> {
     public Initialize(callback: OnViewLoad) {
 
         let controller = this.Controller;
-        let actor = controller.Room;
+        let room = controller.Room;
         let backpanel = document.getElementById('sbj-room');
         let cloaseButton = document.getElementById('sbj-room-dialog-close');
         let cancelButton = document.getElementById('sbj-room-cancel');
@@ -28,15 +28,23 @@ export default class RoomView extends AbstractServiceView<RoomController> {
         let tagElement = document.getElementById('sbj-room-tag') as HTMLInputElement;
         let textElement = document.getElementById('sbj-room-note') as HTMLInputElement;
         let editImageElement = document.getElementById('sbj-room-edit-image');
-        let doneButton = document.getElementById('sbj-room-update');
+        let doneButton = document.getElementById('sbj-room-update') as HTMLInputElement;
 
-        nameElement.value = actor.name;
-        tagElement.value = actor.tag;
-        textElement.value = actor.note;
+        nameElement.value = room.name;
+        tagElement.value = room.tag;
+        textElement.value = room.note;
+        
+        nameElement.oninput = (e) => {
+            doneButton.disabled = (nameElement.value.length === 0);
+        }
+        doneButton.disabled = (nameElement.value.length === 0);
 
-        if (actor.name) document.getElementById('sbj-room-name-field').classList.add('is-dirty');
-        if (actor.tag) document.getElementById('sbj-room-tag-field').classList.add('is-dirty');
-        if (actor.note) document.getElementById('sbj-room-note-field').classList.add('is-dirty');
+        if (room.name) {
+            document.getElementById('sbj-room-name-field').classList.remove('is-invalid');
+            document.getElementById('sbj-room-name-field').classList.add('is-dirty');
+        }
+        if (room.tag) document.getElementById('sbj-room-tag-field').classList.add('is-dirty');
+        if (room.note) document.getElementById('sbj-room-note-field').classList.add('is-dirty');
 
         //
         editImageElement.onclick = (e) => this.OnClickEditImage();

@@ -23,7 +23,7 @@
             <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
                 <header class="sbj-room-header mdl-layout__header">
-                    
+
                     <div class="sbj-room-header-title-row">
                         <h5 class="sbj-room-title">
                             ルーム情報の編集
@@ -35,18 +35,19 @@
                     <div>
                         <div class="sbj-room-edit-left">
                             <div id="sbj-room-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="sbj-room-name" spellcheck=false maxlength="16"></input>
-                                <label class="mdl-textfield__label" htmlFor="sbj-room-name">名前</label>
+                                <input class="mdl-textfield__input" type="text" id="sbj-room-name" spellcheck=false maxlength="16" autocomplete="off" required></input>
+                                <label class="mdl-textfield__label" for="sbj-room-name">名前</label>
+                                <span class="mdl-textfield__error">名前を入力してください</span>
                             </div>
                             <div id="sbj-room-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="sbj-room-tag" spellcheck=false maxlength="64"></input>
-                                <label class="mdl-textfield__label" htmlFor="sbj-room-tag">タグ</label>
+                                <label class="mdl-textfield__label" for="sbj-room-tag">タグ</label>
                             </div>
                         </div>
                         <div class="sbj-room-edit-right">
                             <div id="sbj-room-note-field" class="sbj-room-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-room-note" spellcheck=false maxlength="2048"></textarea>
-                                <label class="mdl-textfield__label" htmlFor="sbj-room-note">説明</label>
+                                <label class="mdl-textfield__label" for="sbj-room-note">説明</label>
                             </div>
                         </div>
                     </div>
@@ -67,7 +68,7 @@
                             &nbsp;キャンセル&nbsp;
                         </button>
                     </div>
-                </footer>                    
+                </footer>
             </div>
         </div>
     </div>

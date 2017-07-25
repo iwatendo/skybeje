@@ -23,7 +23,7 @@
             <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
 
                 <header class="sbj-profile-header mdl-layout__header">
-                    
+
                     <div class="sbj-profile-header-title-row">
                         <h5 class="sbj-profile-title">
                             プロフィールの編集
@@ -35,18 +35,19 @@
                     <div>
                         <div class="sbj-profile-text-left">
                             <div id="sbj-profile-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="sbj-profile-name" spellcheck=false maxlength="16"></input>
-                                <label class="mdl-textfield__label" htmlFor="sbj-profile-name">名前</label>
+                                <input class="mdl-textfield__input" type="text" id="sbj-profile-name" spellcheck=false maxlength="16" autocomplete="off" required></input>
+                                <label class="mdl-textfield__label" for="sbj-profile-name">名前</label>
+                                <span class="mdl-textfield__error">名前を入力してください</span>
                             </div>
                             <div id="sbj-profile-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input class="mdl-textfield__input" type="text" id="sbj-profile-tag" spellcheck=false maxlength="64"></input>
-                                <label class="mdl-textfield__label" htmlFor="sbj-profile-tag">タグ</label>
+                                <label class="mdl-textfield__label" for="sbj-profile-tag">タグ</label>
                             </div>
                         </div>
                         <div class="sbj-profile-text-right">
                             <div id="sbj-profile-note-field" class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-profile-note" spellcheck=false maxlength="2048"></textarea>
-                                <label class="mdl-textfield__label" htmlFor="sbj-profile-note">プロフィール</label>
+                                <label class="mdl-textfield__label" for="sbj-profile-note">プロフィール</label>
                             </div>
                         </div>
                     </div>
@@ -77,7 +78,7 @@
                             <div class="sbj-profile-sub-list" id="sbj-profile-icons-list">
                                 <!-- React -->
                             </div>
-                        <div>
+                            <div>
                     </section>
                     <section class="mdl-layout__tab-panel" id="sbj-profile-guide">
                         <div class="sbj-profile-page-content">
@@ -98,7 +99,7 @@
                             <div class="sbj-profile-sub-list" id="sbj-profile-guides-list">
                                 <!-- React -->
                             </div>
-                        <div>
+                            <div>
                     </section>
                     <section class="mdl-layout__tab-panel" id="sbj-profile-gadget">
                         <div class="sbj-profile-page-content">
@@ -115,8 +116,7 @@
                             &nbsp;キャンセル&nbsp;
                         </button>
                     </div>
-                </footer>                    
-
+                </footer>
             </div>
         </div>
     </div>
@@ -131,21 +131,19 @@
                 <div class="mdl-card__actions">
                     <div class="sbj-dialog-attach-action-left">
                         <button id='sbj-image-attach' class="mdl-button mdl-js-button mdl-button--raised">
-							<i class="material-icons">attach_file</i>
-							&nbsp;ファイル&nbsp;
-						</button>
-
+                            <i class="material-icons">attach_file</i>
+                            &nbsp;ファイル&nbsp;
+                        </button>
                         <button id='sbj-image-camera' class="mdl-button mdl-js-button mdl-button--raised" hidden>
-							<i class="material-icons">photo_camera</i>
-							&nbsp;カメラ&nbsp;
-						</button>
-
+                            <i class="material-icons">photo_camera</i>
+                            &nbsp;カメラ&nbsp;
+                        </button>
                     </div>
 
                     <div class="sbj-dialog-attach-action-right">
                         <button id='sbj-image-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
-							<i class="material-icons">close</i>
-						</button>
+                            <i class="material-icons">close</i>
+                        </button>
                     </div>
                 </div>
 
@@ -158,19 +156,19 @@
                 <div class="mdl-card__actions">
                     <div class="sbj-dialog-attach-action-left">
                         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-image-css-edit" id="sbj-image-css-edit-check">
-							<input type="checkbox" id="sbj-image-css-edit" class="mdl-switch__input">
-							<span class="mdl-switch__label">CSS設定（上級向)</span>
-						</label>
+                            <input type="checkbox" id="sbj-image-css-edit" class="mdl-switch__input">
+                            <span class="mdl-switch__label">CSS設定（上級向)</span>
+                        </label>
                     </div>
                     <div class="sbj-dialog-attach-action-right">
                         <button id='sbj-image-delete' tabindex=-1 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-							<i class="material-icons">delete_forever</i>&nbsp;削除&nbsp;
-						</button>
+                            <i class="material-icons">delete_forever</i>&nbsp;削除&nbsp;
+                        </button>
                         <button id='sbj-image-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-							<i class="material-icons">done</i>&nbsp;更新&nbsp;
-						</button>
+                            <i class="material-icons">done</i>&nbsp;更新&nbsp;
+                        </button>
                         <button id='sbj-image-done' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-							<i class="material-icons">done</i>&nbsp;追加&nbsp;
+                            <i class="material-icons">done</i>&nbsp;追加&nbsp;
                         </button>
                         <button id='sbj-image-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
                             &nbsp;キャンセル&nbsp;
@@ -179,33 +177,33 @@
                 </div>
 
                 <button id='sbj-image-center' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
-					<span class="mdl-tooltip" for="sbj-image-center">Postion:Center</span>
-					<i class="material-icons">crop_free</i>
-				</button>
+                    <span class="mdl-tooltip" for="sbj-image-center">Postion:Center</span>
+                    <i class="material-icons">crop_free</i>
+                </button>
                 <button id='sbj-image-left' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
-					<span class="mdl-tooltip" for="sbj-image-left">Postion:Left</span>
-					<i class="material-icons">keyboard_arrow_left</i>
-				</button>
+                    <span class="mdl-tooltip" for="sbj-image-left">Postion:Left</span>
+                    <i class="material-icons">keyboard_arrow_left</i>
+                </button>
                 <button id='sbj-image-right' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
-					<span class="mdl-tooltip" for="sbj-image-right">Postion:Right</span>
-					<i class="material-icons">keyboard_arrow_right</i>
-				</button>
+                    <span class="mdl-tooltip" for="sbj-image-right">Postion:Right</span>
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </button>
                 <button id='sbj-image-top' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
-					<span class="mdl-tooltip" for="sbj-image-top">Postion:Top</span>
-					<i class="material-icons">keyboard_arrow_up</i>
-				</button>
+                    <span class="mdl-tooltip" for="sbj-image-top">Postion:Top</span>
+                    <i class="material-icons">keyboard_arrow_up</i>
+                </button>
                 <button id='sbj-image-bottom' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
-					<span class="mdl-tooltip" for="sbj-image-bottom">Postion:Bottom</span>
-					<i class="material-icons">keyboard_arrow_down</i>
-				</button>
+                    <span class="mdl-tooltip" for="sbj-image-bottom">Postion:Bottom</span>
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </button>
                 <button id='sbj-image-cover' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
-					<span class="mdl-tooltip" for="sbj-image-cover">Size:Cover</span>
-					<i class="material-icons">open_with</i>
-				</button>
+                    <span class="mdl-tooltip" for="sbj-image-cover">Size:Cover</span>
+                    <i class="material-icons">open_with</i>
+                </button>
                 <button id='sbj-image-contain' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
-					<span class="mdl-tooltip" for="sbj-image-contain">Size:Contain</span>
-					<i class="material-icons">zoom_out_map</i>
-				</button>
+                    <span class="mdl-tooltip" for="sbj-image-contain">Size:Contain</span>
+                    <i class="material-icons">zoom_out_map</i>
+                </button>
             </div>
         </div>
     </dialog>
@@ -219,16 +217,16 @@
                 <!-- 上部ボタン郡 -->
                 <div class="mdl-card__actions">
 
-					<div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
-						<i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon">event_note</i>
-						<h4 class="sbj-dialog-title">
-							<span id="sbj-dialog-title-value">ガイドボット</span>
-						</h4>
-					</div>
+                    <div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
+                        <i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon">event_note</i>
+                        <h4 class="sbj-dialog-title">
+                            <span id="sbj-dialog-title-value">ガイドボット</span>
+                        </h4>
+                    </div>
                     <div class="sbj-dialog-attach-action-right">
                         <button id='sbj-guide-dialog-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
-							<i class="material-icons">close</i>
-						</button>
+                            <i class="material-icons">close</i>
+                        </button>
                     </div>
                 </div>
 
@@ -264,12 +262,12 @@
 
                     <div id="sbj-guide-keywaord-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="text" id="sbj-gaide-keyword" spellcheck=false maxlength="16"></input>
-                        <label class="mdl-textfield__label" htmlFor="sbj-guide-name">キーワード</label>
+                        <label class="mdl-textfield__label" for="sbj-guide-name">キーワード</label>
                     </div>
 
                     <div id="sbj-guide-note-field" class="sbj-guide-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-gaide-note" spellcheck=false maxlength="2048"></textarea>
-                        <label class="mdl-textfield__label" htmlFor="sbj-guide-note">ガイド</label>
+                        <label class="mdl-textfield__label" for="sbj-guide-note">ガイド</label>
                     </div>
 
                 </div>
@@ -280,13 +278,13 @@
                     </div>
                     <div class="sbj-dialog-attach-action-right">
                         <button id='sbj-guide-delete' tabindex=-1 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-							<i class="material-icons">delete_forever</i>&nbsp;削除&nbsp;
-						</button>
+                            <i class="material-icons">delete_forever</i>&nbsp;削除&nbsp;
+                        </button>
                         <button id='sbj-guide-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-							<i class="material-icons">done</i>&nbsp;更新&nbsp;
-						</button>
-                        <button id='sbj-guide-done' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-							<i class="material-icons">done</i>&nbsp;追加&nbsp;
+                            <i class="material-icons">done</i>&nbsp;更新&nbsp;
+                        </button>
+                        <button id='sbj-guide-append' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            <i class="material-icons">done</i>&nbsp;追加&nbsp;
                         </button>
                         <button id='sbj-guide-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
                             &nbsp;キャンセル&nbsp;

@@ -30,19 +30,25 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         let nameElement = document.getElementById('sbj-profile-name') as HTMLInputElement;
         let tagElement = document.getElementById('sbj-profile-tag') as HTMLInputElement;
         let noteElement = document.getElementById('sbj-profile-note') as HTMLInputElement;
-        let updateElement = document.getElementById('sbj-profile-update') as HTMLInputElement;
-
+        let updateButton = document.getElementById('sbj-profile-update') as HTMLInputElement;
 
         nameElement.value = actor.name;
+        nameElement.oninput = (e) => {
+            updateButton.disabled = (nameElement.value.length === 0);
+        }
         tagElement.value = actor.tag;
         noteElement.value = actor.profile;
+        updateButton.disabled = (nameElement.value.length === 0);
 
-        if (actor.name) document.getElementById('sbj-profile-name-field').classList.add('is-dirty');
+        if (actor.name) {
+            document.getElementById('sbj-profile-name-field').classList.remove('is-invalid');
+            document.getElementById('sbj-profile-name-field').classList.add('is-dirty');
+        }
         if (actor.tag) document.getElementById('sbj-profile-tag-field').classList.add('is-dirty');
         if (actor.profile) document.getElementById('sbj-profile-note-field').classList.add('is-dirty');
 
         //
-        updateElement.onclick = (e) => {
+        updateButton.onclick = (e) => {
             this.UpdateActor(controller);
         }
 
