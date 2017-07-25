@@ -83,7 +83,17 @@ export default class LogUtil {
      */
     public static Info(value: string) {
 
-        console.log(this._APPNAME + " : " + value);
+        const maxlen = 512;
+        let consoleLog: string;
+
+        if (value.length < maxlen) {
+            consoleLog = value;
+        }
+        else {
+            consoleLog = value.substring(0, maxlen) + "...";
+        }
+
+        console.log(this._APPNAME + " : " + consoleLog);
 
         let log = new Log(value);
 

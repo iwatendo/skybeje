@@ -80,7 +80,7 @@ export default abstract class Database<D> {
 
         rep.onsuccess = (event) => {
             this._db = (<IDBRequest>event.target).result;
-            LogUtil.Info("IndextedDB connection succeeded : " + this._dbname);
+            LogUtil.Info("IndexedDB connection succeed : " + this._dbname);
             onconnect();
         };
     }
