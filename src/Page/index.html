@@ -8,8 +8,8 @@
     <link rel='stylesheet' href='/lib/material.min.css' />
     <link rel="stylesheet" href="/lib/split-pane.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="common.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="common.css?v={version}">
+    <link rel="stylesheet" href="style.css?v={version}">
 </head>
 
 <body>
@@ -44,7 +44,7 @@
                             アカウント登録不要で利用できるリアルタイムコミュニケーションサービスです。
                         </h5>
                         <div class="mdl-card__actions">
-                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick='location.href="/dashboard/"'>
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick='location.href="/dashboard/?v={version}"'>
                                 <i class="material-icons">play_circle_filled</i>
                                 &nbsp;始める&nbsp;
                             </button>
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <script src="boot/bundle.js"></script>
+    <script src="boot/bundle.js?v={version}"></script>
 
 </body>
 

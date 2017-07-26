@@ -3,6 +3,7 @@
   "license": "AGPL-3.0",
   "scripts": {
     "server": "node dev/Server.js",
+    "setversion": "node dev/SetVersion.js",
     "clean": "rimraf dist/*",
     "webpack": "webpack --colors --config ./webpack.config.dev.js",
     "webpack:release": "webpack --colors --config ./webpack.config.release.js",
@@ -10,8 +11,8 @@
     "copy:lib": "cpx \"./src/Page/Lib/*\" ./dist/lib",
     "copy:image": "cpx \"./src/Page/Image/*\" ./dist/image",
     "copy:src": "cpx \"./src/Page/**/{*.html,*.css,*.map,*.json}\" ./dist",
-    "build": "npm-run-all -s webpack copy:lib copy:image copy:src",
-    "build:release": "npm-run-all -s clean webpack:release copy:lib copy:image copy:src",
+    "build": "npm-run-all -s webpack copy:lib copy:image copy:src setversion",
+    "build:release": "npm-run-all -s clean webpack:release copy:lib copy:image copy:src setversion",
     "build:debug": "npm-run-all -s webpack:debug copy:src"
   },
   "dependencies": {
