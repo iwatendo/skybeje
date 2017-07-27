@@ -7,6 +7,8 @@ import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 
 import HomeVisitorController from "../HomeVisitorController";
 import ActorDialog from "./ActorDialog";
+import ActorPeer from "../../../Base/Container/ActorPeer";
+import RoomActorItemComponent from "./RoomActorItemComponent";
 
 
 
@@ -15,11 +17,48 @@ import ActorDialog from "./ActorDialog";
  */
 export interface RoomMemberItemProp {
     controller: HomeVisitorController;
-    actor: Personal.Actor;
+    ownerAid: string;
+    ownerPeerId: string;
+    actors: Array<ActorPeer>;
 }
 
 
-export default class RoomMemberItemComponent extends React.Component<RoomMemberItemProp, any> {
+/**
+ * プロパティ
+ */
+export interface RoomMemberItemStat {
+    ownerProfile: Personal.Actor;
+}
+
+
+
+export default class RoomMemberItemComponent extends React.Component<RoomMemberItemProp, RoomMemberItemStat> {
+
+
+    /**
+      * コンストラクタ
+      * @param props
+      * @param context
+      */
+    constructor(props?: RoomMemberItemProp, context?: any) {
+        super(props, context);
+
+        let prof = new Personal.Actor();
+        prof.name = "(読込中)";
+
+        this.state = {
+            ownerProfile: prof,
+        };
+
+        let aid = this.props.ownerAid;
+        let peerid = this.props.ownerPeerId;
+
+        this.props.controller.ActorCache.GetActor(peerid, aid, (actor) => {
+            this.setState({
+                ownerProfile: actor
+            });
+        });
+    }
 
 
     /**
@@ -27,10 +66,27 @@ export default class RoomMemberItemComponent extends React.Component<RoomMemberI
      */
     public render() {
 
-        let dispname = this.props.actor.name;
+        let dispname = this.state.ownerProfile.name;
+
+
+        let actorTable = this.props.actors.map((ap) => {
+            let actor = ap.actor;
+            if (!actor.isUserProfile) {
+                return (<RoomActorItemComponent key={actor.aid} controller={this.props.controller} actor={actor} />);
+            }
+        });
+
 
         return (
-            <li className="mdl-menu__item" onClick={this.onClick.bind(this)}>{dispname}</li>
+            <div>
+                <li className="sbj-home-visitor-room-member-item mdl-list__item" onClick={this.onClick.bind(this)}>
+                    <span className="mdl-list__item-primary-content">
+                        <i className="material-icons mdl-list__item-icon sbj-home-visitor-room-member-icon">account_box</i>
+                        {dispname}
+                    </span>
+                </li>
+                {actorTable}
+            </div>
         );
     }
 
@@ -44,7 +100,7 @@ export default class RoomMemberItemComponent extends React.Component<RoomMemberI
         let dialog = new ActorDialog(this.props.controller);
 
         //  アクターダイアログの表示
-        dialog.Show(DialogMode.View, this.props.actor, (result) => { });
+        dialog.Show(DialogMode.View, this.state.ownerProfile, (result) => { });
     }
 
 }

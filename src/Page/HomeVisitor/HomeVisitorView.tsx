@@ -34,8 +34,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     private _head = document.getElementById('sbj-home-visitor-header');
     private _headTitleElement = document.getElementById('sbj-home-visitor-title');
     private _headTitleAccountCountElement = document.getElementById('sbj-home-visitor-account-count');
-    private _headTitleActorCountElement = document.getElementById('sbj-home-visitor-actor-count');
-    private _headRoomMemberElement = document.getElementById('sbj-room-member');
+    private _headRoomMemberElement = document.getElementById('sbj-home-visitor-room-member');
 
     public CastSelector: CastSelectorController;
 
@@ -173,9 +172,6 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             let peerList = new Array<string>();
             ram.members.forEach((ap) => peerList.push(ap.peerid));
             this._headTitleAccountCountElement.setAttribute("data-badge", StdUtil.Uniq(peerList).length.toString());
-
-            //  ルーム内のアクター数の表示
-            this._headTitleActorCountElement.setAttribute("data-badge", ram.members.length.toString());
 
             //  メンバー詳細の設定
             let key = StdUtil.CreateUuid();

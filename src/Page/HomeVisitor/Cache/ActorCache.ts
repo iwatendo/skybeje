@@ -14,8 +14,6 @@ export default class ActorCache {
 
     //
     private _controller: HomeVisitorController;
-    //  PerrID / UserProfile
-    private _profileCache = new Map<string, Personal.Actor>();
     //  PeerID / Aid / Actor
     private _actorCache = new Map<string, Map<string, Personal.Actor>>();
     //  function queue
@@ -64,31 +62,6 @@ export default class ActorCache {
 
 
     /**
-     * ユーザープロフィールの取得
-     * @param peerid 
-     * @param callback 
-     */
-    public GetProfile(peerid: string, callback: ActorFunc) {
-
-        if (this._controller.PeerId === peerid) {
-            this._controller.Model.GetUserProfile((actor) => {
-                callback(actor);
-            });
-        }
-        else {
-            this._controller.ConnCache.GetExec(peerid, (conn) => {
-
-                this.PushQueue(peerid, callback);
-                //  プロフィール要求
-                let sender = new GetProfileSender();
-                WebRTCService.SendTo(conn, sender);
-
-            });
-        }
-    }
-
-
-    /**
      * アクター情報の取得
      * @param peerid 
      * @param aid 
@@ -115,25 +88,11 @@ export default class ActorCache {
 
 
     /**
-     * 他ユーザーのプロフィール情報をキャッシュ
-     * @param peerid 
-     * @param profile 
-     */
-    public SetOtherProfile(peerid: string, profile: Personal.Actor) {
-        this._profileCache.set(peerid, profile);
-        this.SetOtherActor(peerid, profile);
-
-        let key = peerid;
-        this.ExecQueue(key, profile);
-    }
-
-
-    /**
      * 他ユーザーのアクター情報をキャッシュ
      * @param peerid 
      * @param actor 
      */
-    public SetOtherActor(peerid: string, actor: Personal.Actor) {
+    public SetActor(peerid: string, actor: Personal.Actor) {
         if (!this._actorCache.has(peerid)) {
             this._actorCache.set(peerid, new Map<string, Personal.Actor>());
         }

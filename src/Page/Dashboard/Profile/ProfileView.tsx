@@ -54,15 +54,19 @@ export default class ProfileView implements INaviContainer {
     public DoShoActorEditDialog(aid: string, callback) {
 
         let controller = this._owner;
-        let frame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
-        let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
-        this._editCallback = callback;
 
-        frame.onload = (e) => {
-            frame.hidden = false;
-            frame.onload = null;
-        };
-        frame.src = src;
+        controller.Model.GetUserProfile((userProfile) => {
+            let ownerAid = userProfile.aid;
+            let frame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
+            let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid + "&owner_aid=" + ownerAid;
+            this._editCallback = callback;
+
+            frame.onload = (e) => {
+                frame.hidden = false;
+                frame.onload = null;
+            };
+            frame.src = src;
+        });
     }
 
 

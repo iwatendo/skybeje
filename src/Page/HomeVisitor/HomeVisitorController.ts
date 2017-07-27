@@ -14,6 +14,7 @@ import { Order } from "../../Base/Container/Order";
 
 import { GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServantCloseSender } from "../HomeInstance/HomeInstanceContainer";
 import TimelineCache from "./Cache/TimelineCache";
+import ActorCache from "./Cache/ActorCache";
 import RoomCache from "./Cache/RoomCache";
 import IconCache from "./Cache/IconCache";
 import ServantCache from "./Cache/ServantCache";
@@ -32,6 +33,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public PeerId: string;
     public ConnStartTime: number;
     public ConnCache: ConnectionCache;
+    public ActorCache: ActorCache;
     public RoomCache: RoomCache;
     public IconCache: IconCache;
     public TimelineCache: TimelineCache;
@@ -53,6 +55,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         super();
         this.Receiver = new HomeVisitorReceiver(this);
         this.ConnCache = new ConnectionCache();
+        this.ActorCache = new ActorCache(this);
         this.RoomCache = new RoomCache(this);
         this.IconCache = new IconCache(this);
         this.TimelineCache = new TimelineCache(this);

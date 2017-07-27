@@ -52,8 +52,21 @@
     margin-right: 16px;
 }
 
-#sbj-home-visitor-actor-count{
-    margin-right: 16px;
+#sbj-home-visitor-room-member{
+    width: 260px;
+}
+
+.sbj-home-visitor-room-member-item{
+    padding: 8px 16px;
+}
+
+.sbj-home-visitor-room-member-icon{
+    margin-right: 8px !important;
+}
+
+.sbj-home-visitor-room-actor-icon{
+    margin-right: 8px !important;
+    margin-left: 32px !important;
 }
 
 .split-pane{

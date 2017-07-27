@@ -13,6 +13,7 @@ export class Actor implements IOrder {
     constructor() {
         this.aid = "";
         this.isUserProfile = false;
+        this.ownerAid = "";
         this.isUsing = false;
         this.name = "";
         this.tag = "";
@@ -25,6 +26,7 @@ export class Actor implements IOrder {
 
     aid: string;
     isUserProfile: boolean;
+    ownerAid: string;
     isUsing: boolean;
     name: string;
     tag: string;

@@ -20,7 +20,7 @@ export default class ProfileController extends AbstractServiceController<Profile
     /**
      *
      */
-    constructor(aid: string) {
+    constructor(aid: string, ownerAid) {
 
         super();
 
@@ -34,12 +34,16 @@ export default class ProfileController extends AbstractServiceController<Profile
 
                 if (actor) {
                     this.IsNew = false;
+                    if (ownerAid) {
+                        actor.ownerAid = ownerAid;
+                    }
                 }
                 else {
                     //  新規アクターデータ作成
                     this.IsNew = true;
                     actor = new Personal.Actor();
                     actor.aid = aid;
+                    actor.ownerAid = ownerAid;
                     actor.name = "";
                     actor.order = Order.New(actors);
                 }

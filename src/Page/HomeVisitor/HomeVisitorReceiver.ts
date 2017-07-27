@@ -39,6 +39,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let ram = (sender as HIContainer.RoomActorMemberSender);
 
             this.Controller.RoomCache.SetMember(ram);
+            ram.members.forEach((ap) => { this.Controller.ActorCache.SetActor(ap.peerid, ap.actor); });
+
             let aid = this.Controller.CurrentAid;
 
             this.Controller.RoomCache.GetRoomByActorId(aid, (room) => {
@@ -76,14 +78,9 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             this.GetIcon(conn, sender as HVContainer.GetIconSender);
         }
 
-        //  プロフィール取得
-        if (sender.type === HVContainer.ProfileSender.ID) {
-            //  this.Controller.ActorCache.SetOtherProfile(conn.peer, (sender as HVContainer.ProfileSender).profile);
-        }
-
         //  アクター取得
         if (sender.type === HVContainer.ActorSender.ID) {
-            //  this.Controller.ActorCache.SetOtherActor(conn.peer, (sender as HVContainer.ActorSender).actor);
+            this.Controller.ActorCache.SetActor(conn.peer, (sender as HVContainer.ActorSender).actor);
         }
 
         //  アイコン取得
