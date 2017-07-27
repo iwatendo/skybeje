@@ -6,6 +6,8 @@ import DashboardView, { NaviEnum } from "./DashboardView";
 
 export default class DashboardController extends AbstractServiceController<DashboardView, DashboardModel> {
 
+    public ControllerName(): string { return "Dashboard"; }
+
     /**
      * 
      */

@@ -132,7 +132,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         //  音声認識からのメッセージ取得
         SpeechUtil.InitSpeechRecognition((message) => {
             let send = new CastSpeechRecognitionSender(message);
-            WebRTCService.SendToAll(send);
+            WebRTCService.SendAll(send);
         });
 
         this.SetMediaDevice();

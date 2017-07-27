@@ -120,7 +120,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     public ClearTimeline() {
         this.Controller.Model.ClearTimeline(() => {
             this.Controller.Manager.Chat.AllClear();
-            WebRTCService.SendToAll(new ClearTimelineSender());
+            WebRTCService.SendAll(new ClearTimelineSender());
         });
     }
 

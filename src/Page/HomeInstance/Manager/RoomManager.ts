@@ -159,7 +159,7 @@ export default class RoomManager {
                     callback(this._defaultRoomId);
                 }
                 else {
-                    LogUtil.Error("Not Find Default Room.");
+                    LogUtil.Error(this._controller, "Default room not found.");
                 }
             });
         }

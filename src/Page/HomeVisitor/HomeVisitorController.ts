@@ -30,6 +30,8 @@ import BotController from "./BotController";
  */
 export default class HomeVisitorController extends AbstractServiceController<HomeVisitorView, HomeVisitorModel> {
 
+    public ControllerName(): string { return "HomeVisitor"; }
+
     public PeerId: string;
     public ConnStartTime: number;
     public ConnCache: ConnectionCache;
@@ -118,14 +120,14 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public OnPeerError(err: Error) {
 
         if ((err as any).type === "peer-unavailable") {
-            LogUtil.Warning(err.message);
+            LogUtil.Warning(this, err.message);
             let peerid = err.message.replace("Could not connect to peer ", "").replace("'", "");
             this.ConnCache.SetErrorPeer(peerid);
         }
         else {
             this.View.DisConnect();
-            LogUtil.Error('peer error');
-            LogUtil.Error(err.message);
+            LogUtil.Error(this, 'peer error');
+            LogUtil.Error(this, err.message);
             LogUtil.FatalError(err.message);
         }
     }
@@ -136,7 +138,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * @param conn 
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
-        LogUtil.Info('Child peer connection : ' + conn.peer.toString());
+        super.OnChildConnection(conn);
         this.ConnCache.Set(conn);
     }
 

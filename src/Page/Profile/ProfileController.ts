@@ -10,6 +10,8 @@ import ProfileView from "./ProfileView";
 
 export default class ProfileController extends AbstractServiceController<ProfileView, ProfileModel> {
 
+    public ControllerName(): string { return "Profile"; }
+
     public Actor: Personal.Actor;
 
     public SelectionGid: string;

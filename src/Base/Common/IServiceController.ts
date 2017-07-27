@@ -3,6 +3,9 @@
  */
 export interface IServiceController {
 
+    //  PeerIDの取得
+    ControllerName() : string;
+
     //  自身のPeer生成時イベント
     OnPeerOpen(peer: PeerJs.Peer);
 

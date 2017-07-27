@@ -32,7 +32,7 @@ export default abstract class Database<D> {
 
 
     private OnError(e: Event) {
-        LogUtil.Error((<IDBRequest>event.target).error.toString());
+        LogUtil.Error(null, (<IDBRequest>event.target).error.toString());
     }
 
 
@@ -62,7 +62,7 @@ export default abstract class Database<D> {
         req.onerror = this.OnError;
 
         req.onblocked = (es: IDBVersionChangeEvent) => {
-            LogUtil.Warning("Delete blocked : " + this._dbname);
+            LogUtil.Warning(null, "Delete blocked : " + this._dbname);
         };
 
         req.onupgradeneeded
@@ -80,7 +80,6 @@ export default abstract class Database<D> {
 
         rep.onsuccess = (event) => {
             this._db = (<IDBRequest>event.target).result;
-            LogUtil.Info("IndexedDB connection succeed : " + this._dbname);
             onconnect();
         };
     }
@@ -99,7 +98,7 @@ export default abstract class Database<D> {
             }
         }
         else {
-            LogUtil.Error("Write key error : Store " + name);
+            LogUtil.Error(null, "Write key error : Store " + name);
         }
     }
 

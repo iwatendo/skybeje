@@ -124,7 +124,7 @@ export default class IconComponent extends React.Component<IconProp, IconStat>{
             }
 
         } catch (e) {
-            LogUtil.Warning(e);
+            LogUtil.Warning(null, e);
         }
     }
 

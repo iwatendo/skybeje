@@ -102,7 +102,7 @@ export default class IconListItemComponent extends React.Component<IconListItemP
             }
 
         } catch (e) {
-            LogUtil.Warning(e);
+            LogUtil.Warning(this.props.owner.props.controller, e);
         }
     }
 

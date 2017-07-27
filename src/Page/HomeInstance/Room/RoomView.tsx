@@ -193,7 +193,7 @@ export class RoomView {
                 }
 
             } catch (e) {
-                LogUtil.Warning(e);
+                LogUtil.Warning(this._controller, e);
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿import Sender from "../Container/Sender";
+import { IServiceController } from "../Common/IServiceController";
+import WebRTCService from "../Common/WebRTCService";
 
 export enum LogType {
     Message = 0,
@@ -78,10 +80,28 @@ export default class LogUtil {
 
 
     /**
-     * ログ出力
-     * @param value
+     * 
+     * @param service 
      */
-    public static Info(value: string) {
+    public static LogHeader(service: IServiceController): string {
+
+        let result = this._APPNAME + " : ";
+        if (service) result += service.ControllerName();
+
+        let peerid = WebRTCService.PeerId();
+        if (peerid) result += " [" + peerid + "]";
+        result += " : ";
+
+        return result;
+    }
+
+
+    /**
+     * ログ出力
+     * @param peerid 
+     * @param value 
+     */
+    public static Info(service: IServiceController, value: string) {
 
         const maxlen = 512;
         let consoleLog: string;
@@ -93,7 +113,7 @@ export default class LogUtil {
             consoleLog = value.substring(0, maxlen) + "...";
         }
 
-        console.log(this._APPNAME + " : " + consoleLog);
+        console.log(this.LogHeader(service) + consoleLog);
 
         let log = new Log(value);
 
@@ -104,11 +124,12 @@ export default class LogUtil {
 
     /**
      * 警告ログの出力
-     * @param value
+     * @param service 
+     * @param value 
      */
-    public static Warning(value: string) {
+    public static Warning(service: IServiceController, value: string) {
 
-        console.warn(this._APPNAME + " : " + value);
+        console.warn(this.LogHeader(service) + value);
 
         let log = new Log(value, LogType.Warning);
 
@@ -121,9 +142,9 @@ export default class LogUtil {
      * エラーログの出力
      * @param value
      */
-    static Error(value: string) {
+    static Error(service: IServiceController,value: string) {
 
-        console.error(this._APPNAME + " : " + value);
+        console.error(this.LogHeader(service) + value);
 
         let log = new Log(value, LogType.Error);
 

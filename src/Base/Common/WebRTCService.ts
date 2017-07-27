@@ -11,6 +11,15 @@ export default class WebRTCService {
     private static _serviceName: string;
     private static _videoElement: HTMLElement;
 
+
+    /**
+     * 
+     */
+    public static PeerId(): string {
+        return (this._peer ? this._peer.id : "");
+    }
+
+
     /**
      * WebRTCServiceの起動
      * @param service
@@ -20,7 +29,7 @@ export default class WebRTCService {
     public static Start(service: IServiceController, ownerid: string, serviceName: string, videoElement: HTMLElement = null) {
 
         this._serviceName = serviceName;
-        LogUtil.Info("Start WebRTC : " + serviceName + (ownerid ? "(Owner : " + ownerid + ")" : ""));
+        LogUtil.Info(service, "Start WebRTC " + (ownerid ? "(owner " + ownerid + ")" : ""));
 
         this.GetApiKey((apikey) => {
             this._peer = new Peer({ key: apikey, debug: 1 }, );
@@ -66,7 +75,7 @@ export default class WebRTCService {
                     }
                     catch (e) {
                         let errMsg = "skyway.json\n" + e.toString();
-                        LogUtil.Error(errMsg);
+                        LogUtil.Error(this._service, errMsg);
                         alert(errMsg);
                     }
                 }
@@ -118,7 +127,7 @@ export default class WebRTCService {
 
         peer.on('open', () => {
 
-            LogUtil.Info(this._serviceName + " PeerOpen (" + peer.id + ")");
+            LogUtil.Info(service, "peer opened");
 
             service.OnPeerOpen(peer);
             if (ownerConnect)
@@ -167,8 +176,7 @@ export default class WebRTCService {
     private static OwnerPeerSetting(service: IServiceController, owner: PeerJs.DataConnection, onownerid: string, ) {
 
         owner.on("open", () => {
-
-            LogUtil.Info(this._serviceName + " Owner peer open (" + onownerid + ")");
+            LogUtil.Info(service, "peer connected to [" + onownerid + "]");
             service.OnOwnerConnection();
         });
 
@@ -260,17 +268,17 @@ export default class WebRTCService {
         let senddata = JSON.stringify(data);
 
         if (!this._owner) {
-            LogUtil.Warning("Owner peer is not initilized : Lost send message : " + senddata);
+            LogUtil.Warning(this._service, "Owner not found : lost send : " + senddata);
         }
 
         if (this._owner.open) {
             this._owner.send(senddata);
 
             if (LogUtil.IsOutputSender(data))
-                LogUtil.Info("Send[Owner] : " + senddata.toString());
+                LogUtil.Info(this._service, "send(Owner) : " + senddata.toString());
         }
         else {
-            LogUtil.Warning("Owner is not open : Lost send message : " + senddata);
+            LogUtil.Warning(this._service, "Owner not open : Lost send : " + senddata);
         }
 
     }
@@ -289,10 +297,10 @@ export default class WebRTCService {
         if (conn.open) {
             conn.send(json);
             if (LogUtil.IsOutputSender(data))
-                LogUtil.Info("Send : " + json.toString());
+                LogUtil.Info(this._service, "send : " + json.toString());
         }
         else {
-            LogUtil.Warning("Client is not open : Lost send message : " + json);
+            LogUtil.Warning(this._service, "Client not open : lost send : " + json);
         }
     }
 
@@ -301,7 +309,7 @@ export default class WebRTCService {
      * 全接続クライアントへの送信
      * @param data
      */
-    public static SendToAll(data: Sender) {
+    public static SendAll(data: Sender) {
 
         let json = JSON.stringify(data);
 
@@ -315,7 +323,7 @@ export default class WebRTCService {
         });
 
         if (LogUtil.IsOutputSender(data))
-            LogUtil.Info("Send[All] : " + json.toString());
+            LogUtil.Info(this._service, "send(All) : " + json.toString());
     }
 
 

@@ -10,9 +10,11 @@ import RoomView from "./RoomView";
 
 export default class RoomController extends AbstractServiceController<RoomView, RoomModel> {
 
+    public ControllerName(): string { return "Room"; }
+
     public Room: Home.Room;
 
-    public IsNew : boolean;
+    public IsNew: boolean;
 
     /**
      *
@@ -32,7 +34,7 @@ export default class RoomController extends AbstractServiceController<RoomView, 
                 if (room) {
                     this.IsNew = false;
                 }
-                else{
+                else {
                     //  新規ルーム作成
                     this.IsNew = true;
                     room = new Home.Room();

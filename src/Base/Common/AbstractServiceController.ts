@@ -16,11 +16,14 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
     public Model: M;
     public Receiver: IServiceReceiver;
 
+    public abstract ControllerName(): string;
+
     /**
      * 
      */
     constructor() {
     }
+
 
     /**
      *  Peer接続されているか？
@@ -54,7 +57,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
         if (err.message && err.message.length > 0)
             log += err.message;
 
-        LogUtil.Error(log);
+        LogUtil.Error(this, log);
     }
 
 
@@ -73,7 +76,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param err
      */
     public OnPeerError(err: Error) {
-        this.LogError('This Peer', err);
+        this.LogError('this peer', err);
     }
 
 
@@ -97,7 +100,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param err
      */
     public OnOwnerError(err: any) {
-        this.LogError('Owner Peer', err);
+        this.LogError('owner peer', err);
     }
 
 
@@ -113,7 +116,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param conn
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
-        LogUtil.Info("Connect : " + conn.label);
+        LogUtil.Info(this, "peer connected from [" + conn.peer + "]");
     }
 
 
@@ -122,7 +125,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param err
      */
     public OnChildError(err: Error) {
-        this.LogError('Child Peer', err);
+        this.LogError('child peer', err);
     }
 
 
@@ -131,7 +134,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param conn
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
-        LogUtil.Info("Connect Close : " + conn.label);
+        LogUtil.Info(this, "connection closed : " + conn.peer);
     }
 
 
@@ -144,14 +147,14 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
 
         if (isSucceed) {
             if (isStreaming) {
-                LogUtil.Info("Streaming Start.");
+                LogUtil.Info(this, "streaming start");
             }
             else {
-                LogUtil.Info("Streaming Stop.");
+                LogUtil.Info(this, "streaming stop");
             }
         }
         else {
-            LogUtil.Error("Streaming Error.");
+            LogUtil.Error(this,"streaming error");
         }
     }
 
@@ -159,7 +162,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
     /**
      * ストリーミングの再生開始時イベント
      */
-    public OnStreamingPlay(){
+    public OnStreamingPlay() {
 
     }
 
@@ -176,7 +179,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
         let sender: Sender = JSON.parse(recv) as Sender;
 
         if (LogUtil.IsOutputSender(sender))
-            LogUtil.Info("Recv : " + recv);
+            LogUtil.Info(this, "recv : " + recv);
 
         if (sender === null)
             return;

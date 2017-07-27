@@ -225,7 +225,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
             }
 
         } catch (e) {
-            LogUtil.Warning(e);
+            LogUtil.Warning(this.props.owner.props.controller, e);
         }
     }
 

@@ -13,6 +13,8 @@ import { CastInstanceReceiver } from "./CastInstanceReceiver";
 
 export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
 
+    public ControllerName(): string { return "CastInstance"; }
+    
     public View: CastInstanceView;
 
     public CastInstance = new CastInstanceSender();
@@ -158,7 +160,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public SendCastInfo() {
 
         //  クライアントへの通知
-        WebRTCService.SendToAll(this.CastSetting);
+        WebRTCService.SendAll(this.CastSetting);
 
         //  オーナー側への通知
         if (this.CastInstance) {

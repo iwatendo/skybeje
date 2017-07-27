@@ -54,11 +54,11 @@ export default class SpeechUtil {
             if (sre.error === "network" && location.href.indexOf("localhost") > 0) {
                 //  SpeechRecognitiaonはローカルホストでは起動しない（httpsじゃないと動かせない）
                 //  メッセージは表示するけれどエラーとはしない。
-                LogUtil.Warning("SpeechRecognitiaon will not start on Localhost.");
+                LogUtil.Warning(null, "SpeechRecognitiaon will not start on Localhost.");
             }
             else {
-                if (sre.error) LogUtil.Error(sre.error);
-                if (sre.message) LogUtil.Error(sre.message);
+                if (sre.error) LogUtil.Error(null, sre.error);
+                if (sre.message) LogUtil.Error(null, sre.message);
             }
 
             isErrorStop = true;

@@ -20,6 +20,8 @@ import { RoomView } from "./Room/RoomView";
  */
 export default class HomeInstanceController extends AbstractServiceController<HomeInstanceView, HomeInstanceModel> {
 
+    public ControllerName(): string { return "HomeInstance"; }
+
     public PeerID: string;
     public ConnCache: ConnectionCache = new ConnectionCache();
     public Manager: ManagerController;
@@ -58,15 +60,6 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
 
     /**
-     * オーナーエラー
-     * @param err
-     */
-    public OnOwnerError(err: any) {
-        LogUtil.Error("OnOwnerError : " + err.ToString());
-    }
-
-
-    /**
      * 自身のPeer生成時イベント
      * ※サーバー用のPeerID取得時イベント
      * @param peer
@@ -101,8 +94,8 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      */
     public OnPeerError(err: Error) {
 
-        LogUtil.Error(err.name);
-        LogUtil.Error(err.message);
+        LogUtil.Error(this, err.name);
+        LogUtil.Error(this, err.message);
     }
 
 
@@ -170,7 +163,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     public SendChnageRoom(room: Room) {
         let sender = new HIContainer.RoomSender();
         sender.room = room;
-        WebRTCService.SendToAll(sender);
+        WebRTCService.SendAll(sender);
     }
 
 };

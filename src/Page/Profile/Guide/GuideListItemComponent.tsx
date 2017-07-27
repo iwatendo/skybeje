@@ -137,7 +137,7 @@ export default class GuideListItemComponent extends React.Component<GuideListIte
             }
 
         } catch (e) {
-            LogUtil.Warning(e);
+            LogUtil.Warning(this.props.owner.props.controller, e);
         }
     }
 

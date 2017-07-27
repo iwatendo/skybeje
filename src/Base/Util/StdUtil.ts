@@ -238,14 +238,12 @@ export default class StdUtil {
 
             function setTouchStartPoint(e) {
                 lastTouchY = e.touches[0].clientY;
-                LogUtil.Info("setTouchStartPoint");
             }
 
             function isScrollingUp(e) {
                 let touchY = e.touches[0].clientY;
                 let touchYDelta = touchY - lastTouchY;
                 lastTouchY = touchY;
-                LogUtil.Info("isScrollingUp : " + touchYDelta.toString());
                 return (touchYDelta > 0);
             }
 
@@ -253,13 +251,10 @@ export default class StdUtil {
                 touchstartHandler: (e) => {
                     if (e.touches.length != 1) return;
 
-                    LogUtil.Info("touchstartHandler ");
                     setTouchStartPoint(e);
                     maybePrevent = (window.pageYOffset === 0);
                 },
                 touchmoveHandler: (e) => {
-
-                    LogUtil.Info("touchmoveHandler ");
 
                     if (maybePrevent) {
                         maybePrevent = false;

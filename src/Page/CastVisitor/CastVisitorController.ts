@@ -12,6 +12,8 @@ import { GetCastInfoSedner } from "../CastInstance/CastInstanceContainer";
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
 
+    public ControllerName(): string { return "CastVisitor"; }
+
     public ConnCache: ConnectionCache;
     public View: CastVisitorView;
 
@@ -54,7 +56,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
      * @param conn 
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
-        LogUtil.Info('child connection : ' + conn.peer.toString());
+        super.OnChildConnection(conn);
         this.ConnCache.Set(conn);
     }
 
