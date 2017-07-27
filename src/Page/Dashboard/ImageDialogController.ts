@@ -382,8 +382,11 @@ export default class ImageDialogController {
      */
     private DataTransferItem(value: string) {
         let doc: Document = new DOMParser().parseFromString(value, 'text/html');
-        let result = doc.images[0].attributes.getNamedItem('src').nodeValue;
-        this.OnDropImage(this, null, result);
+        let image = doc.images[0];
+        if (image) {
+            let result = image.attributes.getNamedItem('src').nodeValue;
+            this.OnDropImage(this, null, result);
+        }
     }
 
 }
