@@ -22,7 +22,7 @@ export default class DisConnectComponent extends React.Component<DisConnectProp,
         return (
             <div className="mdl-card__supporting-text">
                 <h4>
-                    招待されたホームインタンスは閉じられました。
+                    接続先のホームインタンスは閉じられました。
                 </h4>
                 <button id='sbj-home-visitor-stop' className="mdl-button mdl-button--raised mdl-button--accent" onClick={this.OnQuitClick.bind(this)}>
                     <i className="material-icons">exit_to_app</i>

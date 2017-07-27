@@ -23,6 +23,7 @@ import HomeVisitorView from "./HomeVisitorView";
 import HomeVisitorModel from "./HomeVisitorModel";
 import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
+import LogController from "./Log/LogController";
 
 
 /**
@@ -41,6 +42,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public TimelineCache: TimelineCache;
     public ServantCache: ServantCache;
     public Bot: BotController;
+    public Log: LogController;
 
     public UseActor: UseActorSender;
 
@@ -55,6 +57,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     constructor() {
         super();
+        this.Log = new LogController(this);
         this.Receiver = new HomeVisitorReceiver(this);
         this.ConnCache = new ConnectionCache();
         this.ActorCache = new ActorCache(this);
@@ -85,7 +88,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             });
         });
 
-        //  HomeInstanceへEntrance情報の取得
     }
 
 
@@ -93,7 +95,8 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 
      */
     public OnOwnerConnection() {
-
+        LogUtil.RemoveListener();
+        
         this.GetUseActor((ua) => {
             let aid = ua.ActorPeers[0].actor.aid;
             this.Model.GetActor(aid, (actor) => {

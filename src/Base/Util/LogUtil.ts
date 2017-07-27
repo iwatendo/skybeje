@@ -80,6 +80,14 @@ export default class LogUtil {
 
 
     /**
+     * リスナーの削除
+     */
+    public static RemoveListener(){
+        this._listener = null;
+    }
+
+
+    /**
      * 
      * @param service 
      */
