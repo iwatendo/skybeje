@@ -68,13 +68,13 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         let mute = LinkUtil.GetArgs("mute");
         if (mute != null && mute.length > 0) {
             video.muted = true;
-            this.ChangeDispMuteButtom(true);
+            this.ChangeDispMuteButton(true);
         }
 
         //  ミュートボタン押下時処理
         document.getElementById('sbj-cact-visitor-volume').onclick = (e) => {
             video.muted = !video.muted;
-            this.ChangeDispMuteButtom(video.muted);
+            this.ChangeDispMuteButton(video.muted);
         };
 
         //  ボリューム設定処理
@@ -98,7 +98,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
      * ミュートボタンの設定
      * @param isMute 
      */
-    public ChangeDispMuteButtom(isMute: boolean) {
+    public ChangeDispMuteButton(isMute: boolean) {
         document.getElementById('sbj-cact-visitor-volume-on').hidden = isMute;
         document.getElementById('sbj-cact-visitor-volume-off').hidden = !isMute;
     }
