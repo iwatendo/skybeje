@@ -66,6 +66,13 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             this.Controller.NotifyDashbord('');
         };
 
+        //  接続時のタイムアウト処理
+        window.setTimeout(() => {
+            //  接続ページの表示が10秒を経過した場合
+            //  接続できなかったと判断して、エラーメッセージを表示する
+            document.getElementById('sbj-home-visitor-connection-timeout').hidden = false;
+        }, 10000);
+
         //  
         callback();
     }
