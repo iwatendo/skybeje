@@ -5,6 +5,7 @@ import WebRTCService from "../../../Base/Common/WebRTCService";
 
 import HomeVisitorController from "../HomeVisitorController";
 import { GetRoomSender, RoomActorMemberSender } from "../../HomeInstance/HomeInstanceContainer";
+import StdUtil from "../../../Base/Util/StdUtil";
 
 
 interface RoomFunc { (room: Home.Room): void }
@@ -22,7 +23,7 @@ export default class RoomCache {
     //
     private _queue = new Map<string, Array<RoomFunc>>();
     //
-    private _nowRoomHids = new Array<string>();
+    private _nowRooms = new Array<Home.Room>();
 
 
     /**
@@ -102,16 +103,37 @@ export default class RoomCache {
      * @param ram 
      */
     public SetMember(ram: RoomActorMemberSender) {
+
+        //  ルーム毎のメンバー一覧情報の設定or差替え
         this._roomMemberCache.set(ram.hid, ram);
 
-        this._nowRoomHids = new Array<string>();
-        this._controller.UseActor.ActorPeers.forEach((ap) => {
-            this.GetRoomByActorId(ap.actor.aid, (room) => {
-                if (0 === this._nowRoomHids.filter((hid) => hid === room.hid).length) {
-                    this._nowRoomHids.push(room.hid);
+        //  自身のアクターが配置されている部屋のリストを更新
+        this._nowRooms = new Array<Home.Room>();
+        this._roomMemberCache.forEach((rams, hid) => {
+            if (this.ExistRoomMember(rams)) {
+                this.Get(hid, (room) => { this._nowRooms.push(room); });
+            }
+        });
+    }
+
+    
+    /**
+     * 指定した部屋に自身のアクターが配置されているか？
+     * @param hid 
+     */
+    private ExistRoomMember(ram: RoomActorMemberSender): boolean {
+
+        if (ram === null) return false;
+
+        let result = false;
+        ram.members.forEach((rm) => {
+            this._controller.UseActor.ActorPeers.forEach((ua) => {
+                if (ua.actor.aid == rm.actor.aid) {
+                    result = true;
                 }
             });
         });
+        return result;
     }
 
 
@@ -120,11 +142,7 @@ export default class RoomCache {
      * 配置されている部屋の一覧を取得
      */
     public GetRooms(): Array<Home.Room> {
-        let result = new Array<Home.Room>();
-        this._nowRoomHids.forEach((hid) => {
-            result.push(this._roomCache.get(hid));
-        });
-        return result;
+        return this._nowRooms;
     }
 
 
