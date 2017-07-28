@@ -127,9 +127,6 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     public SetRoomInfo(room: Home.Room) {
 
-        //  
-        this.Controller.CurrentHid = room.hid;
-
         if (this._boot) {
             this._element.setAttribute("hidden", "true");
             this._head.removeAttribute("hidden");
@@ -138,13 +135,19 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             this._boot = false;
         }
 
-        //
-        this.SetRoomDisplay(room);
-
-        //  タイムラインデータの取得
-        this.Controller.GetTimeline(room.hid);
-        this.SetRoomMember(room);
-        this.CastSelector.ChangeRoom(room.hid);
+        if (this.Controller.CurrentHid === room.hid) {
+            //  ルーム変更が無かった場合、タイムラインのみ再描画
+            this.RefreshTimeline();
+        }
+        else {
+            //  ルームの変更があった場合は
+            //  変更先のルーム情報の取得と再描画
+            this.Controller.CurrentHid = room.hid;
+            this.SetRoomDisplay(room);
+            this.Controller.GetTimeline(room.hid);
+            this.SetRoomMember(room);
+            this.CastSelector.ChangeRoom(room.hid);
+        }
     }
 
 
@@ -188,6 +191,14 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
 
     /**
+     * タイムラインの再描画
+     */
+    public RefreshTimeline() {
+        this.SetTimeline(new Array<Timeline.Message>());
+    }
+
+
+    /**
      * タイムラインの更新
      */
     public SetTimeline(tlms: Array<Timeline.Message>) {
@@ -216,8 +227,6 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
                 else {
                     this.InputPane.DisplayUnreadCount();
                 }
-
-                //  StdUtil.AutoLink(this._timelineElement);
             });
         });
     }
