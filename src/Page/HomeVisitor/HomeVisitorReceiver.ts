@@ -7,6 +7,7 @@ import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as HVContainer from "./HomeVisitorContainer";
 import * as CIContainer from "../CastInstance/CastInstanceContainer";
 import HomeVisitorController from "./HomeVisitorController";
+import LogUtil from "../../Base/Util/LogUtil";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -18,9 +19,14 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      */
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
-        //  インスタンス接続開始時間の保持
+        //  ホームインスタンスからの、接続開始時刻（ホームインスタンス側の時間）の通知
         if (sender.type === HIContainer.ConnInfoSender.ID) {
             this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
+            LogUtil.RemoveListener();
+            this.Controller.GetUseActor((ua) => {
+                this.Controller.InitializeUseActor(ua);
+            });
+
             return;
         }
 

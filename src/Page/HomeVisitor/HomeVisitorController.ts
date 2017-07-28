@@ -95,16 +95,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 
      */
     public OnOwnerConnection() {
-        LogUtil.RemoveListener();
-        
-        this.GetUseActor((ua) => {
-            let aid = ua.ActorPeers[0].actor.aid;
-            this.Model.GetActor(aid, (actor) => {
-                this._currentActor = actor;
-                this.SetUseActor(ua);
-            });
-        });
-
     }
 
 
@@ -175,9 +165,19 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             });
             callback(useActor);
         });
-
     }
 
+    /**
+     * 使用アクターの初期値設定
+     * @param ua 
+     */
+    public InitializeUseActor(ua: UseActorSender) {
+        let aid = ua.ActorPeers[0].actor.aid;
+        this.Model.GetActor(aid, (actor) => {
+            this._currentActor = actor;
+            this.SetUseActor(ua);
+        });
+    }
 
     /**
      * 
