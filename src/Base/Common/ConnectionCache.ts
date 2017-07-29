@@ -13,6 +13,11 @@ export default class ConnectionCache {
     private _map = new Map<string, PeerJs.DataConnection>();
 
     /**
+     * ユーザーID毎の接続MAP
+     */
+    private _userConnMap = new Map<string, PeerJs.DataConnection>();
+
+    /**
      * 接続後の処理キュー
      */
     private _queue = new Map<string, Array<PeerFunc>>();
@@ -34,7 +39,26 @@ export default class ConnectionCache {
                 queue(conn);
             }
         }
+    }
 
+
+    /**
+     * 接続ユーザー毎のコネクション
+     * ※接続済みユーザーの場合、戻り値でFalseを返す
+     * @param uid 
+     * @param conn 
+     */
+    public SetUser(uid: string, conn: PeerJs.DataConnection): boolean {
+
+        if (this._userConnMap.has(uid)) {
+            let preConn = this._userConnMap.get(uid);
+            if (preConn.open) {
+                return false;
+            }
+        }
+
+        this._userConnMap.set(uid, conn);
+        return true;
     }
 
 

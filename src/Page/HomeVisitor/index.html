@@ -54,6 +54,15 @@
 			<div class="mdl-card__supporting-text">
 				<div id="sbj-home-visitor-console-log"></div>
 			</div>
+			<div id="sbj-home-visitor-multi-boot" hidden>
+				<h4 class="sbj-home-visitor-connecting">
+					接続に失敗しました
+				</h4>
+				<h5 class="sbj-home-visitor-connecting">
+					・クライアントの多重起動が検出されました</br>
+					・同一のパソコンからの、複数クライアント起動には対応しておりません</br>
+				</h5>
+			</div>
 			<div id="sbj-home-visitor-connection-timeout" hidden>
 				<h4 class="sbj-home-visitor-connecting">
 					接続に失敗しました
@@ -63,13 +72,15 @@
 					以下のいずれかの理由により、接続できなかった可能性があります</br>
 					</br>
 					・接続先のホームインスタンスが既に閉じられている</br>
+					・同一のパソコンからの、複数クライアントの起動 ・接続先／接続元のどちらかのファイヤーウォール等での、接続のブロック(※)
+					</br>
 					・ネットワークの不調によるタイムアウト</br>
-					・接続先／接続元のどちらかのファイヤーウォール等での、接続のブロック(※)</br>
 				</h5>
 				<h6 class="sbj-home-visitor-connecting">
 					※SkyWay(WebRTC)は通信プロトコルとして TCP(WebSocket,HTTPS)及びUDPを使用しています。</br>
-					　ファイヤーウォールにて、使用するプロトコルまたはポートがブロックされている場合、当システムは利用できません。</br>
-					　詳細については<a href="https://support.skyway.io/hc/ja/articles/115002273767-SkyWay%E3%81%AE%E9%80%9A%E4%BF%A1%E8%A6%81%E4%BB%B6%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">SkyWayの通信要件</a>を確認してください。</br>
+					ファイヤーウォールにて、使用するプロトコルまたはポートがブロックされている場合、当システムは利用できません。</br>
+					詳細については<a href="https://support.skyway.io/hc/ja/articles/115002273767-SkyWay%E3%81%AE%E9%80%9A%E4%BF%A1%E8%A6%81%E4%BB%B6%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"
+					 target="_blank">SkyWayの通信要件</a>を確認してください。</br>
 				</h6>
 			</div>
 		</div>

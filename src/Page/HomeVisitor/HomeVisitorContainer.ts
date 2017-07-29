@@ -6,6 +6,19 @@ import ActorInfo from "../../Base/Container/ActorInfo";
 
 
 /**
+ * クライアントの起動通知
+ */
+export class ClientBootSender extends Sender {
+
+    public static ID = "ClientBoot";
+
+    constructor() {
+        super(ClientBootSender.ID);
+    }
+}
+
+
+/**
  * 使用するアクター情報
  */
 export class UseActorSender extends Sender {

@@ -18,6 +18,13 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
      */
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
+        //  クライアントの起動通知
+        if (sender.type === HVContainer.ClientBootSender.ID) {
+            let connInfo = new HIContainer.ConnInfoSender();
+            connInfo.isMultiBoot = !this.Controller.ConnCache.SetUser(sender.uid, conn);
+            WebRTCService.SendTo(conn, connInfo);
+        }
+
         //  ルームの要求
         if (sender.type === HIContainer.GetRoomSender.ID) {
             this.Controller.SendRoom(conn, sender as HIContainer.GetRoomSender);

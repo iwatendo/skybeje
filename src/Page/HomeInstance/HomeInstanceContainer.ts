@@ -15,9 +15,11 @@ export class ConnInfoSender extends Sender {
     constructor() {
         super(ConnInfoSender.ID);
         this.starttime = Date.now();
+        this.isMultiBoot = false;
     }
 
     starttime: number;
+    isMultiBoot : boolean;
 }
 
 

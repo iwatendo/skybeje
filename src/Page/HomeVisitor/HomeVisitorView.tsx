@@ -68,9 +68,11 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         //  接続時のタイムアウト処理
         window.setTimeout(() => {
-            //  接続ページの表示が10秒を経過した場合
-            //  接続できなかったと判断して、エラーメッセージを表示する
-            document.getElementById('sbj-home-visitor-connection-timeout').hidden = false;
+            if (document.getElementById('sbj-home-visitor-multi-boot').hidden) {
+                //  接続ページの表示が10秒を経過した場合
+                //  接続できなかったと判断して、エラーメッセージを表示する
+                document.getElementById('sbj-home-visitor-connection-timeout').hidden = false;
+            }
         }, 10000);
 
         //  
@@ -78,6 +80,15 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     }
 
 
+    /**
+     * 多重起動エラー
+     */
+    public MutilBootError() {
+        document.getElementById('sbj-home-visitor-connection-timeout').hidden = true;
+        document.getElementById('sbj-home-visitor-multi-boot').hidden = false;
+    }
+
+    
     /**
      * スプリットパネルの「仕切り」の移動をスムーズにさせる為の制御
      * ※移動中に他パネルにフォーカスが行かないように一時的InnerDivの幅を広げる

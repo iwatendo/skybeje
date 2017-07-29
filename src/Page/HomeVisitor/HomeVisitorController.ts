@@ -21,7 +21,7 @@ import ServantCache from "./Cache/ServantCache";
 import HomeVisitorReceiver from "./HomeVisitorReceiver";
 import HomeVisitorView from "./HomeVisitorView";
 import HomeVisitorModel from "./HomeVisitorModel";
-import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
+import { UseActorSender, ChatMessageSender, GetTimelineSender, ClientBootSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
 import LogController from "./Log/LogController";
 
@@ -95,6 +95,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 
      */
     public OnOwnerConnection() {
+        WebRTCService.SendToOwner(new ClientBootSender());
     }
 
 

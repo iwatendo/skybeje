@@ -20,14 +20,22 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      */
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
-        //  ホームインスタンスからの、接続開始時刻（ホームインスタンス側の時間）の通知
+        //  ホームインスタンスからの接続情報の通知
         if (sender.type === HIContainer.ConnInfoSender.ID) {
-            this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
-            LogUtil.RemoveListener();
-            this.Controller.GetUseActors((ua) => {
-                this.Controller.InitializeUseActors(ua);
-            });
 
+            let connInfo = (sender as HIContainer.ConnInfoSender);
+            this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
+
+            if (connInfo.isMultiBoot) {
+                //  多重起動の検出
+                this.Controller.View.MutilBootError();
+            }
+            else {
+                this.Controller.GetUseActors((ua) => {
+                    this.Controller.InitializeUseActors(ua);
+                });
+            }
+            LogUtil.RemoveListener();
             return;
         }
 
