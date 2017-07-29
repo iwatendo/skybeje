@@ -88,7 +88,7 @@ export default class ActorCache {
 
 
     /**
-     * 他ユーザーのアクター情報をキャッシュ
+     * アクター情報をキャッシュ
      * @param peerid 
      * @param actor 
      */

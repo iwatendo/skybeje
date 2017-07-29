@@ -160,7 +160,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             let useActor = new UseActorSender();
             actors.forEach((actor) => {
                 if (actor.isUserProfile || actor.isUsing) {
-                    useActor.ActorPeers.push(new ActorPeer(actor, this.PeerId));
+                    useActor.ActorPeers.push(new ActorPeer(this.PeerId, useActor.uid, actor));
                 }
             });
             callback(useActor);
@@ -219,7 +219,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
             //  新しく配置されたアクターの場合
             if (!preUsing && actor.isUsing) {
-                newApList.push(new ActorPeer(actor, peerId));
+                newApList.push(new ActorPeer(peerId, useActor.uid, actor));
             }
 
             //  カレントのアクターが配置解除された場合、別のアクターに切替える

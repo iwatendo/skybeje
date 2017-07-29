@@ -14,7 +14,16 @@ import HomeInstanceController from "../HomeInstanceController";
 
 
 export class RoomActor {
+
+    constructor(hid: string, uid: string, actor: Actor) {
+        this.hid = hid;
+        this.uid = uid;
+        this.actor = actor;
+        this.date = new Date();
+    }
+
     hid: string;
+    uid: string;
     actor: Actor;
     date: Date;
 }
@@ -91,7 +100,7 @@ export default class RoomManager {
         this._peerRoomActorMap.forEach((ral, peerid) => {
             ral.forEach((ra) => {
                 if (ra.hid === hid) {
-                    result.push(new ActorPeer(ra.actor, peerid));
+                    result.push(new ActorPeer(peerid, ra.uid, ra.actor));
                 }
             });
         });
@@ -179,7 +188,7 @@ export default class RoomManager {
         this._peerRoomActorMap.forEach((roomActors, peerid) => {
             roomActors.forEach((ra) => {
                 if (ra.hid === hid) {
-                    actorPeers.set(ra.actor.aid, new ActorPeer(ra.actor, peerid));
+                    actorPeers.set(ra.actor.aid, new ActorPeer(peerid, ra.uid, ra.actor));
                 }
             });
         });
@@ -260,7 +269,7 @@ export default class RoomManager {
             }
             else {
                 //  未登録アクターはデフォルトルームへ追加
-                newArray.push(this.NewRoomActor(ap.actor, defaultRoomId));
+                newArray.push(new RoomActor(defaultRoomId, ap.uid, ap.actor));
 
                 //  ルームメンバーの変更をセット
                 changeRoomMap.set(defaultRoomId, this.GetRoomInActors(defaultRoomId));
@@ -305,20 +314,6 @@ export default class RoomManager {
         else {
             return new Array<RoomActor>();
         }
-    }
-
-
-    /**
-     * 
-     * @param actor 
-     * @param defaultHid 
-     */
-    private NewRoomActor(actor: Actor, defaultHid: string): RoomActor {
-        let ra = new RoomActor();
-        ra.actor = actor;
-        ra.hid = defaultHid;
-        ra.date = new Date();
-        return ra;
     }
 
 

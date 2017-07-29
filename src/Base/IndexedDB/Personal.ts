@@ -5,34 +5,43 @@ import { IOrder } from "../Container/Order";
 import StdUtil from "../Util/StdUtil";
 
 
+export interface IActor {
+    aid: string;
+    isUserProfile: boolean;
+    isUsing: boolean;
+    name: string;
+    tag: string;
+    profile: string;
+    dispIid: string;
+}
+
+
 /**
  * アクター情報（ユーザープロフィール情報）
  */
-export class Actor implements IOrder {
+export class Actor implements IActor,IOrder {
 
     constructor() {
         this.aid = "";
         this.isUserProfile = false;
-        this.ownerAid = "";
         this.isUsing = false;
         this.name = "";
         this.tag = "";
         this.profile = "";
+        this.dispIid = "";
         this.iconIds = new Array<string>();
         this.guideIds = new Array<string>();
-        this.dispIid = "";
         this.order = 0;
     }
 
     aid: string;
     isUserProfile: boolean;
-    ownerAid: string;
     isUsing: boolean;
     name: string;
     tag: string;
     profile: string;
-    iconIds: Array<string>;
     dispIid: string;
+    iconIds: Array<string>;
     guideIds: Array<string>;
     order: number;
 

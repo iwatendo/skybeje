@@ -304,14 +304,14 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
         icon.img.src = "/image/default-icon.png";
 
         //  デフォルトユーザー
-        let guest = new Personal.Actor();
-        guest.name = "名前未設定";
-        guest.tag = "";
-        guest.aid = StdUtil.CreateUuid();
-        guest.isUserProfile = true;
-        guest.profile = "";
-        guest.iconIds.push(icon.iid);
-        guest.dispIid = icon.iid;
+        let user = new Personal.Actor();
+        user.aid = LocalCache.UserID;
+        user.name = "名前未設定";
+        user.tag = "";
+        user.isUserProfile = true;
+        user.profile = "";
+        user.iconIds.push(icon.iid);
+        user.dispIid = icon.iid;
 
         //
         let room1 = new Home.Room();
@@ -335,7 +335,7 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
         room2.background = new ImageInfo();
         room2.background.src = "/image/default-room2.jpg";
 
-        this.UpdateActor(guest, () => {
+        this.UpdateActor(user, () => {
             this.UpdateIcon(icon, () => {
                 this.UpdateRoom(room1, () => {
                     this.UpdateRoom(room2, () => {

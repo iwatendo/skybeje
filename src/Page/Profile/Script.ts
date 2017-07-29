@@ -5,6 +5,5 @@ import ProfileController from "./ProfileController";
 if (StdUtil.IsExecute()) {
 
     let aid = LinkUtil.GetArgs('aid');
-    let ownerAid = LinkUtil.GetArgs('owner_aid');
-    let controller = new ProfileController(aid, ownerAid);
+    let controller = new ProfileController(aid);
 }

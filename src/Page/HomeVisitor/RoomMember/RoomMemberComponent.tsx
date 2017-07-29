@@ -31,12 +31,12 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
         this.props.roomActorMember.members.map((ap) => {
 
             let actor = ap.actor;
-            let ownerAid = (actor.isUserProfile ? actor.aid : actor.ownerAid);
+            let uid = ap.uid;
 
-            if (!actorMap.has(ownerAid)) {
-                actorMap.set(ownerAid, new Array<ActorPeer>());
+            if (!actorMap.has(uid)) {
+                actorMap.set(uid, new Array<ActorPeer>());
             }
-            actorMap.get(ownerAid).push(ap);
+            actorMap.get(uid).push(ap);
 
         });
 
@@ -49,9 +49,9 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
 
             actorTable = list.map((actors) => {
                 let first = actors[0];
-                let ownerPeerId = first.peerid;
-                let ownerAid = (first.actor.isUserProfile ? first.actor.aid : first.actor.ownerAid);
-                return (<RoomMemberItemComponent key={ownerAid} controller={this.props.controller} ownerAid={ownerAid} ownerPeerId={ownerPeerId} actors={actors} />);
+                let peerid = first.peerid;
+                let uid = first.uid;
+                return (<RoomMemberItemComponent key={uid} controller={this.props.controller} ownerAid={uid} ownerPeerId={peerid} actors={actors} />);
             });
         }
 

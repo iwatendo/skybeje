@@ -54,9 +54,11 @@ export default class RoomMemberItemComponent extends React.Component<RoomMemberI
         let peerid = this.props.ownerPeerId;
 
         this.props.controller.ActorCache.GetActor(peerid, aid, (actor) => {
-            this.setState({
-                ownerProfile: actor
-            });
+            if (actor) {
+                this.setState({
+                    ownerProfile: actor
+                });
+            }
         });
     }
 

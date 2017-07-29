@@ -136,8 +136,8 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         }
 
         if (this.Controller.CurrentHid === room.hid) {
-            //  ルーム変更が無かった場合、タイムラインのみ再描画
             this.RefreshTimeline();
+            this.SetRoomMember(room);
         }
         else {
             //  ルームの変更があった場合は

@@ -1,12 +1,13 @@
 ﻿
-/**
- * ローカルストレージに対するデータ操作を行います。
- * このクラスを経由しないローカルストレージの使用は基本的に禁止します
- */
 import { LiveCastOptions } from "../../Page/CastInstance/CastInstanceContainer";
+import StdUtil from "../Util/StdUtil";
 
 export interface OnSetOptions { (option: LiveCastOptions): void };
 
+/**
+ * ローカルストレージに対するデータ操作を行います。
+ * このクラスを経由しないローカルストレージの使用は禁止します
+ */
 export default class LocalCache {
 
     /**
@@ -15,6 +16,19 @@ export default class LocalCache {
      */
     public static Clear() {
         localStorage.clear();
+    }
+
+    /**
+     *  ユーザーID / 初回起動時にランダムで設定されます
+     */
+    public static set UserID(val: string) { localStorage.setItem('user-id', val); }
+    public static get UserID(): string {
+        let uid = localStorage.getItem('user-id');
+        if (!uid) {
+            uid = StdUtil.CreateUuid();
+            this.UserID = uid;
+        }
+        return uid;
     }
 
 

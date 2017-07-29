@@ -56,9 +56,8 @@ export default class ProfileView implements INaviContainer {
         let controller = this._owner;
 
         controller.Model.GetUserProfile((userProfile) => {
-            let ownerAid = userProfile.aid;
             let frame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
-            let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid + "&owner_aid=" + ownerAid;
+            let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
             this._editCallback = callback;
 
             frame.onload = (e) => {

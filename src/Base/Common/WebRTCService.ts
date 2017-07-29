@@ -1,6 +1,7 @@
 import { IServiceController } from "./IServiceController";
 import LogUtil from "../Util/LogUtil";
 import Sender from "../Container/Sender";
+import LocalCache from "./LocalCache";
 
 export default class WebRTCService {
 
@@ -29,6 +30,9 @@ export default class WebRTCService {
     public static Start(service: IServiceController, ownerid: string, serviceName: string, videoElement: HTMLElement = null) {
 
         this._serviceName = serviceName;
+        
+        Sender.Uid = LocalCache.UserID;
+
         LogUtil.Info(service, "Start WebRTC " + (ownerid ? "(owner " + ownerid + ")" : ""));
 
         this.GetApiKey((apikey) => {
