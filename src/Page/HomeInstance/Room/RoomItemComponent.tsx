@@ -35,9 +35,9 @@ export class RoomItemComponent extends React.Component<RoomItemProp, any>{
      */
     public render() {
 
-        let actorNodes = this.props.actorInfos.map((pa) => {
-            let key = pa.actor.aid + pa.actor.name;
-            return (<RoomMemberComponent key={key} view={this.props.view} room={this.props.room} actorInfo={pa} />);
+        let actorNodes = this.props.actorInfos.map((ai) => {
+            let key = ai.aid + ai.name;
+            return (<RoomMemberComponent key={key} view={this.props.view} room={this.props.room} actorInfo={ai} />);
         });
 
         let canDelete = !this.props.room.isDefault && (this.props.actorInfos.length === 0);

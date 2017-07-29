@@ -8,6 +8,7 @@ import * as HVContainer from "./HomeVisitorContainer";
 import * as CIContainer from "../CastInstance/CastInstanceContainer";
 import HomeVisitorController from "./HomeVisitorController";
 import LogUtil from "../../Base/Util/LogUtil";
+import ActorInfo from "../../Base/Container/ActorInfo";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -45,7 +46,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let ram = (sender as HIContainer.RoomActorMemberSender);
 
             this.Controller.RoomCache.SetMember(ram);
-            ram.members.forEach((ap) => { this.Controller.ActorCache.SetActor(ap.peerid, ap.actor); });
+            ram.members.forEach((ai) => { this.Controller.ActorCache.SetActor(ai.peerid, ai); });
 
             let aid = this.Controller.CurrentAid;
 
@@ -85,8 +86,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  アクター取得
-        if (sender.type === HVContainer.ActorSender.ID) {
-            this.Controller.ActorCache.SetActor(conn.peer, (sender as HVContainer.ActorSender).actor);
+        if (sender.type === HVContainer.ActorInfoSender.ID) {
+            this.Controller.ActorCache.SetActor(conn.peer, (sender as HVContainer.ActorInfoSender).actorInfo);
         }
 
         //  アイコン取得
@@ -132,8 +133,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      */
     public GetActor(conn: PeerJs.DataConnection, sender: HVContainer.GetActorSender) {
         this.Controller.Model.GetActor(sender.aid, (actor) => {
-            let result = new HVContainer.ActorSender();
-            result.actor = actor;
+            let result = new HVContainer.ActorInfoSender();
+            result.actorInfo = new ActorInfo(this.Controller.PeerId, Sender.Uid, actor);
             WebRTCService.SendTo(conn, result);
         });
     }

@@ -123,15 +123,15 @@ export class GetActorSender extends Sender {
 /**
  * 
  */
-export class ActorSender extends Sender {
+export class ActorInfoSender extends Sender {
 
-    public static ID = "Actor";
+    public static ID = "ActorInfo";
 
     constructor() {
-        super(ActorSender.ID);
+        super(ActorInfoSender.ID);
     }
 
-    public actor: Personal.Actor;
+    public actorInfo: ActorInfo;
 }
 
 

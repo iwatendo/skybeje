@@ -15,16 +15,16 @@ import HomeInstanceController from "../HomeInstanceController";
 
 export class RoomActor {
 
-    constructor(hid: string, uid: string, actor: Actor) {
+    constructor(hid: string, uid: string, actorInfo: ActorInfo) {
         this.hid = hid;
         this.uid = uid;
-        this.actor = actor;
+        this.actorInfo = actorInfo;
         this.date = new Date();
     }
 
     hid: string;
     uid: string;
-    actor: Actor;
+    actorInfo: ActorInfo;
     date: Date;
 }
 
@@ -79,7 +79,7 @@ export default class RoomManager {
 
         if (list) {
             list.forEach((ra) => {
-                if (ra.actor.aid === aid) {
+                if (ra.actorInfo.aid === aid) {
                     result = ra.hid;
                 }
             });
@@ -100,7 +100,7 @@ export default class RoomManager {
         this._peerRoomActorMap.forEach((ral, peerid) => {
             ral.forEach((ra) => {
                 if (ra.hid === hid) {
-                    result.push(new ActorInfo(peerid, ra.uid, ra.actor));
+                    result.push(ra.actorInfo);
                 }
             });
         });
@@ -188,7 +188,7 @@ export default class RoomManager {
         this._peerRoomActorMap.forEach((roomActors, peerid) => {
             roomActors.forEach((ra) => {
                 if (ra.hid === hid) {
-                    actorInfos.set(ra.actor.aid, new ActorInfo(peerid, ra.uid, ra.actor));
+                    actorInfos.set(ra.actorInfo.aid, ra.actorInfo);
                 }
             });
         });
@@ -250,18 +250,18 @@ export default class RoomManager {
         let preArray = this.GetRoomActors(peerid);
         let newArray = new Array<RoomActor>();
 
-        useActor.ActorInfos.forEach((ap) => {
+        useActor.ActorInfos.forEach((ai) => {
 
             //  登録済みデータの取出し（取り出されたデータはpreArrayから削除）
-            let pre = this.Take(preArray, ap.actor.aid);
+            let pre = this.Take(preArray, ai.aid);
 
             if (pre) {
 
                 //  登録済みアクターの部屋はそのまま
 
                 //  ただし、ダッシュボードでアクター情報の変更があった場合は通知する
-                if (Actor.IsChange(pre.actor, ap.actor)) {
-                    pre.actor = ap.actor;
+                if (ActorInfo.IsChange(pre.actorInfo, ai)) {
+                    pre.actorInfo = ai;
                     changeRoomMap.set(pre.hid, this.GetRoomInActors(pre.hid));
                 }
 
@@ -269,7 +269,7 @@ export default class RoomManager {
             }
             else {
                 //  未登録アクターはデフォルトルームへ追加
-                newArray.push(new RoomActor(defaultRoomId, ap.uid, ap.actor));
+                newArray.push(new RoomActor(defaultRoomId, ai.uid, ai));
 
                 //  ルームメンバーの変更をセット
                 changeRoomMap.set(defaultRoomId, this.GetRoomInActors(defaultRoomId));
@@ -325,7 +325,7 @@ export default class RoomManager {
     private Take(preArray: Array<RoomActor>, aid: string): RoomActor {
 
         for (let i = 0; i < preArray.length; i++) {
-            if (preArray[i].actor.aid === aid) {
+            if (preArray[i].actorInfo.aid === aid) {
                 let result = preArray[i];
                 preArray.splice(i, 1);
                 return result;
@@ -350,7 +350,7 @@ export default class RoomManager {
             let preMemberList = this.GetRoomInActors(preHid);
 
             this._peerRoomActorMap.get(peerid).forEach((ra) => {
-                if (aid === ra.actor.aid) {
+                if (aid === ra.actorInfo.aid) {
                     ra.hid = newHid;
                 }
             });

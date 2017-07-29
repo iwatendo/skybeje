@@ -128,7 +128,7 @@ export default class RoomCache {
         let result = false;
         ram.members.forEach((rm) => {
             this._controller.UseActors.forEach((ua) => {
-                if (ua.aid == rm.actor.aid) {
+                if (ua.aid == rm.aid) {
                     result = true;
                 }
             });
@@ -167,8 +167,8 @@ export default class RoomCache {
     public GetRoomByActorId(aid: string, callback: RoomFunc) {
 
         this._roomMemberCache.forEach((rams, hid) => {
-            rams.members.forEach((ap) => {
-                if (aid === ap.actor.aid) {
+            rams.members.forEach((ai) => {
+                if (aid === ai.aid) {
                     this.Get(hid, callback);
                     return;
                 }
@@ -200,8 +200,8 @@ export default class RoomCache {
                     hasPeer = true;
                 }
 
-                useAps.forEach((ap) => {
-                    if (ap.aid == ram.actor.aid) {
+                useAps.forEach((ai) => {
+                    if (ai.aid == ram.aid) {
                         hasUseAct = true;
                     }
                 });

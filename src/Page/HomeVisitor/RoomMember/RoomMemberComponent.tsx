@@ -28,15 +28,14 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
 
         let actorMap = new Map<string, Array<ActorInfo>>();
 
-        this.props.roomActorMember.members.map((ap) => {
+        this.props.roomActorMember.members.map((ai) => {
 
-            let actor = ap.actor;
-            let uid = ap.uid;
+            let uid = ai.uid;
 
             if (!actorMap.has(uid)) {
                 actorMap.set(uid, new Array<ActorInfo>());
             }
-            actorMap.get(uid).push(ap);
+            actorMap.get(uid).push(ai);
 
         });
 

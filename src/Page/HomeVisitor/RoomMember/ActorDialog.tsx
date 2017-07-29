@@ -2,15 +2,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import StdUtil from "../../../Base/Util/StdUtil";
+import ActorInfo from "../../../Base/Container/ActorInfo";
 import AbstractDialogController from "../../../Base/Common/AbstractDialogController";
 
 import HomeVisitorController from "../HomeVisitorController";
 import ActorDialogComponent from "./ActorDialogComponent";
-import StdUtil from "../../../Base/Util/StdUtil";
 
 
-export default class ActorDialog extends AbstractDialogController<HomeVisitorController, Personal.Actor> {
+export default class ActorDialog extends AbstractDialogController<HomeVisitorController, ActorInfo> {
 
 
     /**
@@ -26,12 +26,12 @@ export default class ActorDialog extends AbstractDialogController<HomeVisitorCon
      * 
      * @param actor 
      */
-    protected Initialize(actor: Personal.Actor) {
+    protected Initialize(actorInfo: ActorInfo) {
 
         //  アクター情報の取得
-        let key = actor.aid;
+        let key = actorInfo.aid;
         let element = this.ViewElement();
-        ReactDOM.render(<ActorDialogComponent key={key} controller={this.Controller} actor={actor} />, element, () => {
+        ReactDOM.render(<ActorDialogComponent key={key} controller={this.Controller} actorInfo={actorInfo} />, element, () => {
         });
     }
 

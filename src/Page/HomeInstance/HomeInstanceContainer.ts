@@ -90,8 +90,8 @@ export class RoomActorMemberSender extends Sender {
         let result = false;
 
         if (ram.members) {
-            ram.members.forEach((n) => {
-                if (n.actor.aid === aid) {
+            ram.members.forEach((ai) => {
+                if (ai.aid === aid) {
                     result = true;
                 }
             });

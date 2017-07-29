@@ -27,7 +27,7 @@ export interface RoomMemberItemProp {
  * プロパティ
  */
 export interface RoomMemberItemStat {
-    ownerProfile: Personal.Actor;
+    ownerProfile: ActorInfo;
 }
 
 
@@ -43,7 +43,7 @@ export default class RoomMemberItemComponent extends React.Component<RoomMemberI
     constructor(props?: RoomMemberItemProp, context?: any) {
         super(props, context);
 
-        let prof = new Personal.Actor();
+        let prof = new ActorInfo("","",new Personal.Actor());
         prof.name = "(読込中)";
 
         this.state = {
@@ -70,11 +70,9 @@ export default class RoomMemberItemComponent extends React.Component<RoomMemberI
 
         let dispname = this.state.ownerProfile.name;
 
-
-        let actorTable = this.props.actors.map((ap) => {
-            let actor = ap.actor;
-            if (!actor.isUserProfile) {
-                return (<RoomActorItemComponent key={actor.aid} controller={this.props.controller} actor={actor} />);
+        let actorTable = this.props.actors.map((ai) => {
+            if (!ai.isUser) {
+                return (<RoomActorItemComponent key={ai.aid} controller={this.props.controller} actorInfo={ai} />);
             }
         });
 

@@ -1,8 +1,7 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
-
+import ActorInfo from "../../../Base/Container/ActorInfo";
 import StdUtil from "../../../Base/Util/StdUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 
@@ -13,7 +12,7 @@ import HomeVisitorController from "../HomeVisitorController";
  */
 export interface ActorDialogProp {
     controller: HomeVisitorController;
-    actor: Personal.Actor;
+    actorInfo: ActorInfo;
 }
 
 
@@ -24,7 +23,7 @@ export default class ActorDialogComponent extends React.Component<ActorDialogPro
      */
     public render() {
 
-        let actor = this.props.actor;
+        let actor = this.props.actorInfo;
 
         let msgs = StdUtil.TextLineSplit(actor.profile);
         let ln = 0;

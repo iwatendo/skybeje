@@ -16,7 +16,7 @@ import ActorInfo from "../../../Base/Container/ActorInfo";
  */
 export interface RoomActorItemProp {
     controller: HomeVisitorController;
-    actor: Personal.Actor;
+    actorInfo: ActorInfo;
 }
 
 
@@ -32,7 +32,7 @@ export default class RoomActorItemComponent extends React.Component<RoomActorIte
             <li className="sbj-home-visitor-room-member-item mdl-list__item" onClick={this.onClick.bind(this)}>
                 <span className="mdl-list__item-primary-content">
                     <i className="sbj-home-visitor-room-actor-icon material-icons mdl-list__item-icon">label_outline</i>
-                    {this.props.actor.name}
+                    {this.props.actorInfo.name}
                 </span>
             </li>
         );
@@ -48,7 +48,7 @@ export default class RoomActorItemComponent extends React.Component<RoomActorIte
         let dialog = new ActorDialog(this.props.controller);
 
         //  アクターダイアログの表示
-        dialog.Show(DialogMode.View, this.props.actor, (result) => { });
+        dialog.Show(DialogMode.View, this.props.actorInfo, (result) => { });
     }
 
 }

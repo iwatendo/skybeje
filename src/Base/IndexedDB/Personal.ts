@@ -35,22 +35,12 @@ export class Actor implements IOrder {
     order: number;
 
     /**
-     * 変更されたか？
-     * @param pre 
-     * @param cur 
-     */
-    public static IsChange(pre: Actor, cur: Actor) {
-        return !(pre.name === cur.name && pre.tag === cur.tag && pre.profile === cur.profile);
-    }
-
-    /**
      * ハッシュコードを生成
      */
     public static HashCode(act: Actor): string {
         let value = act.name + "/n" + act.tag + "/n" + act.profile + "/n" + act.dispIid;
         return StdUtil.ToHashCode(value).toString();
     }
-
 }
 
 

@@ -5,9 +5,11 @@ import WebRTCService from "../../../Base/Common/WebRTCService";
 
 import HomeVisitorController from "../HomeVisitorController";
 import { GetProfileSender, GetActorSender } from "../HomeVisitorContainer";
+import ActorInfo from "../../../Base/Container/ActorInfo";
+import Sender from "../../../Base/Container/Sender";
 
 
-interface ActorFunc { (actor: Personal.Actor): void }
+interface ActorFunc { (actor: ActorInfo): void }
 
 
 export default class ActorCache {
@@ -15,7 +17,7 @@ export default class ActorCache {
     //
     private _controller: HomeVisitorController;
     //  PeerID / Aid / Actor
-    private _actorCache = new Map<string, Map<string, Personal.Actor>>();
+    private _actorCache = new Map<string, Map<string, ActorInfo>>();
     //  function queue
     private _queue = new Map<string, Array<ActorFunc>>();
 
@@ -50,7 +52,7 @@ export default class ActorCache {
      * 処理キューが設定されていた場合、実行する
      * @param key 
      */
-    private ExecQueue(key: string, actor: Personal.Actor) {
+    private ExecQueue(key: string, actor: ActorInfo) {
         if (this._queue.has(key)) {
             let queues = this._queue.get(key);
             while (queues.length > 0) {
@@ -71,7 +73,7 @@ export default class ActorCache {
 
         if (this._controller.PeerId === peerid) {
             this._controller.Model.GetActor(aid, (actor) => {
-                callback(actor);
+                callback(new ActorInfo(this._controller.PeerId, Sender.Uid, actor));
             });
         }
         else {
@@ -92,9 +94,9 @@ export default class ActorCache {
      * @param peerid 
      * @param actor 
      */
-    public SetActor(peerid: string, actor: Personal.Actor) {
+    public SetActor(peerid: string, actor: ActorInfo) {
         if (!this._actorCache.has(peerid)) {
-            this._actorCache.set(peerid, new Map<string, Personal.Actor>());
+            this._actorCache.set(peerid, new Map<string, ActorInfo>());
         }
         let map = this._actorCache.get(peerid);
         map.set(actor.aid, actor);

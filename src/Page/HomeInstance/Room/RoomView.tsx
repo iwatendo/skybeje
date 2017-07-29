@@ -166,7 +166,7 @@ export class RoomView {
             //  メンバーのドラック＆ドロップ時
             let memberComponent = this._dragitem as RoomMemberComponent;
             let peerid = memberComponent.props.actorInfo.peerid;
-            let aid = memberComponent.props.actorInfo.actor.aid;
+            let aid = memberComponent.props.actorInfo.aid;
             let preHid = this._dragitem.props.room.hid;
             let newHid = targetRoom.props.room.hid;
 
