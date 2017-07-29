@@ -5,19 +5,19 @@ import * as Personal from "../../../Base/IndexedDB/Personal";
 import * as Home from "../../../Base/IndexedDB/Home";
 
 import StdUtil from "../../../Base/Util/StdUtil";
-import ActorPeer from "../../../Base/Container/ActorPeer";
+import ActorInfo from "../../../Base/Container/ActorInfo";
 import { RoomView, DragItemType } from "./RoomView";
 
 
 interface RoomMemberProp {
     view: RoomView;
     room: Home.Room;
-    actorPeer: ActorPeer;
+    actorInfo: ActorInfo;
 }
 
 
 interface RoomMenberStat {
-    actorPeer: ActorPeer;
+    actorInfo: ActorInfo;
 }
 
 
@@ -36,16 +36,16 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
         super(props, context);
 
         this.state = {
-            actorPeer: this.props.actorPeer,
+            actorInfo: this.props.actorInfo,
         };
     }
 
 
     render() {
 
-        let isUser = this.state.actorPeer.actor.isUserProfile;
+        let isUser = this.state.actorInfo.actor.isUserProfile;
         let icon = (isUser ? "person" : "account_box");
-        let dispName = this.state.actorPeer.actor.name;
+        let dispName = this.state.actorInfo.actor.name;
         return (
             <div className='sbj-home-instance-room-member mdl-button mdl-button--raised mdl-button--colored' draggable={true} onDragStart={this.onDragStart.bind(this)}>
                 <i className="material-icons">{icon}</i>

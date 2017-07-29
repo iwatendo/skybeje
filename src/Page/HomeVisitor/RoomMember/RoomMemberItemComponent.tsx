@@ -7,7 +7,7 @@ import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 
 import HomeVisitorController from "../HomeVisitorController";
 import ActorDialog from "./ActorDialog";
-import ActorPeer from "../../../Base/Container/ActorPeer";
+import ActorInfo from "../../../Base/Container/ActorInfo";
 import RoomActorItemComponent from "./RoomActorItemComponent";
 
 
@@ -19,7 +19,7 @@ export interface RoomMemberItemProp {
     controller: HomeVisitorController;
     ownerAid: string;
     ownerPeerId: string;
-    actors: Array<ActorPeer>;
+    actors: Array<ActorInfo>;
 }
 
 

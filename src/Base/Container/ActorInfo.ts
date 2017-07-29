@@ -1,9 +1,9 @@
 import { Actor } from "../IndexedDB/Personal";
 
 /**
- * アクターに対応するPeerID
+ * アクター情報
  */
-export default class ActorPeer {
+export default class ActorInfo {
 
     /**
      * 

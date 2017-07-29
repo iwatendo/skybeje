@@ -6,7 +6,7 @@ import * as Home from "../../../Base/IndexedDB/Home";
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
-import ActorPeer from "../../../Base/Container/ActorPeer";
+import ActorInfo from "../../../Base/Container/ActorInfo";
 import { Order } from "../../../Base/Container/Order";
 
 import HomeInstanceController from "../HomeInstanceController";
@@ -23,7 +23,7 @@ import LogUtil from "../../../Base/Util/LogUtil";
  */
 export class RoomActors {
     room: Home.Room;
-    actpeers: Array<ActorPeer>;
+    actorInfos: Array<ActorInfo>;
 }
 
 export enum DragItemType {
@@ -60,7 +60,7 @@ export class RoomView {
         rooms.map((room) => {
             let ra = new RoomActors();
             ra.room = room;
-            ra.actpeers = new Array<ActorPeer>();
+            ra.actorInfos = new Array<ActorInfo>();
             this._roomActors.push(ra);
         });
 
@@ -105,7 +105,7 @@ export class RoomView {
                 //  新しく追加された部屋の追加
                 let ra = new RoomActors();
                 ra.room = curRoom;
-                ra.actpeers = new Array<ActorPeer>();
+                ra.actorInfos = new Array<ActorInfo>();
                 this._roomActors.push(ra);
             }
 
@@ -132,10 +132,10 @@ export class RoomView {
      * @param hid 
      * @param roomMember 
      */
-    public ChangeRoomMember(hid: string, roomMember: Array<ActorPeer>) {
+    public ChangeRoomMember(hid: string, roomMember: Array<ActorInfo>) {
         let ras = this._roomActors.filter(n => n.room.hid === hid);
         if (ras.length > 0) {
-            ras[0].actpeers = roomMember;
+            ras[0].actorInfos = roomMember;
             this.Create();
         }
     }
@@ -165,8 +165,8 @@ export class RoomView {
         if (this._dragItemType === DragItemType.Member) {
             //  メンバーのドラック＆ドロップ時
             let memberComponent = this._dragitem as RoomMemberComponent;
-            let peerid = memberComponent.props.actorPeer.peerid;
-            let aid = memberComponent.props.actorPeer.actor.aid;
+            let peerid = memberComponent.props.actorInfo.peerid;
+            let aid = memberComponent.props.actorInfo.actor.aid;
             let preHid = this._dragitem.props.room.hid;
             let newHid = targetRoom.props.room.hid;
 

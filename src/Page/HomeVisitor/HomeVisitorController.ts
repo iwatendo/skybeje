@@ -8,7 +8,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
 import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LogUtil from "../../Base/Util/LogUtil";
-import ActorPeer from "../../Base/Container/ActorPeer";
+import ActorInfo from "../../Base/Container/ActorInfo";
 import { OnRead } from "../../Base/Common/AbstractServiceModel";
 import { Order } from "../../Base/Container/Order";
 
@@ -190,7 +190,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         let uid = sender.uid;
 
         useActors.forEach((a)=>{
-            sender.ActorPeers.push(new ActorPeer(peerid,uid,a));
+            sender.ActorInfos.push(new ActorInfo(peerid,uid,a));
         });
 
         WebRTCService.SendToOwner(sender);

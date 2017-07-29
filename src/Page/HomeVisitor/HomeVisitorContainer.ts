@@ -2,7 +2,7 @@ import * as Personal from "../../Base/IndexedDB/Personal";
 import * as Home from "../../Base/IndexedDB/Home";
 
 import Sender from "../../Base/Container/Sender";
-import ActorPeer from "../../Base/Container/ActorPeer";
+import ActorInfo from "../../Base/Container/ActorInfo";
 
 
 /**
@@ -14,13 +14,13 @@ export class UseActorSender extends Sender {
 
     constructor() {
         super(UseActorSender.ID);
-        this.ActorPeers = new Array<ActorPeer>();
+        this.ActorInfos = new Array<ActorInfo>();
     }
 
     /**
      * 使用アクター
      */
-    public ActorPeers: Array<ActorPeer>;
+    public ActorInfos: Array<ActorInfo>;
 
 }
 

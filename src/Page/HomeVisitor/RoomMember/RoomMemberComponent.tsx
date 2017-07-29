@@ -6,7 +6,7 @@ import * as Personal from "../../../Base/IndexedDB/Personal";
 import HomeVisitorController from "../HomeVisitorController";
 import { RoomActorMemberSender } from "../../HomeInstance/HomeInstanceContainer";
 import RoomMemberItemComponent from "./RoomMemberItemComponent";
-import ActorPeer from "../../../Base/Container/ActorPeer";
+import ActorInfo from "../../../Base/Container/ActorInfo";
 
 
 /**
@@ -26,7 +26,7 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
      */
     public render() {
 
-        let actorMap = new Map<string, Array<ActorPeer>>();
+        let actorMap = new Map<string, Array<ActorInfo>>();
 
         this.props.roomActorMember.members.map((ap) => {
 
@@ -34,7 +34,7 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
             let uid = ap.uid;
 
             if (!actorMap.has(uid)) {
-                actorMap.set(uid, new Array<ActorPeer>());
+                actorMap.set(uid, new Array<ActorInfo>());
             }
             actorMap.get(uid).push(ap);
 
@@ -44,7 +44,7 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
 
         if (actorMap) {
 
-            let list = new Array<Array<ActorPeer>>();
+            let list = new Array<Array<ActorInfo>>();
             actorMap.forEach((value, key) => { list.push(value) });
 
             actorTable = list.map((actors) => {

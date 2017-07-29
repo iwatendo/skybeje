@@ -5,7 +5,7 @@ import LogUtil from "../../../Base/Util/LogUtil";
 
 import WebRTCService from "../../../Base/Common/WebRTCService";
 import { OnRead } from "../../../Base/Common/AbstractServiceModel";
-import ActorPeer from "../../../Base/Container/ActorPeer";
+import ActorInfo from "../../../Base/Container/ActorInfo";
 
 import { UseActorSender } from "../../HomeVisitor/HomeVisitorContainer";
 import HomeInstanceModel from "../HomeInstanceModel";
@@ -93,14 +93,14 @@ export default class RoomManager {
      * 指定したルームIDに所属するアクターの一覧を取得
      * @param hid 
      */
-    public GetRoomInActors(hid: string): Array<ActorPeer> {
+    public GetRoomInActors(hid: string): Array<ActorInfo> {
 
-        let result = new Array<ActorPeer>();
+        let result = new Array<ActorInfo>();
 
         this._peerRoomActorMap.forEach((ral, peerid) => {
             ral.forEach((ra) => {
                 if (ra.hid === hid) {
-                    result.push(new ActorPeer(peerid, ra.uid, ra.actor));
+                    result.push(new ActorInfo(peerid, ra.uid, ra.actor));
                 }
             });
         });
@@ -184,11 +184,11 @@ export default class RoomManager {
      */
     private CreateRoomActorMember(hid: string): RoomActorMemberSender {
 
-        let actorPeers = new Map<string, ActorPeer>();
+        let actorInfos = new Map<string, ActorInfo>();
         this._peerRoomActorMap.forEach((roomActors, peerid) => {
             roomActors.forEach((ra) => {
                 if (ra.hid === hid) {
-                    actorPeers.set(ra.actor.aid, new ActorPeer(peerid, ra.uid, ra.actor));
+                    actorInfos.set(ra.actor.aid, new ActorInfo(peerid, ra.uid, ra.actor));
                 }
             });
         });
@@ -196,9 +196,9 @@ export default class RoomManager {
         //  通知データの作成
         let result = new RoomActorMemberSender();
         result.hid = hid;
-        result.members = new Array<ActorPeer>();
-        actorPeers.forEach((actorpeer, aid) => {
-            result.members.push(actorpeer);
+        result.members = new Array<ActorInfo>();
+        actorInfos.forEach((actorInfo, aid) => {
+            result.members.push(actorInfo);
         });
 
         return result;
@@ -210,7 +210,7 @@ export default class RoomManager {
      * @param hid 
      * @param aps 
      */
-    private SendRoomInfo(hid: string, aps: Array<ActorPeer>) {
+    private SendRoomInfo(hid: string, aps: Array<ActorInfo>) {
 
         //  送信先のPeerIDの一覧を生成（重複除去）
         let sendPeers = new Array<string>();
@@ -245,12 +245,12 @@ export default class RoomManager {
      */
     private RoomActorMerge(peerid: string, useActor: UseActorSender, defaultRoomId: string) {
 
-        let changeRoomMap = new Map<string, Array<ActorPeer>>();
+        let changeRoomMap = new Map<string, Array<ActorInfo>>();
 
         let preArray = this.GetRoomActors(peerid);
         let newArray = new Array<RoomActor>();
 
-        useActor.ActorPeers.forEach((ap) => {
+        useActor.ActorInfos.forEach((ap) => {
 
             //  登録済みデータの取出し（取り出されたデータはpreArrayから削除）
             let pre = this.Take(preArray, ap.actor.aid);

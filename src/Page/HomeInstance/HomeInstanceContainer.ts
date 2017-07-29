@@ -2,7 +2,7 @@ import * as Home from "../../Base/IndexedDB/Home";
 import * as Timeline from "../../Base/IndexedDB/Timeline";
 
 import Sender from "../../Base/Container/Sender";
-import ActorPeer from "../../Base/Container/ActorPeer";
+import ActorInfo from "../../Base/Container/ActorInfo";
 
 
 
@@ -77,7 +77,7 @@ export class RoomActorMemberSender extends Sender {
     }
 
     hid: string;
-    members: Array<ActorPeer>;
+    members: Array<ActorInfo>;
 
 
     /**

@@ -50,7 +50,7 @@ export default class RoomComponent extends React.Component<RoomProp, RoomStat> {
     public render() {
 
         let nodes = this.state.roomActors.map((ra) => {
-            return (<RoomItemComponent key={ra.room.hid} view={this.props.view} owner={this} room={ra.room} actpeers={ra.actpeers} />);
+            return (<RoomItemComponent key={ra.room.hid} view={this.props.view} owner={this} room={ra.room} actorInfos={ra.actorInfos} />);
         });
 
         return (

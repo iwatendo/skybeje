@@ -7,7 +7,7 @@ import * as Home from "../../../Base/IndexedDB/Home";
 import StdUtil from "../../../Base/Util/StdUtil";
 import LogUtil from "../../../Base/Util/LogUtil";
 import { Order } from "../../../Base/Container/Order";
-import ActorPeer from "../../../Base/Container/ActorPeer";
+import ActorInfo from "../../../Base/Container/ActorInfo";
 import RoomMemberComponent from "./RoomMemberComponent";
 import { RoomView, DragItemType } from "./RoomView";
 import RoomComponent from "./RoomComponent";
@@ -20,7 +20,7 @@ interface RoomItemProp {
     view: RoomView;
     owner: RoomComponent;
     room: Home.Room;
-    actpeers: Array<ActorPeer>;
+    actorInfos: Array<ActorInfo>;
 }
 
 
@@ -35,12 +35,12 @@ export class RoomItemComponent extends React.Component<RoomItemProp, any>{
      */
     public render() {
 
-        let actorNodes = this.props.actpeers.map((pa) => {
+        let actorNodes = this.props.actorInfos.map((pa) => {
             let key = pa.actor.aid + pa.actor.name;
-            return (<RoomMemberComponent key={key} view={this.props.view} room={this.props.room} actorPeer={pa} />);
+            return (<RoomMemberComponent key={key} view={this.props.view} room={this.props.room} actorInfo={pa} />);
         });
 
-        let canDelete = !this.props.room.isDefault && (this.props.actpeers.length === 0);
+        let canDelete = !this.props.room.isDefault && (this.props.actorInfos.length === 0);
 
         return (
             <div id={this.props.room.hid} className='sbj-home-instance-room-panel mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--3dp' draggable={true} onDragStart={this.OnDragStart.bind(this)} onDrop={this.onDrop.bind(this)}>
