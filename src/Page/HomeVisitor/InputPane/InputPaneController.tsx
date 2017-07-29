@@ -242,7 +242,7 @@ export default class InputPaneController {
     private DoShowProfileEditDialog() {
 
         let controller = this._controller;
-        let useActor = controller.UseActor;
+        let useActors = controller.UseActors;
         let aid = controller.CurrentAid;
 
         let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
@@ -263,21 +263,21 @@ export default class InputPaneController {
      */
     private MoveSelectionActor(value: number) {
 
-        let useActor = this._controller.UseActor;
-        let actorCount = useActor.ActorPeers.length;
+        let useActors = this._controller.UseActors;
+        let actorCount = useActors.length;
         let selActor = this._controller.CurrentAid;
 
         let sel = -1;
         let pos = 0;
 
-        useActor.ActorPeers.map((ap) => {
-            if (ap.actor.aid === this._controller.CurrentAid) sel = pos;
+        useActors.map((ap) => {
+            if (ap.aid === this._controller.CurrentAid) sel = pos;
             pos++;
         });
 
         if (sel >= 0) {
             sel = (sel + value + actorCount) % actorCount;
-            this.ChangeSelectionActorIcon(useActor.ActorPeers[sel].actor.aid);
+            this.ChangeSelectionActorIcon(useActors[sel].aid);
         }
 
     }

@@ -23,8 +23,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         if (sender.type === HIContainer.ConnInfoSender.ID) {
             this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
             LogUtil.RemoveListener();
-            this.Controller.GetUseActor((ua) => {
-                this.Controller.InitializeUseActor(ua);
+            this.Controller.GetUseActors((ua) => {
+                this.Controller.InitializeUseActors(ua);
             });
 
             return;

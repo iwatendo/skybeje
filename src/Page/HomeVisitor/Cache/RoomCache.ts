@@ -127,8 +127,8 @@ export default class RoomCache {
 
         let result = false;
         ram.members.forEach((rm) => {
-            this._controller.UseActor.ActorPeers.forEach((ua) => {
-                if (ua.actor.aid == rm.actor.aid) {
+            this._controller.UseActors.forEach((ua) => {
+                if (ua.aid == rm.actor.aid) {
                     result = true;
                 }
             });
@@ -187,7 +187,7 @@ export default class RoomCache {
         let result: boolean = false;
 
         //  自身が使用しているアクター
-        let useAps = this._controller.UseActor.ActorPeers;
+        let useAps = this._controller.UseActors;
 
         //  メンバーキャスト
         this._roomMemberCache.forEach((rams, hid) => {
@@ -201,7 +201,7 @@ export default class RoomCache {
                 }
 
                 useAps.forEach((ap) => {
-                    if (ap.peerid == ram.peerid && ap.actor.aid == ram.actor.aid) {
+                    if (ap.aid == ram.actor.aid) {
                         hasUseAct = true;
                     }
                 });

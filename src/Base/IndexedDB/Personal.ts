@@ -5,21 +5,10 @@ import { IOrder } from "../Container/Order";
 import StdUtil from "../Util/StdUtil";
 
 
-export interface IActor {
-    aid: string;
-    isUserProfile: boolean;
-    isUsing: boolean;
-    name: string;
-    tag: string;
-    profile: string;
-    dispIid: string;
-}
-
-
 /**
  * アクター情報（ユーザープロフィール情報）
  */
-export class Actor implements IActor,IOrder {
+export class Actor implements IOrder {
 
     constructor() {
         this.aid = "";

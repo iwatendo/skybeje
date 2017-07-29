@@ -56,9 +56,8 @@ export default class BotController {
 
         let controller = this.Controller;
 
-        controller.UseActor.ActorPeers.map(ap => {
+        controller.UseActors.map((actor) => {
 
-            let actor = ap.actor;
             controller.RoomCache.GetRoomByActorId(actor.aid, (room) => {
                 if (room.hid === tlmsg.hid) {
                     this.CheckGuideList(actor, tlmsg);

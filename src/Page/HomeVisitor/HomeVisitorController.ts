@@ -44,7 +44,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public Bot: BotController;
     public Log: LogController;
 
-    public UseActor: UseActorSender;
+    public UseActors: Array<Personal.Actor>;
 
     private _currentActor: Personal.Actor;
 
@@ -78,7 +78,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
         //  
         this.PeerId = peer.id;
-        this.UseActor = new UseActorSender();
+        this.UseActors = new Array<Personal.Actor>();
 
         //  DB接続
         this.Model = new HomeVisitorModel(this, () => {
@@ -153,17 +153,17 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 
      * @param callback 
      */
-    public GetUseActor(callback: OnRead<UseActorSender>) {
+    public GetUseActors(callback: OnRead<Array<Personal.Actor>>) {
 
         this.Model.GetActors((actors) => {
             Order.Sort(actors);
-            let useActor = new UseActorSender();
+            let result = new Array<Personal.Actor>();
             actors.forEach((actor) => {
                 if (actor.isUserProfile || actor.isUsing) {
-                    useActor.ActorPeers.push(new ActorPeer(this.PeerId, useActor.uid, actor));
+                    result.push(actor);
                 }
             });
-            callback(useActor);
+            callback(result);
         });
     }
 
@@ -171,20 +171,29 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 使用アクターの初期値設定
      * @param ua 
      */
-    public InitializeUseActor(ua: UseActorSender) {
-        let aid = ua.ActorPeers[0].actor.aid;
+    public InitializeUseActors(ua: Array<Personal.Actor>) {
+        let aid = ua[0].aid;
         this.Model.GetActor(aid, (actor) => {
             this._currentActor = actor;
-            this.SetUseActor(ua);
+            this.SetUseActors(ua);
         });
     }
 
     /**
      * 
      */
-    public SetUseActor(useActor: UseActorSender) {
-        this.UseActor = useActor;
-        WebRTCService.SendToOwner(useActor);
+    public SetUseActors(useActors: Array<Personal.Actor>) {
+        this.UseActors = useActors;
+
+        let sender = new UseActorSender();
+        let peerid = this.PeerId;
+        let uid = sender.uid;
+
+        useActors.forEach((a)=>{
+            sender.ActorPeers.push(new ActorPeer(peerid,uid,a));
+        });
+
+        WebRTCService.SendToOwner(sender);
     }
 
 
@@ -195,40 +204,38 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public ChagneActorInfo(aid: string) {
 
-        let useActor = this.UseActor;
+        let useActor = this.UseActors;
         let peerId = this.PeerId;
 
-        this.Model.GetActor(aid, (actor) => {
+        this.Model.GetActor(aid, (newActor) => {
 
             let preUsing = false;
-            let newApList = new Array<ActorPeer>();
+            let newList = new Array<Personal.Actor>();
 
             //  アクターデータの差替え
-            useActor.ActorPeers.forEach((ap) => {
-                if (ap.actor.aid === aid) {
+            useActor.forEach((pre) => {
+                if (pre.aid === aid) {
                     preUsing = true;
-                    if (actor.isUserProfile || actor.isUsing) {
-                        ap.actor = actor;
-                        newApList.push(ap);
+                    if (newActor.isUserProfile || newActor.isUsing) {
+                        newList.push(newActor);
                     }
                 }
                 else {
-                    newApList.push(ap);
+                    newList.push(pre);
                 }
             });
 
             //  新しく配置されたアクターの場合
-            if (!preUsing && actor.isUsing) {
-                newApList.push(new ActorPeer(peerId, useActor.uid, actor));
+            if (!preUsing && newActor.isUsing) {
+                newList.push(newActor);
             }
 
             //  カレントのアクターが配置解除された場合、別のアクターに切替える
-            if (newApList.filter((ap) => ap.actor.aid === this.CurrentAid).length === 0) {
-                this.ChangeCurrentActor(newApList[0].actor.aid);
+            if (newList.filter((ap) => ap.aid === this.CurrentAid).length === 0) {
+                this.ChangeCurrentActor(newList[0].aid);
             }
 
-            useActor.ActorPeers = newApList;
-            this.SetUseActor(useActor);
+            this.SetUseActors(newList);
         });
 
     }
