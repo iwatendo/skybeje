@@ -27,7 +27,7 @@ export interface RoomMemberItemProp {
  * プロパティ
  */
 export interface RoomMemberItemStat {
-    ownerProfile: ActorInfo;
+    userInfo: ActorInfo;
 }
 
 
@@ -42,24 +42,9 @@ export default class RoomMemberItemComponent extends React.Component<RoomMemberI
       */
     constructor(props?: RoomMemberItemProp, context?: any) {
         super(props, context);
-
-        let prof = new ActorInfo("","",new Personal.Actor());
-        prof.name = "(読込中)";
-
         this.state = {
-            ownerProfile: prof,
+            userInfo: null,
         };
-
-        let aid = this.props.ownerAid;
-        let peerid = this.props.ownerPeerId;
-
-        this.props.controller.ActorCache.GetActor(peerid, aid, (actor) => {
-            if (actor) {
-                this.setState({
-                    ownerProfile: actor
-                });
-            }
-        });
     }
 
 
@@ -68,14 +53,26 @@ export default class RoomMemberItemComponent extends React.Component<RoomMemberI
      */
     public render() {
 
-        let dispname = this.state.ownerProfile.name;
+        let dispname = "";
+
+        if (this.state.userInfo) {
+            dispname = this.state.userInfo.name;
+        }
+        else {
+            let peerid = this.props.ownerPeerId;
+            let aid = this.props.ownerAid;
+            this.props.controller.ActorCache.GetActor(peerid, aid, (actor) => {
+                if (actor) {
+                    this.setState({ userInfo: actor });
+                }
+            });
+        }
 
         let actorTable = this.props.actors.map((ai) => {
             if (!ai.isUser) {
                 return (<RoomActorItemComponent key={ai.aid} controller={this.props.controller} actorInfo={ai} />);
             }
         });
-
 
         return (
             <div>
@@ -100,7 +97,7 @@ export default class RoomMemberItemComponent extends React.Component<RoomMemberI
         let dialog = new ActorDialog(this.props.controller);
 
         //  アクターダイアログの表示
-        dialog.Show(DialogMode.View, this.state.ownerProfile, (result) => { });
+        dialog.Show(DialogMode.View, this.state.userInfo, (result) => { });
     }
 
 }

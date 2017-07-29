@@ -71,6 +71,16 @@ export default class ActorCache {
      */
     public GetActor(peerid: string, aid: string, callback: ActorFunc) {
 
+        //  キャッシュ済みの場合はキャッシュから取得
+        if (this._actorCache.has(peerid)) {
+            let map = this._actorCache.get(peerid);
+            if (map.has(aid)) {
+                let actorinfo = map.get(aid);
+                callback(actorinfo);
+                return;
+            }
+        }
+
         if (this._controller.PeerId === peerid) {
             this._controller.Model.GetActor(aid, (actor) => {
                 callback(new ActorInfo(this._controller.PeerId, Sender.Uid, actor));
