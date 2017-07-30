@@ -49,12 +49,13 @@ export default class RoomItemComponent extends React.Component<RoomItemProp, any
 
         controller.RoomCache.GetMember(this.props.room.hid, (ram) => {
 
-            ram.members.forEach((ai) => {
-                if (ai.peerid === controller.PeerId) {
-                    controller.View.InputPane.ChangeSelectionActorIcon(ai.aid);
-                    return;
+            let rml = ram.members.filter((ai) => ai.peerid === controller.PeerId);
+
+            if (rml.length > 0) {
+                if (rml.filter((ai) => ai.aid === controller.CurrentAid).length === 0) {
+                    controller.View.InputPane.ChangeSelectionActorIcon(rml[0].aid);
                 }
-            });
+            }
 
         });
 
