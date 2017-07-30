@@ -20,9 +20,13 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
 
         //  クライアントの起動通知
         if (sender.type === HVContainer.ClientBootSender.ID) {
-            let connInfo = new HIContainer.ConnInfoSender();
-            connInfo.isMultiBoot = !this.Controller.ConnCache.SetUser(sender.uid, conn);
-            WebRTCService.SendTo(conn, connInfo);
+            let ci = new HIContainer.ConnInfoSender();
+            ci.isConnect = true;
+            let checkResult = this.Controller.ConnCache.SetUser(sender.uid, conn);
+            ci.isBootCheck = checkResult;
+            ci.isMultiBoot = !checkResult;
+            WebRTCService.SendTo(conn, ci);
+            return;
         }
 
         //  ルームの要求

@@ -7,7 +7,7 @@ import ActorInfo from "../../Base/Container/ActorInfo";
 
 
 /**
- * 接続開始時間の通知
+ * 接続情報
  */
 export class ConnInfoSender extends Sender {
     public static ID = "ConnInfo";
@@ -15,10 +15,14 @@ export class ConnInfoSender extends Sender {
     constructor() {
         super(ConnInfoSender.ID);
         this.starttime = Date.now();
+        this.isConnect = false;
+        this.isBootCheck = false;
         this.isMultiBoot = false;
     }
 
     starttime: number;
+    isConnect: boolean;
+    isBootCheck : boolean;
     isMultiBoot : boolean;
 }
 

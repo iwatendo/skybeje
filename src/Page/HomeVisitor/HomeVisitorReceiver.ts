@@ -23,19 +23,22 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         //  ホームインスタンスからの接続情報の通知
         if (sender.type === HIContainer.ConnInfoSender.ID) {
 
-            let connInfo = (sender as HIContainer.ConnInfoSender);
-            this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
+            let ci = (sender as HIContainer.ConnInfoSender);
 
-            if (connInfo.isMultiBoot) {
-                //  多重起動の検出
+            if (ci.isBootCheck) {
+                //  起動チェックに成功した場合、使用アクター情報を送信して画面を切替える
+                this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
+                this.Controller.GetUseActors((ua) => { this.Controller.InitializeUseActors(ua); });
+                LogUtil.RemoveListener();
+            }
+            else if(ci.isMultiBoot){
+                //  多重起動が検出された場合はエラー表示して終了
                 this.Controller.View.MutilBootError();
             }
-            else {
-                this.Controller.GetUseActors((ua) => {
-                    this.Controller.InitializeUseActors(ua);
-                });
+            else if(ci.isConnect){
+                //  多重起動の確認の為に、UserIDを送信
+                WebRTCService.SendToOwner(new HVContainer.ClientBootSender());
             }
-            LogUtil.RemoveListener();
             return;
         }
 
