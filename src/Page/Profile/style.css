@@ -126,6 +126,10 @@
 	height:100%;
 }
 
+.sbj-guide-header-label{
+    margin: 8px 0 16px;
+}
+
 .sbj-guide-options{
     margin: 8px 0px;
 }
