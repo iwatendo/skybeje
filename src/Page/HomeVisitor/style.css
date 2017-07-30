@@ -81,7 +81,7 @@
 
 .sbj-split-pane-component-right{
     margin-left: 5px;
-    overflow: hidden !important;
+    overflow: hidden !important;    
 }
 
 .sbj-home-visitor-connecting{
@@ -163,8 +163,7 @@
     right: 8px;
     background-color: var(--sbj-color-default-background);
     padding-left: 12px;
-    border-radius: 6px;
-    overflow: hidden;    
+    border-radius: 6px;    
 }
 
 .sbj-inputpanel-icontext{
@@ -173,11 +172,9 @@
 }
 
 .sbj-inputpanel-action{
-    clear:both;
     padding:0px;
+    clear:both;
     margin: 0px 0px 0px -8px;
-    min-width: 400px;
-    overflow: hidden;
 }
 
 .sbj-inputpanel-button{
