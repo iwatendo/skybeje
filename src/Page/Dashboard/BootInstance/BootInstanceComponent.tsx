@@ -45,16 +45,26 @@ export default class BootInstanceComponent extends React.Component<BootInstanceP
         }
 
         return (
-            <div className="sbj-split">
-
-                <div className="sbj-split-left">
-                    <div className="mdl-card__supporting-text">
-                        {bootButton}
-                    </div>
+            <div className="sbj-dashbord-boot-instance">
+                <div className="mdl-card__supporting-text">
+                    {bootButton}
                 </div>
-
-                <div className="sbj-split-right" id='sbj-split-right-img'>
-
+                <div className="mdl-card__supporting-text">
+                    <h4>ホームインスタンスとは？</h4>
+                    <h6>
+                        Skybejeはブラウザ間での通信をします。<br />
+                        複数人でブラウザ間通信を行う際に、サーバーの役割を担うのがホームインスタンスです。<br />
+                        （<a href="https://github.com/iwatendo/skybeje/wiki/Architecture" target="_blunk">もっと詳しく</a>）
+                    </h6>
+                </div>
+                <div className="mdl-card__supporting-text">
+                    <h4>セキュリティは大丈夫？</h4>
+                    <h6>
+                        Skybejeの土台となっている<b>WebRTC</b>という技術は<br />
+                        多くのメジャーなサービス(Facebookメッセンジャー/Googleハングアウト/ Skype for Web等）で使用されており<br />
+                        通信の暗号化や、様々なセキュリティ対策がされています。<br />
+                        （<a href="https://github.com/iwatendo/skybeje/wiki/Security" target="_blunk">もっと詳しく</a>）
+                    </h6>
                 </div>
             </div>
         );
