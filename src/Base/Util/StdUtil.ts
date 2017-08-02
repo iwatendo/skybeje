@@ -3,6 +3,7 @@
  * 
  */
 import LogUtil from "./LogUtil";
+import LinkUtil from "./LinkUtil";
 
 export default class StdUtil {
 
@@ -33,7 +34,7 @@ export default class StdUtil {
         }
         else {
             //  未対応ブラウザで実行された場合、エラーページを表示
-            window.location.href = "../ErrorPage/";
+            window.location.href = LinkUtil.CreateLink("../ErrorPage/");
             return false;
         }
 
@@ -135,7 +136,7 @@ export default class StdUtil {
     /**
      * ユニークキーの生成
      */
-    public static UniqKey():string{
+    public static UniqKey(): string {
         return this.CreateUuid();
     }
 
