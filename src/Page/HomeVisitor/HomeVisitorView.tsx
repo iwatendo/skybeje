@@ -27,7 +27,7 @@ import InputPaneController from "./InputPane/InputPaneController";
 
 export default class HomeVisitorView extends AbstractServiceView<HomeVisitorController> {
 
-    private _boot: boolean = true;
+    private _isBooting: boolean = true;
     private _element = document.getElementById('sbj-home-visitor');
     private _splitElement = document.getElementById('sbj-home-visitor-split');
     private _timelineElement = document.getElementById('sbj-home-visitor-timeline-component');
@@ -68,13 +68,12 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         //  接続時のタイムアウト処理
         window.setTimeout(() => {
-            if (!this.Controller.HasError) {
-                if (document.getElementById('sbj-home-visitor-multi-boot').hidden) {
-                    //  接続ページの表示が10秒を経過した場合
-                    //  接続できなかったと判断して、エラーメッセージを表示する
-                    document.getElementById('sbj-home-visitor-connection-timeout').hidden = false;
-                    this.Controller.HasError = true;
-                }
+            if (this._isBooting) {
+                //  接続ページの表示が10秒経過してもブート処理が完了していなかった場合
+                //  接続できなかったと判断して、エラーメッセージを表示する
+                document.getElementById('sbj-home-visitor-connection-timeout').hidden = false;
+                this.Controller.HasError = true;
+                this._isBooting = false;
             }
         }, 10000);
 
@@ -89,7 +88,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     public MutilBootError() {
         document.getElementById('sbj-home-visitor-connection-timeout').hidden = true;
         document.getElementById('sbj-home-visitor-multi-boot').hidden = false;
-        this.Controller.HasError = true;
+        this._isBooting = false;
     }
 
 
@@ -144,12 +143,12 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     public SetRoomInfo(room: Home.Room) {
 
-        if (this._boot) {
+        if (this._isBooting) {
             this._element.setAttribute("hidden", "true");
             this._head.removeAttribute("hidden");
             this._splitElement.removeAttribute("hidden");
             this.InputPane = new InputPaneController(this.Controller);
-            this._boot = false;
+            this._isBooting = false;
         }
 
         if (this.Controller.CurrentHid === room.hid) {
