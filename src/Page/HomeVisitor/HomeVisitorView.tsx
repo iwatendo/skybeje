@@ -88,7 +88,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         document.getElementById('sbj-home-visitor-multi-boot').hidden = false;
     }
 
-    
+
     /**
      * スプリットパネルの「仕切り」の移動をスムーズにさせる為の制御
      * ※移動中に他パネルにフォーカスが行かないように一時的InnerDivの幅を広げる
@@ -123,12 +123,14 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     public DisConnect() {
 
-        ReactDOM.render(<DisConnectComponent controller={this.Controller} />, this._element, () => {
-            this.Controller.NotifyLivecast("");
-            this._splitElement.setAttribute("hidden", "true");
-            this._head.setAttribute("hidden", "true");
-            this._element.removeAttribute("hidden");
-        });
+        if (!this._splitElement.hidden) {
+            ReactDOM.render(<DisConnectComponent controller={this.Controller} />, this._element, () => {
+                this.Controller.NotifyLivecast("");
+                this._splitElement.hidden = true;
+                this._head.hidden = true;
+                this._element.hidden = true;
+            });
+        }
     }
 
 

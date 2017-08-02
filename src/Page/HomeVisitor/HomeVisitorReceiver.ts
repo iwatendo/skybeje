@@ -33,6 +33,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             }
             else if(ci.isMultiBoot){
                 //  多重起動が検出された場合はエラー表示して終了
+                WebRTCService.Close();
                 this.Controller.View.MutilBootError();
             }
             else if(ci.isConnect){
