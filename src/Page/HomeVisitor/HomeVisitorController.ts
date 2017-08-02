@@ -51,12 +51,14 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public get CurrentAid(): string { return this._currentActor.aid; }
     public get CurrentActor(): Personal.Actor { return this._currentActor; }
     public CurrentHid: string;
+    public HasError : boolean;
 
     /**
      *
      */
     constructor() {
         super();
+        this.HasError = false;
         this.Log = new LogController(this);
         this.Receiver = new HomeVisitorReceiver(this);
         this.ConnCache = new ConnectionCache();

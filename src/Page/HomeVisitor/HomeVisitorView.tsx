@@ -68,10 +68,13 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         //  接続時のタイムアウト処理
         window.setTimeout(() => {
-            if (document.getElementById('sbj-home-visitor-multi-boot').hidden) {
-                //  接続ページの表示が10秒を経過した場合
-                //  接続できなかったと判断して、エラーメッセージを表示する
-                document.getElementById('sbj-home-visitor-connection-timeout').hidden = false;
+            if (!this.Controller.HasError) {
+                if (document.getElementById('sbj-home-visitor-multi-boot').hidden) {
+                    //  接続ページの表示が10秒を経過した場合
+                    //  接続できなかったと判断して、エラーメッセージを表示する
+                    document.getElementById('sbj-home-visitor-connection-timeout').hidden = false;
+                    this.Controller.HasError = true;
+                }
             }
         }, 10000);
 
@@ -86,6 +89,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     public MutilBootError() {
         document.getElementById('sbj-home-visitor-connection-timeout').hidden = true;
         document.getElementById('sbj-home-visitor-multi-boot').hidden = false;
+        this.Controller.HasError = true;
     }
 
 
@@ -123,12 +127,12 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     public DisConnect() {
 
-        if (!this._splitElement.hidden) {
+        if (!this.Controller.HasError) {
             ReactDOM.render(<DisConnectComponent controller={this.Controller} />, this._element, () => {
                 this.Controller.NotifyLivecast("");
                 this._splitElement.hidden = true;
                 this._head.hidden = true;
-                this._element.hidden = true;
+                this._element.hidden = false;
             });
         }
     }
