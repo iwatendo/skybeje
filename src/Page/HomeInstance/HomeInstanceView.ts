@@ -31,8 +31,13 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         };
 
         document.getElementById('sbj-start-visitor').onclick = (e) => {
-            this.StartVisitor();
+            this.StartVisitor(false);
         };
+
+        document.getElementById('sbj-start-visitor-tab').onclick = (e) => {
+            this.StartVisitor(true);
+        };
+
 
         document.getElementById('sbj-clear-timeline').onclick = (e) => {
             this.ClearTimeline();
@@ -103,12 +108,16 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     /**
      * 
      */
-    public StartVisitor() {
+    public StartVisitor(isNewTab: boolean) {
 
-        let element = window.parent.document.getElementById('sbj-main-home-visitor-start');
-
-        if (element) {
-            element.click();
+        if (isNewTab) {
+            let url = (document.getElementById('sbj-invite-url') as HTMLInputElement).value
+            window.open(url, '_blank');
+        } else {
+            let element = window.parent.document.getElementById('sbj-main-home-visitor-start');
+            if (element) {
+                element.click();
+            }
         }
 
     }
@@ -139,6 +148,6 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
             this._roomFrame.contentDocument.getElementById('sbj-room-cancel').focus();
         }
         this._roomFrame.src = src;
-    }  
+    }
 
 }
