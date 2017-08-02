@@ -19,11 +19,8 @@
             <div class="sbj-home-instance-header-row mdl-layout__header-row">
                 <span class="mdl-layout-title">ホームインスタンス &nbsp; </span>
                 <div id="sbj-home-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
+				<div class="mdl-tooltip" data-mdl-for="sbj-home-instance-account-count">インスタンスへの接続数</div>
                 <div class="mdl-layout-spacer"></div>
-                <button id='sbj-clear-timeline' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                    <i class="material-icons bottom">delete_forever</i>
-                    &nbsp; タイムラインのクリア &nbsp;
-                </button>
                 <button id='sbj-stop-instance' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                     <i class="material-icons">stop</i>
                     &nbsp; ホームインスタンスの停止 &nbsp;
@@ -32,42 +29,42 @@
         </header>
 
         <main id="sbj-home-instance-main">
-            <div class="sbj-home-instance-info mdl-card__supporting-text">
-                <h6 class="sbj-home-instance-info-notes">
-                    招待したいメンバーにURLを伝えてSkybejeを始めてみよう。(注：最大４～５人での利用を想定しています)
-                </h6>
-                <h4 class="sbj-home-instance-info-label">
-                    招待URL：
-                </h4>
-                <input id='sbj-invite-url' class="mdl-textfield__input" type='text' readonly onclick='this.select(0,this.value.length)'>
-            </div>
-            <div class="sbj-home-instance-info mdl-card__supporting-text">
-                <h6 class="sbj-home-instance-info-notes">あなた自身もクライアントを起動する必要があります</h6>
-                <button id='sbj-start-visitor' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                    <i class="material-icons">directions_walk</i>
-                    &nbsp; クライアント起動 &nbsp;
-                </button>
-                <button id='sbj-start-visitor-tab' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
-                    &nbsp; 別タブでクライアントを起動 &nbsp;
-                </button>
-            </div>
 
-            <div class="sbj-home-instance-info mdl-card__supporting-text">
-                <h6 class="sbj-home-instance-info-notes">
-                    <br/>
-                    接続したメンバーは以下に表示されます（メンバーはドラック＆ドロップで部屋を移動できます）
-                </h6>
-            </div>
-            <div>
-                <div id="sbj-home-instance-rooms">
-                    <!-- -->
+            <div class="mdl-shadow--3dp">
+                <div class="sbj-home-instance-actions mdl-card__actions">
+                    <button id='sbj-start-visitor' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                        <i class="material-icons">directions_walk</i>
+                        &nbsp; クライアント起動 &nbsp;
+                    </button>
+                    <button id='sbj-start-visitor-tab' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                        &nbsp; 別のタブで起動 &nbsp;
+                    </button>
                 </div>
+                <div class="sbj-home-instance-info mdl-card__supporting-text">
+                    <h5 class="sbj-home-instance-info-label">
+                        招待URL：
+                    </h5>
+                    <input id='sbj-invite-url' class="mdl-textfield__input" type='text' readonly onclick='this.select(0,this.value.length)'>
+                    <span class="mdl-tooltip" data-mdl-for="sbj-invite-url">招待したいメンバーにURLを伝えてください</span>
+                </div>
+            </div>
+            <div class="sbj-home-instance-actions mdl-card__actions">
                 <button id="sbj-home-instance-room-add-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                     <i class='material-icons'>add</i>
                     &nbsp;ルーム追加&nbsp;
                 </button>
+                <button id='sbj-clear-timeline' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    &nbsp; タイムラインのクリア &nbsp;
+                </button>
             </div>
-
+            <div id="sbj-home-instance-rooms">
+                <!-- -->
+            </div>
+            <div class="sbj-home-instance-info mdl-card__supporting-text">
+                ・接続したメンバーは、上記ルーム内に配置されます。<br/> 
+                ・また接続メンバーを、ドラック＆ドロップで部屋移動させる事ができます。<br/>
+                ・部屋の移動は、ホームインスタンスのオーナーのみが可能です。
+            </div>
         </main>
     </div>
 

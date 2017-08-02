@@ -29,8 +29,8 @@ export default class BootInstanceComponent extends React.Component<BootInstanceP
             bootButton = (
                 <div>
                     <h6>
-                        起動済みのホームインスタンスが検出されました。<br/>
-                        ホームインスタンスは同時に複数起動することはできません。<br/>
+                        起動済みのホームインスタンスが検出されました。<br />
+                        ホームインスタンスは同時に複数起動することはできません。<br />
                         前回の起動時に、正常終了しなかった場合にも検出される事があります。
                     </h6>
                     <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent sbj-start-instance" onClick={this.OnClick_HomeInstanceForceBoot.bind(this)}>
@@ -38,7 +38,7 @@ export default class BootInstanceComponent extends React.Component<BootInstanceP
                         &nbsp;ホームインスタンスの強制起動&nbsp;
                     </button>
                     <h6>
-                        ホームインスタンスを複数起動した場合<br/>
+                        ホームインスタンスを複数起動した場合<br />
                         どちらのインスタンスも正常に動作しなくなるので注意してください。
                     </h6>
                 </div>
@@ -54,23 +54,14 @@ export default class BootInstanceComponent extends React.Component<BootInstanceP
         }
 
         return (
-            <div className="sbj-dashbord-boot-instance">
+            <div className="sbj-dashbord-boot-instance mdl-shadow--3dp">
                 <div className="mdl-card__supporting-text">
                     {bootButton}
                 </div>
                 <div className="mdl-card__supporting-text" hidden={hasError}>
-                    <h4>ホームインスタンスとは？</h4>
-                    <h6>
-                        Skybejeはブラウザ間での通信をします。<br />
-                        複数人でブラウザ間通信を行う際に、サーバーの役割を担うのがホームインスタンスです。<br />
-                        （<a href="https://github.com/iwatendo/skybeje/wiki/Architecture" target="_blunk">もっと詳しく</a>）
-                    </h6>
-                    <h4>セキュリティは大丈夫？</h4>
-                    <h6>
-                        Skybejeの土台となっている<b>WebRTC</b>という技術は<br />
-                        多くのメジャーなサービス(Facebookメッセンジャー/Googleハングアウト/ Skype for Web等）で使用されており<br />
-                        通信の暗号化や、様々なセキュリティ対策がされています。<br />
-                        （<a href="https://github.com/iwatendo/skybeje/wiki/Security" target="_blunk">もっと詳しく</a>）
+                    <h6 className="sbj-dashbord-boot-instance-note">
+                        ・<a id="architecrure" href="https://github.com/iwatendo/skybeje/wiki/Architecture" target="_blunk">ホームインスタンスとは？</a><br />
+                        ・<a id="security" href="https://github.com/iwatendo/skybeje/wiki/Security" target="_blunk">セキュリティ対策について</a>
                     </h6>
                 </div>
             </div>

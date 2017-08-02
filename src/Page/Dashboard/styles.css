@@ -283,6 +283,9 @@
 }
 
 .sbj-dashbord-boot-instance{
-	margin: 16px;
+	padding: 16px;
 }
 
+.sbj-dashbord-boot-instance-note{
+	margin: 0px;
+}
