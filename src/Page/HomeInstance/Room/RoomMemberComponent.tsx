@@ -47,8 +47,7 @@ export default class RoomMemberComponent extends React.Component<RoomMemberProp,
         let icon = (isUser ? "person" : "account_box");
         let dispName = this.state.actorInfo.name;
         return (
-            <div className='sbj-home-instance-room-member mdl-button mdl-button--raised mdl-button--colored' draggable={true} onDragStart={this.onDragStart.bind(this)}>
-                <i className="material-icons">{icon}</i>
+            <div className='sbj-home-instance-room-member' draggable={true} onDragStart={this.onDragStart.bind(this)}>
                 {dispName}
             </div>
         );

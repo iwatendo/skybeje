@@ -76,10 +76,6 @@
     left: 20px;
 }
 
-.sbj-home-instance-room-member{
-    margin: 4px;
-}
-
 #sbj-clear-timeline{
     margin: 0px 12px;
 }
@@ -89,7 +85,15 @@
 }
 
 .sbj-home-instance-room-member{
-    border-radius: 14px;
+    margin: 4px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: var(--sbj-color-default-background);
+    border-style: solid;
+    display: inline-flex;
+    border-color: var(--sbj-color-edge-background);
+    color: var(--sbj-color-icon-selection);
+    border-width: 1px;
 }
 
 #sbj-home-instance-room-add-button{
