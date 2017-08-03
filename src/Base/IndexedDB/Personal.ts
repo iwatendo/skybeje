@@ -133,7 +133,6 @@ export class DB extends Database<Data> {
                     data.Guide = result;
                     onload(data);
                 });
-                onload(data);
             });
         });
     }
