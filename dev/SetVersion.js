@@ -5,15 +5,16 @@ var path = require('path');
 /**
  * 指定ファイルの{version}にバージョンを埋める
  * @param {*} filepath 
+ * @param {*} modified 
  * @param {*} version 
  */
-function replace_version(filepath, version) {
+function replace_version(filepath, modified, version) {
 
     console.info("set varsion : " + version + " : " + filepath);
 
     fs.readFile(filepath, 'utf8', function (err, data) {
         if (err) throw err;
-        var result = data.replace(/{version}/g, version);
+        var result = data.replace(/{version}/g, version).replace(/{modified}/g, modified);
         fs.writeFile(filepath, result, 'utf8', function (err) {
             if (err) throw err;
         });
@@ -24,9 +25,10 @@ function replace_version(filepath, version) {
 /**
  * index.htmlを検索して、{version}をセットする
  * @param {*} folder 
+ * @param {*} modified 
  * @param {*} version 
  */
-function replace_indexhtml_version(folder, version) {
+function replace_indexhtml_version(folder, modified, version) {
 
     fs.readdir(folder, function (err, files) {
 
@@ -37,11 +39,11 @@ function replace_indexhtml_version(folder, version) {
             let filepath = path.join(folder, file);
 
             if (file.indexOf("index.html") === 0) {
-                replace_version(filepath, version);
+                replace_version(filepath, modified, version);
             }
             else {
                 if (fs.statSync(filepath).isDirectory()) {
-                    replace_indexhtml_version(filepath, version);
+                    replace_indexhtml_version(filepath, modified, version);
                 }
             }
         });
@@ -61,6 +63,10 @@ function build_date() {
 }
 
 
+let modified = new Date().toUTCString();
 let version = build_date();
-replace_indexhtml_version("dist", build_date());
+
+console.info(modified);
+
+replace_indexhtml_version("dist", modified, version);
 

@@ -3,6 +3,7 @@
 
 <head>
 	<title>Skybeje</title>
+	<meta http-equiv="Last-Modified" content="{modified}">
 	<meta charset="utf-8">
 	<link rel="icon" type="image/vnd.microsoft.icon" href="../../image/favicon.ico">
 	<link rel='stylesheet' href='/lib/material.min.css' />
@@ -83,6 +84,8 @@
 		<input type="text" id="sbj-profile-selection-icon" hidden/>
 		<input type="text" id="sbj-profile-do-close" hidden/>
 
+		<a id="sbj-home-instance-url" href="../homeinstance/?v={version}" hidden/>
+
 	</div>
 
 	<!--Image Dialog-->
@@ -107,7 +110,7 @@
 					</div>
 
 					<div class="sbj-dialog-attach-action-right">
-                        <button id='sbj-image-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
+						<button id='sbj-image-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
 							<i class="material-icons">close</i>
 						</button>
 					</div>
@@ -136,7 +139,7 @@
 						<button id='sbj-image-done' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
 							<i class="material-icons">done</i>&nbsp;追加&nbsp;
 						</button>
-                        <button id='sbj-image-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+						<button id='sbj-image-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
                             &nbsp;キャンセル&nbsp;
                         </button>
 					</div>
