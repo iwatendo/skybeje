@@ -60,6 +60,7 @@ export class CursorController {
     private _busy: boolean = false;
     private _queue: CastCursorSender = null;
     private _cursorMap = new Map<string, CastCursor>();
+    private _cursorSize: number;
     private _baseCursorMap = new Map<string, CastCursorSender>();
     private _iconCache = new Map<string, Map<string, Personal.Icon>>();
     private _connCache: ConnectionCache;
@@ -81,6 +82,7 @@ export class CursorController {
         this._connCache = connCache;
         this._video = video;
         this._cursorDispElement = cursorDivElement;
+        this._cursorSize = 48;
 
         itemDivElement.onclick = (ev: MouseEvent) => {
 
@@ -149,7 +151,7 @@ export class CursorController {
         let cursorArray = new Array<CastCursor>();
 
         //  カーソル表示があればクリア
-        ReactDOM.render(<CursorComponent CursorList={cursorArray} />, this._cursorDispElement, (el) => {
+        ReactDOM.render(<CursorComponent CursorList={cursorArray} Size={this._cursorSize} />, this._cursorDispElement, (el) => {
             this.SetCursorIcon(cursorArray);
         });
     };
@@ -185,6 +187,16 @@ export class CursorController {
 
 
     /**
+     * カーソルのサイズを
+     * ライブキャスト表示部分のサイズに合わせて変動させる
+     * @param dispWidth 
+     */
+    public SetCursorSize(dispWidth: number){
+        this._cursorSize = Math.round(dispWidth / 20);
+    }
+
+
+    /**
      * マウスカーソルの表示処理
      * @param cursor
      */
@@ -197,13 +209,14 @@ export class CursorController {
 
         let dispCursor = new CastCursor(cursor.peerid, cursor.aid, cursor.iid, "", cursorX, cursorY);
         this._cursorMap.set(cursor.peerid, dispCursor);
+        this.SetCursorSize(vdo.dispWidth);
 
         let cursorArray = new Array<CastCursor>();
         this._cursorMap.forEach((value, key) => cursorArray.push(value));
 
 
         //  描画処理
-        ReactDOM.render(<CursorComponent CursorList={cursorArray} />, this._cursorDispElement, (el) => {
+        ReactDOM.render(<CursorComponent CursorList={cursorArray} Size={this._cursorSize} />, this._cursorDispElement, (el) => {
             //  描画後、カーソルのCSSを設定する
             this.SetCursorIcon(cursorArray);
 
