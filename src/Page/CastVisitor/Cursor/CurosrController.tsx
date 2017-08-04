@@ -59,9 +59,9 @@ export class CursorController {
     private _cursorDispElement: HTMLElement;
     private _busy: boolean = false;
     private _queue: CastCursorSender = null;
-    private _cursorMap = new Map<string, CastCursor>();
+    private _baseCursorList = new Array<CastCursorSender>();   //  送られて来たカーソル情報の保持（相対座標）
+    private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
     private _cursorSize: number;
-    private _baseCursorMap = new Map<string, CastCursorSender>();
     private _iconCache = new Map<string, Map<string, Personal.Icon>>();
     private _connCache: ConnectionCache;
 
@@ -83,11 +83,6 @@ export class CursorController {
         this._video = video;
         this._cursorDispElement = cursorDivElement;
         this._cursorSize = 48;
-
-        itemDivElement.onclick = (ev: MouseEvent) => {
-
-        }
-
 
         itemDivElement.onmousedown = (ev: MouseEvent) => {
 
@@ -146,13 +141,12 @@ export class CursorController {
     public Clear() {
 
         this.ClearQueue();
-        this._baseCursorMap.clear();
-        this._cursorMap.clear();
-        let cursorArray = new Array<CastCursor>();
+        this._baseCursorList = new Array<CastCursorSender>();
+        this._cursorList = new Array<CastCursor>();
 
         //  カーソル表示があればクリア
-        ReactDOM.render(<CursorComponent CursorList={cursorArray} Size={this._cursorSize} />, this._cursorDispElement, (el) => {
-            this.SetCursorIcon(cursorArray);
+        ReactDOM.render(<CursorComponent CursorList={this._cursorList} Size={this._cursorSize} />, this._cursorDispElement, (el) => {
+            this.SetCursorIcon(this._cursorList);
         });
     };
 
@@ -172,26 +166,42 @@ export class CursorController {
     public DisplayAll() {
         this.ClearQueue();
         let vdo = this.GetVideoDispOffset(this._video);
-        this._baseCursorMap.forEach((cur, key) => { this.Display(cur); });
+        this._baseCursorList.forEach((cur, key) => { this.Display(cur); });
     }
 
 
     /**
-     * Sendされてきたカーソルデータを保持し、表示
+     * Sendされてきたカーソルデータを保持して表示
      * @param cursor
      */
     public SetCursor(cursor: CastCursorSender) {
-        this._baseCursorMap.set(cursor.peerid, cursor);
+
+        //  前回の情報は削除
+        this._baseCursorList = this._baseCursorList.filter((c) => c.peerid !== cursor.peerid);
+        //  最後尾に追加する
+        this._baseCursorList.push(cursor);
         this.Display(cursor);
     }
 
+
+    /**
+     * Sendされてきたカーソルデータを保持する
+     * @param cursor
+     */
+    public SetDispCursor(cursor: CastCursor) {
+
+        //  前回情報は削除して最後尾に追加する
+        this._cursorList = this._cursorList.filter((c) => c.peerid !== cursor.peerid);
+        this._cursorList.push(cursor);
+    }
+    
 
     /**
      * カーソルのサイズを
      * ライブキャスト表示部分のサイズに合わせて変動させる
      * @param dispWidth 
      */
-    public SetCursorSize(dispWidth: number){
+    public SetCursorSize(dispWidth: number) {
         this._cursorSize = Math.round(dispWidth / 20);
     }
 
@@ -208,17 +218,13 @@ export class CursorController {
         let cursorY = Math.round(cursor.posRy * vdo.dispHeight + vdo.offsetTop);
 
         let dispCursor = new CastCursor(cursor.peerid, cursor.aid, cursor.iid, "", cursorX, cursorY);
-        this._cursorMap.set(cursor.peerid, dispCursor);
+        this.SetDispCursor(dispCursor);
         this.SetCursorSize(vdo.dispWidth);
 
-        let cursorArray = new Array<CastCursor>();
-        this._cursorMap.forEach((value, key) => cursorArray.push(value));
-
-
         //  描画処理
-        ReactDOM.render(<CursorComponent CursorList={cursorArray} Size={this._cursorSize} />, this._cursorDispElement, (el) => {
+        ReactDOM.render(<CursorComponent CursorList={this._cursorList} Size={this._cursorSize} />, this._cursorDispElement, (el) => {
             //  描画後、カーソルのCSSを設定する
-            this.SetCursorIcon(cursorArray);
+            this.SetCursorIcon(this._cursorList);
 
         });
 
