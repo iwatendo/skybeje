@@ -94,7 +94,8 @@ export default class ChatManager {
      */
     private ToTimelineMessage(chm: ChatMessageSender): Timeline.Message {
         let tlmsg = new Timeline.Message();
-        tlmsg.mid = StdUtil.CreateUuid();
+        let ctime = Date.now();
+        tlmsg.mid = ctime.toString() + "-" + StdUtil.CreateUuid();
         tlmsg.hid = this._roomManager.GetRoomId(chm.peerid, chm.aid);
         tlmsg.peerid = chm.peerid;
         tlmsg.aid = chm.aid;
@@ -102,8 +103,8 @@ export default class ChatManager {
         tlmsg.gid = chm.gid;
         tlmsg.name = chm.name;
         tlmsg.text = chm.text;
-        tlmsg.ctime = Date.now();
-        tlmsg.utime = tlmsg.ctime;
+        tlmsg.ctime = ctime;
+        tlmsg.utime = ctime;
         tlmsg.visible = true;
         return tlmsg;
     }

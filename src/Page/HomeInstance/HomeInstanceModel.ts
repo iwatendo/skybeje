@@ -90,7 +90,7 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
      */
     public UpdateTimelineMessage(msg: Timeline.Message, callback: OnWrite) {
 
-        let key = StdUtil.ToDispDate(new Date(msg.ctime)) + " " + msg.mid;
+        let key = msg.mid;
         this._timelineDB.Write(Timeline.DB.Message, key, msg, callback);
     }
 
