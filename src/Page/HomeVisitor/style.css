@@ -76,7 +76,7 @@
 .sbj-split-pane-component-left{
     background-color: var(--sbj-color-timeline-panel);
     width: 50%;
-    min-width: 420px;
+    min-width: 500px;
 }
 
 .sbj-split-pane-component-right{

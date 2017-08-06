@@ -13,6 +13,7 @@ import { DialogMode } from "../../../Base/Common/AbstractDialogController";
 import HomeVisitorController from "../HomeVisitorController";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
+import SpeechUtil from "../../../Base/Util/SpeechUtil";
 
 
 export default class InputPaneController {
@@ -24,6 +25,9 @@ export default class InputPaneController {
     private _actorEditButton = document.getElementById('sbj-inputpanel-actor-edit-button');
     private _selectActorButton = document.getElementById('sbj-inputpanel-select-actor-button');
     private _sendMessageButton = document.getElementById('sbj-inputpanel-send-message-button');
+    private _voiceRecognition = document.getElementById('sbj-inputpanel-send-message-recognition');
+    private _voiceRecognitionOn = document.getElementById('sbj-inputpanel-send-message-recognition-on');
+    private _voiceRecognitionOff = document.getElementById('sbj-inputpanel-send-message-recognition-off');
 
     private _unreadElement = document.getElementById('sbj-unread-count');
     private _otherRoomList = document.getElementById('sbj-inputpanel-other-room-list');
@@ -41,6 +45,7 @@ export default class InputPaneController {
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _lastTlmCtime: number;
+    private _isVoiceRecognition: boolean;
 
 
     /**
@@ -70,6 +75,10 @@ export default class InputPaneController {
             this._profileFrame.hidden = true;
             let aid = this._dashboradSelectActorElement.value
             this._controller.ChangeCurrentActor(aid);
+        }
+
+        this._voiceRecognition.onclick = (e) => {
+            this.ChnageVoiceRecognition();
         }
 
         //  プロフィール画面からのダイアログクローズ通知
@@ -423,5 +432,36 @@ export default class InputPaneController {
         return value.toString();
     }
 
+
+    /**
+     * 音声認識によるチャットメッセージ入力
+     */
+    private ChnageVoiceRecognition() {
+        this._isVoiceRecognition = !this._isVoiceRecognition;
+
+        this._voiceRecognitionOn.hidden = !this._isVoiceRecognition;
+        this._voiceRecognitionOff.hidden = this._isVoiceRecognition;
+        if (this._isVoiceRecognition) {
+            SpeechUtil.InitSpeechRecognition(
+                (text) => { if (text) this._textareaElement.value = this._textareaElement.value + text; }
+                , () => {
+                    this._voiceRecognitionOn.classList.remove("mdl-button--colored");
+                    this._voiceRecognitionOn.classList.add("mdl-button--accent");
+                    this._textareaElement.disabled = true;
+                }
+                , () => {
+                    this._voiceRecognitionOn.classList.remove("mdl-button--accent");
+                    this._voiceRecognitionOn.classList.add("mdl-button--colored");
+                    this._textareaElement.disabled = false;
+                    this._textareaElement.focus();
+                }
+            );
+            SpeechUtil.StartSpeechRecognition();
+        }
+        else {
+            SpeechUtil.StopSpeechRecognition();
+            this._textareaElement.disabled = false;
+        }
+    }
 
 }

@@ -115,6 +115,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         speechRecCheckElement.checked = options.IsSpeechRecognition;
         this.Controller.CastSetting.dispSubtitles = options.IsSpeechRecognition;
 
+        //  音声認識からのメッセージ取得
+        SpeechUtil.InitSpeechRecognition((message) => {
+            let send = new CastSpeechRecognitionSender(message);
+            WebRTCService.SendAll(send);
+        });
+
         //  カーソル表示有無
         let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
         cursorDispElement.onchange = (e) => {
@@ -127,13 +133,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         };
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
-
-
-        //  音声認識からのメッセージ取得
-        SpeechUtil.InitSpeechRecognition((message) => {
-            let send = new CastSpeechRecognitionSender(message);
-            WebRTCService.SendAll(send);
-        });
 
         this.SetMediaDevice();
 
