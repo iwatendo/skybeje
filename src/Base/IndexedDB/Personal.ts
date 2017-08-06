@@ -140,7 +140,7 @@ export class DB extends Database<Data> {
     public WriteAllData(data: Data, callback: DBI.OnWriteComplete) {
         this.WriteAll<Actor>(DB.ACTOR, (n) => n.aid, data.Actors, () => {
             this.WriteAll<Icon>(DB.ICON, (n) => n.iid, data.Icons, () => {
-                this.WriteAll<Icon>(DB.GUIDE, (n) => n.iid, data.Icons, () => {
+                this.WriteAll<Guide>(DB.GUIDE, (n) => n.gid, data.Guide, () => {
                     callback();
                 });
             });
