@@ -17,6 +17,10 @@
     margin: -300px 0 0 -400px;
 }
 
+#sbj-cast-instance-main{
+    overflow: hidden;
+}
+
 .sbj-cast-instance-device-select{
     outline: 0;
 }
