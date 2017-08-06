@@ -12,6 +12,7 @@ import LinkUtil from "../../../Base/Util/LinkUtil";
 import DashboardController from "../DashboardController";
 import { INaviContainer, DragAction } from "../INaviContainer";
 import SettingComponent from "./SettingComponent";
+import DashboardModel from "../DashboardModel";
 
 
 export enum DBEnum {
@@ -75,6 +76,14 @@ export default class SettingController implements INaviContainer {
         if (this._dragFromOutSizeAction) {
             this._dragFromOutSizeAction();
         }
+    }
+
+
+    /**
+     * 
+     */
+    public get Model(): DashboardModel {
+        return this._controller.Model;
     }
 
 
