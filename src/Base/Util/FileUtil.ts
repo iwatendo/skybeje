@@ -11,13 +11,13 @@ export default class FileUtil {
     /**
      * エクスポートファイルの拡張子
      */
-    public static EXPORT_EXT = ".skybeje";
+    public static EXPORT_EXT = ".sbj";
 
     /**
      * エクスポートのデフォルトファイル名を取得
      * @param name 
      */
-    public static GetDefaultFileName(name: string) {
+    public static GetDefaultFileName(name: string, ext: string = this.EXPORT_EXT) {
 
         let now = new Date();
 
@@ -29,7 +29,7 @@ export default class FileUtil {
         let sec = ("0" + now.getSeconds().toString()).slice(-2);
 
         let datetime = year + month + day + "-" + hours + min + sec;
-        let filename = "SkyBeje_" + datetime + "_" + name + this.EXPORT_EXT;
+        let filename = "SkyBeje_" + datetime + "_" + name + ext;
 
         return filename;
 
@@ -103,7 +103,7 @@ export default class FileUtil {
         inputElement.multiple = multiple;
         inputElement.accept = accept;
 
-        if( isCamera){
+        if (isCamera) {
             (inputElement as any).capture = 'camera'
         }
 
