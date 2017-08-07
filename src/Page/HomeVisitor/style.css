@@ -76,7 +76,7 @@
 .sbj-split-pane-component-left{
     background-color: var(--sbj-color-timeline-panel);
     width: 50%;
-    min-width: 500px;
+    min-width: 450px;
 }
 
 .sbj-split-pane-component-right{
@@ -178,7 +178,7 @@
 }
 
 .sbj-inputpanel-button{
-    padding: 0px 12px;
+    padding: 0px 8px;
 }
 
 .sbj-inputpanel-actor-name{
