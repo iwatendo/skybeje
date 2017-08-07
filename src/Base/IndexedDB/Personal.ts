@@ -3,6 +3,7 @@ import * as DBI from "./Database";
 import ImageInfo from "../Container/ImageInfo";
 import { IOrder } from "../Container/Order";
 import StdUtil from "../Util/StdUtil";
+import LocalCache from "../Common/LocalCache";
 
 
 /**
@@ -122,9 +123,7 @@ export class DB extends Database<Data> {
 
 
     public ReadAllData(onload: DBI.OnLoadComplete<Data>) {
-
         let data = new Data();
-
         this.ReadAll<Actor>(DB.ACTOR, (result: Array<Actor>) => {
             data.Actors = result;
             this.ReadAll<Icon>(DB.ICON, (result: Array<Icon>) => {
@@ -137,6 +136,12 @@ export class DB extends Database<Data> {
         });
     }
 
+
+    /**
+     * 
+     * @param data 
+     * @param callback 
+     */
     public WriteAllData(data: Data, callback: DBI.OnWriteComplete) {
         this.WriteAll<Actor>(DB.ACTOR, (n) => n.aid, data.Actors, () => {
             this.WriteAll<Icon>(DB.ICON, (n) => n.iid, data.Icons, () => {
@@ -158,14 +163,89 @@ export class DB extends Database<Data> {
     }
 
 
+    /**
+     * インポート処理
+     * @param data 
+     * @param callback 
+     */
     public Import(data: Data, callback: DBI.OnWriteComplete) {
 
         this.ClearAll(DB.ACTOR, () => {
             this.ClearAll(DB.ICON, () => {
-                this.WriteAllData(data, callback);
+                this.ClearAll(DB.GUIDE, () => {
+                    if (!this.IsMyData(data)) {
+                        this.ResetId(data);
+                    }
+                    this.WriteAllData(data, callback);
+                });
             });
         });
+    }
 
+
+    /**
+     * 自分自身のデータか？
+     * @param data 
+     */
+    public IsMyData(data: Data) {
+        let list = data.Actors.filter((a) => a.isUserProfile);
+        if (list.length === 1) {
+            let user = list[0];
+            if (user.aid === LocalCache.UserID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 自分自身のデータでは無い場合
+     * ID重複を防ぐ為、全IDを変更する
+     * @param data 
+     */
+    public ResetId(data: Data) {
+
+        let aidMap = new Map<string, string>();
+        let iidMap = new Map<string, string>();
+        let gidMap = new Map<string, string>();
+
+        data.Actors.forEach((a) => {
+            if (a.isUserProfile) {
+                aidMap.set(a.aid, LocalCache.UserID);
+            }
+            else {
+                aidMap.set(a.aid, StdUtil.CreateUuid());
+            }
+        });
+        data.Icons.forEach((i) => { iidMap.set(i.iid, StdUtil.CreateUuid()); });
+        data.Guide.forEach((g) => { gidMap.set(g.gid, StdUtil.CreateUuid()); });
+
+        data.Actors.forEach((a) => {
+            //
+            a.aid = aidMap.get(a.aid);
+            a.dispIid = iidMap.get(a.dispIid);
+            //
+            let newIconIds = new Array<string>();
+            if (a.iconIds) {
+                a.iconIds.forEach((iid) => { newIconIds.push(iidMap.get(iid)); });
+            }
+            a.iconIds = newIconIds;
+            //
+            let newGuideIds = new Array<string>();
+            if (a.guideIds) {
+                a.guideIds.forEach((gid) => { newGuideIds.push(gidMap.get(gid)); });
+            }
+            a.guideIds = newGuideIds;
+        });
+
+        data.Icons.forEach((i) => { i.iid = iidMap.get(i.iid); });
+
+        data.Guide.forEach((g) => {
+            g.gid = gidMap.get(g.gid);
+            g.aid = aidMap.get(g.aid);
+            g.iid = iidMap.get(g.iid);
+        });
     }
 
 }
