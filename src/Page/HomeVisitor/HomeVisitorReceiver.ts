@@ -3,6 +3,8 @@ import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 
+import * as Personal from "../../Base/IndexedDB/Personal";
+
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as HVContainer from "./HomeVisitorContainer";
 import * as CIContainer from "../CastInstance/CastInstanceContainer";
@@ -31,13 +33,13 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 this.Controller.GetUseActors((ua) => { this.Controller.InitializeUseActors(ua); });
                 LogUtil.RemoveListener();
             }
-            else if(ci.isMultiBoot){
+            else if (ci.isMultiBoot) {
                 //  多重起動が検出された場合はエラー表示して終了
                 this.Controller.HasError = true;
                 this.Controller.View.MutilBootError();
                 WebRTCService.Close();
             }
-            else if(ci.isConnect){
+            else if (ci.isConnect) {
                 //  多重起動の確認の為に、UserIDを送信
                 WebRTCService.SendToOwner(new HVContainer.ClientBootSender());
             }
@@ -162,7 +164,15 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
         this.Controller.Model.GetIcon(sender.iid, (icon) => {
             let result = new HVContainer.IconSender();
-            result.icon = icon;
+            if (icon) {
+                result.icon = icon;
+            }
+            else {
+                //  削除済みのアイコンの場合、空データを返す。
+                result.icon = new Personal.Icon();
+                result.icon.iid = sender.iid;
+            }
+
             WebRTCService.SendTo(conn, result);
         });
     }
