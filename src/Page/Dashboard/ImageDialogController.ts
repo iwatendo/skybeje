@@ -38,14 +38,6 @@ export default class ImageDialogController {
     /**
      * 
      */
-    public static EditDelete(image: ImageInfo, callback: OnChangeImage) {
-        this.Start(false, true, true, image, callback);
-    }
-
-
-    /**
-     * 
-     */
     public static Edit(image: ImageInfo, callback: OnChangeImage) {
         this.Start(false, true, false, image, callback);
     }
