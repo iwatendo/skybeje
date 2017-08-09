@@ -59,6 +59,19 @@ export class Icon implements IOrder {
     iid: string;
     order: number;
     img: ImageInfo;
+
+
+    /**
+     * データコピー(※Shallow Copy)
+     * @param icon 
+     */
+    public static Copy(icon: Icon): Icon {
+        let result = new Icon();
+        result.iid = icon.iid;
+        result.order = icon.order;
+        result.img = icon.img;
+        return result;
+    }
 }
 
 
