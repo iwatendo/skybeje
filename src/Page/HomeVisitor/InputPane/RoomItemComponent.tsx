@@ -55,6 +55,9 @@ export default class RoomItemComponent extends React.Component<RoomItemProp, any
                 if (rml.filter((ai) => ai.aid === controller.CurrentAid).length === 0) {
                     controller.View.InputPane.ChangeSelectionActorIcon(rml[0].aid);
                 }
+                else {
+                    controller.View.MoveLastTimeline();
+                }
             }
 
         });
