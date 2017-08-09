@@ -307,7 +307,6 @@ export default class WebRTCService {
 
         if (!this._owner) {
             LogUtil.Warning(this._service, "Owner not found : lost send : " + senddata);
-            WebRTCService.CheckPeer();
         }
 
         if (this._owner.open) {
@@ -318,7 +317,6 @@ export default class WebRTCService {
         }
         else {
             LogUtil.Warning(this._service, "Owner not open : lost send : " + senddata);
-            WebRTCService.CheckPeer();
         }
 
     }
@@ -341,7 +339,6 @@ export default class WebRTCService {
         }
         else {
             LogUtil.Warning(this._service, "Client not open : lost send : " + json);
-            WebRTCService.CheckPeer();
         }
     }
 
