@@ -28,8 +28,8 @@ import InputPaneController from "./InputPane/InputPaneController";
 export default class HomeVisitorView extends AbstractServiceView<HomeVisitorController> {
 
     private _isBooting: boolean = true;
-    private _element = document.getElementById('sbj-home-visitor');
-    private _splitElement = document.getElementById('sbj-home-visitor-split');
+    private _bootElement = document.getElementById('sbj-home-visitor');
+    private _mainElement = document.getElementById('sbj-home-visitor-main');
     private _timelineElement = document.getElementById('sbj-home-visitor-timeline-component');
     private _head = document.getElementById('sbj-home-visitor-header');
     private _headTitleElement = document.getElementById('sbj-home-visitor-title');
@@ -125,14 +125,15 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      *  切断された時の表示
      */
     public DisConnect() {
-
-        if (!this.Controller.HasError) {
-            ReactDOM.render(<DisConnectComponent controller={this.Controller} />, this._element, () => {
-                this.Controller.NotifyLivecast("");
-                this._splitElement.hidden = true;
-                this._head.hidden = true;
-                this._element.hidden = false;
-            });
+        if (!this._isBooting) {
+            if (!this.Controller.HasError) {
+                ReactDOM.render(<DisConnectComponent controller={this.Controller} />, this._bootElement, () => {
+                    this.Controller.NotifyLivecast("");
+                    this._mainElement.hidden = true;
+                    this._head.hidden = true;
+                    this._bootElement.hidden = false;
+                });
+            }
         }
     }
 
@@ -144,9 +145,9 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     public SetRoomInfo(room: Home.Room) {
 
         if (this._isBooting) {
-            this._element.setAttribute("hidden", "true");
-            this._head.removeAttribute("hidden");
-            this._splitElement.removeAttribute("hidden");
+            this._bootElement.hidden = true;
+            this._head.hidden = false;
+            this._mainElement.hidden = false;
             this.InputPane = new InputPaneController(this.Controller);
             this._isBooting = false;
         }
@@ -178,7 +179,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         this._headTitleElement.textContent = title;
 
         //  部屋の背景画像変更
-        ImageInfo.SetCss("sbj-home-visitor-split", room.background);
+        ImageInfo.SetCss("sbj-home-visitor-main", room.background);
 
         //  部屋情報の再描画
         this.InputPane.DisplayUnreadCount();
