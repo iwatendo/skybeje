@@ -62,6 +62,16 @@ export default class CastVisitorController extends AbstractServiceController<Cas
 
 
     /**
+     * 
+     * @param conn 
+     */
+    public OnChildClose(conn: PeerJs.DataConnection) {
+        super.OnChildClose(conn);
+        this.View.Cursor.Remove(conn.peer);
+    }
+
+
+    /**
      * ストリーミングの再生開始後の処理
      */
     public OnStreamingPlay() {

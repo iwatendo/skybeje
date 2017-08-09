@@ -161,6 +161,17 @@ export class CursorController {
 
 
     /**
+     * ピアの切断等によるカーソル表示の削除
+     * @param peerid 
+     */
+    public Remove(peerid: string) {
+        this._baseCursorList = this._baseCursorList.filter(cur => cur.homePeerId !== peerid);
+        this._cursorList = this._cursorList.filter(cur => cur.peerid !== peerid);
+        this.DisplayAll();
+    }
+
+
+    /**
      * 
      */
     public DisplayAll() {
@@ -177,7 +188,8 @@ export class CursorController {
     public SetCursor(cursor: CastCursorSender) {
 
         //  前回の情報は削除
-        this._baseCursorList = this._baseCursorList.filter((c) => c.peerid !== cursor.peerid);
+        this._baseCursorList = this._baseCursorList.filter((c) => c.homePeerId !== cursor.homePeerId);
+
         //  最後尾に追加する
         this._baseCursorList.push(cursor);
         this.Display(cursor);
@@ -194,7 +206,7 @@ export class CursorController {
         this._cursorList = this._cursorList.filter((c) => c.peerid !== cursor.peerid);
         this._cursorList.push(cursor);
     }
-    
+
 
     /**
      * カーソルのサイズを
@@ -217,7 +229,7 @@ export class CursorController {
         let cursorX = Math.round(cursor.posRx * vdo.dispWidth + vdo.offsetRight);
         let cursorY = Math.round(cursor.posRy * vdo.dispHeight + vdo.offsetTop);
 
-        let dispCursor = new CastCursor(cursor.peerid, cursor.aid, cursor.iid, "", cursorX, cursorY);
+        let dispCursor = new CastCursor(cursor.homePeerId, cursor.aid, cursor.iid, "", cursorX, cursorY);
         this.SetDispCursor(dispCursor);
         this.SetCursorSize(vdo.dispWidth);
 
@@ -259,7 +271,8 @@ export class CursorController {
 
 
         let sender = new CastCursorSender();
-        sender.peerid = this._ownerPeerIdElement.textContent;
+        sender.homePeerId = this._ownerPeerIdElement.textContent;
+        sender.castPeerId = WebRTCService.PeerId();
         sender.aid = this._ownerAidElement.textContent;
         sender.iid = this._ownerIidElement.textContent;
 

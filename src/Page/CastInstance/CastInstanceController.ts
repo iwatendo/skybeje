@@ -14,7 +14,7 @@ import { CastInstanceReceiver } from "./CastInstanceReceiver";
 export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
 
     public ControllerName(): string { return "CastInstance"; }
-    
+
     public View: CastInstanceView;
 
     public CastInstance = new CastInstanceSender();
@@ -121,6 +121,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
+        this.RemoveCursorCache(conn.peer);
     }
 
 
@@ -135,7 +136,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         //  オーナー 及び 接続クライアントに通知
         this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
     }
-    
+
 
     /**
      * ストリーミングの開始/停止の通知
@@ -176,7 +177,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public SetCursorCache(cursor: CastCursorSender) {
 
-        let peerid = cursor.peerid;
+        let peerid = cursor.castPeerId;
         if (cursor.posRx >= 0 && cursor.posRy >= 0) {
             this.CursorCache.set(peerid, cursor);
         }
@@ -184,6 +185,17 @@ export default class CastInstanceController extends AbstractServiceController<Ca
             if (this.CursorCache.has(peerid)) {
                 this.CursorCache.delete(peerid);
             }
+        }
+    }
+
+
+    /**
+     * ピアの切断等によるカーソルの削除
+     * @param peerid 
+     */
+    public RemoveCursorCache(peerid: string) {
+        if (this.CursorCache.has(peerid)) {
+            this.CursorCache.delete(peerid);
         }
     }
 
