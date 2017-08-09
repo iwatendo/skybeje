@@ -30,7 +30,7 @@ export default class WebRTCService {
     public static Start(service: IServiceController, ownerid: string, serviceName: string, videoElement: HTMLElement = null) {
 
         this._serviceName = serviceName;
-        
+
         Sender.Uid = LocalCache.UserID;
 
         LogUtil.Info(service, "Start WebRTC " + (ownerid ? "(owner " + ownerid + ")" : ""));
@@ -44,6 +44,12 @@ export default class WebRTCService {
             window.onbeforeunload = (e) => {
                 WebRTCService.Close();
             };
+
+            //  オフラインになった場合
+            window.onoffline = (e) => { this.CheckPeer(); };
+
+            //  表示切替時（ノートPCの開閉等でも発動します）
+            window.document.addEventListener("visibilitychange", () => { this.CheckPeer(); });
 
             //  ストリーミング用設定
             navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
@@ -140,6 +146,7 @@ export default class WebRTCService {
 
         peer.on('error', (e) => {
             service.OnPeerError(e);
+            this.CheckPeer();
         });
 
         peer.on('close', () => {
@@ -247,6 +254,33 @@ export default class WebRTCService {
 
 
     /**
+     * ピア接続の存続チェック
+     * なんらかの要因でピアのCloseイベントが発動せず切断された場合に、Close処理を実行
+     * 
+     * ※ネットワークの切断や、
+     * 　ノートPCの開閉時に上記のような現象が発生するケースがある様子
+     */
+    public static CheckPeer() {
+
+        if (!this._service) {
+            return;
+        }
+
+        if (this._owner) {
+            if (!this._owner.open) {
+                this._service.OnOwnerClose();
+            }
+        }
+
+        this._clients.forEach((cl) => {
+            if (!cl.open) {
+                this._service.OnChildClose(cl);
+            }
+        });
+    }
+
+
+    /**
      *  WebRTCServiceの停止
      *  全てクライアントとの接続を切断します
      */
@@ -273,6 +307,7 @@ export default class WebRTCService {
 
         if (!this._owner) {
             LogUtil.Warning(this._service, "Owner not found : lost send : " + senddata);
+            WebRTCService.CheckPeer();
         }
 
         if (this._owner.open) {
@@ -282,7 +317,8 @@ export default class WebRTCService {
                 LogUtil.Info(this._service, "send(Owner) : " + senddata.toString());
         }
         else {
-            LogUtil.Warning(this._service, "Owner not open : Lost send : " + senddata);
+            LogUtil.Warning(this._service, "Owner not open : lost send : " + senddata);
+            WebRTCService.CheckPeer();
         }
 
     }
@@ -305,6 +341,7 @@ export default class WebRTCService {
         }
         else {
             LogUtil.Warning(this._service, "Client not open : lost send : " + json);
+            WebRTCService.CheckPeer();
         }
     }
 
