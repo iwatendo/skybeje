@@ -10,7 +10,7 @@ var path = require('path');
  */
 function replace_version(filepath, modified, version) {
 
-    console.info("set varsion : " + version + " : " + filepath);
+    console.info("set version " + version + " : " + filepath);
 
     fs.readFile(filepath, 'utf8', function (err, data) {
         if (err) throw err;
