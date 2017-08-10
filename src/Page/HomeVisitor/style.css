@@ -42,6 +42,7 @@
 .sbj-home-visitor{
     width: 100%;
     height: 100%;
+    padding: 16px;
 }
 
 .sbj-home-visitor-header-row{
@@ -107,6 +108,10 @@
     left: 50%;
     width: 5px;
     background-color: var(--sbj-color-edge-background);
+}
+
+.sbj-home-visitor-disconnect-action{
+    padding: 0px 16px;
 }
 
 /*-----------------------------

@@ -16,7 +16,6 @@ import * as HomeContainer from "../HomeInstance/HomeInstanceContainer";
 import { RoomActorMemberSender } from "../HomeInstance/HomeInstanceContainer";
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as CIContainer from "../CastInstance/CastInstanceContainer";
-import DisConnectComponent from "./DisConnect/DisConnectComponent";
 import { TimelineComponent } from "./Timeline/TimelineComponent";
 import { GetTimelineSender } from "./HomeVisitorContainer";
 import HomeVisitorController from "./HomeVisitorController";
@@ -30,8 +29,9 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     private _isBooting: boolean = true;
     private _bootElement = document.getElementById('sbj-home-visitor');
     private _mainElement = document.getElementById('sbj-home-visitor-main');
+    private _disconnectElement = document.getElementById('sbj-home-visitor-disconnect');
     private _timelineElement = document.getElementById('sbj-home-visitor-timeline-component');
-    private _head = document.getElementById('sbj-home-visitor-header');
+    private _headElement = document.getElementById('sbj-home-visitor-header');
     private _headTitleElement = document.getElementById('sbj-home-visitor-title');
     private _headTitleAccountCountElement = document.getElementById('sbj-home-visitor-account-count');
     private _headRoomMemberElement = document.getElementById('sbj-home-visitor-room-member');
@@ -64,6 +64,16 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         //  「退室」処理
         document.getElementById('sbj-home-visitor-stop').onclick = (e) => {
             this.Controller.NotifyDashbord('');
+        };
+
+        //  切断時の「退室」ボタン
+        document.getElementById('sbj-home-visitor-disconnect-exit').onclick = (e) => {
+            this.Controller.NotifyDashbord('');
+        };
+
+        //  切断時の「再接続」ボタン
+        document.getElementById('sbj-home-visitor-disconnect-retry').onclick = (e) => {
+            location.reload();
         };
 
         //  接続時のタイムアウト処理
@@ -121,19 +131,15 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
 
     /**
-     *  親インスタンスが閉じられた場合の処理
-     *  切断された時の表示
+     *  親インスタンスが閉じられた場合やネットワークが切断した場合の処理
      */
     public DisConnect() {
-        if (!this._isBooting) {
-            if (!this.Controller.HasError) {
-                ReactDOM.render(<DisConnectComponent controller={this.Controller} />, this._bootElement, () => {
-                    this.Controller.NotifyLivecast("");
-                    this._mainElement.hidden = true;
-                    this._head.hidden = true;
-                    this._bootElement.hidden = false;
-                });
-            }
+        if (!this._isBooting && !this.Controller.HasError) {
+            this.Controller.NotifyLivecast("");
+            this._mainElement.hidden = true;
+            this._headElement.hidden = true;
+            this._bootElement.hidden = true;
+            this._disconnectElement.hidden = false;
         }
     }
 
@@ -146,7 +152,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         if (this._isBooting) {
             this._bootElement.hidden = true;
-            this._head.hidden = false;
+            this._headElement.hidden = false;
             this._mainElement.hidden = false;
             this.InputPane = new InputPaneController(this.Controller);
             this._isBooting = false;
