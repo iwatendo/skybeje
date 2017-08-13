@@ -202,6 +202,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         DeviceUtil.GetVideoDevice((devices) => {
 
+            let previewElement = document.getElementById('video') as HTMLVideoElement;
             let textElement = document.getElementById('webcam-select') as HTMLInputElement;
             var listElement = document.getElementById('webcam-list') as HTMLElement;
 
@@ -212,10 +213,10 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 this.ChnageDevice();
 
                 if (deviceId) {
-                    WebRTCService.SetPreview(deviceId, true, document.getElementById('video'));
+                    WebRTCService.SetPreview(previewElement, deviceId);
                 }
                 else {
-                    WebRTCService.StopPreview();
+                    WebRTCService.StopPreview(previewElement);
                 }
             });
 

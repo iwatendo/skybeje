@@ -3,6 +3,11 @@ import LogUtil from "../Util/LogUtil";
 import Sender from "../Container/Sender";
 import LocalCache from "./LocalCache";
 
+
+interface OnGetMediaStream { (stream: MediaStream): void }
+
+declare var SkyWay: any;
+
 export default class WebRTCService {
 
     private static _peer: PeerJs.Peer;
@@ -367,37 +372,77 @@ export default class WebRTCService {
 
     private static _localStream: MediaStream;
     private static _previewStream: MediaStream;
+    private static _screenShare = null;
     private static _existingCallList: Array<PeerJs.MediaConnection>;
 
 
     /**
      * プレビュー設定
-     * @param videoSource
-     * @param isPreView
-     * @param preview
+     * @param element 
+     * @param videoSource 
      */
-    public static SetPreview(videoSource: string, isPreView: boolean = false, element: HTMLElement) {
+    public static SetPreview(element: HTMLVideoElement, videoSource: string) {
+        this.GetMediaStream(videoSource, "", (stream) => {
+            this.StartPreview(element, stream);
+        });
+    }
 
-        if (isPreView) {
-            let constraints = this.GetMediaTrackConstraints(videoSource, "");
 
-            navigator.getUserMedia(constraints,
-                (stream) => {
-                    //  プレビュー表示
-                    this._previewStream = stream;
-                    element.removeAttribute("src");
-                    element.setAttribute("src", URL.createObjectURL(stream));
-                }, () => {
-                }
-            );
+    /**
+     * スクリーンシェアのプレビュー設定
+     * @param element 
+     */
+    public static SetScreenSharePreview(element: HTMLVideoElement) {
+        this.GetScreenShareMediaStream((stream) => {
+            this.StartPreview(element, stream);
+        });
+    }
+
+
+    /**
+     * プレビュー開始
+     * @param element 
+     * @param stream メディアストリーム
+     */
+    public static StartPreview(element: HTMLVideoElement, stream: MediaStream) {
+        this._previewStream = stream;
+        element.src = null;
+        element.src = URL.createObjectURL(stream);
+    }
+
+
+    /**
+     * プレビュー停止
+     * @param element 
+     */
+    public static StopPreview(element: HTMLVideoElement) {
+        if (this._previewStream) {
+            if (this._previewStream.getVideoTracks().length > 0) {
+                this._previewStream.getVideoTracks()[0].stop();
+            }
         }
-        else {
+        element.src = null;
+    }
 
-            this.StopPreview();
-            element.setAttribute("src", "");
-            return;
-        }
 
+    /**
+     * メディア
+     * @param videoSource 
+     * @param audioSource 
+     * @param callback 
+     */
+    public static GetMediaStream(videoSource: string, audioSource: string, callback: OnGetMediaStream) {
+
+        let constraints = this.GetMediaTrackConstraints(videoSource, audioSource);
+
+        navigator.getUserMedia(constraints,
+            (stream) => {
+                callback(stream);
+            }, (err: MediaStreamError) => {
+                LogUtil.Error(this._service, err.name);
+                LogUtil.Error(this._service, err.message);
+            }
+        );
     }
 
 
@@ -406,7 +451,7 @@ export default class WebRTCService {
      * @param videoSource 
      * @param audioSource 
      */
-    public static GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
+    private static GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
 
         let result: MediaStreamConstraints = {
             video: (videoSource ? { advanced: ([{ deviceId: videoSource }]) } : false),
@@ -414,6 +459,37 @@ export default class WebRTCService {
         };
 
         return result;
+    }
+
+    /**
+     * スクリーンシェアのメディアストリームを取得します。
+     * 【注意】Skybejeの Chrome Extension がインストールされている必要があります。
+     * @param callback 
+     */
+    public static GetScreenShareMediaStream(callback: OnGetMediaStream) {
+
+        if (!this._screenShare) {
+            this._screenShare = new SkyWay.ScreenShare({ debug: true });
+        }
+
+        let width = 100 as number;
+        let height = 100 as number;
+        let fr = 30 as number;
+
+        // スクリーンシェアを開始
+        if (this._screenShare.isEnabledExtension()) {
+            this._screenShare.startScreenShare({ width, height, fr },
+                (stream) => {
+                    callback(stream);
+                }, (err: MediaStreamError) => {
+                    LogUtil.Error(this._service, err.name);
+                    LogUtil.Error(this._service, err.message);
+                }, () => {
+                });
+        } else {
+            this.ClearStreaming();
+            alert('SkyBeje ScreenShare Extensionをインストールして下さい');
+        }
     }
 
 
@@ -428,56 +504,60 @@ export default class WebRTCService {
         this.AudioMute();
 
         if (videoSource || audioSource) {
-
-            let constraints = this.GetMediaTrackConstraints(videoSource, audioSource);
-
-            navigator.getUserMedia(constraints,
-                (stream) => {
-
-                    //  ストリーミング開始 / 設定変更
-                    this._localStream = stream;
-
-                    //  接続済みのクライアントに動画配信開始
-                    this._clients.forEach(conn => {
-
-                        if (this._existingCallList == null)
-                            this._existingCallList = new Array<PeerJs.MediaConnection>();
-
-                        this._existingCallList.push(this._peer.call(conn.peer, this._localStream));
-                    });
-
-                    //
-                    this._service.OnStreaming(true, true);
-
-                }, () => {
-
-                    //
-                    this._service.OnStreaming(false, false);
-
-                }
-            );
+            this.GetMediaStream(videoSource, audioSource, (stream) => {
+                this.StartStreaming(stream);
+            });
         }
         else {
-            this._localStream = null;
-
-            if (this._existingCallList) {
-                this._existingCallList.forEach(exc => {
-                    exc.close();
-                });
-                this._existingCallList = null;
-            }
+            this.ClearStreaming();
         }
-
     }
 
 
     /**
-     * 動画PreViewの停止
+     * スクリーンシェアの開始
      */
-    public static StopPreview() {
-        if (this._previewStream)
-            if (this._previewStream.getVideoTracks().length > 0)
-                this._previewStream.getVideoTracks()[0].stop();
+    public static SetScreenSheare() {
+        this.GetScreenShareMediaStream((stream) => {
+            this.StartStreaming(stream);
+        });
+    }
+
+
+    /**
+     * ストリーミングを開始します
+     * @param stream 
+     */
+    private static StartStreaming(stream) {
+        //  ストリーミング開始 / 設定変更
+        this._localStream = stream;
+
+        //  接続済みのクライアントに動画配信開始
+        this._clients.forEach(conn => {
+
+            if (this._existingCallList == null)
+                this._existingCallList = new Array<PeerJs.MediaConnection>();
+
+            this._existingCallList.push(this._peer.call(conn.peer, this._localStream));
+        });
+
+        //
+        this._service.OnStreaming(true, true);
+    }
+
+
+    /**
+     * 
+     */
+    private static ClearStreaming() {
+        this._localStream = null;
+
+        if (this._existingCallList) {
+            this._existingCallList.forEach(exc => {
+                exc.close();
+            });
+            this._existingCallList = null;
+        }
     }
 
 
