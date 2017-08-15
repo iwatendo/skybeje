@@ -382,20 +382,11 @@ export default class WebRTCService {
      * @param videoSource 
      */
     public static SetPreview(element: HTMLVideoElement, videoSource: string) {
-        this.GetMediaStream(videoSource, "", (stream) => {
-            this.StartPreview(element, stream);
-        });
-    }
-
-
-    /**
-     * スクリーンシェアのプレビュー設定
-     * @param element 
-     */
-    public static SetScreenSharePreview(element: HTMLVideoElement) {
-        this.GetScreenShareMediaStream((stream) => {
-            this.StartPreview(element, stream);
-        });
+        if (element) {
+            this.GetMediaStream(videoSource, "", (stream) => {
+                this.StartPreview(element, stream);
+            });
+        }
     }
 
 
@@ -461,24 +452,28 @@ export default class WebRTCService {
         return result;
     }
 
+
     /**
      * スクリーンシェアのメディアストリームを取得します。
      * 【注意】Skybejeの Chrome Extension がインストールされている必要があります。
+     * @param width 
+     * @param height 
+     * @param fr 
      * @param callback 
      */
-    public static GetScreenShareMediaStream(callback: OnGetMediaStream) {
+    public static GetScreenShareMediaStream(width: number, height: number, fr: number, callback: OnGetMediaStream) {
 
         if (!this._screenShare) {
             this._screenShare = new SkyWay.ScreenShare({ debug: true });
         }
 
-        let width = 100 as number;
-        let height = 100 as number;
-        let fr = 30 as number;
+        let sWidth = (width === 0 ? "" : width.toString());
+        let sHeight = (height === 0 ? "" : height.toString());
+        let sFrameRate = (fr === 0 ? "" : fr.toString());
 
         // スクリーンシェアを開始
         if (this._screenShare.isEnabledExtension()) {
-            this._screenShare.startScreenShare({ width, height, fr },
+            this._screenShare.startScreenShare({ Width: sWidth, Height: sHeight, FrameRate: sFrameRate },
                 (stream) => {
                     callback(stream);
                 }, (err: MediaStreamError) => {
@@ -488,7 +483,7 @@ export default class WebRTCService {
                 });
         } else {
             this.ClearStreaming();
-            alert('SkyBeje ScreenShare Extensionをインストールして下さい');
+            alert('スクリーンシェアを開始するためには SkyBeje ScreenShare Extension のインストールが必要です。');
         }
     }
 
@@ -516,10 +511,15 @@ export default class WebRTCService {
 
     /**
      * スクリーンシェアの開始
+     * @param width 
+     * @param height 
+     * @param fr 
+     * @param callback 
      */
-    public static SetScreenSheare() {
-        this.GetScreenShareMediaStream((stream) => {
+    public static SetScreenSheare(width: number, height: number, fr: number, callback) {
+        this.GetScreenShareMediaStream(width, height, fr, (stream) => {
             this.StartStreaming(stream);
+            callback();
         });
     }
 

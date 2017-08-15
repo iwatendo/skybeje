@@ -48,6 +48,10 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
                             <i className="material-icons">contacts</i>
                             ライブキャスト
                         </button>
+                        <button className="mdl-button mdl-button--colored" onClick={this.OnLiveCastScreenShare.bind(this)}>
+                            <i className="material-icons">screen_share</i>
+                            スクリーンシェア
+                        </button>
                         <button className="mdl-button mdl-button--colored" onClick={this.OnLiveCastMobileCkick.bind(this)}>
                             <i className="material-icons">android</i>
                             モバイル
@@ -69,7 +73,17 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
      */
     private OnLiveCastCkick(e) {
         let peerid = this.props.controller.PeerId;
-        this.props.controller.NotifyLivecast(peerid);
+        this.props.controller.NotifyBootLiveCast(peerid, false);
+    }
+
+
+    /**
+     * スクリーンシェアボタン押下処理
+     * @param e 
+     */
+    private OnLiveCastScreenShare(e) {
+        let peerid = this.props.controller.PeerId;
+        this.props.controller.NotifyBootLiveCast(peerid, true);
     }
 
 

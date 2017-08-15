@@ -71,12 +71,14 @@ export class CastSettingSender extends Sender {
     constructor() {
         super(CastSettingSender.ID);
         this.isStreaming = false;
+        this.isScreenShare = false;
         this.isControlClose = false;
         this.isControlHide = false;
         this.dispUserCursor = false;
         this.dispSubtitles = false;
     }
     isStreaming: boolean;
+    isScreenShare: boolean;
     isControlClose: boolean;
     isControlHide: boolean;
     dispSubtitles: boolean;

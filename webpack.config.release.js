@@ -11,6 +11,7 @@ module.exports = {
     homevisitor: './src/Page/HomeVisitor/Script.ts',
     castinstance: './src/Page/CastInstance/Script.ts',
     castinstancemobile: './src/Page/CastInstance/Script.ts',
+    castinstancescreenshare: './src/Page/CastInstanceScreenShare/Script.ts',
     castvisitor: './src/Page/CastVisitor/Script.ts',
     qrcode: './src/Page/QrCode/Script.ts',
   },

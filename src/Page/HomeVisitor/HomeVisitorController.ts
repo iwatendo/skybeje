@@ -51,7 +51,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public get CurrentAid(): string { return this._currentActor.aid; }
     public get CurrentActor(): Personal.Actor { return this._currentActor; }
     public CurrentHid: string;
-    public HasError : boolean;
+    public HasError: boolean;
 
     /**
      *
@@ -324,11 +324,14 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
 
     /**
-     * ダッシュボードへライブキャストの起動を通知
+     * ダッシュボードへライブキャスト／スクリーンシェアの起動通知
+     * @param peerid 
+     * @param isScreenShare 
      */
-    public NotifyLivecast(peerid: string) {
+    public NotifyBootLiveCast(peerid: string, isScreenShare: boolean) {
 
-        let element = window.parent.document.getElementById('sbj-main-home-livecast-id');
+        let elementName = (isScreenShare ? "sbj-main-home-livecast-screenshare-id" : "sbj-main-home-livecast-id");
+        let element = window.parent.document.getElementById(elementName);
         if (element) {
             element.textContent = peerid;
             element.click();
@@ -337,14 +340,24 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
 
     /**
-     * ダッシュボードへ、ライブキャストのハイド通知
+     * ダッシュボードへ、ライブキャスト／スクリーンシェアのハイド通知
      */
-    public NotifyLivecastHide() {
+    public NotifyHideLiveCast(isScreenShare: boolean) {
 
+        let elementName = (isScreenShare ? "sbj-main-home-livecast-screenshare-hide" : "sbj-main-home-livecast-hide");
         let element = window.parent.document.getElementById('sbj-main-home-livecast-hide');
         if (element) {
             element.click();
         }
+    }
+
+
+    /**
+     *　ダッシュボードへ、前回分のライブキャスト情報が残らないようにクリア情報を通知する
+     */
+    public NotifyClearLiveCast() {
+        this.NotifyBootLiveCast("", false);
+        this.NotifyBootLiveCast("", true);
     }
 
 };

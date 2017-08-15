@@ -23,6 +23,7 @@ export enum NaviEnum {
     Visitor = 8,
     Setting = 9,
     LiveCast = 10,
+    ScreenShare = 11,
 }
 
 enum DispEnum {
@@ -30,6 +31,7 @@ enum DispEnum {
     HomeInstance = 1,
     HomeVisitor = 2,
     LiveCast = 3,
+    ScreenShare = 4,
 }
 
 
@@ -76,6 +78,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         result.set(NaviEnum.Instance, document.getElementById('sbj-navi-home-instance'));
         result.set(NaviEnum.Visitor, document.getElementById('sbj-navi-home-visitor'));
         result.set(NaviEnum.LiveCast, document.getElementById('sbj-navi-home-livecast'));
+        result.set(NaviEnum.ScreenShare, document.getElementById('sbj-navi-home-screenshare'));
 
         return result;
     }
@@ -93,6 +96,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             (document.getElementById('sbj-main-home-livecast-frame') as HTMLFrameElement).src = "";
             (document.getElementById('sbj-main-home-visitor-frame') as HTMLFrameElement).src = "";
             (document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement).src = "";
+            (document.getElementById('sbj-main-home-screenshare-frame') as HTMLFrameElement).src = "";
         };
 
         //  ナビ変更時イベント
@@ -175,6 +179,18 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             this.DoNaviClick(NaviEnum.Visitor);
         };
 
+
+        //  スクリーンシェアの起動時処理
+        document.getElementById("sbj-main-home-livecast-screenshare-id").onclick = (e) => {
+            let peerid = this.GetScreenShareOwneerPeeId();
+            this.ChangeScreenShare(peerid);
+        };
+
+        //  スクリーンシェアのダイアログを非表示（選択ナビの変更）
+        document.getElementById("sbj-main-home-livecast-screenshare-hide").onclick = (e) => {
+            this.DoNaviClick(NaviEnum.Visitor);
+        };
+
     }
 
 
@@ -210,6 +226,15 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
     }
 
+    private GetScreenShareOwneerPeeId(): string {
+        let element = document.getElementById("sbj-main-home-livecast-screenshare-id") as HTMLInputElement;
+        if (element && element.textContent && element.textContent.length > 0) {
+            return element.textContent;
+        }
+        else {
+            return "";
+        }
+    }
 
     /**
      * ナビボタン押下時の画面切り替え処理
@@ -268,13 +293,28 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 }
 
                 break;
+
+            case NaviEnum.ScreenShare:
+
+                document.getElementById("sbj-navi-home-screenshare-disp").hidden = false;
+
+                title = "スクリーンシェア";
+                disp = DispEnum.ScreenShare;
+                this._naviView = new NotImplementView(mainElement);
+                {
+                    let frame = document.getElementById('sbj-main-home-screenshare-frame') as HTMLFrameElement;
+                    frame.contentDocument.getElementById('sbj-cast-instance-cancel').focus();
+                }
+
+                break;
         }
 
         document.getElementById('sbj-main').hidden = (disp !== DispEnum.Local);
         document.getElementById('sbj-header').hidden = (disp !== DispEnum.Local || navi === NaviEnum.Profile);
         document.getElementById('sbj-main-home-instance-frame').hidden = !(disp === DispEnum.HomeInstance);
-        document.getElementById('sbj-main-home-visitor-frame').hidden = !(disp === DispEnum.HomeVisitor || disp === DispEnum.LiveCast || navi === NaviEnum.Profile);
+        document.getElementById('sbj-main-home-visitor-frame').hidden = !(disp === DispEnum.HomeVisitor || disp === DispEnum.LiveCast || disp === DispEnum.ScreenShare || navi === NaviEnum.Profile);
         document.getElementById('sbj-main-home-livecast-frame').hidden = !(disp === DispEnum.LiveCast);
+        document.getElementById('sbj-main-home-screenshare-frame').hidden = !(disp === DispEnum.ScreenShare);
 
         this.DoNaviChange(navi, title);
     }
@@ -324,6 +364,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         if ((document.getElementById("sbj-main-home-instance-id") as HTMLInputElement).textContent) return true;
         if ((document.getElementById("sbj-main-home-visitor-id") as HTMLInputElement).textContent) return true;
         if ((document.getElementById("sbj-main-home-livecast-id") as HTMLInputElement).textContent) return true;
+        if ((document.getElementById("sbj-main-home-screenshare-id") as HTMLInputElement).textContent) return true;
         return false;
     }
 
@@ -436,5 +477,38 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
     }
 
+
+    /**
+     * 
+     * @param url 
+     */
+    public ChangeScreenShare(ownerPeerId: string) {
+
+        //  現在表示しているURLの取得
+        let frame = document.getElementById('sbj-main-home-screenshare-frame') as HTMLFrameElement;
+        let preUrl = frame.getAttribute('src');
+
+        if (!preUrl && !ownerPeerId) {
+            //  何も表示していない状態かつ、新しいページも開かない場合は何もしない
+            return;
+        }
+
+        //  PeerIDが未指定の場合は、フレームを非表示にする
+        let isRemove = (ownerPeerId == null || ownerPeerId.length === 0);
+        let newUrl = LinkUtil.CreateLink("../CastInstanceScreenShare/", ownerPeerId);
+
+        //  URLの変更があった場合のみページを書換える
+        if (preUrl !== newUrl) {
+            document.getElementById("sbj-navi-home-screenshare-disp").hidden = isRemove;
+            frame.onload = (e) => {
+                this.DoNaviClick(isRemove ? NaviEnum.Visitor : NaviEnum.ScreenShare);
+                frame.onload = null;
+            }
+            frame.src = (isRemove ? "" : newUrl);
+        }
+        else {
+            this.DoNaviClick(isRemove ? NaviEnum.Visitor : NaviEnum.ScreenShare);
+        }
+    }
 
 }

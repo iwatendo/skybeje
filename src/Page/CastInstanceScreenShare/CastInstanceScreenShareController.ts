@@ -5,24 +5,21 @@ import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 
-import CastInstanceModel from "./CastInstanceModel";
-import CastInstanceView from "./CastInstanceView";
-import { CastInstanceSender, CastSettingSender, CastCursorSender, CastRoomSender } from "./CastInstanceContainer";
-import { CastInstanceReceiver } from "./CastInstanceReceiver";
+import CastInstanceScreenShareModel from "./CastInstanceScreenShareModel";
+import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
+import { CastInstanceSender, CastSettingSender, CastCursorSender, CastRoomSender } from "../CastInstance/CastInstanceContainer";
+import { CastInstanceScreenShareReceiver } from "./CastInstanceScreenShareReceiver";
 
 
-export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
+export default class CastInstanceScreenShareController extends AbstractServiceController<CastInstanceScreenShareView, CastInstanceScreenShareModel> {
 
-    public ControllerName(): string { return "CastInstance"; }
+    public ControllerName(): string { return "CastInstanceScreenShare"; }
 
-    public View: CastInstanceView;
+    public View: CastInstanceScreenShareView;
 
     public CastInstance = new CastInstanceSender();
     public CastSetting = new CastSettingSender();
     public CastRoom = new CastRoomSender();
-
-    public AudioSource: string = null;
-    public VideoSource: string = null;
 
     public CursorCache: Map<string, CastCursorSender>;
 
@@ -31,14 +28,20 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     constructor() {
         super();
-        this.Receiver = new CastInstanceReceiver(this);
-        this.View = new CastInstanceView(this, () => { });
+        this.Receiver = new CastInstanceScreenShareReceiver(this);
+        this.View = new CastInstanceScreenShareView(this, () => { });
         this.CursorCache = new Map<string, CastCursorSender>();
+        this.CastSetting.isScreenShare = true;
     };
 
 
-    private _peerid: string = null;
-    private _isConnectOwner: boolean = false;
+    protected Initilize() {
+
+    }
+
+
+    protected _peerid: string = null;
+    protected _isConnectOwner: boolean = false;
 
 
     /**
@@ -82,7 +85,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     /**
      * ステージ情報通知用データを作成
      */
-    private SendStageService() {
+    protected SendStageService() {
 
         //  peeridの取得とオーナー接続が完了している場合
         //  オーナーにURLを通知する
@@ -128,13 +131,18 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     /**
      * ストリーミングの開始
      */
-    public SetStreaming() {
+    public SetStreaming(callback) {
+
+        let width = 640;
+        let height = 480;
+        let fr = 1;
 
         //
-        WebRTCService.SetStreaming(this.AudioSource, this.VideoSource);
-
-        //  オーナー 及び 接続クライアントに通知
-        this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
+        WebRTCService.SetScreenSheare(width, height, fr, () => {
+            //  オーナー 及び 接続クライアントに通知
+            this.ServerSend(true, false);
+            callback();
+        });
     }
 
 
@@ -149,7 +157,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
             return;
 
         this.CastSetting.isStreaming = isStreaming;
-        this.CastSetting.isScreenShare = false;
+        this.CastSetting.isScreenShare = true;
         this.CastSetting.isControlClose = isClose;
         this.CastSetting.isControlHide = false;
         this.SendCastInfo();
