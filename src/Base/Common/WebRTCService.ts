@@ -469,11 +469,19 @@ export default class WebRTCService {
 
         let sWidth = (width === 0 ? "" : width.toString());
         let sHeight = (height === 0 ? "" : height.toString());
-        let sFrameRate = (fr === 0 ? "" : fr.toString());
+        let sFrameRate = (fr === 0 ? "1" : fr.toString());
+        let option = {};
+
+        if (width === 0 || height === 0) {
+            option = { FrameRate: sFrameRate };
+        }
+        else {
+            option = { Width: sWidth, Height: sHeight, FrameRate: sFrameRate };
+        }
 
         // スクリーンシェアを開始
         if (this._screenShare.isEnabledExtension()) {
-            this._screenShare.startScreenShare({ Width: sWidth, Height: sHeight, FrameRate: sFrameRate },
+            this._screenShare.startScreenShare(option,
                 (stream) => {
                     callback(stream);
                 }, (err: MediaStreamError) => {

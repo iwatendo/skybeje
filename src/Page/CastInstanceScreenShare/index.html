@@ -58,6 +58,33 @@
                     <div>
                         <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
                     </div>
+
+                    <div id="sbj-screenshare-setting">
+                        <h6 class="mdl-color-text--grey-600">スクリーン解像度</h6>
+                        <div class="sbj-screenshare-resolution">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-1">
+                                <input type="radio" id="sbj-screenshare-option-1" class="mdl-radio__button" name="sbj-screenshare-option" value="1" checked>
+                                <span class="mdl-radio__label">640 ✕ 480</span>
+                            </label>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-2">
+                                <input type="radio" id="sbj-screenshare-option-2" class="mdl-radio__button" name="sbj-screenshare-option" value="2">
+                                <span class="mdl-radio__label">800 ✕ 600</span>
+                            </label>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-3">
+                                <input type="radio" id="sbj-screenshare-option-3" class="mdl-radio__button" name="sbj-screenshare-option" value="3">
+                                <span class="mdl-radio__label">1024 ✕ 768</span>
+                            </label>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-4">
+                                <input type="radio" id="sbj-screenshare-option-4" class="mdl-radio__button" name="sbj-screenshare-option" value="4">
+                                <span class="mdl-radio__label">画面サイズ</span>
+                            </label>
+                        </div>
+                        <div>
+                            <h6 class="mdl-color-text--grey-600">フレームレート</h6>
+                            <input id="sbj-screenshare-framerate" class="mdl-slider mdl-js-slider" type="range" min="0" max="60" step="5" value="15">
+                            <span id="sbj-screenshare-framerate-tip" class="mdl-tooltip" for="sbj-screenshare-framerate">15</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="sbj-split-right">
                     <div>

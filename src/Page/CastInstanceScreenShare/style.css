@@ -60,10 +60,9 @@
     width: calc(100% - 364px);
 }
 
-#video {
-    width: 400px;
-    height: 300px;
-    background-color: var(--sbj-color-edge-background);
+.sbj-screenshare-resolution{
+    margin: 24px;
+    width: 160px;
 }
 
 .sbj-dialog-close{

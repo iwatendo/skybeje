@@ -129,13 +129,13 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
 
 
     /**
-     * ストリーミングの開始
+     * ストリーミング開始
+     * @param width 
+     * @param height 
+     * @param fr 
+     * @param callback 
      */
-    public SetStreaming(callback) {
-
-        let width = 640;
-        let height = 480;
-        let fr = 1;
+    public SetStreaming(width: number, height: number, fr: number, callback) {
 
         //
         WebRTCService.SetScreenSheare(width, height, fr, () => {

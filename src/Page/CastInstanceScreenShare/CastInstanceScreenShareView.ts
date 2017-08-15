@@ -28,6 +28,12 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
+        let framerateRange = document.getElementById('sbj-screenshare-framerate') as HTMLInputElement;
+        let framerateTip = document.getElementById('sbj-screenshare-framerate-tip');
+        let option1 = document.getElementById('sbj-screenshare-option-1') as HTMLInputElement;
+        let option2 = document.getElementById('sbj-screenshare-option-2') as HTMLInputElement;
+        let option3 = document.getElementById('sbj-screenshare-option-3') as HTMLInputElement;
+        let option4 = document.getElementById('sbj-screenshare-option-4') as HTMLInputElement;
 
         //
         backpanel.onclick = (e: MouseEvent) => {
@@ -41,9 +47,33 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             this.Controller.CastSetting.isControlHide = false;
         }
 
+        framerateRange.onmousemove = (e) => {
+            framerateTip.textContent = framerateRange.value.toString();
+        }
+
+        framerateRange.onchange = (e) => {
+            framerateTip.textContent = framerateRange.value.toString();
+        }
+
         //  ストリーミング開始ボタン
         startButton.onclick = (e) => {
-            this.Controller.SetStreaming(()=>{
+
+            let option = 0;
+            let width = 0;
+            let height = 0;
+            if (option1.checked) { option = 1; width = 640; height = 480; }
+            if (option2.checked) { option = 2; width = 800; height = 600; }
+            if (option3.checked) { option = 3; width = 1024; height = 768; }
+            if (option4.checked) { option = 4; }
+            let fr = Number.parseInt(framerateRange.value);
+
+            LocalCache.SetScreenShareOptions((opt) => {
+                opt.Resolution = option;
+                opt.FrameRage = fr;
+            });
+
+            this.Controller.SetStreaming(width, height, fr, () => {
+                document.getElementById("sbj-screenshare-setting").hidden = true;
                 startButton.hidden = true;
                 stopButton.hidden = false;
                 accountCount.hidden = false;
@@ -70,20 +100,33 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             location.href = "";
         };
 
-        let options = LocalCache.LiveCastOptions;
+        let options = LocalCache.ScreenShareOptions;
 
         //  カーソル表示有無
         let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
         cursorDispElement.onchange = (e) => {
 
             let isCheced = cursorDispElement.checked;
-            LocalCache.SetLiveCastOptions((opt) => opt.IsIconCursor = isCheced);
+            LocalCache.SetScreenShareOptions((opt) => opt.IsIconCursor = isCheced);
 
             this.Controller.CastSetting.dispUserCursor = isCheced;
             this.Controller.SendCastInfo();
         };
+
+
+        //  初期値設定
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
+
+        if (options.FrameRage && options.Resolution) {
+            framerateRange.value = LocalCache.ScreenShareOptions.FrameRage.toString();
+            switch (LocalCache.ScreenShareOptions.Resolution) {
+                case 1: option1.checked = true; break;
+                case 2: option2.checked = true; break;
+                case 3: option3.checked = true; break;
+                case 4: option4.checked = true; break;
+            }
+        }
 
         callback();
     }

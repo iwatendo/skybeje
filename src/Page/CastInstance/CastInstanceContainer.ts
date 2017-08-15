@@ -8,10 +8,19 @@ import ActorInfo from "../../Base/Container/ActorInfo";
  * ライブキャスト時のオプション設定
  */
 export class LiveCastOptions {
-
     SelectMic: string;
     SelectCam: string;
     IsSpeechRecognition: boolean;
+    IsIconCursor: boolean;
+}
+
+
+/**
+ * スクリーンシェアオプション設定
+ */
+export class ScreenShareOptions {
+    Resolution: number;
+    FrameRage: number;
     IsIconCursor: boolean;
 }
 

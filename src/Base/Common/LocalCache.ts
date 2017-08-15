@@ -1,8 +1,9 @@
 ﻿
-import { LiveCastOptions } from "../../Page/CastInstance/CastInstanceContainer";
+import { LiveCastOptions, ScreenShareOptions } from "../../Page/CastInstance/CastInstanceContainer";
 import StdUtil from "../Util/StdUtil";
 
-export interface OnSetOptions { (option: LiveCastOptions): void };
+export interface OnSetLiveCastOptions { (option: LiveCastOptions): void };
+export interface OnSetScreenShareOptions { (option: ScreenShareOptions): void };
 
 /**
  * ローカルストレージに対するデータ操作を行います。
@@ -58,17 +59,32 @@ export default class LocalCache {
 
 
     /**
-     *  ライブキャスト時のオプション設定
+     *  ライブキャストのオプション設定
      */
     public static get LiveCastOptions(): LiveCastOptions {
         let value = localStorage.getItem('live-cast-options');
         return (value ? JSON.parse(value) as LiveCastOptions : new LiveCastOptions());
     }
-    public static SetLiveCastOptions(setoptions: OnSetOptions) {
+    public static SetLiveCastOptions(setoptions: OnSetLiveCastOptions) {
         let options = this.LiveCastOptions;
         setoptions(options);
         localStorage.setItem('live-cast-options', JSON.stringify(options));
     }
+
+
+    /**
+     *  スクリーンシェアのオプション設定
+     */
+    public static get ScreenShareOptions(): ScreenShareOptions {
+        let value = localStorage.getItem('screen-share-options');
+        return (value ? JSON.parse(value) as ScreenShareOptions : new ScreenShareOptions());
+    }
+    public static SetScreenShareOptions(setoptions: OnSetScreenShareOptions) {
+        let options = this.ScreenShareOptions;
+        setoptions(options);
+        localStorage.setItem('screen-share-options', JSON.stringify(options));
+    }
+
 
     /**
      * チャット時のEnterの振舞い設定

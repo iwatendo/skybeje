@@ -31,10 +31,16 @@ export class CastSelectorItemComponent extends React.Component<TimelineMsgItemPr
         let imgclassName = "sbj-cast-selector-img sbj-icon-img-" + servant.ownerIid + (this.props.isSelect ? " mdl-shadow--4dp" : "");
         this.props.controller.IconCache.GetIcon(servant.ownerPeerid, servant.ownerIid);
 
-        let mobileMark = (<div></div>);
+        let castMark = (<div></div>);
         if (servant.instanceUrl.indexOf('mobile') > 0) {
-            mobileMark = (
-                <i className="sbj-cast-selector-mobile-mark material-icons">android</i>
+            castMark = (
+                <i className="sbj-cast-selector-cast-mark material-icons">android</i>
+            );
+        }
+
+        if (servant.instanceUrl.indexOf('screenshare') > 0) {
+            castMark = (
+                <i className="sbj-cast-selector-cast-mark material-icons">screen_share</i>
             );
         }
 
@@ -45,7 +51,7 @@ export class CastSelectorItemComponent extends React.Component<TimelineMsgItemPr
                 </div>
                 <div className="sbj-cast-selector-img-box" onClick={this.OnSelect.bind(this)}>
                     <div className={imgclassName}>
-                        {mobileMark}
+                        {castMark}
                     </div>
                 </div>
             </div>
