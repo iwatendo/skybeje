@@ -35,6 +35,16 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let option2 = document.getElementById('sbj-screenshare-option-2') as HTMLInputElement;
         let option3 = document.getElementById('sbj-screenshare-option-3') as HTMLInputElement;
 
+        let mainElement = document.getElementById('sbj-cast-instance-main');
+        let noExtElement = document.getElementById('sbj-cast-instance-main-no-extension');
+
+        window.onload = () => {
+            if (!WebRTCService.IsEnabledExtension()) {
+                mainElement.hidden = true;
+                noExtElement.hidden = false;
+            }
+        }
+
         //
         backpanel.onclick = (e: MouseEvent) => {
             let targetClassName = (e.target as any).className;
@@ -100,7 +110,6 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             location.href = "";
         };
 
-        let options = LocalCache.ScreenShareOptions;
 
         //  カーソル表示有無
         let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
@@ -115,10 +124,12 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
 
 
         //  初期値設定
-        cursorDispElement.checked = options.IsIconCursor;
-        this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
+        let options = LocalCache.ScreenShareOptions;
+        if (options) {
 
-        if (options.FrameRage && options.Resolution) {
+            cursorDispElement.checked = options.IsIconCursor;
+            this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
+
             framerateRange.value = LocalCache.ScreenShareOptions.FrameRage.toString();
             switch (LocalCache.ScreenShareOptions.Resolution) {
                 case 0: option0.checked = true; break;

@@ -38,11 +38,11 @@
 }
 
 #sbj-cast-instance-start{
-    margin: 24px 0px 16px 0px;
+    margin: 32px 0px 16px 0px;
 }
 
 #sbj-cast-instance-stop{
-    margin: 0px;
+    margin: 32px 0px 16px 0px;
 }
 
 .sbj-cast-instance-option{

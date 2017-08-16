@@ -454,6 +454,16 @@ export default class WebRTCService {
 
 
     /**
+     * Skybeje Screen Share Extensionのインストール有無確認
+     */
+    public static IsEnabledExtension(): boolean {
+        if (!this._screenShare) {
+            this._screenShare = new SkyWay.ScreenShare({ debug: true });
+        }
+        return this._screenShare.isEnabledExtension();
+    }
+
+    /**
      * スクリーンシェアのメディアストリームを取得します。
      * 【注意】Skybejeの Chrome Extension がインストールされている必要があります。
      * @param width 
@@ -467,20 +477,21 @@ export default class WebRTCService {
             this._screenShare = new SkyWay.ScreenShare({ debug: true });
         }
 
-        let sWidth = (width === 0 ? "" : width.toString());
-        let sHeight = (height === 0 ? "" : height.toString());
-        let sFrameRate = (fr === 0 ? "1" : fr.toString());
-        let option = {};
-
-        if (width === 0 || height === 0) {
-            option = { FrameRate: sFrameRate };
-        }
-        else {
-            option = { Width: sWidth, Height: sHeight, FrameRate: sFrameRate };
-        }
-
         // スクリーンシェアを開始
         if (this._screenShare.isEnabledExtension()) {
+
+            let sWidth = (width === 0 ? "" : width.toString());
+            let sHeight = (height === 0 ? "" : height.toString());
+            let sFrameRate = (fr === 0 ? "1" : fr.toString());
+            let option = {};
+
+            if (width === 0 || height === 0) {
+                option = { FrameRate: sFrameRate };
+            }
+            else {
+                option = { Width: sWidth, Height: sHeight, FrameRate: sFrameRate };
+            }
+
             this._screenShare.startScreenShare(option,
                 (stream) => {
                     callback(stream);
