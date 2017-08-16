@@ -130,8 +130,8 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             cursorDispElement.checked = options.IsIconCursor;
             this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
-            framerateRange.value = LocalCache.ScreenShareOptions.FrameRage.toString();
-            switch (LocalCache.ScreenShareOptions.Resolution) {
+            framerateRange.value = options.FrameRage.toString();
+            switch (options.Resolution) {
                 case 0: option0.checked = true; break;
                 case 1: option1.checked = true; break;
                 case 2: option2.checked = true; break;
