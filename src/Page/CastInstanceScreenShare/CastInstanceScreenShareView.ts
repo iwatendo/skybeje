@@ -30,10 +30,10 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let framerateRange = document.getElementById('sbj-screenshare-framerate') as HTMLInputElement;
         let framerateTip = document.getElementById('sbj-screenshare-framerate-tip');
+        let option0 = document.getElementById('sbj-screenshare-option-0') as HTMLInputElement;
         let option1 = document.getElementById('sbj-screenshare-option-1') as HTMLInputElement;
         let option2 = document.getElementById('sbj-screenshare-option-2') as HTMLInputElement;
         let option3 = document.getElementById('sbj-screenshare-option-3') as HTMLInputElement;
-        let option4 = document.getElementById('sbj-screenshare-option-4') as HTMLInputElement;
 
         //
         backpanel.onclick = (e: MouseEvent) => {
@@ -61,10 +61,10 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             let option = 0;
             let width = 0;
             let height = 0;
+            if (option0.checked) { option = 0; }
             if (option1.checked) { option = 1; width = 640; height = 480; }
             if (option2.checked) { option = 2; width = 800; height = 600; }
             if (option3.checked) { option = 3; width = 1024; height = 768; }
-            if (option4.checked) { option = 4; }
             let fr = Number.parseInt(framerateRange.value);
 
             LocalCache.SetScreenShareOptions((opt) => {
@@ -121,10 +121,10 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         if (options.FrameRage && options.Resolution) {
             framerateRange.value = LocalCache.ScreenShareOptions.FrameRage.toString();
             switch (LocalCache.ScreenShareOptions.Resolution) {
+                case 0: option0.checked = true; break;
                 case 1: option1.checked = true; break;
                 case 2: option2.checked = true; break;
                 case 3: option3.checked = true; break;
-                case 4: option4.checked = true; break;
             }
         }
 

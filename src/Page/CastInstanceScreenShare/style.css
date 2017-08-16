@@ -38,7 +38,7 @@
 }
 
 #sbj-cast-instance-start{
-    margin: 0px 0px 16px 0px;
+    margin: 24px 0px 16px 0px;
 }
 
 #sbj-cast-instance-stop{
@@ -63,6 +63,10 @@
 .sbj-screenshare-resolution{
     margin: 24px;
     width: 160px;
+}
+
+.sbj-screenshare-note{
+    padding: 8px 32px;
 }
 
 .sbj-dialog-close{
