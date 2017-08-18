@@ -167,6 +167,14 @@ export default class WebRTCService {
                     this.existingCall.close();
                 }
 
+                call.on('error', (e) => {
+                    service.OnStreamingError(e);
+                });
+
+                call.on('close', () => {
+                    service.OnStreamingClose();
+                })
+
                 call.on('stream', (stream) => {
                     video.onplay = (e) => {
                         service.OnStreamingPlay();
@@ -561,7 +569,7 @@ export default class WebRTCService {
         });
 
         //
-        this._service.OnStreaming(true, true);
+        this._service.OnStartStreaming();
     }
 
 

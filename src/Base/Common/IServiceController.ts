@@ -4,7 +4,7 @@
 export interface IServiceController {
 
     //  PeerIDの取得
-    ControllerName() : string;
+    ControllerName(): string;
 
     //  自身のPeer生成時イベント
     OnPeerOpen(peer: PeerJs.Peer);
@@ -33,11 +33,17 @@ export interface IServiceController {
     //  子Peerからの接続解除時のイベント
     OnChildClose(conn: PeerJs.DataConnection);
 
-    //  ストリーミング開始時・終了時イベント
-    OnStreaming(isSucceed: boolean, isStreaming: boolean);
+    //  ストリーミング開始イベント
+    OnStartStreaming();
 
     //  ストリーミング再生開始
     OnStreamingPlay();
+
+    //  応答したストリーミングのエラー
+    OnStreamingError(err: Error);
+
+    //  応答したストリーミングの終了時イベント
+    OnStreamingClose();
 
     //  データ取得時イベント
     Recv(conn: PeerJs.DataConnection, recv);

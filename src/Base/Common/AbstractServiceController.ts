@@ -143,19 +143,8 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param isSucceed
      * @param isStreaming
      */
-    public OnStreaming(isSucceed: boolean, isStreaming: boolean) {
+    public OnStartStreaming() {
 
-        if (isSucceed) {
-            if (isStreaming) {
-                LogUtil.Info(this, "streaming start");
-            }
-            else {
-                LogUtil.Info(this, "streaming stop");
-            }
-        }
-        else {
-            LogUtil.Error(this,"streaming error");
-        }
     }
 
 
@@ -165,6 +154,25 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
     public OnStreamingPlay() {
 
     }
+
+
+    /**
+     * ストリーミングエラー
+     * @param e 
+     */
+    public OnStreamingError(err: Error) {
+        this.LogError('streaming error', err);
+    }
+
+
+    /**
+     * ストリーミング終了時イベント
+     * @param e 
+     */
+    public OnStreamingClose() {
+        LogUtil.Info(this, "streaming close");
+    }
+
 
     /**
      * データ取得時イベント
