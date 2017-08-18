@@ -69,6 +69,8 @@ export class CursorController {
     private _ownerAidElement = document.getElementById('aid') as HTMLInputElement;
     private _ownerIidElement = document.getElementById('iid') as HTMLInputElement;
 
+    private _homePeerId : string;
+
 
     /**
      * 初期化処理
@@ -109,6 +111,11 @@ export class CursorController {
         window.onbeforeunload = (ev) => {
             //  接続が切れた場合、カーソルを非表示にする
             this.CastCursorSend(this._video, itemDivElement, -1, -1);
+        }
+
+        this._homePeerId = this._ownerPeerIdElement.textContent;
+        this._ownerPeerIdElement.onchange = (e)=>{
+            this._homePeerId = this._ownerPeerIdElement.textContent;
         }
     }
 
@@ -262,6 +269,10 @@ export class CursorController {
      */
     private CastCursorSend(video: HTMLVideoElement, cursorpost: HTMLElement, clientX: number, clientY: number) {
 
+        if (!this._homePeerId) {
+            return;
+        }
+
         //  座標オフセットの取得
         let vdo = this.GetVideoDispOffset(video);
 
@@ -271,7 +282,7 @@ export class CursorController {
 
 
         let sender = new CastCursorSender();
-        sender.homePeerId = this._ownerPeerIdElement.textContent;
+        sender.homePeerId = this._homePeerId;
         sender.castPeerId = WebRTCService.PeerId();
         sender.aid = this._ownerAidElement.textContent;
         sender.iid = this._ownerIidElement.textContent;
