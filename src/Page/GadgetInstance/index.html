@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <title>SkyBeje</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <script src='/lib/peer.js'></script>
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="/lib/split-pane.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='style.css?v={version}' />
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+
+    <div class="sbj-gadget-instance" id="sbj-gadget-instance">
+
+        <div id="sbj-gadget-instance-layout" class="sbj-gadget-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+
+            <header class="sbj-gadget-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+                <div class="sbj-gadget-instance--header-row mdl-layout__header-row">
+
+                    <span id="sbj-gadget-instance-title" class="mdl-layout-title">
+                        ガジェットキャスト
+                    </span>
+
+                    <div id="sbj-gadget-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
+
+                    <div class="mdl-layout-spacer"></div>
+
+                    <button id="sbj-gadget-instance-cancel" class="mdl-button mdl-js-button mdl-button--raised sbj-dialog-close" type="button">
+                        <i class="material-icons">close</i>
+                    </button>
+
+                </div>
+            </header>
+
+            <main id="sbj-gadget-instance-main" class="mdl-layout__content">
+                <div class="sbj-split-left mdl-color-text--grey-600">
+
+                    <div>
+                        <h6 class="mdl-color-text--grey-600">配信</h6>
+                    </div>
+
+                    <div>
+                        <button id="sbj-gadget-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
+                            <i class="material-icons">play_arrow</i>
+                            &nbsp;ガジェットキャストの開始&nbsp;
+                        </button>
+
+                        <button id="sbj-gadget-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                            <i class="material-icons">stop</i>
+                            &nbsp;ガジェットキャストの停止&nbsp;
+                        </button>
+                    </div>
+
+                    <div>
+                        <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
+                    </div>
+
+                </div>
+                <div class="sbj-split-right">
+                    <h6 class="mdl-color-text--grey-600">プレビュー</h6>
+                    <!-- PreView -->
+                    <div class="mdl-list__item-primary-content">
+                        <video id='video' autoplay="true"></video>
+                    </div>
+                    <div>
+                        <label class="sbj-gadget-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="cursor_disp">
+                            <input type="checkbox" id="cursor_disp" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">接続ユーザーのカーソル表示許可</span>
+                        </label>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
+    <script src="bundle.js?v={version}"></script>
+
+</body>
+
+</html>

@@ -13,6 +13,7 @@ module.exports = {
     castinstancemobile: './src/Page/CastInstance/Script.ts',
     castinstancescreenshare: './src/Page/CastInstanceScreenShare/Script.ts',
     castvisitor: './src/Page/CastVisitor/Script.ts',
+    gadgetinstance: './src/Page/GadgetInstance/Script.ts',
     qrcode: './src/Page/QrCode/Script.ts',
   },
   output: {
