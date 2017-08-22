@@ -5,6 +5,7 @@ import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import IconCursorSender  from "../../Base/Container/IconCursorSender";
+import CursorCache from "../../Base/Common/CursorCache";
 
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
@@ -21,7 +22,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
     public GadgetInstance = new GadgetInstanceSender();
     public CastSetting = new CastSettingSender();
     public CastRoom = new CastRoomSender();
-    public CursorCache: Map<string, IconCursorSender>;
+    public CursorCache: CursorCache;
 
     /**
      *
@@ -30,7 +31,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
         super();
         this.Receiver = new GadgetInstanceReceiver(this);
         this.View = new GadgetInstanceView(this, () => { });
-        this.CursorCache = new Map<string, IconCursorSender>();
+        this.CursorCache = new CursorCache();
     };
 
 
@@ -103,8 +104,8 @@ export default class GadgetInstanceController extends AbstractServiceController<
         super.OnChildConnection(conn);
 
         //  配置済みカーソルの通知
-        this.CursorCache.forEach((value, key) => {
-            WebRTCService.SendTo(conn, value);
+        this.CursorCache.forEach((cursor) => {
+            WebRTCService.SendTo(conn, cursor);
         });
 
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
@@ -118,7 +119,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
-        this.RemoveCursorCache(conn.peer);
+        this.CursorCache.Remove(conn.peer);
     }
     
 
@@ -152,35 +153,6 @@ export default class GadgetInstanceController extends AbstractServiceController<
         if (this.GadgetInstance) {
             this.GadgetInstance.setting = this.CastSetting;
             WebRTCService.SendToOwner(this.GadgetInstance);
-        }
-    }
-
-
-    /**
-     * カーソル配置のキャッシュ
-     * @param cursor
-     */
-    public SetCursorCache(cursor: IconCursorSender) {
-
-        let peerid = cursor.visitorPeerId;
-        if (cursor.posRx >= 0 && cursor.posRy >= 0) {
-            this.CursorCache.set(peerid, cursor);
-        }
-        else {
-            if (this.CursorCache.has(peerid)) {
-                this.CursorCache.delete(peerid);
-            }
-        }
-    }
-
-
-    /**
-     * ピアの切断等によるカーソルの削除
-     * @param peerid 
-     */
-    public RemoveCursorCache(peerid: string) {
-        if (this.CursorCache.has(peerid)) {
-            this.CursorCache.delete(peerid);
         }
     }
 

@@ -24,7 +24,7 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
         if (sender.type === IconCursorSender.ID) {
             if (this.Controller.CastSetting.dispUserCursor) {
                 let cursor = sender as IconCursorSender;
-                this.Controller.SetCursorCache(cursor);
+                this.Controller.CursorCache.Set(cursor);
                 WebRTCService.SendAll(sender);
             }
         }
