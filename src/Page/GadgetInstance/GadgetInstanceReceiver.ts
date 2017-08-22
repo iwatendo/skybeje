@@ -7,7 +7,8 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 
 import GadgetInstanceController from "./GadgetInstanceController";
-import { CastCursorSender, GetCastInfoSedner, CastSettingSender, CastRoomSender } from "./GadgetInstanceContainer";
+import { IconCursorSender } from "../IconCursor/IconCursorContainer";
+import { GetCastInfoSedner, CastSettingSender, CastRoomSender } from "./GadgetInstanceContainer";
 import GadgetInstanceView from "./GadgetInstanceView";
 
 
@@ -20,9 +21,9 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
         //  カーソル表示
-        if (sender.type === CastCursorSender.ID) {
+        if (sender.type === IconCursorSender.ID) {
             if (this.Controller.CastSetting.dispUserCursor) {
-                let cursor = sender as CastCursorSender;
+                let cursor = sender as IconCursorSender;
                 this.Controller.SetCursorCache(cursor);
                 WebRTCService.SendAll(sender);
             }

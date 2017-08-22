@@ -7,7 +7,8 @@ import LogUtil from "../../Base/Util/LogUtil";
 
 import CastInstanceScreenShareModel from "./CastInstanceScreenShareModel";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
-import { CastInstanceSender, CastSettingSender, CastCursorSender, CastRoomSender } from "../CastInstance/CastInstanceContainer";
+import { IconCursorSender } from "../IconCursor/IconCursorContainer";
+import { CastInstanceSender, CastSettingSender, CastRoomSender } from "../CastInstance/CastInstanceContainer";
 import { CastInstanceScreenShareReceiver } from "./CastInstanceScreenShareReceiver";
 
 
@@ -21,7 +22,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
     public CastSetting = new CastSettingSender();
     public CastRoom = new CastRoomSender();
 
-    public CursorCache: Map<string, CastCursorSender>;
+    public CursorCache: Map<string, IconCursorSender>;
 
     /**
      *
@@ -30,7 +31,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
         super();
         this.Receiver = new CastInstanceScreenShareReceiver(this);
         this.View = new CastInstanceScreenShareView(this, () => { });
-        this.CursorCache = new Map<string, CastCursorSender>();
+        this.CursorCache = new Map<string, IconCursorSender>();
         this.CastSetting.isScreenShare = true;
     };
 
@@ -184,9 +185,9 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
      * カーソル配置のキャッシュ
      * @param cursor
      */
-    public SetCursorCache(cursor: CastCursorSender) {
+    public SetCursorCache(cursor: IconCursorSender) {
 
-        let peerid = cursor.castPeerId;
+        let peerid = cursor.visitorPeerId;
         if (cursor.posRx >= 0 && cursor.posRy >= 0) {
             this.CursorCache.set(peerid, cursor);
         }

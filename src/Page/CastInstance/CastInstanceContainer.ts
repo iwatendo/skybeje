@@ -101,37 +101,6 @@ export class CastSettingSender extends Sender {
 
 
 /**
- * 
- */
-export class CastCursorSender extends Sender {
-
-    public static ID = "CastCursor";
-
-    constructor() {
-        super(CastCursorSender.ID)
-        this.castPeerId = "";
-        this.homePeerId = "";
-        this.aid = "";
-        this.iid = "";
-        this.posRx = 0;
-        this.posRy = 0;
-    }
-
-    /** CastVisitorのPeerID */
-    castPeerId: string;
-    /**
-     * CastVisitorを表示している、親のHomeVisitorのPeerID
-     * カーソルのアイコン画像をリクエストする時に使用
-     */
-    homePeerId: string;
-    aid: string;
-    iid: string;
-    posRx: number;
-    posRy: number;
-}
-
-
-/**
  *  音声認識からのメッセージ
  */
 export class CastSpeechRecognitionSender extends Sender {

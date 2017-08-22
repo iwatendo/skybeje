@@ -7,7 +7,8 @@ import LogUtil from "../../Base/Util/LogUtil";
 
 import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
-import { CastInstanceSender, CastSettingSender, CastCursorSender, CastRoomSender } from "./CastInstanceContainer";
+import { IconCursorSender } from "../IconCursor/IconCursorContainer";
+import { CastInstanceSender, CastSettingSender, CastRoomSender } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 
 
@@ -24,7 +25,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public AudioSource: string = null;
     public VideoSource: string = null;
 
-    public CursorCache: Map<string, CastCursorSender>;
+    public CursorCache: Map<string, IconCursorSender>;
 
     /**
      *
@@ -33,7 +34,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         super();
         this.Receiver = new CastInstanceReceiver(this);
         this.View = new CastInstanceView(this, () => { });
-        this.CursorCache = new Map<string, CastCursorSender>();
+        this.CursorCache = new Map<string, IconCursorSender>();
     };
 
 
@@ -176,9 +177,9 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      * カーソル配置のキャッシュ
      * @param cursor
      */
-    public SetCursorCache(cursor: CastCursorSender) {
+    public SetCursorCache(cursor: IconCursorSender) {
 
-        let peerid = cursor.castPeerId;
+        let peerid = cursor.visitorPeerId;
         if (cursor.posRx >= 0 && cursor.posRy >= 0) {
             this.CursorCache.set(peerid, cursor);
         }

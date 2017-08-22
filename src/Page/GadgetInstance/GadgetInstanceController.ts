@@ -7,7 +7,8 @@ import LogUtil from "../../Base/Util/LogUtil";
 
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
-import { GadgetInstanceSender, CastSettingSender, CastCursorSender, CastRoomSender } from "./GadgetInstanceContainer";
+import { IconCursorSender } from "../IconCursor/IconCursorContainer";
+import { GadgetInstanceSender, CastSettingSender, CastRoomSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
 
 
@@ -20,7 +21,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
     public GadgetInstance = new GadgetInstanceSender();
     public CastSetting = new CastSettingSender();
     public CastRoom = new CastRoomSender();
-    public CursorCache: Map<string, CastCursorSender>;
+    public CursorCache: Map<string, IconCursorSender>;
 
     /**
      *
@@ -29,7 +30,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
         super();
         this.Receiver = new GadgetInstanceReceiver(this);
         this.View = new GadgetInstanceView(this, () => { });
-        this.CursorCache = new Map<string, CastCursorSender>();
+        this.CursorCache = new Map<string, IconCursorSender>();
     };
 
 
@@ -159,9 +160,9 @@ export default class GadgetInstanceController extends AbstractServiceController<
      * カーソル配置のキャッシュ
      * @param cursor
      */
-    public SetCursorCache(cursor: CastCursorSender) {
+    public SetCursorCache(cursor: IconCursorSender) {
 
-        let peerid = cursor.castPeerId;
+        let peerid = cursor.visitorPeerId;
         if (cursor.posRx >= 0 && cursor.posRy >= 0) {
             this.CursorCache.set(peerid, cursor);
         }

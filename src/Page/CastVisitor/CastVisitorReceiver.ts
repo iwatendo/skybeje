@@ -8,6 +8,8 @@ import { CastVisitorView } from "./CastVisitorView";
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as HVContainer from "../HomeVisitor/HomeVisitorContainer";
 import * as CIContainer from "../CastInstance/CastInstanceContainer";
+import { IconCursorSender } from "../IconCursor/IconCursorContainer";
+
 
 
 export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorController> {
@@ -19,8 +21,8 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
     public Receive(conn: PeerJs.DataConnection, sender: Sender){
 
         //  カーソル表示
-        if (sender.type === CIContainer.CastCursorSender.ID) {
-            this.Controller.View.Cursor.SetCursor(sender as CIContainer.CastCursorSender);
+        if (sender.type === IconCursorSender.ID) {
+            this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
         }
 
         //  キャスト情報の通知
