@@ -7,7 +7,7 @@ import * as Personal from "../../Base/IndexedDB/Personal";
 import { CastVisitorView } from "./CastVisitorView";
 import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
-import { GetCastInfoSedner } from "../CastInstance/CastInstanceContainer";
+import { GetCastSettingSedner } from "../CastInstance/CastInstanceContainer";
 
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
@@ -44,7 +44,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnOwnerConnection() {
 
         //  キャスト情報の要求
-        WebRTCService.SendToOwner(new GetCastInfoSedner());
+        WebRTCService.SendToOwner(new GetCastSettingSedner());
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.initializeCursor();

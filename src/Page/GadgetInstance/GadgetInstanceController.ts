@@ -10,7 +10,7 @@ import CursorCache from "../../Base/Common/CursorCache";
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
-import { GadgetInstanceSender, CastSettingSender } from "./GadgetInstanceContainer";
+import { GadgetInstanceSender, GadgetCastSettingSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
 
 
@@ -21,7 +21,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
     public View: GadgetInstanceView;
 
     public GadgetInstance = new GadgetInstanceSender();
-    public CastSetting = new CastSettingSender();
+    public CastSetting = new GadgetCastSettingSender();
     public CastRoom = new RoomSender();
     public CursorCache: CursorCache;
 
@@ -90,7 +90,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
             this.GadgetInstance = new GadgetInstanceSender();
             this.GadgetInstance.setting = this.CastSetting;
             this.GadgetInstance.instanceUrl = location.href;
-            this.GadgetInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
+            this.GadgetInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this._peerid);
 
             WebRTCService.SendToOwner(this.GadgetInstance);
         }
@@ -130,12 +130,11 @@ export default class GadgetInstanceController extends AbstractServiceController<
      * @param isHide 
      */
     public ServerSend(isStreaming: boolean, isClose: boolean) {
-
+        
         if (!isClose && this.CastSetting.isStreaming == isStreaming)
             return;
 
         this.CastSetting.isStreaming = isStreaming;
-        this.CastSetting.isScreenShare = false;
         this.CastSetting.isControlClose = isClose;
         this.CastSetting.isControlHide = false;
         this.SendCastInfo();

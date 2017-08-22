@@ -9,7 +9,7 @@ import DeviceUtil from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import GadgetInstanceController from "./GadgetInstanceController";
-import { CastSettingSender } from "./GadgetInstanceContainer";
+import { GadgetCastSettingSender } from "./GadgetInstanceContainer";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 

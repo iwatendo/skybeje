@@ -1,5 +1,4 @@
 ﻿
-import { LiveCastOptions, ScreenShareOptions } from "../../Page/CastInstance/CastInstanceContainer";
 import StdUtil from "../Util/StdUtil";
 
 export interface OnSetLiveCastOptions { (option: LiveCastOptions): void };
@@ -109,4 +108,30 @@ export default class LocalCache {
         return (value ? Number.parseInt(value) : 0);
     }
 
+}
+
+
+/**
+ * オプション設定の保持：ライブキャスト
+ */
+export class LiveCastOptions {
+    SelectMic: string;
+    SelectCam: string;
+    IsSpeechRecognition: boolean;
+    IsIconCursor: boolean;
+}
+
+
+/**
+ * オプション設定の保持：スクリーンシェア
+ */
+export class ScreenShareOptions {
+    constructor() {
+        this.FrameRage = 15;
+        this.Resolution = 1;
+        this.IsIconCursor = false;
+    }
+    Resolution: number;
+    FrameRage: number;
+    IsIconCursor: boolean;
 }

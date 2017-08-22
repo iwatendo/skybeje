@@ -9,7 +9,7 @@ import IconCursorSender from "../../Base/Container/IconCursorSender";
 
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import CastInstanceController from "./CastInstanceController";
-import { GetCastInfoSedner, CastSettingSender } from "./CastInstanceContainer";
+import { GetCastSettingSedner, CastSettingSender } from "./CastInstanceContainer";
 import CastInstanceView from "./CastInstanceView";
 
 
@@ -36,7 +36,7 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
         }
 
         //  キャスト情報の送信
-        if (sender.type === GetCastInfoSedner.ID) {
+        if (sender.type === GetCastSettingSedner.ID) {
             WebRTCService.SendTo(conn, this.Controller.CastSetting);
         }
 

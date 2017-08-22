@@ -1,37 +1,9 @@
-import * as Home from "../../Base/IndexedDB/Home";
-
 import Sender from "../../Base/Container/Sender";
-import ActorInfo from "../../Base/Container/ActorInfo";
-
-
-/**
- * ライブキャスト時のオプション設定
- */
-export class LiveCastOptions {
-    SelectMic: string;
-    SelectCam: string;
-    IsSpeechRecognition: boolean;
-    IsIconCursor: boolean;
-}
-
-
-/**
- * スクリーンシェアオプション設定
- */
-export class ScreenShareOptions {
-    constructor() {
-        this.FrameRage = 15;
-        this.Resolution = 1;
-        this.IsIconCursor = false;
-    }
-    Resolution: number;
-    FrameRage: number;
-    IsIconCursor: boolean;
-}
 
 
 /**
  *  ライブキャストの起動通知 及び 設定変更通知
+ *  CastInstance の起動元クライアント (HomeVisitor) へ通知
  */
 export class CastInstanceSender extends Sender {
 
@@ -49,20 +21,22 @@ export class CastInstanceSender extends Sender {
 
 
 /**
- * 
+ * ライブキャストの設定要求
+ * キャスト表示クライアント(CastVisitor)起動時に、キャスト元(CastInstance)へ設定を要求する為のSender
  */
-export class GetCastInfoSedner extends Sender {
+export class GetCastSettingSedner extends Sender {
 
     public static ID = "GetCastInfo";
 
     constructor() {
-        super(GetCastInfoSedner.ID);
+        super(GetCastSettingSedner.ID);
     }
 }
 
 
 /**
- * 
+ * ライブキャストの設定通知
+ * キャスト表示クライアント(CastVisitor)起動時に、キャスト元(CastInstance)へ設定を通知する為のSender
  */
 export class CastSettingSender extends Sender {
 

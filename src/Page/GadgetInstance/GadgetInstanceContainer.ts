@@ -20,24 +20,24 @@ export class GadgetInstanceSender extends Sender {
 
     constructor() {
         super(GadgetInstanceSender.ID)
-        this.setting = new CastSettingSender();
+        this.setting = new GadgetCastSettingSender();
     }
 
     instanceUrl: string;
     clientUrl: string;
-    setting: CastSettingSender;
+    setting: GadgetCastSettingSender;
 }
 
 
 /**
  * 
  */
-export class GetCastInfoSedner extends Sender {
+export class GetGadgetCastInfoSedner extends Sender {
 
-    public static ID = "GetCastInfo";
+    public static ID = "GetGadgetCastInfo";
 
     constructor() {
-        super(GetCastInfoSedner.ID);
+        super(GetGadgetCastInfoSedner.ID);
     }
 }
 
@@ -45,23 +45,21 @@ export class GetCastInfoSedner extends Sender {
 /**
  * 
  */
-export class CastSettingSender extends Sender {
+export class GadgetCastSettingSender extends Sender {
 
-    public static ID = "CastSetting";
+    public static ID = "GadgetCastSetting";
 
     constructor() {
-        super(CastSettingSender.ID);
+        super(GadgetCastSettingSender.ID);
         this.isStreaming = false;
-        this.isScreenShare = false;
+        
         this.isControlClose = false;
         this.isControlHide = false;
         this.dispUserCursor = false;
-        this.dispSubtitles = false;
     }
     isStreaming: boolean;
-    isScreenShare: boolean;
+    
     isControlClose: boolean;
     isControlHide: boolean;
-    dispSubtitles: boolean;
     dispUserCursor: boolean;
 }
