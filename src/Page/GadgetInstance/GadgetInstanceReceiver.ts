@@ -7,8 +7,9 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 import IconCursorSender  from "../../Base/Container/IconCursorSender";
 
+import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceController from "./GadgetInstanceController";
-import { GetCastInfoSedner, CastSettingSender, CastRoomSender } from "./GadgetInstanceContainer";
+import { GetCastInfoSedner, CastSettingSender } from "./GadgetInstanceContainer";
 import GadgetInstanceView from "./GadgetInstanceView";
 
 
@@ -29,8 +30,8 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
             }
         }
 
-        if (sender.type === CastRoomSender.ID) {
-            this.Controller.CastRoom = sender as CastRoomSender;
+        if (sender.type === RoomSender.ID) {
+            this.Controller.CastRoom = sender as RoomSender;
             this.Controller.View.SetRoom(this.Controller.CastRoom.room);
         }
 

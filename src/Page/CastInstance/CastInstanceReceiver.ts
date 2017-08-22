@@ -5,10 +5,11 @@ import * as Personal from "../../Base/IndexedDB/Personal";
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
-import IconCursorSender  from "../../Base/Container/IconCursorSender";
+import IconCursorSender from "../../Base/Container/IconCursorSender";
 
+import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import CastInstanceController from "./CastInstanceController";
-import { GetCastInfoSedner, CastSettingSender, CastRoomSender } from "./CastInstanceContainer";
+import { GetCastInfoSedner, CastSettingSender } from "./CastInstanceContainer";
 import CastInstanceView from "./CastInstanceView";
 
 
@@ -29,8 +30,8 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
             }
         }
 
-        if (sender.type === CastRoomSender.ID) {
-            this.Controller.CastRoom = sender as CastRoomSender;
+        if (sender.type === RoomSender.ID) {
+            this.Controller.CastRoom = sender as RoomSender;
             this.Controller.View.SetRoom(this.Controller.CastRoom.room);
         }
 

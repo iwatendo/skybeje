@@ -6,10 +6,11 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import CursorCache from "../../Base/Common/CursorCache";
 
-import IconCursorSender  from "../../Base/Container/IconCursorSender";
+import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
+import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceScreenShareModel from "./CastInstanceScreenShareModel";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
-import { CastInstanceSender, CastSettingSender, CastRoomSender } from "../CastInstance/CastInstanceContainer";
+import { CastInstanceSender, CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastInstanceScreenShareReceiver } from "./CastInstanceScreenShareReceiver";
 
 
@@ -21,7 +22,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
 
     public CastInstance = new CastInstanceSender();
     public CastSetting = new CastSettingSender();
-    public CastRoom = new CastRoomSender();
+    public CastRoom = new RoomSender();
 
     public CursorCache: CursorCache;
 

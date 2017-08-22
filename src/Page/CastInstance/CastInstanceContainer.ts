@@ -49,20 +49,6 @@ export class CastInstanceSender extends Sender {
 
 
 /**
- * ライブキャストをルーム情報
- */
-export class CastRoomSender extends Sender {
-    public static ID = "CastRoom";
-
-    constructor() {
-        super(CastRoomSender.ID)
-    }
-
-    room: Home.Room;
-}
-
-
-/**
  * 
  */
 export class GetCastInfoSedner extends Sender {

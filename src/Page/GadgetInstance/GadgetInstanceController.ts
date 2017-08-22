@@ -7,9 +7,10 @@ import LogUtil from "../../Base/Util/LogUtil";
 import IconCursorSender  from "../../Base/Container/IconCursorSender";
 import CursorCache from "../../Base/Common/CursorCache";
 
+import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
-import { GadgetInstanceSender, CastSettingSender, CastRoomSender } from "./GadgetInstanceContainer";
+import { GadgetInstanceSender, CastSettingSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
 
 
@@ -21,7 +22,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
 
     public GadgetInstance = new GadgetInstanceSender();
     public CastSetting = new CastSettingSender();
-    public CastRoom = new CastRoomSender();
+    public CastRoom = new RoomSender();
     public CursorCache: CursorCache;
 
     /**

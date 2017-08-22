@@ -203,7 +203,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let hid = servantSender.hid;
 
             let castroom = this.Controller.RoomCache.Get(hid, (room) => {
-                let castSender = new CIContainer.CastRoomSender();
+                let castSender = new HIContainer.RoomSender();
                 castSender.room = room;
                 WebRTCService.SendTo(conn, castSender);
             })

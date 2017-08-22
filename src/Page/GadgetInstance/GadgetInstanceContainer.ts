@@ -30,20 +30,6 @@ export class GadgetInstanceSender extends Sender {
 
 
 /**
- * ガジェットキャストをルーム情報
- */
-export class CastRoomSender extends Sender {
-    public static ID = "CastRoom";
-
-    constructor() {
-        super(CastRoomSender.ID)
-    }
-
-    room: Home.Room;
-}
-
-
-/**
  * 
  */
 export class GetCastInfoSedner extends Sender {

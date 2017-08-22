@@ -6,10 +6,11 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import CursorCache from "../../Base/Common/CursorCache";
 
+import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
-import { CastInstanceSender, CastSettingSender, CastRoomSender } from "./CastInstanceContainer";
+import { CastInstanceSender, CastSettingSender } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 
 
@@ -21,7 +22,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
     public CastInstance = new CastInstanceSender();
     public CastSetting = new CastSettingSender();
-    public CastRoom = new CastRoomSender();
+    public CastRoom = new RoomSender();
 
     public AudioSource: string = null;
     public VideoSource: string = null;
