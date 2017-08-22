@@ -1,6 +1,6 @@
 
 import HomeVisitorController from "../HomeVisitorController";
-import { CastInstanceSender } from "../../CastInstance/CastInstanceContainer";
+import CastInstanceSender from "../../../Base/Container/CastInstanceSender";
 import { ServantSender, RoomServantSender } from "../../HomeInstance/HomeInstanceContainer";
 
 interface OnGetServantSender { (sender: ServantSender): void }

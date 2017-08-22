@@ -6,11 +6,12 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import IconCursorSender  from "../../Base/Container/IconCursorSender";
 import CursorCache from "../../Base/Common/CursorCache";
+import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
-import { GadgetInstanceSender, GadgetCastSettingSender } from "./GadgetInstanceContainer";
+import { GadgetCastSettingSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
 
 
@@ -20,7 +21,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
 
     public View: GadgetInstanceView;
 
-    public GadgetInstance = new GadgetInstanceSender();
+    public CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
     public CastSetting = new GadgetCastSettingSender();
     public CastRoom = new RoomSender();
     public CursorCache: CursorCache;
@@ -87,12 +88,11 @@ export default class GadgetInstanceController extends AbstractServiceController<
         //  オーナーにURLを通知する
         if (this._isConnectOwner && this._peerid) {
 
-            this.GadgetInstance = new GadgetInstanceSender();
-            this.GadgetInstance.setting = this.CastSetting;
-            this.GadgetInstance.instanceUrl = location.href;
-            this.GadgetInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this._peerid);
+            this.CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
+            this.CastInstance.instanceUrl = location.href;
+            this.CastInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this._peerid);
 
-            WebRTCService.SendToOwner(this.GadgetInstance);
+            WebRTCService.SendToOwner(this.CastInstance);
         }
     }
 
@@ -131,12 +131,12 @@ export default class GadgetInstanceController extends AbstractServiceController<
      */
     public ServerSend(isStreaming: boolean, isClose: boolean) {
         
-        if (!isClose && this.CastSetting.isStreaming == isStreaming)
+        if (!isClose && this.CastInstance.isCasting == isStreaming)
             return;
 
-        this.CastSetting.isStreaming = isStreaming;
-        this.CastSetting.isControlClose = isClose;
-        this.CastSetting.isControlHide = false;
+        this.CastInstance.isCasting = isStreaming;
+        this.CastInstance.isClose = isClose;
+        this.CastInstance.isHide = false;
         this.SendCastInfo();
     }
 
@@ -150,9 +150,8 @@ export default class GadgetInstanceController extends AbstractServiceController<
         WebRTCService.SendAll(this.CastSetting);
 
         //  オーナー側への通知
-        if (this.GadgetInstance) {
-            this.GadgetInstance.setting = this.CastSetting;
-            WebRTCService.SendToOwner(this.GadgetInstance);
+        if (this.CastInstance) {
+            WebRTCService.SendToOwner(this.CastInstance);
         }
     }
 

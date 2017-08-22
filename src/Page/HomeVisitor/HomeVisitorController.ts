@@ -11,6 +11,7 @@ import LogUtil from "../../Base/Util/LogUtil";
 import ActorInfo from "../../Base/Container/ActorInfo";
 import { OnRead } from "../../Base/Common/AbstractServiceModel";
 import { Order } from "../../Base/Container/Order";
+import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 import { GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServantCloseSender } from "../HomeInstance/HomeInstanceContainer";
 import TimelineCache from "./Cache/TimelineCache";
@@ -24,7 +25,6 @@ import HomeVisitorModel from "./HomeVisitorModel";
 import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
 import LogController from "./Log/LogController";
-import { CastTypeEnum } from "../CastInstance/CastInstanceContainer";
 
 
 /**

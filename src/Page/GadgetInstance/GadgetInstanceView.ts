@@ -40,7 +40,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         };
 
         window.onfocus = (ev) => {
-            this.Controller.CastSetting.isControlHide = false;
+            this.Controller.CastInstance.isHide = false;
         }
 
         //  キャンセルボタン押下時
@@ -105,10 +105,10 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      */
     public Close() {
         //  ストリーミング中の場合は表示を切替える
-        this.Controller.CastSetting.isControlHide = this.Controller.CastSetting.isStreaming;
+        this.Controller.CastInstance.isHide = this.Controller.CastInstance.isCasting;
 
         //  ストリーミングしていない場合、フレームを閉じる
-        this.Controller.CastSetting.isControlClose = !this.Controller.CastSetting.isStreaming;
+        this.Controller.CastInstance.isClose = !this.Controller.CastInstance.isCasting;
         this.Controller.SendCastInfo();
     }
 

@@ -5,12 +5,13 @@ import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import CursorCache from "../../Base/Common/CursorCache";
+import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceScreenShareModel from "./CastInstanceScreenShareModel";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
-import { CastInstanceSender, CastSettingSender, CastTypeEnum } from "../CastInstance/CastInstanceContainer";
+import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastInstanceScreenShareReceiver } from "./CastInstanceScreenShareReceiver";
 
 

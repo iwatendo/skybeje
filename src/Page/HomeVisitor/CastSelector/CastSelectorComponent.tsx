@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import { DialogMode } from "../../../Base/Common/AbstractDialogController";
+import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";
@@ -10,7 +11,6 @@ import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanc
 import MobileDialog from "../Mobile/MobileDialog";
 import { CastSelectorItemComponent } from "./CastSelectorItemComponent";
 import CastSelectorController from "./CastSelectorController";
-import { CastTypeEnum } from "../../CastInstance/CastInstanceContainer";
 
 
 /**

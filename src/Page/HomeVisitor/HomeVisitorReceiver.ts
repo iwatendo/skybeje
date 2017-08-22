@@ -4,6 +4,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 
 import * as Personal from "../../Base/IndexedDB/Personal";
+import CastInstanceSender from "../../Base/Container/CastInstanceSender";
 
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as HVContainer from "./HomeVisitorContainer";
@@ -111,8 +112,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  ライブキャストからの、起動通知 及び 設定変更通知
-        if (sender.type === CIContainer.CastInstanceSender.ID) {
-            this.SendCastInstance(conn, sender as CIContainer.CastInstanceSender);
+        if (sender.type === CastInstanceSender.ID) {
+            this.SendCastInstance(conn, sender as CastInstanceSender);
         }
 
         //  サーバント（ライブキャストを含む）の変更通知
@@ -183,7 +184,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      * @param servantPid 
      * @param cib 
      */
-    private SendCastInstance(conn: PeerJs.DataConnection, cib: CIContainer.CastInstanceSender) {
+    private SendCastInstance(conn: PeerJs.DataConnection, cib: CastInstanceSender) {
 
         let servantPid = conn.peer;
 
