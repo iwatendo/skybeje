@@ -188,7 +188,7 @@ export class ServantSender extends Sender {
         this.hid = "";
         this.clientUrl = "";
         this.instanceUrl = "";
-        this.isStreaming = false;
+        this.isCasting = false;
     }
 
     public servantPeerId: string;
@@ -205,7 +205,11 @@ export class ServantSender extends Sender {
 
     public instanceUrl: string;
 
-    public isStreaming: boolean;
+    /**
+     * 配信有無
+     * インスタンスが起動していても、以下のフラグがTrueになっていない場合配信されない事に注意
+     */
+    public isCasting: boolean;
 }
 
 

@@ -138,7 +138,7 @@ export default class ServantManager {
 
         this._peerServantMap.forEach((sslist, peerid) => {
             sslist.forEach((ss) => {
-                if (ss.hid === hid && ss.isStreaming) {
+                if (ss.hid === hid && ss.isCasting) {
                     result.servants.push(ss);
                 }
             });

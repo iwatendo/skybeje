@@ -147,12 +147,12 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public ServerSend(isStreaming: boolean, isClose: boolean) {
 
-        if (!isClose && this.CastInstance.isStreaming == isStreaming)
+        if (!isClose && this.CastInstance.isCasting == isStreaming)
             return;
 
-        this.CastInstance.isStreaming = isStreaming;
+        this.CastInstance.isCasting = isStreaming;
         this.CastInstance.isClose = isClose;
-        this.CastInstance.islHide = false;
+        this.CastInstance.isHide = false;
         this.SendCastInfo();
     }
 

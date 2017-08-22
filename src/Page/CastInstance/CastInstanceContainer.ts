@@ -22,17 +22,42 @@ export class CastInstanceSender extends Sender {
     constructor(type: CastTypeEnum) {
         super(CastInstanceSender.ID)
         this.castType = type;
-        this.isStreaming = false;
+        this.isCasting = false;
         this.isClose = false;
-        this.islHide = false;
+        this.isHide = false;
     }
 
+    /**
+     * 配信している種類
+     */
     castType: CastTypeEnum;
+
+    /**
+     * 配信元のURL
+     */
     instanceUrl: string;
+
+    /**
+     * 配信元に接続する為のクライアントURL
+     */
     clientUrl: string;
-    isStreaming: boolean;
+
+    /**
+     * 配信有無（クライアントの起動可否）
+     * ※False時、配信元インスタンスは起動状態ですが、クライアントは接続されません。
+     */
+    isCasting: boolean;
+
+    /**
+     * 終了通知
+     */
     isClose: boolean;
-    islHide: boolean;
+
+    /**
+     * Hide通知
+     * ※ダッシュボードの画面遷移用
+     */
+    isHide: boolean;
 }
 
 

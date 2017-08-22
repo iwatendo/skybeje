@@ -192,7 +192,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             //  ダッシュボード側のフレームを閉じる
             this.Controller.NotifyBootLiveCast("", cib.castType);
         }
-        else if (cib.islHide) {
+        else if (cib.isHide) {
             //  ダッシュボード側からフレームをハイド状態にする
             this.Controller.NotifyHideLiveCast(cib.castType);
         }

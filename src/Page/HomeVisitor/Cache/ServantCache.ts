@@ -35,7 +35,7 @@ export default class ServantCache {
 
         if (cache.has(servantPid)) {
             let servant = cache.get(servantPid);
-            servant.isStreaming = cib.isStreaming;
+            servant.isCasting = cib.isCasting;
             callback(servant);
         }
         else {
@@ -53,7 +53,7 @@ export default class ServantCache {
                     servant.hid = room.hid;
                     servant.clientUrl = cib.clientUrl;
                     servant.instanceUrl = cib.instanceUrl;
-                    servant.isStreaming = cib.isStreaming;
+                    servant.isCasting = cib.isCasting;
                     callback(servant);
 
                     cache.set(servantPid, servant);
