@@ -6,24 +6,18 @@ import * as JQuery from "jquery";
 import StdUtil from "./StdUtil";
 import Sender from "../Container/Sender";
 import * as Youtube from "../../../node_modules/youtube";
+import LogUtil from "./LogUtil";
+import { Guide } from "../IndexedDB/Personal";
 
 interface OnYouTube { (player: YT.Player): void }
 
-
-export class Guide extends Sender {
-
-    constructor() {
-        super("Guide");
-    }
-
-    guideid: number = 0;
-    key: string = "";
-    value: string = "";
-    visible: boolean = true;
-    isYouTube: boolean = false;
-    start_time: number = 0;
-    end_time: number = 0;
-    loop: boolean = false;
+export class YouTubeOption {
+    id: string;
+    title: string;
+    loop: boolean;
+    start: number;
+    end: number;
+    last: number;
 }
 
 
@@ -53,45 +47,55 @@ export default class YouTubeUtil {
 
 
     /**
-     * YouTubeの埋込URLに変換します
-     * @param id
-     * @param isInputMode
+     * YouTubeのURLを取得します
+     * @param id 
      */
-    public static ToEmbedYouTubeID(guide: Guide, isInputMode: boolean): string {
-
-        if (guide === null || !guide.isYouTube)
-            return "";
-
-        let id = guide.value;
-
+    public static ToEmbedYouTubeURL(id: string) {
         if (id != null && id.length >= 0) {
-
-            let url = "";
-
-            url += "https://www.youtube.com/embed/" + id;
-            url += "?autoplay=" + (isInputMode ? "1" : "0");
-            url += "&rel=0";
-
-            if (isInputMode) {
-                if (guide.start_time >= 0) {
-                    url += "&start=" + guide.start_time;
-                }
-
-                if (guide.end_time >= 0) {
-                    url += "&end=" + guide.end_time;
-                }
-
-                if (guide.loop) {
-                    url += "&loop=1&playlist=" + id;
-                }
-            }
-
-            return url;
+            return "https://www.youtube.com/embed/" + id;
         }
         else {
             return "";
         }
+    }
 
+
+    /**
+     * YouTubeの埋込URLに変換します
+     * @param guide
+     * @param isAutoPlay
+     */
+    public static ToEmbedYouTubeUrlOpt(guide: Guide, isAutoPlay: boolean): string {
+
+        let result: string;
+
+        if (guide !== null && guide.url) {
+
+            result = guide.url;
+            result += "?autoplay=" + (isAutoPlay ? "1" : "0");
+            result += "&rel=0";
+
+            let option = JSON.parse(guide.embedstatus) as YouTubeOption;
+
+            let id = option.id;
+            let loop = option.loop;
+            let start = option.start;
+            let end = option.end;
+
+            if (start) {
+                result += "&start=" + start;
+            }
+
+            if (end) {
+                result += "&end=" + end;
+            }
+
+            if (id && loop) {
+                result += "&loop=1&playlist=" + id;
+            }
+        }
+
+        return result;
     }
 
 
@@ -107,11 +111,21 @@ export default class YouTubeUtil {
 
         if (this.IsAPIReady) {
             this.CreatePlayer();
+            LogUtil.Info(null, "GetPlayer-2");
         }
         else {
+
+            document.getElementById("sbj-youtube-api-ready").onclick = (e) => {
+                YouTubeUtil.IsAPIReady = true;
+                YouTubeUtil.CreatePlayer();
+            }
+
             let tag = document.createElement('script');
             tag.src = "https://www.youtube.com/iframe_api";
-            let firstScriptTag = document.getElementsByTagName('script')[0];
+
+            let scriptTag = document.getElementsByTagName('script');
+
+            let firstScriptTag = scriptTag[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
     }
@@ -134,7 +148,7 @@ export default class YouTubeUtil {
             height: 0,
             width: 0,
             videoId: YouTubeUtil.VideoID,
-            events:{ 
+            events: {
                 onReady: (event: YT.PlayerEvent) => {
                     if (YouTubeUtil.Callback) {
                         YouTubeUtil.Callback((event as any).target);
@@ -147,9 +161,4 @@ export default class YouTubeUtil {
 
     }
 
-}
-
-function onYouTubeIframeAPIReady() {
-    YouTubeUtil.IsAPIReady = true;
-    YouTubeUtil.CreatePlayer();
 }

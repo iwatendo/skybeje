@@ -1,8 +1,14 @@
-﻿
-import * as Personal from "../../Base/IndexedDB/Personal";
+﻿import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-import StdUtil from "../../Base/Util/StdUtil";
-import FileUtil from "../../Base/Util/FileUtil";
+import * as Personal from "../../../Base/IndexedDB/Personal";
+
+import StdUtil from "../../../Base/Util/StdUtil";
+import FileUtil from "../../../Base/Util/FileUtil";
+import YouTubeUtil, { YouTubeOption } from "../../../Base/Util/YouTubeUtil";
+import LogUtil from "../../../Base/Util/LogUtil";
+import NoEmbedComponent from "./NoEmbed/NoEmbedComponent";
+import YouTubeComponent from "./YouTube/YouTubeComponent";
 
 interface OnDropGuide { (owner: GuideDialogController, file: File, src): void }
 interface OnChangeGuide { (guideRec: Personal.Guide): void }
@@ -24,7 +30,7 @@ export default class GuideDialogController {
     private _guideCancelButton = document.getElementById('sbj-guide-cancel') as HTMLInputElement;
     private _guideKeywordElement = document.getElementById("sbj-gaide-keyword") as HTMLInputElement;
     private _guideNoteElement = document.getElementById("sbj-gaide-note") as HTMLInputElement;
-
+    private _guideGadgetElement = document.getElementById('sbj-guide-gadget') as HTMLInputElement;
 
     /**
      * 
@@ -98,6 +104,21 @@ export default class GuideDialogController {
             this._guideView.focus();
         };
 
+        //  ドロップ時イベント
+        this._guideView.ondrop = (event: DragEvent) => {
+            event.preventDefault();
+
+            var items = event.dataTransfer.items;
+
+            var i = 0;
+            for (i = 0; i < items.length; i++) {
+                var item = items[i];
+                if (item.type == "text/uri-list") {
+                    item.getAsString((url) => { this.DropUrl(this._guide, url); });
+                }
+            }
+        };
+
         this._guideKeywordElement.oninput = () => { this.SetDoneDisabled(); }
         this._guideNoteElement.oninput = () => { this.SetDoneDisabled(); }
 
@@ -106,8 +127,6 @@ export default class GuideDialogController {
         this._guideDeleteButton.onclick = (() => this.Delete());
         this._guideDialogCloseButton.onclick = (() => this.Close());
         this._guideCancelButton.onclick = (() => this.Close());
-
-
     }
 
 
@@ -144,19 +163,9 @@ export default class GuideDialogController {
      */
     private Close() {
         if (this._dialog && this._dialog.open) {
+            this.ClearEmbedItem();
             this._dialog.close();
         }
-    }
-
-
-    /**
-     * ガイドドロップ時イベント
-     * @param file
-     * @param src
-     */
-    private OnDropGuide(owner: GuideDialogController, file: File, src) {
-        let rec = owner.CreateGuideRec(src);
-        owner.SetGuide(rec);
     }
 
 
@@ -209,7 +218,7 @@ export default class GuideDialogController {
             guide = new Personal.Guide();
         }
 
-        this._guide = guide;
+        this._guide = StdUtil.DeepCopy(guide);
 
         {
             let options = (document.getElementsByName("sbj-gaide-match-options"));
@@ -235,6 +244,7 @@ export default class GuideDialogController {
         this._guideKeywordElement.value = guide.keyword;
         this._guideNoteElement.value = guide.note;
 
+        this.DisplayEmbedItem(guide);
         this.SetDoneDisabled();
     }
 
@@ -259,5 +269,65 @@ export default class GuideDialogController {
         return result;
     }
 
+
+    /**
+     * URLのドロップ時処理
+     * @param url
+     */
+    public DropUrl(guide: Personal.Guide, url: string) {
+
+        let tubeId = YouTubeUtil.GetYouTubeID(url);
+
+        if (tubeId.length === 0)
+            return;
+
+        //  動画情報を取得する
+        YouTubeUtil.GetPlayer(tubeId, (player) => {
+
+            var vd = (player as any).getVideoData();
+
+            if (vd) {
+                let option = new YouTubeOption();
+                option.id = tubeId;
+                option.title = vd.title;
+                option.last = player.getDuration();
+                option.start = 0;
+                option.end = option.last;
+                option.loop = false;
+                guide.url = YouTubeUtil.ToEmbedYouTubeURL(tubeId);
+                guide.embedstatus = JSON.stringify(option);
+
+                this.ClearEmbedItem();
+                this.DisplayEmbedItem(guide);
+            }
+        });
+    }
+
+
+    /**
+     * 組込アイテムのクリア
+     * @param guide 
+     */
+    public ClearEmbedItem() {
+        this.DisplayEmbedItem(new Personal.Guide());
+    }
+
+
+    /**
+     * 組込アイテムの表示
+     * @param guide 
+     */
+    private DisplayEmbedItem(guide: Personal.Guide) {
+
+        let element = document.getElementById('sbj-guide-gadget');
+
+        if (guide.url.indexOf("www.youtube.com/embed/") >= 0) {
+            ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element);
+        }
+        else {
+            ReactDOM.render(<NoEmbedComponent controller={this} />, element);
+        }
+
+    }
 
 }

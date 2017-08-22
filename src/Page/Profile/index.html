@@ -12,7 +12,13 @@
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='../common.dialog.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
+    <script src='/Lib/jquery-2.2.3.min.js'></script>
     <script src="/lib/material.min.js"></script>
+    <script>
+        function onYouTubeIframeAPIReady() {
+            document.getElementById('sbj-youtube-api-ready').click();
+        }
+    </script>
 </head>
 
 <body>
@@ -99,7 +105,7 @@
                             <div class="sbj-profile-sub-list" id="sbj-profile-guides-list">
                                 <!-- React -->
                             </div>
-                            <div>
+                        <div>
                     </section>
                     <section class="mdl-layout__tab-panel" id="sbj-profile-gadget">
                         <div class="sbj-profile-page-content">
@@ -237,47 +243,52 @@
                 </div>
 
                 <div id="sbj-guide-main" class="sbj-guide-main mdl-card--expand">
-                    <div class="mdl-card__subtitle-text">
-                        <h5 class="sbj-guide-header-label">
-                            キーワードに反応して<br/>
-                            ガイドメッセージを出力します<br/>
-                            <br/>
-                        </h5>
+
+                    <div class="sbj-guide-embed-left">
+                        <div id="sbj-guide-keywaord-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="sbj-gaide-keyword" spellcheck=false maxlength="16" autofocus></input>
+                            <label class="mdl-textfield__label" for="sbj-gaide-keyword">キーワード</label>
+                            <span class="mdl-tooltip" for="sbj-gaide-keyword">このキーワードに反応して、メッセージや動画を再生します</span>
+                        </div>
+                        <div class="sbj-guide-options">
+                            <span>比較：</span>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-match-options-0">
+                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-match-options" id="sbj-gaide-match-options-0"  value="0" checked>
+                                <span class="mdl-radio__label">部分一致</span>
+                            </label>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-match-options-1">
+                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-match-options" id="sbj-gaide-match-options-1" value="1">
+                                <span class="mdl-radio__label">完全一致</span>
+                            </label>
+                        </div>
+                        <div class="sbj-guide-options">
+                            <span>対象：</span>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-0">
+                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-0" value="0" checked>
+                                <span class="mdl-radio__label">全員</span>
+                            </label>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-1">
+                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-1" value="1">
+                                <span class="mdl-radio__label">自分のみ</span>
+                            </label>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-2">
+                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-2" value="2">
+                                <span class="mdl-radio__label">自分以外</span>
+                            </label>
+                        </div>
                     </div>
-                    <div id="sbj-guide-keywaord-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="sbj-gaide-keyword" spellcheck=false maxlength="16" autofocus></input>
-                        <label class="mdl-textfield__label" for="sbj-guide-name">キーワード</label>
+                    <div class="sbj-guide-embed-right">
+                        <div id="sbj-guide-note-field" class="sbj-guide-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <textarea class="mdl-textfield__input" type="text" rows="5" id="sbj-gaide-note" spellcheck=false maxlength="2048"></textarea>
+                            <label class="mdl-textfield__label" for="sbj-guide-note">ガイドメッセージ</label>
+                        </div>
                     </div>
-                    <div id="sbj-guide-note-field" class="sbj-guide-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-gaide-note" spellcheck=false maxlength="2048"></textarea>
-                        <label class="mdl-textfield__label" for="sbj-guide-note">ガイドメッセージ</label>
+                    <div class="sbj-guide-gadget mdl-card mdl-shadow--3dp" id="sbj-guide-gadget">
+                        <!-- -->
                     </div>
-                    <div class="sbj-guide-options">
-                        <span>文字列の比較：</span>
-                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-match-options-0">
-                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-match-options" id="sbj-gaide-match-options-0"  value="0" checked>
-                            <span class="mdl-radio__label">部分一致</span>
-                        </label>
-                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-match-options-1">
-                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-match-options" id="sbj-gaide-match-options-1" value="1">
-                            <span class="mdl-radio__label">完全一致</span>
-                        </label>
-                    </div>
-                    <div class="sbj-guide-options">
-                        <span>チェック対象：</span>
-                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-0">
-                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-0" value="0" checked>
-                            <span class="mdl-radio__label">全員</span>
-                        </label>
-                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-1">
-                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-1" value="1">
-                            <span class="mdl-radio__label">自分のみ</span>
-                        </label>
-                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-2">
-                            <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-2" value="2">
-                            <span class="mdl-radio__label">自分以外</span>
-                        </label>
-                    </div>
+
+                    <div id="youtube-player" hidden></div>
+                    <input type="text" id="sbj-youtube-api-ready" hidden/>
                 </div>
 
                 <!-- 下部ボタン郡 -->
