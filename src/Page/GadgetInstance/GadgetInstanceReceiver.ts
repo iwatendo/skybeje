@@ -5,9 +5,9 @@ import * as Personal from "../../Base/IndexedDB/Personal";
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
+import IconCursorSender  from "../../Base/Container/IconCursorSender";
 
 import GadgetInstanceController from "./GadgetInstanceController";
-import { IconCursorSender } from "../IconCursor/IconCursorContainer";
 import { GetCastInfoSedner, CastSettingSender, CastRoomSender } from "./GadgetInstanceContainer";
 import GadgetInstanceView from "./GadgetInstanceView";
 

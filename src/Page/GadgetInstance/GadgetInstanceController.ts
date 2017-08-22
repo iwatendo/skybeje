@@ -4,10 +4,10 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
+import IconCursorSender  from "../../Base/Container/IconCursorSender";
 
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
-import { IconCursorSender } from "../IconCursor/IconCursorContainer";
 import { GadgetInstanceSender, CastSettingSender, CastRoomSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
 

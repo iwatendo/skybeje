@@ -1,10 +1,10 @@
 
-import Sender from "../../Base/Container/Sender";
+import Sender from "./Sender";
 
 /**
  * 
  */
-export class IconCursorSender extends Sender {
+export default class IconCursorSender extends Sender {
 
     public static ID = "IconCursor";
 

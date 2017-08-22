@@ -5,7 +5,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import CastVisitorController from "./CastVisitorController";
-import { IconCursorSender } from "../IconCursor/IconCursorContainer";
+import IconCursorSender  from "../../Base/Container/IconCursorSender";
 import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastCursor, CursorController } from "./Cursor/CurosrController";
 import { Icon } from "../../Base/IndexedDB/Personal";

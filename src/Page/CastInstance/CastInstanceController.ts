@@ -5,9 +5,9 @@ import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 
+import IconCursorSender  from "../../Base/Container/IconCursorSender";
 import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
-import { IconCursorSender } from "../IconCursor/IconCursorContainer";
 import { CastInstanceSender, CastSettingSender, CastRoomSender } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 

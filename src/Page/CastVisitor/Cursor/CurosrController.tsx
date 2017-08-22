@@ -2,7 +2,7 @@
 import * as ReactDOM from 'react-dom';
 import * as Personal from "../../../Base/IndexedDB/Personal";
 import { CursorComponent } from "./CursorComponent";
-import { IconCursorSender } from "../../IconCursor/IconCursorContainer";
+import IconCursorSender  from "../../../Base/Container/IconCursorSender";
 import WebRTCService from "../../../Base/Common/WebRTCService";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
