@@ -24,6 +24,7 @@ import HomeVisitorModel from "./HomeVisitorModel";
 import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
 import LogController from "./Log/LogController";
+import { CastTypeEnum } from "../CastInstance/CastInstanceContainer";
 
 
 /**
@@ -328,9 +329,16 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * @param peerid 
      * @param isScreenShare 
      */
-    public NotifyBootLiveCast(peerid: string, isScreenShare: boolean) {
+    public NotifyBootLiveCast(peerid: string, castType: CastTypeEnum) {
 
-        let elementName = (isScreenShare ? "sbj-main-home-livecast-screenshare-id" : "sbj-main-home-livecast-id");
+        let elementName = "";
+
+        switch (castType) {
+            case CastTypeEnum.LiveCast: elementName = "sbj-main-home-livecast-id"; break;
+            case CastTypeEnum.ScreenShare: elementName = "sbj-main-home-livecast-screenshare-id"; break;
+            default: return;
+        }
+
         let element = window.parent.document.getElementById(elementName);
         if (element) {
             element.textContent = peerid;
@@ -342,10 +350,17 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     /**
      * ダッシュボードへ、ライブキャスト／スクリーンシェアのハイド通知
      */
-    public NotifyHideLiveCast(isScreenShare: boolean) {
+    public NotifyHideLiveCast(castType: CastTypeEnum) {
 
-        let elementName = (isScreenShare ? "sbj-main-home-livecast-screenshare-hide" : "sbj-main-home-livecast-hide");
-        let element = window.parent.document.getElementById('sbj-main-home-livecast-hide');
+        let elementName = "";
+        
+        switch (castType) {
+            case CastTypeEnum.LiveCast: elementName = "sbj-main-home-livecast-hide"; break;
+            case CastTypeEnum.ScreenShare: elementName = "sbj-main-home-livecast-screenshare-hide"; break;
+            default: return;
+        }
+
+        let element = window.parent.document.getElementById(elementName);
         if (element) {
             element.click();
         }
@@ -356,8 +371,8 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      *　ダッシュボードへ、前回分のライブキャスト情報が残らないようにクリア情報を通知する
      */
     public NotifyClearLiveCast() {
-        this.NotifyBootLiveCast("", false);
-        this.NotifyBootLiveCast("", true);
+        this.NotifyBootLiveCast("", CastTypeEnum.LiveCast);
+        this.NotifyBootLiveCast("", CastTypeEnum.ScreenShare);
     }
 
 };

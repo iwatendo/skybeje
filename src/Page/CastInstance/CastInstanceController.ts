@@ -10,7 +10,7 @@ import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
-import { CastInstanceSender, CastSettingSender } from "./CastInstanceContainer";
+import { CastInstanceSender, CastSettingSender, CastTypeEnum } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 
 
@@ -20,7 +20,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
     public View: CastInstanceView;
 
-    public CastInstance = new CastInstanceSender();
+    public CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
     public CastSetting = new CastSettingSender();
     public CastRoom = new RoomSender();
 
@@ -91,8 +91,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         //  オーナーにURLを通知する
         if (this._isConnectOwner && this._peerid) {
 
-            this.CastInstance = new CastInstanceSender();
-            this.CastInstance.setting = this.CastSetting;
+            this.CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
             this.CastInstance.instanceUrl = location.href;
             this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
 
@@ -148,13 +147,12 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public ServerSend(isStreaming: boolean, isClose: boolean) {
 
-        if (!isClose && this.CastSetting.isStreaming == isStreaming)
+        if (!isClose && this.CastInstance.isStreaming == isStreaming)
             return;
 
-        this.CastSetting.isStreaming = isStreaming;
-        this.CastSetting.isScreenShare = false;
-        this.CastSetting.isControlClose = isClose;
-        this.CastSetting.isControlHide = false;
+        this.CastInstance.isStreaming = isStreaming;
+        this.CastInstance.isClose = isClose;
+        this.CastInstance.islHide = false;
         this.SendCastInfo();
     }
 
@@ -169,7 +167,6 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
         //  オーナー側への通知
         if (this.CastInstance) {
-            this.CastInstance.setting = this.CastSetting;
             WebRTCService.SendToOwner(this.CastInstance);
         }
     }

@@ -2,6 +2,16 @@ import Sender from "../../Base/Container/Sender";
 
 
 /**
+ * 配信する種類
+ */
+export enum CastTypeEnum {
+    LiveCast = 1,
+    ScreenShare = 2,
+    Gadget = 3,
+}
+
+
+/**
  *  ライブキャストの起動通知 及び 設定変更通知
  *  CastInstance の起動元クライアント (HomeVisitor) へ通知
  */
@@ -9,14 +19,20 @@ export class CastInstanceSender extends Sender {
 
     public static ID = "CastInstance";
 
-    constructor() {
+    constructor(type: CastTypeEnum) {
         super(CastInstanceSender.ID)
-        this.setting = new CastSettingSender();
+        this.castType = type;
+        this.isStreaming = false;
+        this.isClose = false;
+        this.islHide = false;
     }
 
+    castType: CastTypeEnum;
     instanceUrl: string;
     clientUrl: string;
-    setting: CastSettingSender;
+    isStreaming: boolean;
+    isClose: boolean;
+    islHide: boolean;
 }
 
 
@@ -44,17 +60,9 @@ export class CastSettingSender extends Sender {
 
     constructor() {
         super(CastSettingSender.ID);
-        this.isStreaming = false;
-        this.isScreenShare = false;
-        this.isControlClose = false;
-        this.isControlHide = false;
         this.dispUserCursor = false;
         this.dispSubtitles = false;
     }
-    isStreaming: boolean;
-    isScreenShare: boolean;
-    isControlClose: boolean;
-    isControlHide: boolean;
     dispSubtitles: boolean;
     dispUserCursor: boolean;
 }

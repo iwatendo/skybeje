@@ -10,6 +10,7 @@ import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanc
 import MobileDialog from "../Mobile/MobileDialog";
 import { CastSelectorItemComponent } from "./CastSelectorItemComponent";
 import CastSelectorController from "./CastSelectorController";
+import { CastTypeEnum } from "../../CastInstance/CastInstanceContainer";
 
 
 /**
@@ -73,7 +74,7 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
      */
     private OnLiveCastCkick(e) {
         let peerid = this.props.controller.PeerId;
-        this.props.controller.NotifyBootLiveCast(peerid, false);
+        this.props.controller.NotifyBootLiveCast(peerid, CastTypeEnum.LiveCast);
     }
 
 
@@ -83,7 +84,7 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
      */
     private OnLiveCastScreenShare(e) {
         let peerid = this.props.controller.PeerId;
-        this.props.controller.NotifyBootLiveCast(peerid, true);
+        this.props.controller.NotifyBootLiveCast(peerid, CastTypeEnum.ScreenShare);
     }
 
 

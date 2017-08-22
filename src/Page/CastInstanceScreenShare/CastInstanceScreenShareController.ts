@@ -10,7 +10,7 @@ import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceScreenShareModel from "./CastInstanceScreenShareModel";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
-import { CastInstanceSender, CastSettingSender } from "../CastInstance/CastInstanceContainer";
+import { CastInstanceSender, CastSettingSender, CastTypeEnum } from "../CastInstance/CastInstanceContainer";
 import { CastInstanceScreenShareReceiver } from "./CastInstanceScreenShareReceiver";
 
 
@@ -20,7 +20,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
 
     public View: CastInstanceScreenShareView;
 
-    public CastInstance = new CastInstanceSender();
+    public CastInstance = new CastInstanceSender(CastTypeEnum.ScreenShare);
     public CastSetting = new CastSettingSender();
     public CastRoom = new RoomSender();
 
@@ -34,7 +34,6 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
         this.Receiver = new CastInstanceScreenShareReceiver(this);
         this.View = new CastInstanceScreenShareView(this, () => { });
         this.CursorCache = new CursorCache();
-        this.CastSetting.isScreenShare = true;
     };
 
 
@@ -94,8 +93,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
         //  オーナーにURLを通知する
         if (this._isConnectOwner && this._peerid) {
 
-            this.CastInstance = new CastInstanceSender();
-            this.CastInstance.setting = this.CastSetting;
+            this.CastInstance = new CastInstanceSender(CastTypeEnum.ScreenShare);
             this.CastInstance.instanceUrl = location.href;
             this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
 
@@ -156,13 +154,12 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
      */
     public ServerSend(isStreaming: boolean, isClose: boolean) {
 
-        if (!isClose && this.CastSetting.isStreaming == isStreaming)
+        if (!isClose && this.CastInstance.isStreaming == isStreaming)
             return;
 
-        this.CastSetting.isStreaming = isStreaming;
-        this.CastSetting.isScreenShare = true;
-        this.CastSetting.isControlClose = isClose;
-        this.CastSetting.isControlHide = false;
+        this.CastInstance.isStreaming = isStreaming;
+        this.CastInstance.isClose = isClose;
+        this.CastInstance.islHide = false;
         this.SendCastInfo();
     }
 
@@ -177,7 +174,6 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
 
         //  オーナー側への通知
         if (this.CastInstance) {
-            this.CastInstance.setting = this.CastSetting;
             WebRTCService.SendToOwner(this.CastInstance);
         }
     }

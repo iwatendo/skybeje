@@ -188,13 +188,13 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         let servantPid = conn.peer;
 
         //  自身のダッシュボードへの通知
-        if (cib.setting.isControlClose) {
+        if (cib.isClose) {
             //  ダッシュボード側のフレームを閉じる
-            this.Controller.NotifyBootLiveCast("", cib.setting.isScreenShare);
+            this.Controller.NotifyBootLiveCast("", cib.castType);
         }
-        else if (cib.setting.isControlHide) {
+        else if (cib.islHide) {
             //  ダッシュボード側からフレームをハイド状態にする
-            this.Controller.NotifyHideLiveCast(cib.setting.isScreenShare);
+            this.Controller.NotifyHideLiveCast(cib.castType);
         }
 
         //
