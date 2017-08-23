@@ -218,7 +218,8 @@ export default class GuideDialogController {
             guide = new Personal.Guide();
         }
 
-        this._guide = StdUtil.DeepCopy(guide);
+        guide = StdUtil.DeepCopy(guide);
+        this._guide = guide;
 
         {
             let options = (document.getElementsByName("sbj-gaide-match-options"));
