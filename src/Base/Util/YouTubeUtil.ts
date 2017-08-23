@@ -6,7 +6,6 @@ import * as JQuery from "jquery";
 import StdUtil from "./StdUtil";
 import Sender from "../Container/Sender";
 import * as Youtube from "../../../node_modules/youtube";
-import LogUtil from "./LogUtil";
 import { Guide } from "../IndexedDB/Personal";
 
 interface OnYouTube { (player: YT.Player): void }
@@ -111,7 +110,6 @@ export default class YouTubeUtil {
 
         if (this.IsAPIReady) {
             this.CreatePlayer();
-            LogUtil.Info(null, "GetPlayer-2");
         }
         else {
 
@@ -138,11 +136,12 @@ export default class YouTubeUtil {
 
         let divid = 'youtube-player-' + StdUtil.CreateUuid();
 
-        if (YouTubeUtil.Player)
+        if (YouTubeUtil.Player) {
             YouTubeUtil.Player.destroy();
+        }
 
-        $("#youtube-player").empty().append("<div id='" + divid + "'></div>");
-
+        let element = document.getElementById('youtube-player');
+        element.innerHTML = "<div id='" + divid + "'></div>";
 
         let options: YT.PlayerOptions = {
             height: 0,
