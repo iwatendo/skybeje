@@ -177,3 +177,31 @@ export class IconSender extends Sender {
     public icon: Personal.Icon;
 
 }
+
+
+/**
+ * 
+ */
+export class GetGuideSender extends Sender {
+
+    public static ID = "GetGuide";
+
+    constructor() {
+        super(GetGuideSender.ID);
+    }
+}
+
+
+/**
+ * 
+ */
+export class GuideSender extends Sender {
+    public static ID = "Guide";
+
+    constructor() {
+        super(GuideSender.ID);
+    }
+
+    public guide: Personal.Guide;
+
+}

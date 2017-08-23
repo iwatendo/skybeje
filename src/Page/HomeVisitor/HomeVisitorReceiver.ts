@@ -101,6 +101,11 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             this.GetIcon(conn, sender as HVContainer.GetIconSender);
         }
 
+        //  ガイド要求
+        if (sender.type === HVContainer.GetGuideSender.ID) {
+            this.GetGuide(conn);
+        }
+
         //  アクター取得
         if (sender.type === HVContainer.ActorInfoSender.ID) {
             this.Controller.ActorCache.SetActor(conn.peer, (sender as HVContainer.ActorInfoSender).actorInfo);
@@ -176,6 +181,17 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
             WebRTCService.SendTo(conn, result);
         });
+    }
+
+    
+    /**
+     * ガイド情報の取得
+     * @param conn 
+     */
+    public GetGuide(conn: PeerJs.DataConnection) {
+        let result = new HVContainer.GuideSender();
+        result.guide = this.Controller.Bot.GetGuideQueue();
+        WebRTCService.SendTo(conn, result);
     }
 
 

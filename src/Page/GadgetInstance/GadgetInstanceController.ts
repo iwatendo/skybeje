@@ -1,4 +1,5 @@
-﻿
+﻿import * as Personal from "../../Base/IndexedDB/Personal";
+
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
@@ -24,6 +25,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
     public CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
     public CastSetting = new GadgetCastSettingSender();
     public CastRoom = new RoomSender();
+    public Guide = new Personal.Guide;
     public CursorCache: CursorCache;
 
     /**

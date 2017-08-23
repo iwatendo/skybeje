@@ -11,6 +11,7 @@ import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceController from "./GadgetInstanceController";
 import { GetGadgetCastInfoSedner, GadgetCastSettingSender } from "./GadgetInstanceContainer";
 import GadgetInstanceView from "./GadgetInstanceView";
+import { GuideSender, GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
 
 
 export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstanceController> {
@@ -33,6 +34,14 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
         if (sender.type === RoomSender.ID) {
             this.Controller.CastRoom = sender as RoomSender;
             this.Controller.View.SetRoom(this.Controller.CastRoom.room);
+
+            WebRTCService.SendToOwner(new GetGuideSender());
+        }
+
+        if (sender.type === GuideSender.ID) {
+            let guide = (sender as GuideSender).guide;
+            this.Controller.Guide = guide
+            this.Controller.View.SetGuide(guide);
         }
 
         //  キャスト情報の送信

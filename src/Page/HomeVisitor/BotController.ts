@@ -9,6 +9,7 @@ import BotUtil from "../../Base/Util/BotUtil";
 import RoomCache from "./Cache/RoomCache";
 import { ChatMessageSender } from "./HomeVisitorContainer";
 import HomeVisitorController from "./HomeVisitorController";
+import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 
 export default class BotController {
@@ -17,6 +18,7 @@ export default class BotController {
 
     private _lastTime: number = 0;
 
+    private _guideQuere: Personal.Guide;
 
     /**
      * コンストラクタ
@@ -123,6 +125,7 @@ export default class BotController {
         if (isMatch && isResCheck) {
             let sender = new ChatMessageSender();
 
+            //  ガイドメッセージ表示
             this.Controller.Model.GetActor(guide.aid, (actor) => {
                 sender.aid = guide.aid;
                 sender.iid = actor.dispIid;
@@ -131,9 +134,25 @@ export default class BotController {
                 sender.text = guide.note;
                 sender.peerid = this.Controller.PeerId;
                 WebRTCService.SendToOwner(sender);
+
+                //  ガジェット登録されていた場合
+                if (guide.url.length > 0) {
+                    this._guideQuere = guide;
+                    let peerid = this.Controller.PeerId;
+                    this.Controller.NotifyBootLiveCast(peerid, CastTypeEnum.Gadget);
+                }
+
             });
         }
 
+    }
+
+
+    /**
+     * 
+     */
+    public GetGuideQueue(): Personal.Guide {
+        return this._guideQuere;
     }
 
 

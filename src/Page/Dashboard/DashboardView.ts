@@ -15,6 +15,7 @@ import NotImplementView from "./NotImplement/NotImplementView";
 import ProfileView from "./Profile/ProfileView";
 import SettingController from "./Setting/SettingController";
 import BootInstanceView from "./BootInstance/BootInstanceView";
+import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 
 export enum NaviEnum {
@@ -24,6 +25,7 @@ export enum NaviEnum {
     Setting = 9,
     LiveCast = 10,
     ScreenShare = 11,
+    Gadget = 12,
 }
 
 enum DispEnum {
@@ -32,6 +34,7 @@ enum DispEnum {
     HomeVisitor = 2,
     LiveCast = 3,
     ScreenShare = 4,
+    Gadget = 5,
 }
 
 
@@ -79,7 +82,8 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         result.set(NaviEnum.Visitor, document.getElementById('sbj-navi-home-visitor'));
         result.set(NaviEnum.LiveCast, document.getElementById('sbj-navi-home-livecast'));
         result.set(NaviEnum.ScreenShare, document.getElementById('sbj-navi-home-screenshare'));
-
+        result.set(NaviEnum.Gadget, document.getElementById('sbj-navi-home-gadget'));
+        
         return result;
     }
 
@@ -97,6 +101,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             (document.getElementById('sbj-main-home-visitor-frame') as HTMLFrameElement).src = "";
             (document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement).src = "";
             (document.getElementById('sbj-main-home-screenshare-frame') as HTMLFrameElement).src = "";
+            (document.getElementById('sbj-main-home-gadget-frame') as HTMLFrameElement).src = "";
         };
 
         //  ナビ変更時イベント
@@ -169,7 +174,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         //  ライブキャスト起動時処理
         document.getElementById("sbj-main-home-livecast-id").onclick = (e) => {
 
-            let peerid = this.GetLivecastOwneerPeeId();
+            let peerid = this.GetLivecastOwneerPeeId(CastTypeEnum.LiveCast);
             this.ChangeLiveCast(peerid);
 
         };
@@ -182,12 +187,24 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
         //  スクリーンシェアの起動時処理
         document.getElementById("sbj-main-home-livecast-screenshare-id").onclick = (e) => {
-            let peerid = this.GetScreenShareOwneerPeeId();
+            let peerid = this.GetLivecastOwneerPeeId(CastTypeEnum.ScreenShare);
             this.ChangeScreenShare(peerid);
         };
 
         //  スクリーンシェアのダイアログを非表示（選択ナビの変更）
         document.getElementById("sbj-main-home-livecast-screenshare-hide").onclick = (e) => {
+            this.DoNaviClick(NaviEnum.Visitor);
+        };
+
+
+        //  ガジェットキャストの起動時処理
+        document.getElementById("sbj-main-home-livecast-gadget-id").onclick = (e) => {
+            let peerid = this.GetLivecastOwneerPeeId(CastTypeEnum.Gadget);
+            this.ChangeGadgetCast(peerid);
+        };
+
+        //  ガジェットキャストのダイアログを非表示（選択ナビの変更）
+        document.getElementById("sbj-main-home-livecast-gadget-hide").onclick = (e) => {
             this.DoNaviClick(NaviEnum.Visitor);
         };
 
@@ -216,8 +233,20 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
     }
 
 
-    private GetLivecastOwneerPeeId(): string {
-        let element = document.getElementById("sbj-main-home-livecast-id") as HTMLInputElement;
+    /**
+     * ライブキャストの配信元PeerIDの取得
+     * @param castType 
+     */
+    private GetLivecastOwneerPeeId(castType: CastTypeEnum): string {
+
+        let elementName = "";
+        switch (castType) {
+            case CastTypeEnum.LiveCast: elementName = "sbj-main-home-livecast-id"; break;
+            case CastTypeEnum.ScreenShare: elementName = "sbj-main-home-livecast-screenshare-id"; break;
+            case CastTypeEnum.Gadget: elementName = "sbj-main-home-livecast-gadget-id"; break;
+        }
+
+        let element = document.getElementById(elementName) as HTMLInputElement;
         if (element && element.textContent && element.textContent.length > 0) {
             return element.textContent;
         }
@@ -226,15 +255,6 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
     }
 
-    private GetScreenShareOwneerPeeId(): string {
-        let element = document.getElementById("sbj-main-home-livecast-screenshare-id") as HTMLInputElement;
-        if (element && element.textContent && element.textContent.length > 0) {
-            return element.textContent;
-        }
-        else {
-            return "";
-        }
-    }
 
     /**
      * ナビボタン押下時の画面切り替え処理
@@ -307,15 +327,28 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 }
 
                 break;
+            case NaviEnum.Gadget:
+            
+                document.getElementById("sbj-navi-home-gadget-disp").hidden = false;
+
+                title = "ガジェット";
+                disp = DispEnum.Gadget;
+                this._naviView = new NotImplementView(mainElement);
+                {
+                    let frame = document.getElementById('sbj-main-home-gadget-frame') as HTMLFrameElement;
+                    frame.contentDocument.getElementById('sbj-gadget-instance-cancel').focus();
+                }
+                break;
         }
 
         document.getElementById('sbj-main').hidden = (disp !== DispEnum.Local);
         document.getElementById('sbj-header').hidden = (disp !== DispEnum.Local || navi === NaviEnum.Profile);
         document.getElementById('sbj-main-home-instance-frame').hidden = !(disp === DispEnum.HomeInstance);
-        document.getElementById('sbj-main-home-visitor-frame').hidden = !(disp === DispEnum.HomeVisitor || disp === DispEnum.LiveCast || disp === DispEnum.ScreenShare || navi === NaviEnum.Profile);
+        document.getElementById('sbj-main-home-visitor-frame').hidden = !(disp === DispEnum.HomeVisitor || disp === DispEnum.LiveCast || disp === DispEnum.ScreenShare || navi === NaviEnum.Gadget || navi === NaviEnum.Profile);
         document.getElementById('sbj-main-home-livecast-frame').hidden = !(disp === DispEnum.LiveCast);
         document.getElementById('sbj-main-home-screenshare-frame').hidden = !(disp === DispEnum.ScreenShare);
-
+        document.getElementById('sbj-main-home-gadget-frame').hidden = !(disp === DispEnum.Gadget);
+        
         this.DoNaviChange(navi, title);
     }
 
@@ -365,6 +398,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         if ((document.getElementById("sbj-main-home-visitor-id") as HTMLInputElement).textContent) return true;
         if ((document.getElementById("sbj-main-home-livecast-id") as HTMLInputElement).textContent) return true;
         if ((document.getElementById("sbj-main-home-screenshare-id") as HTMLInputElement).textContent) return true;
+        if ((document.getElementById("sbj-main-home-gadget-id") as HTMLInputElement).textContent) return true;
         return false;
     }
 
@@ -508,6 +542,40 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
         else {
             this.DoNaviClick(isRemove ? NaviEnum.Visitor : NaviEnum.ScreenShare);
+        }
+    }
+
+
+    /**
+     * 
+     * @param url 
+     */
+    public ChangeGadgetCast(ownerPeerId: string) {
+
+        //  現在表示しているURLの取得
+        let frame = document.getElementById('sbj-main-home-gadget-frame') as HTMLFrameElement;
+        let preUrl = frame.getAttribute('src');
+
+        if (!preUrl && !ownerPeerId) {
+            //  何も表示していない状態かつ、新しいページも開かない場合は何もしない
+            return;
+        }
+
+        //  PeerIDが未指定の場合は、フレームを非表示にする
+        let isRemove = (ownerPeerId == null || ownerPeerId.length === 0);
+        let newUrl = LinkUtil.CreateLink("../GadgetInstance/", ownerPeerId);
+
+        //  URLの変更があった場合のみページを書換える
+        if (preUrl !== newUrl) {
+            document.getElementById("sbj-navi-home-gadget-disp").hidden = isRemove;
+            frame.onload = (e) => {
+                this.DoNaviClick(isRemove ? NaviEnum.Visitor : NaviEnum.Gadget);
+                frame.onload = null;
+            }
+            frame.src = (isRemove ? "" : newUrl);
+        }
+        else {
+            this.DoNaviClick(isRemove ? NaviEnum.Visitor : NaviEnum.Gadget);
         }
     }
 

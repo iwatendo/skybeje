@@ -1,5 +1,6 @@
 ﻿
 import * as Home from "../../Base/IndexedDB/Home";
+import * as Personal from "../../Base/IndexedDB/Personal";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 import WebRTCService from "../../Base/Common/WebRTCService";
@@ -10,6 +11,7 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import GadgetInstanceController from "./GadgetInstanceController";
 import { GadgetCastSettingSender } from "./GadgetInstanceContainer";
+import YouTubeUtil, { YouTubeOption } from "../../Base/Util/YouTubeUtil";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 
@@ -80,7 +82,6 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         callback();
     }
 
-
     /**
      * 接続peer数の表示
      * @param count 
@@ -97,6 +98,17 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
     public SetRoom(room: Home.Room) {
         let message = "「" + room.name + "」に\nガジェットキャストしています";
         document.getElementById("sbj-livecast-room-name").innerText = message;
+    }
+
+
+    /**
+     * ガジェット情報の設定
+     * @param guide 
+     */
+    public SetGuide(guide : Personal.Guide){
+        let url = YouTubeUtil.ToEmbedYouTubeUrlOpt(guide,true);
+        let element = document.getElementById('sbj-gadget-iframe') as HTMLIFrameElement;
+        element.src = url;
     }
 
 

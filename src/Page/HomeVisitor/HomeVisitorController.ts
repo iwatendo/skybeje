@@ -336,6 +336,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         switch (castType) {
             case CastTypeEnum.LiveCast: elementName = "sbj-main-home-livecast-id"; break;
             case CastTypeEnum.ScreenShare: elementName = "sbj-main-home-livecast-screenshare-id"; break;
+            case CastTypeEnum.Gadget: elementName = "sbj-main-home-livecast-gadget-id"; break;
             default: return;
         }
 
@@ -357,6 +358,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         switch (castType) {
             case CastTypeEnum.LiveCast: elementName = "sbj-main-home-livecast-hide"; break;
             case CastTypeEnum.ScreenShare: elementName = "sbj-main-home-livecast-screenshare-hide"; break;
+            case CastTypeEnum.Gadget: elementName = "sbj-main-home-livecast-gadget-hide"; break;
             default: return;
         }
 
@@ -373,6 +375,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public NotifyClearLiveCast() {
         this.NotifyBootLiveCast("", CastTypeEnum.LiveCast);
         this.NotifyBootLiveCast("", CastTypeEnum.ScreenShare);
+        this.NotifyBootLiveCast("", CastTypeEnum.Gadget);
     }
 
 };
