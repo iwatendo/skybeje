@@ -1,5 +1,5 @@
 ﻿
-
+import * as JQuery from "jquery";
 import LinkUtil from "../../Base/Util/LinkUtil";
 
 var linkurl = LinkUtil.GetArgs("linkurl");

@@ -127,6 +127,8 @@ export default class GuideDialogController {
         this._guideDeleteButton.onclick = (() => this.Delete());
         this._guideDialogCloseButton.onclick = (() => this.Close());
         this._guideCancelButton.onclick = (() => this.Close());
+
+        YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
     }
 
 
@@ -208,6 +210,7 @@ export default class GuideDialogController {
         this._guideUpdateButton.disabled = isDoneDisabled;
     }
 
+
     /**
      * ガイドの表示
      * @param guide
@@ -282,26 +285,13 @@ export default class GuideDialogController {
         if (tubeId.length === 0)
             return;
 
-        //  動画情報を取得する
-        YouTubeUtil.GetPlayer(tubeId, (player) => {
+        let option = new YouTubeOption();
+        option.id = tubeId;
+        guide.url = YouTubeUtil.ToEmbedYouTubeURL(tubeId);
+        guide.embedstatus = JSON.stringify(option);
 
-            var vd = (player as any).getVideoData();
-
-            if (vd) {
-                let option = new YouTubeOption();
-                option.id = tubeId;
-                option.title = vd.title;
-                option.last = player.getDuration();
-                option.start = 0;
-                option.end = option.last;
-                option.loop = false;
-                guide.url = YouTubeUtil.ToEmbedYouTubeURL(tubeId);
-                guide.embedstatus = JSON.stringify(option);
-
-                this.ClearEmbedItem();
-                this.DisplayEmbedItem(guide);
-            }
-        });
+        this.ClearEmbedItem();
+        this.DisplayEmbedItem(guide);
     }
 
 
@@ -323,10 +313,36 @@ export default class GuideDialogController {
         let element = document.getElementById('sbj-guide-gadget');
 
         if (guide.url.indexOf("www.youtube.com/embed/") >= 0) {
-            ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element);
+            ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element, () => {
+
+                let tubeId = (JSON.parse(guide.embedstatus) as YouTubeOption).id;
+
+                //  動画情報を取得して再表示
+                YouTubeUtil.InitializePlayer(tubeId, (player) => {
+                    var vd = (player as any).getVideoData();
+                    if (vd) {
+                        let option = JSON.parse(guide.embedstatus);
+                        option.id = tubeId;
+                        option.title = vd.title;
+                        option.last = player.getDuration();
+                        if (option.start <= 0) {
+                            option.start = 0;
+                        }
+                        if (option.end <= 0) {
+                            option.end = option.last;
+                        }
+                        option.loop = false;
+                        guide.url = YouTubeUtil.ToEmbedYouTubeURL(tubeId);
+                        guide.embedstatus = JSON.stringify(option);
+                        ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element);
+                    }
+                });
+            });
         }
         else {
-            ReactDOM.render(<NoEmbedComponent controller={this} />, element);
+            ReactDOM.render(<NoEmbedComponent controller={this} />, element, () => {
+            });
+
         }
 
     }

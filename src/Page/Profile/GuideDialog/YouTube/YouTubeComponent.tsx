@@ -23,8 +23,6 @@ export interface YouTubeProp {
  */
 export interface YouTubeStat {
     guide: Personal.Guide;
-    dispStart: number;
-    dispEnd: number;
 }
 
 
@@ -45,8 +43,6 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
 
         this.state = {
             guide: guide,
-            dispStart: opt.start,
-            dispEnd: opt.end
         };
     }
 
@@ -84,11 +80,10 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
      */
     public render() {
 
-        let url = YouTubeUtil.ToEmbedYouTubeUrlOpt(this.state.guide, false)
         let opt = this.GetOption();
         let last = opt.last;
-        let starttime = this.ToTime(this.state.dispStart);
-        let endtime = this.ToTime(this.state.dispEnd);
+        let starttime = this.ToTime(opt.start);
+        let endtime = this.ToTime(opt.end);
         let lasttime = this.ToTime(last);
 
         let canReprt = this.CanRepeat(opt);
@@ -105,24 +100,30 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
                 </div>
                 <div>
                     <div className="sbj-guide-embed-left">
-                        <iframe width="320" height="180" src={url} frameBorder="0" allowFullScreen></iframe>
+                        <div id="sbj-guide-youtube-player"></div>
                     </div>
                     <div className="sbj-guide-embed-right">
                         <div>
                             <span className="mdl-list__item-primary-content">
                                 開始　{starttime}
-                                <input className="mdl-slider mdl-js-slider" type="range" min="0" max={last} value={opt.start} onInput={this.onInputStartTime.bind(this)} onChange={this.onChangeStartTime.bind(this)}>
+                                <input className="mdl-slider mdl-js-slider" type="range" min="0" max={last} value={opt.start} onInput={this.onInputStartTime.bind(this)}>
                                 </input>
                             </span>
                         </div>
                         <div>
                             <span className="mdl-list__item-primary-content">
                                 終了　{endtime}　／（{lasttime}）
-                                <input className="mdl-slider mdl-js-slider" type="range" min="0" max={last} value={opt.end} onInput={this.onInputEndTime.bind(this)} onChange={this.onChangeEndTime.bind(this)}>
+                                <input className="mdl-slider mdl-js-slider" type="range" min="0" max={last} value={opt.end} onInput={this.onInputEndTime.bind(this)}>
                                 </input>
                             </span>
                         </div>
                         <span className="mdl-list__item-primary-content">
+
+                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onClick={this.onPlay.bind(this)} >
+                                <i className="material-icons bottom">play_arrow</i>
+                                <span> Play </span>
+                            </button>
+
                             <button className="mdl-button mdl-js-button mdl-button--raised" hidden={!dispRepertOn} onClick={this.onRepeatOn.bind(this)} >
                                 <i className="material-icons bottom">loop</i>
                                 <span> Repeat OFF </span>
@@ -176,23 +177,10 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
      * @param e
      */
     private onInputStartTime(e) {
-        this.setState({
-            dispStart: Number.parseInt(e.currentTarget.value)
-        });
-    }
-
-
-    /**
-     * 開始秒の変更
-     * @param e 
-     */
-    private onChangeStartTime(e) {
-        this.onInputStartTime(e);
         let opt = this.GetOption();
-        opt.start = this.state.dispStart;
+        opt.start = Number.parseInt(e.currentTarget.value);
         if (opt.start > opt.end) {
             opt.end = opt.start;
-            this.setState({ dispEnd: opt.end });
         }
         this.SetOption(opt);
     }
@@ -203,25 +191,35 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
      * @param e
      */
     private onInputEndTime(e) {
-        this.setState({
-            dispEnd: Number.parseInt(e.currentTarget.value)
-        });
-    }
-
-
-    /**
-     * 終了秒の変更
-     * @param e 
-     */
-    private onChangeEndTime(e) {
-        this.onInputEndTime(e);
         let opt = this.GetOption();
         opt.end = Number.parseInt(e.currentTarget.value);
         if (opt.start > opt.end) {
             opt.start = opt.end;
-            this.setState({ dispStart: opt.start });
         }
         this.SetOption(opt);
+    }
+
+
+    /**
+     * 
+     */
+    private onPlay(e) {
+
+        let player = YouTubeUtil.Player;
+        let opt = this.GetOption();
+
+        player.cueVideoById(opt.id, opt.start);
+        player.
+
+        player.addEventListener("onStateChange", (ev) => {
+
+            let status = (ev as any).data;
+
+            if(status === YT.PlayerState.CUED){
+                YouTubeUtil.Player.playVideo();
+            }
+
+        })
     }
 
 

@@ -144,6 +144,11 @@
     width: calc(100% - 32px);
 }
 
+#sbj-guide-youtube-player{
+    width:320px;
+    height: 180px;
+}
+
 .sbj-guide-note{
     width: 100%;
 }

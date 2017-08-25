@@ -1,16 +1,23 @@
 ﻿
 /// <reference path="../../../node_modules/@types/youtube/index.d.ts"/>
 
-import * as JQuery from "jquery";
-
 import StdUtil from "./StdUtil";
 import Sender from "../Container/Sender";
 import * as Youtube from "../../../node_modules/youtube";
 import { Guide } from "../IndexedDB/Personal";
+import LogUtil from "./LogUtil";
 
 interface OnYouTube { (player: YT.Player): void }
 
 export class YouTubeOption {
+    constructor() {
+        this.id = "";
+        this.title = "";
+        this.loop = false;
+        this.start = -1;
+        this.end = -1;
+        this.last = 0;
+    }
     id: string;
     title: string;
     loop: boolean;
@@ -29,6 +36,8 @@ export default class YouTubeUtil {
     public static VideoID: string;
     public static Callback: OnYouTube;
     public static IsAPIReady: boolean = false;
+    public static ApiReadyElementId: string;
+    public static ElementId: string;
 
     /**
      * YouTubeのID部分を取得します
@@ -99,21 +108,34 @@ export default class YouTubeUtil {
 
 
     /**
+     * 
+     * @param elementid 
+     */
+    public static Initialize(apiReadyElement: string, elementid: string) {
+        this.ApiReadyElementId = apiReadyElement;
+        this.ElementId = elementid;
+    }
+
+
+    /**
      * YouTubePlayerクラスを取得します
      * @param videoid
      * @param onYouTube
      */
-    public static GetPlayer(videoid: string, onYouTube: OnYouTube) {
+    public static InitializePlayer(videoid: string, onYouTube: OnYouTube) {
 
         this.VideoID = videoid;
         this.Callback = onYouTube;
+
+
+        let option = YouTubeOption
 
         if (this.IsAPIReady) {
             this.CreatePlayer();
         }
         else {
 
-            document.getElementById("sbj-youtube-api-ready").onclick = (e) => {
+            document.getElementById(this.ApiReadyElementId).onclick = (e) => {
                 YouTubeUtil.IsAPIReady = true;
                 YouTubeUtil.CreatePlayer();
             }
@@ -134,29 +156,32 @@ export default class YouTubeUtil {
      */
     public static CreatePlayer() {
 
-        let divid = 'youtube-player-' + StdUtil.CreateUuid();
-
         if (YouTubeUtil.Player) {
             YouTubeUtil.Player.destroy();
         }
-
-        let element = document.getElementById('youtube-player');
-        element.innerHTML = "<div id='" + divid + "'></div>";
 
         let options: YT.PlayerOptions = {
             height: 0,
             width: 0,
             videoId: YouTubeUtil.VideoID,
+            playerVars: {
+                controls: YT.Controls.Hide,
+                showinfo: YT.ShowInfo.Hide,
+                rel: YT.RelatedVideos.Hide,
+            },
             events: {
                 onReady: (event: YT.PlayerEvent) => {
                     if (YouTubeUtil.Callback) {
                         YouTubeUtil.Callback((event as any).target);
                     }
+                },
+                onError: (err: YT.OnErrorEvent) => {
+                    LogUtil.Error(null, "YouTube Api Error : " + err.data.toString());
                 }
             }
         };
 
-        YouTubeUtil.Player = new YT.Player(divid, options);
+        YouTubeUtil.Player = new YT.Player(this.ElementId, options);
 
     }
 
