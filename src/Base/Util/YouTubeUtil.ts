@@ -115,6 +115,21 @@ export default class YouTubeUtil {
     }
 
 
+
+    /**
+     * 
+     * @param opt 
+     */
+    public static SetStartEndTime(opt: YouTubeOption)
+    {
+        this.Player.cueVideoById({
+            videoId:opt.id,
+            startSeconds: opt.start,
+            endSeconds: opt.end,
+        });
+    }
+
+
     /**
      * YouTubePlayerを取得
      * @param option 
@@ -164,8 +179,6 @@ export default class YouTubeUtil {
                 controls: (useControl ? YT.Controls.ShowLoadPlayer : YT.Controls.Hide),
                 showinfo: YT.ShowInfo.Hide,
                 rel: YT.RelatedVideos.Hide,
-                start: opt.start,
-                end: opt.end,
             },
             events: {
                 onReady: (event: YT.PlayerEvent) => {

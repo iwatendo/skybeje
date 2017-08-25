@@ -86,11 +86,10 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
         let last = opt.last;
         let starttime = this.ToTime(opt.start);
         let endtime = this.ToTime(opt.end);
-        let lasttime = this.ToTime(last);
 
-        let canReprt = this.CanRepeat(opt);
-        let dispRepertOn = (!opt.loop && canReprt);
-        let dispRepertOff = (opt.loop && canReprt);
+        let canRepeat = this.CanRepeat(opt);
+        let dispRepertOn = (!opt.loop && canRepeat);
+        let dispRepertOff = (opt.loop && canRepeat);
 
         return (
             <div className="sbj-guide-embed">
@@ -105,20 +104,6 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
                         <div id="sbj-guide-youtube-player"></div>
                     </div>
                     <div className="sbj-guide-embed-right">
-                        <div>
-                            <span className="mdl-list__item-primary-content">
-                                開始　{starttime}
-                                <input className="mdl-slider mdl-js-slider" type="range" min="0" max={last} value={opt.start} onInput={this.onInputStartTime.bind(this)}>
-                                </input>
-                            </span>
-                        </div>
-                        <div>
-                            <span className="mdl-list__item-primary-content">
-                                終了　{endtime}　／（{lasttime}）
-                                <input className="mdl-slider mdl-js-slider" type="range" min="0" max={last} value={opt.end} onInput={this.onInputEndTime.bind(this)}>
-                                </input>
-                            </span>
-                        </div>
                         <span className="mdl-list__item-primary-content">
                             <button className="mdl-button mdl-js-button mdl-button--raised" hidden={!dispRepertOn} onClick={this.onRepeatOn.bind(this)} >
                                 <i className="material-icons bottom">loop</i>
@@ -129,24 +114,33 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
                                 <span> Repeat ON   </span>
                             </button>
                         </span>
+                        <div>
+                            <span className="mdl-list__item-primary-content">
+                                開始　{starttime} &nbsp;
+                                <button className="mdl-button mdl-js-button mdl-button--colored" onClick={this.onSetStartTime.bind(this)} >
+                                    <i className="material-icons bottom">chevron_right</i>
+                                    &nbsp;ここから&nbsp;
+                                </button>
+                                <input className="mdl-slider mdl-js-slider" type="range" min="0" max={last} value={opt.start} onInput={this.onInputStartTime.bind(this)}>
+                                </input>
+                            </span>
+                        </div>
+                        <div>
+                            <span className="mdl-list__item-primary-content">
+                                終了　{endtime} &nbsp;
+                                <button className="mdl-button mdl-js-button mdl-button--colored" onClick={this.onSetEndTime.bind(this)} >
+                                    <i className="material-icons bottom">chevron_left</i>
+                                    &nbsp;ここまで&nbsp;
+                                </button>
+                                <input className="mdl-slider mdl-js-slider" type="range" min="0" max={last} value={opt.end} onInput={this.onInputEndTime.bind(this)}>
+                                </input>
+                            </span>
+                        </div>
                         <span className="mdl-list__item-primary-content">
-                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" hidden={this.state.isPlay} onClick={this.onPlay.bind(this)} >
-                                <i className="material-icons bottom">play_arrow</i>
-                                <span> テスト再生 </span>
+                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" hidden={canRepeat} onClick={this.onRefresh.bind(this)} >
+                                <i className="material-icons bottom">play_circle_outline</i>
+                                &nbsp;再生テスト&nbsp;
                             </button>
-                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden={!this.state.isPlay} onClick={this.onStop.bind(this)} >
-                                <i className="material-icons bottom">stop</i>
-                                <span> 停止 </span>
-                            </button>
-                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden={!this.state.isPlay} onClick={this.onPause.bind(this)} >
-                                <i className="material-icons bottom">pause</i>
-                                <span> 一時停止 </span>
-                            </button>
-                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden={!this.state.isPlay} onClick={this.onReStart.bind(this)} >
-                                <i className="material-icons bottom">play_arrow</i>
-                                <span> 再開 </span>
-                            </button>
-                            <div id="sbj-guide-youtube-pause-time"></div>
                         </span>
                     </div>
                 </div>
@@ -161,11 +155,15 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
      * @param time 
      */
     private ToTime(time: number): string {
+
+        let mili = time - Math.floor(time);
+        time = Math.floor(time);
+
         let hour = Math.floor(time / 3600);
         time = time - hour * 3600;
         let min = Math.floor(time / 60);
         let sec = time - min * 60;
-        return hour + ":" + ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2);
+        return hour + ":" + ("0" + min).slice(-2) + ":" + ("0" + sec).slice(-2) + "." + ("00" + Math.round(mili * 1000)).slice(-3);
     }
 
 
@@ -188,12 +186,30 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
 
 
     /**
-     * 開始秒の変更
+     * 
+     * @param event 
+     */
+    private onSetStartTime(event) {
+        this.SetStartTime(YouTubeUtil.Player.getCurrentTime());
+    }
+
+
+    /**
+     * 
      * @param e
      */
     private onInputStartTime(e) {
+        this.SetStartTime(Number.parseInt(e.currentTarget.value));
+    }
+
+
+    /**
+     * 
+     * @param start 
+     */
+    private SetStartTime(start: number) {
         let opt = this.GetOption();
-        opt.start = Number.parseInt(e.currentTarget.value);
+        opt.start = Math.round(start * 1000) / 1000;
         if (opt.start > opt.end) {
             opt.end = opt.start;
         }
@@ -202,12 +218,30 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
 
 
     /**
-     * 終了秒の変更
+     * 
+     * @param event 
+     */
+    private onSetEndTime(event) {
+        this.SetEndTime(YouTubeUtil.Player.getCurrentTime());
+    }
+
+
+    /**
+     * 
      * @param e
      */
     private onInputEndTime(e) {
+        this.SetEndTime(Number.parseInt(e.currentTarget.value));
+    }
+
+
+    /**
+     * 
+     * @param e
+     */
+    private SetEndTime(end: number) {
         let opt = this.GetOption();
-        opt.end = Number.parseInt(e.currentTarget.value);
+        opt.end = Math.round(end * 1000) / 1000;
         if (opt.start > opt.end) {
             opt.start = opt.end;
         }
@@ -219,59 +253,9 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
      * 
      * @param e 
      */
-    private onPlay(e) {
+    private onRefresh(e) {
         let opt = this.GetOption();
-
-        YouTubeUtil.CreatePlayer(opt, true, (player) => {
-
-            player.addEventListener('onStateChange', (event) => {
-                let state = ((event as any).data) as YT.PlayerState;
-
-                switch ((event as any).data) {
-                    case YT.PlayerState.PLAYING:
-                        this.setState({ isPlay: true, });
-                        break;
-                    case YT.PlayerState.ENDED:
-                        this.setState({ isPlay: false, });
-                        break;
-                    case YT.PlayerState.PAUSED:
-                        let curTime = player.getCurrentTime();
-                        document.getElementById('sbj-guide-youtube-pause-time').textContent = curTime.toString();
-                        break;
-                }
-            });
-
-            player.playVideo();
-        });
-
-        this.setState({ isPlay: true, });
-    }
-
-
-    /**
-     * 
-     * @param e 
-     */
-    private onStop(e) {
-        YouTubeUtil.Player.stopVideo();
-        this.setState({ isPlay: false, });
-    }
-
-
-    /**
-     * 
-     * @param e 
-     */
-    private onPause(e) {
-        YouTubeUtil.Player.pauseVideo();
-    }
-
-
-    /**
-     * 
-     * @param e 
-     */
-    private onReStart(e) {
+        YouTubeUtil.SetStartEndTime(opt);
         YouTubeUtil.Player.playVideo();
     }
 

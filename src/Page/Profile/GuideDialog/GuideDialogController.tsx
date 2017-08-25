@@ -194,6 +194,7 @@ export default class GuideDialogController {
         (document.getElementById("sbj-gaide-rescheck-options-2") as HTMLInputElement).disabled = disabled;
         (document.getElementById("sbj-gaide-keyword") as HTMLInputElement).disabled = disabled;
         (document.getElementById("sbj-gaide-note") as HTMLInputElement).disabled = disabled;
+        (document.getElementById("sbj-guide-gadget") as HTMLInputElement).disabled = disabled;
     }
 
 
@@ -204,7 +205,7 @@ export default class GuideDialogController {
 
         let isDoneDisabled = false;
         if (this._guideKeywordElement.value.length === 0) isDoneDisabled = true;
-        if (this._guideNoteElement.value.length === 0) isDoneDisabled = true;
+        //  if (this._guideNoteElement.value.length === 0) isDoneDisabled = true;
 
         this._guideAppendButton.disabled = isDoneDisabled;
         this._guideUpdateButton.disabled = isDoneDisabled;
@@ -314,24 +315,11 @@ export default class GuideDialogController {
 
         if (guide.url.indexOf("www.youtube.com/embed/") >= 0) {
             ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element, () => {
-
                 let opt = JSON.parse(guide.embedstatus) as YouTubeOption;
-
-                //  動画情報を取得して再表示
-                YouTubeUtil.GetPlayer(opt, true, (player) => {
-                    var vd = (player as any).getVideoData();
-                    if (vd) {
-                        let option = JSON.parse(guide.embedstatus);
-                        option.id = opt.id;
-                        option.title = vd.title;
-                        option.last = player.getDuration();
-                        if (option.start <= 0) option.start = 0;
-                        if (option.end <= 0) option.end = option.last;
-                        option.loop = false;
-                        guide.url = YouTubeUtil.ToEmbedYouTubeURL(opt.id);
-                        guide.embedstatus = JSON.stringify(option);
-                        ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element);
-                    }
+                this.SetYouTubePlayer(opt, () => {
+                    guide.url = YouTubeUtil.ToEmbedYouTubeURL(opt.id);
+                    guide.embedstatus = JSON.stringify(opt);
+                    ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element);
                 });
             });
         }
@@ -340,6 +328,44 @@ export default class GuideDialogController {
             });
         }
 
+    }
+
+
+    /**
+     * 
+     * @param opt 
+     * @param callback 
+     */
+    public SetYouTubePlayer(opt: YouTubeOption, callback) {
+
+        //  動画情報を取得して再表示
+        YouTubeUtil.GetPlayer(opt, true, (player) => {
+            var vd = (player as any).getVideoData();
+            if (vd) {
+                opt.id = opt.id;
+                opt.title = vd.title;
+                opt.last = player.getDuration();
+                if (opt.start <= 0) opt.start = 0;
+                if (opt.end <= 0) opt.end = opt.last;
+            }
+
+            player.addEventListener('onStateChange', (event) => {
+                let state = ((event as any).data) as YT.PlayerState;
+
+                switch ((event as any).data) {
+                    case YT.PlayerState.PLAYING:
+                        break;
+                    case YT.PlayerState.ENDED:
+                        break;
+                    case YT.PlayerState.PAUSED:
+                        break;
+                    case YT.PlayerState.CUED:
+                        break;
+                }
+            });
+
+            callback();
+        });
     }
 
 }

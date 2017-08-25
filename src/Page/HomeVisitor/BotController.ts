@@ -133,7 +133,10 @@ export default class BotController {
                 sender.name = actor.name;
                 sender.text = guide.note;
                 sender.peerid = this.Controller.PeerId;
-                WebRTCService.SendToOwner(sender);
+
+                if (sender.text.length > 0) {
+                    WebRTCService.SendToOwner(sender);
+                }
 
                 //  ガジェット登録されていた場合
                 if (guide.url.length > 0) {
