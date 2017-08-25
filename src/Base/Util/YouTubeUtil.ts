@@ -7,7 +7,7 @@ import * as Youtube from "../../../node_modules/youtube";
 import { Guide } from "../IndexedDB/Personal";
 import LogUtil from "./LogUtil";
 
-interface OnYouTube { (player: YT.Player): void }
+interface OnCreateYouTubePlayer { (player: YT.Player): void }
 
 export class YouTubeOption {
     constructor() {
@@ -33,8 +33,6 @@ export class YouTubeOption {
 export default class YouTubeUtil {
 
     public static Player: YT.Player;
-    public static VideoID: string;
-    public static Callback: OnYouTube;
     public static IsAPIReady: boolean = false;
     public static ApiReadyElementId: string;
     public static ElementId: string;
@@ -118,26 +116,21 @@ export default class YouTubeUtil {
 
 
     /**
-     * YouTubePlayerクラスを取得します
-     * @param videoid
-     * @param onYouTube
+     * YouTubePlayerを取得
+     * @param option 
+     * @param useControl 
+     * @param callback 
      */
-    public static InitializePlayer(videoid: string, onYouTube: OnYouTube) {
-
-        this.VideoID = videoid;
-        this.Callback = onYouTube;
-
-
-        let option = YouTubeOption
+    public static GetPlayer(option: YouTubeOption, useControl: boolean, callback: OnCreateYouTubePlayer) {
 
         if (this.IsAPIReady) {
-            this.CreatePlayer();
+            this.CreatePlayer(option, useControl, callback);
         }
         else {
 
             document.getElementById(this.ApiReadyElementId).onclick = (e) => {
                 YouTubeUtil.IsAPIReady = true;
-                YouTubeUtil.CreatePlayer();
+                YouTubeUtil.CreatePlayer(option, useControl, callback);
             }
 
             let tag = document.createElement('script');
@@ -152,9 +145,12 @@ export default class YouTubeUtil {
 
 
     /**
-     * プレイヤークラスを生成します
+     * YouTubePlayerを生成します
+     * @param opt 
+     * @param useControl 
+     * @param callback 
      */
-    public static CreatePlayer() {
+    public static CreatePlayer(opt: YouTubeOption, useControl: boolean, callback: OnCreateYouTubePlayer) {
 
         if (YouTubeUtil.Player) {
             YouTubeUtil.Player.destroy();
@@ -163,16 +159,18 @@ export default class YouTubeUtil {
         let options: YT.PlayerOptions = {
             height: 0,
             width: 0,
-            videoId: YouTubeUtil.VideoID,
+            videoId: opt.id,
             playerVars: {
-                controls: YT.Controls.Hide,
+                controls: (useControl ? YT.Controls.ShowLoadPlayer : YT.Controls.Hide),
                 showinfo: YT.ShowInfo.Hide,
                 rel: YT.RelatedVideos.Hide,
+                start: opt.start,
+                end: opt.end,
             },
             events: {
                 onReady: (event: YT.PlayerEvent) => {
-                    if (YouTubeUtil.Callback) {
-                        YouTubeUtil.Callback((event as any).target);
+                    if (callback) {
+                        callback((event as any).target);
                     }
                 },
                 onError: (err: YT.OnErrorEvent) => {
@@ -182,7 +180,6 @@ export default class YouTubeUtil {
         };
 
         YouTubeUtil.Player = new YT.Player(this.ElementId, options);
-
     }
 
 }

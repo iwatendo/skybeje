@@ -315,24 +315,20 @@ export default class GuideDialogController {
         if (guide.url.indexOf("www.youtube.com/embed/") >= 0) {
             ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element, () => {
 
-                let tubeId = (JSON.parse(guide.embedstatus) as YouTubeOption).id;
+                let opt = JSON.parse(guide.embedstatus) as YouTubeOption;
 
                 //  動画情報を取得して再表示
-                YouTubeUtil.InitializePlayer(tubeId, (player) => {
+                YouTubeUtil.GetPlayer(opt, true, (player) => {
                     var vd = (player as any).getVideoData();
                     if (vd) {
                         let option = JSON.parse(guide.embedstatus);
-                        option.id = tubeId;
+                        option.id = opt.id;
                         option.title = vd.title;
                         option.last = player.getDuration();
-                        if (option.start <= 0) {
-                            option.start = 0;
-                        }
-                        if (option.end <= 0) {
-                            option.end = option.last;
-                        }
+                        if (option.start <= 0) option.start = 0;
+                        if (option.end <= 0) option.end = option.last;
                         option.loop = false;
-                        guide.url = YouTubeUtil.ToEmbedYouTubeURL(tubeId);
+                        guide.url = YouTubeUtil.ToEmbedYouTubeURL(opt.id);
                         guide.embedstatus = JSON.stringify(option);
                         ReactDOM.render(<YouTubeComponent controller={this} guide={guide} />, element);
                     }
@@ -342,7 +338,6 @@ export default class GuideDialogController {
         else {
             ReactDOM.render(<NoEmbedComponent controller={this} />, element, () => {
             });
-
         }
 
     }

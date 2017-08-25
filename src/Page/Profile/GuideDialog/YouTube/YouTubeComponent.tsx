@@ -23,6 +23,7 @@ export interface YouTubeProp {
  */
 export interface YouTubeStat {
     guide: Personal.Guide;
+    isPlay: boolean;
 }
 
 
@@ -43,6 +44,7 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
 
         this.state = {
             guide: guide,
+            isPlay: false,
         };
     }
 
@@ -118,12 +120,6 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
                             </span>
                         </div>
                         <span className="mdl-list__item-primary-content">
-
-                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onClick={this.onPlay.bind(this)} >
-                                <i className="material-icons bottom">play_arrow</i>
-                                <span> Play </span>
-                            </button>
-
                             <button className="mdl-button mdl-js-button mdl-button--raised" hidden={!dispRepertOn} onClick={this.onRepeatOn.bind(this)} >
                                 <i className="material-icons bottom">loop</i>
                                 <span> Repeat OFF </span>
@@ -132,6 +128,25 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
                                 <i className="material-icons bottom">loop</i>
                                 <span> Repeat ON   </span>
                             </button>
+                        </span>
+                        <span className="mdl-list__item-primary-content">
+                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" hidden={this.state.isPlay} onClick={this.onPlay.bind(this)} >
+                                <i className="material-icons bottom">play_arrow</i>
+                                <span> テスト再生 </span>
+                            </button>
+                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden={!this.state.isPlay} onClick={this.onStop.bind(this)} >
+                                <i className="material-icons bottom">stop</i>
+                                <span> 停止 </span>
+                            </button>
+                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden={!this.state.isPlay} onClick={this.onPause.bind(this)} >
+                                <i className="material-icons bottom">pause</i>
+                                <span> 一時停止 </span>
+                            </button>
+                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden={!this.state.isPlay} onClick={this.onReStart.bind(this)} >
+                                <i className="material-icons bottom">play_arrow</i>
+                                <span> 再開 </span>
+                            </button>
+                            <div id="sbj-guide-youtube-pause-time"></div>
                         </span>
                     </div>
                 </div>
@@ -202,24 +217,62 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
 
     /**
      * 
+     * @param e 
      */
     private onPlay(e) {
-
-        let player = YouTubeUtil.Player;
         let opt = this.GetOption();
 
-        player.cueVideoById(opt.id, opt.start);
-        player.
+        YouTubeUtil.CreatePlayer(opt, true, (player) => {
 
-        player.addEventListener("onStateChange", (ev) => {
+            player.addEventListener('onStateChange', (event) => {
+                let state = ((event as any).data) as YT.PlayerState;
 
-            let status = (ev as any).data;
+                switch ((event as any).data) {
+                    case YT.PlayerState.PLAYING:
+                        this.setState({ isPlay: true, });
+                        break;
+                    case YT.PlayerState.ENDED:
+                        this.setState({ isPlay: false, });
+                        break;
+                    case YT.PlayerState.PAUSED:
+                        let curTime = player.getCurrentTime();
+                        document.getElementById('sbj-guide-youtube-pause-time').textContent = curTime.toString();
+                        break;
+                }
+            });
 
-            if(status === YT.PlayerState.CUED){
-                YouTubeUtil.Player.playVideo();
-            }
+            player.playVideo();
+        });
 
-        })
+        this.setState({ isPlay: true, });
+    }
+
+
+    /**
+     * 
+     * @param e 
+     */
+    private onStop(e) {
+        YouTubeUtil.Player.stopVideo();
+        this.setState({ isPlay: false, });
+    }
+
+
+    /**
+     * 
+     * @param e 
+     */
+    private onPause(e) {
+        YouTubeUtil.Player.pauseVideo();
+    }
+
+
+    /**
+     * 
+     * @param e 
+     */
+    private onReStart(e) {
+        YouTubeUtil.Player.playVideo();
     }
 
 
