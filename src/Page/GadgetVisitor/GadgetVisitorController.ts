@@ -8,7 +8,7 @@ import { GadgetVisitorView } from "./GadgetVisitorView";
 import GadgetVisitorModel from "./GadgetVisitorModel";
 import { GadgetVisitorReceiver } from "./GadgetVisitorReceiver";
 import { GetCastSettingSedner } from "../CastInstance/CastInstanceContainer";
-import { GetGadgetCastInfoSedner } from "../GadgetInstance/GadgetInstanceContainer";
+import { GetGadgetCastSettingSedner } from "../GadgetInstance/GadgetInstanceContainer";
 
 
 export default class GadgetVisitorController extends AbstractServiceController<GadgetVisitorView, GadgetVisitorModel> {
@@ -45,7 +45,7 @@ export default class GadgetVisitorController extends AbstractServiceController<G
     public OnOwnerConnection() {
 
         //  キャスト情報の要求
-        WebRTCService.SendToOwner(new GetGadgetCastInfoSedner());
+        WebRTCService.SendToOwner(new GetGadgetCastSettingSedner());
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.initializeCursor();

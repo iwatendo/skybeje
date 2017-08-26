@@ -9,7 +9,7 @@ import IconCursorSender from "../../Base/Container/IconCursorSender";
 
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceController from "./GadgetInstanceController";
-import { GetGadgetCastInfoSedner, GadgetCastSettingSender, GetYouTubeStatusSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
+import { GetGadgetCastSettingSedner, GadgetCastSettingSender, GetYouTubeStatusSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import GadgetInstanceView from "./GadgetInstanceView";
 import { GuideSender, GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
 
@@ -50,7 +50,7 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
         }
 
         //  キャスト情報の送信
-        if (sender.type === GetGadgetCastInfoSedner.ID) {
+        if (sender.type === GetGadgetCastSettingSedner.ID) {
             WebRTCService.SendTo(conn, this.Controller.CastSetting);
         }
 

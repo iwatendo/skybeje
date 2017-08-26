@@ -5,12 +5,12 @@ import { YouTubeOption } from "../../Base/Util/YouTubeUtil";
 /**
  * 
  */
-export class GetGadgetCastInfoSedner extends Sender {
+export class GetGadgetCastSettingSedner extends Sender {
 
-    public static ID = "GetGadgetCastInfo";
+    public static ID = "GetGadgetCastSetting";
 
     constructor() {
-        super(GetGadgetCastInfoSedner.ID);
+        super(GetGadgetCastSettingSedner.ID);
     }
 }
 
