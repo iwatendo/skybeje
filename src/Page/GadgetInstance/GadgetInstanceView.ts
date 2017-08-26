@@ -12,6 +12,7 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 import GadgetInstanceController from "./GadgetInstanceController";
 import { GadgetCastSettingSender } from "./GadgetInstanceContainer";
 import YouTubeUtil, { YouTubeOption } from "../../Base/Util/YouTubeUtil";
+import LogUtil from "../../Base/Util/LogUtil";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 
@@ -79,6 +80,8 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
+        YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
+
         callback();
     }
 
@@ -105,10 +108,14 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      * ガジェット情報の設定
      * @param guide 
      */
-    public SetGuide(guide : Personal.Guide){
-        let url = YouTubeUtil.ToEmbedYouTubeUrlOpt(guide,true);
-        let element = document.getElementById('sbj-gadget-iframe') as HTMLIFrameElement;
-        element.src = url;
+    public SetGuide(guide: Personal.Guide) {
+
+        let option = JSON.parse(guide.embedstatus) as YouTubeOption;
+        YouTubeUtil.GetPlayer(option, true, (player) => {
+            YouTubeUtil.SetStartEndTime(option);
+            this.SetYouTubeVideoListener(player);
+            player.playVideo();
+        });
     }
 
 
@@ -122,6 +129,35 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         //  ストリーミングしていない場合、フレームを閉じる
         this.Controller.CastInstance.isClose = !this.Controller.CastInstance.isCasting;
         this.Controller.SendCastInfo();
+    }
+
+
+    /**
+     * 
+     * @param player 
+     */
+    private SetYouTubeVideoListener(player: YT.Player) {
+
+        player.addEventListener('onStateChange', (event) => {
+
+            let state = ((event as any).data) as YT.PlayerState;
+
+            switch ((event as any).data) {
+                case YT.PlayerState.PLAYING:
+                    LogUtil.Info(this.Controller,"PLAYING");
+                    break;
+                case YT.PlayerState.ENDED:
+                    LogUtil.Info(this.Controller,"ENDED");
+                    break;
+                case YT.PlayerState.PAUSED:
+                    LogUtil.Info(this.Controller,"PAUSED");
+                    break;
+                case YT.PlayerState.CUED:
+                    LogUtil.Info(this.Controller,"CUED");
+                    break;
+            }
+        });
+
     }
 
 }

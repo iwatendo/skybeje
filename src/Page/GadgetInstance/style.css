@@ -60,14 +60,13 @@
     width: calc(100% - 364px);
 }
 
-#video {
-    width: 400px;
-    height: 300px;
-    background-color: var(--sbj-color-edge-background);
-}
-
 .sbj-dialog-close{
 	min-width: 36px;
     width: 36px;
     padding: 0px;
+}
+
+#sbj-guide-youtube-player{
+    width:320px;
+    height: 180px;
 }

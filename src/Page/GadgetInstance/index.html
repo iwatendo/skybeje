@@ -11,6 +11,12 @@
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
     <script src="/lib/material.min.js"></script>
+
+    <script>
+        function onYouTubeIframeAPIReady() {
+            document.getElementById('sbj-youtube-api-ready').click();
+        }
+    </script>
 </head>
 
 <body>
@@ -65,7 +71,8 @@
                     <h6 class="mdl-color-text--grey-600">プレビュー</h6>
                     <!-- PreView -->
                     <div class="mdl-list__item-primary-content">
-                        <iframe id="sbj-gadget-iframe" width="320" height="180" frameBorder="0" allowFullScreen></iframe>
+                        <div id="sbj-guide-youtube-player"></div>
+                        <input type="text" id="sbj-youtube-api-ready" hidden/>
                     </div>
                     <div>
                         <label class="sbj-gadget-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="cursor_disp">
