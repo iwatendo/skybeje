@@ -137,7 +137,7 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
                             </span>
                         </div>
                         <span className="mdl-list__item-primary-content">
-                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" hidden={canRepeat} onClick={this.onRefresh.bind(this)} >
+                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" hidden={canRepeat} onClick={this.onPlay.bind(this)} >
                                 <i className="material-icons bottom">play_circle_outline</i>
                                 &nbsp;再生テスト&nbsp;
                             </button>
@@ -250,13 +250,11 @@ export default class YouTubeComponent extends React.Component<YouTubeProp, YouTu
 
 
     /**
-     * 
+     * 再生テスト
      * @param e 
      */
-    private onRefresh(e) {
-        let opt = this.GetOption();
-        YouTubeUtil.SetStartEndTime(opt);
-        YouTubeUtil.Player.playVideo();
+    private onPlay(e) {
+        YouTubeUtil.LoadVideo(this.GetOption());
     }
 
 

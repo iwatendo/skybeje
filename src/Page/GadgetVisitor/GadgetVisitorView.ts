@@ -4,14 +4,14 @@ import LogUtil from "../../Base/Util/LogUtil";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
-import YouTubeUtil, { YouTubeOption } from "../../Base/Util/YouTubeUtil";
+import YouTubeUtil, { YouTubeOption, OnCreateYouTubePlayer } from "../../Base/Util/YouTubeUtil";
 import GadgetVisitorController from "./GadgetVisitorController";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { Icon } from "../../Base/IndexedDB/Personal";
 import { DialogMode } from "../../Base/Common/AbstractDialogController";
 import { CursorController } from "../CastVisitor/Cursor/CurosrController";
-import { GadgetCastSettingSender } from "../GadgetInstance/GadgetInstanceContainer";
+import { GadgetCastSettingSender, GetYouTubeStatusSender, YouTubeStatusSender } from "../GadgetInstance/GadgetInstanceContainer";
 
 
 /**
@@ -20,7 +20,7 @@ import { GadgetCastSettingSender } from "../GadgetInstance/GadgetInstanceContain
 export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorController> {
 
     public Cursor: CursorController;
-    private YouTubeID: string;
+    private YouTubeOption: YouTubeOption = null;
 
 
     //
@@ -76,24 +76,91 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
     }
 
 
+    private _isLoad: boolean = false;
+    private _callback = null;
+
     /**
      * 
      * @param opt 
      */
     public SetYouTubePlayer(opt: YouTubeOption) {
 
-        if (this.YouTubeID !== opt.id) {
-
+        if (this.YouTubeOption === null || this.YouTubeOption.id !== opt.id) {
+            this.YouTubeOption = opt;
             YouTubeUtil.GetPlayer(opt, false, (player) => {
-
-                YouTubeUtil.SetStartEndTime(opt);
-                player.playVideo();
-
-                this.YouTubeID = opt.id;
+                this.SetYouTubeListener(player);
+                this._isLoad = true;
+                if (this._callback != null) {
+                    this._callback();
+                }
             });
-
         }
-        
     }
+
+
+    /**
+     * 
+     * @param player 
+     */
+    private SetYouTubeListener(player: YT.Player) {
+
+        player.addEventListener('onStateChange', (event) => {
+
+            let state = ((event as any).data) as YT.PlayerState;
+
+            switch ((event as any).data) {
+                case YT.PlayerState.PLAYING:
+                    LogUtil.Info(this.Controller, "PLAYING");
+                    break;
+                case YT.PlayerState.ENDED:
+                    LogUtil.Info(this.Controller, "ENDED");
+                    break;
+                case YT.PlayerState.PAUSED:
+                    LogUtil.Info(this.Controller, "PAUSED");
+                    break;
+                case YT.PlayerState.CUED:
+                    LogUtil.Info(this.Controller, "CUED");
+                    WebRTCService.SendToOwner(new GetYouTubeStatusSender());
+                    break;
+            }
+        });
+    }
+
+
+    /**
+     * 
+     * @param sender 
+     */
+    public SetYouTubeStatus(sender: YouTubeStatusSender) {
+
+        let pl = YouTubeUtil.Player;
+
+        let func = () => {
+            this.YouTubeOption.start = sender.current;
+            switch (sender.state) {
+                case YT.PlayerState.PLAYING:
+                    YouTubeUtil.LoadVideo(this.YouTubeOption);
+                    pl.playVideo();
+                    break;
+                case YT.PlayerState.ENDED:
+                    break;
+                case YT.PlayerState.PAUSED:
+                    pl.pauseVideo();
+                    pl.seekTo(sender.current, true);
+                    break;
+                case YT.PlayerState.CUED:
+                    break;
+            }
+        };
+
+        if (this._isLoad) {
+            func();
+        }
+        else {
+            this._callback = func;
+        }
+
+    }
+
 
 }

@@ -12,7 +12,7 @@ import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInsta
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
-import { GadgetCastSettingSender } from "./GadgetInstanceContainer";
+import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
 
 
@@ -26,6 +26,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
     public CastSetting = new GadgetCastSettingSender();
     public CastRoom = new RoomSender();
     public Guide = new Personal.Guide;
+    public YouTubeOption = new YouTubeStatusSender();
     public CursorCache: CursorCache;
 
     /**

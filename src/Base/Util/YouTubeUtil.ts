@@ -7,7 +7,7 @@ import * as Youtube from "../../../node_modules/youtube";
 import { Guide } from "../IndexedDB/Personal";
 import LogUtil from "./LogUtil";
 
-interface OnCreateYouTubePlayer { (player: YT.Player): void }
+export interface OnCreateYouTubePlayer { (player: YT.Player): void }
 
 export class YouTubeOption {
     constructor() {
@@ -32,7 +32,7 @@ export class YouTubeOption {
  */
 export default class YouTubeUtil {
 
-    public static Player: YT.Player;
+    public static Player: YT.Player = null;
     public static IsAPIReady: boolean = false;
     public static ApiReadyElementId: string;
     public static ElementId: string;
@@ -115,18 +115,25 @@ export default class YouTubeUtil {
     }
 
 
+    /**
+     * 
+     * @param opt 
+     */
+    public static LoadVideo(opt: YouTubeOption) {
+        if (this.IsAPIReady) {
+            this.Player.loadVideoById({ videoId: opt.id, startSeconds: opt.start, endSeconds: opt.end });
+        }
+    }
+
 
     /**
      * 
      * @param opt 
      */
-    public static SetStartEndTime(opt: YouTubeOption)
-    {
-        this.Player.cueVideoById({
-            videoId:opt.id,
-            startSeconds: opt.start,
-            endSeconds: opt.end,
-        });
+    public static CueVideo(opt:YouTubeOption){
+        if (this.IsAPIReady) {
+            this.Player.cueVideoById({ videoId: opt.id, startSeconds: opt.start, endSeconds: opt.end });
+        }
     }
 
 
@@ -144,8 +151,8 @@ export default class YouTubeUtil {
         else {
 
             document.getElementById(this.ApiReadyElementId).onclick = (e) => {
-                YouTubeUtil.IsAPIReady = true;
                 YouTubeUtil.CreatePlayer(option, useControl, callback);
+                YouTubeUtil.IsAPIReady = true;
             }
 
             let tag = document.createElement('script');

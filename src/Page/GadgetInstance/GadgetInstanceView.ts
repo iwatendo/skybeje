@@ -10,7 +10,7 @@ import DeviceUtil from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import GadgetInstanceController from "./GadgetInstanceController";
-import { GadgetCastSettingSender } from "./GadgetInstanceContainer";
+import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import YouTubeUtil, { YouTubeOption } from "../../Base/Util/YouTubeUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 
@@ -111,9 +111,9 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         let option = JSON.parse(guide.embedstatus) as YouTubeOption;
         YouTubeUtil.GetPlayer(option, true, (player) => {
-            YouTubeUtil.SetStartEndTime(option);
-            this.SetYouTubeVideoListener(player);
-
+            YouTubeUtil.CueVideo(option);
+            this.SetYouTubeListener(option, player);
+            this.Controller.YouTubeOption.option = option;
             this.Controller.CastSetting.guide = guide;
             this.Controller.ServerSend(true, false);
         });
@@ -134,10 +134,21 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
 
     /**
+     * YouTubeの再生状況の取得
+     */
+    public GetYouTubeStatus(): YouTubeStatusSender {
+        this.Controller.YouTubeOption.state = YouTubeUtil.Player.getPlayerState();
+        this.Controller.YouTubeOption.current = YouTubeUtil.Player.getCurrentTime();
+        return this.Controller.YouTubeOption;
+    }
+
+
+    /**
      * 
+     * @param options 
      * @param player 
      */
-    private SetYouTubeVideoListener(player: YT.Player) {
+    private SetYouTubeListener(option: YouTubeOption, player: YT.Player) {
 
         player.addEventListener('onStateChange', (event) => {
 
@@ -145,16 +156,16 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
             switch ((event as any).data) {
                 case YT.PlayerState.PLAYING:
-                    LogUtil.Info(this.Controller, "PLAYING");
+                    WebRTCService.SendAll(this.GetYouTubeStatus());
                     break;
                 case YT.PlayerState.ENDED:
-                    LogUtil.Info(this.Controller, "ENDED");
+                    WebRTCService.SendAll(this.GetYouTubeStatus());
                     break;
                 case YT.PlayerState.PAUSED:
-                    LogUtil.Info(this.Controller, "PAUSED");
+                    WebRTCService.SendAll(this.GetYouTubeStatus());
                     break;
                 case YT.PlayerState.CUED:
-                    LogUtil.Info(this.Controller, "CUED");
+                    player.playVideo();
                     break;
             }
         });
