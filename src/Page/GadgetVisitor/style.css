@@ -19,7 +19,7 @@ body {
     height: 100%;
 }
 
-#sbj-video {
+#sbj-guide-youtube-player {
     height: 100%;
     width: 100%;
     background-color: var(--sbj-color-edge-background);

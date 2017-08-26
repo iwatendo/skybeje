@@ -1,4 +1,5 @@
 import Sender from "../../Base/Container/Sender";
+import * as Personal from "../../Base/IndexedDB/Personal";
 
 /**
  * 
@@ -23,6 +24,8 @@ export class GadgetCastSettingSender extends Sender {
     constructor() {
         super(GadgetCastSettingSender.ID);
         this.dispUserCursor = false;
+        this.guide = null;
     }
     dispUserCursor: boolean;
+    guide: Personal.Guide;
 }

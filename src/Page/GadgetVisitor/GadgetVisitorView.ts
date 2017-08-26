@@ -4,6 +4,7 @@ import LogUtil from "../../Base/Util/LogUtil";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
+import YouTubeUtil, { YouTubeOption } from "../../Base/Util/YouTubeUtil";
 import GadgetVisitorController from "./GadgetVisitorController";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
@@ -19,6 +20,7 @@ import { GadgetCastSettingSender } from "../GadgetInstance/GadgetInstanceContain
 export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorController> {
 
     public Cursor: CursorController;
+    private YouTubeID: string;
 
 
     //
@@ -35,63 +37,9 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
             submenuMain.style.opacity = "0.0";
         }
 
-
-        //  別タブで開かれたステージはサブメニューは表示しない
-        if (LinkUtil.GetArgs("allout")) {
-            document.getElementById('sbj-cast-visitor-allout').hidden = true;
-            document.getElementById('sbj-cast-visitor-mobile-view').hidden = true;
-        }
-
-        //  alloutボタン押下時の場合は別タブで開く
-        document.getElementById('sbj-cast-visitor-allout').onclick = (e) => {
-            let url = window.location.href;
-
-            if (!url.indexOf("mute")) { url += "&mute=1"; }
-            url += "&allout=1";
-
-            window.open(url);
-        }
-
-        //  Video
-        let video = document.getElementById('sbj-video') as HTMLVideoElement;
-
-        //  ミュート設定
-        let mute = LinkUtil.GetArgs("mute");
-        if (mute != null && mute.length > 0) {
-            video.muted = true;
-            this.ChangeDispMuteButton(true);
-        }
-
-        //  ミュートボタン押下時処理
-        document.getElementById('sbj-gadget-visitor-volume').onclick = (e) => {
-            video.muted = !video.muted;
-            this.ChangeDispMuteButton(video.muted);
-        };
-
-        //  ボリューム設定処理
-        let valumeRange = document.getElementById('sbj-cast-visitor-volume-value') as HTMLInputElement;
-        valumeRange.onchange = (e) => {
-            let value = Number.parseInt(valumeRange.value);
-            video.volume = (value / 100);
-        };
-
-        video.onplay = (ev) => {
-            let voiceOnly = (video.videoHeight === 0 || video.videoWidth === 0);
-            document.getElementById('sbj-gadget-visitor-voice-only').hidden = !voiceOnly;
-            video.volume;
-        };
+        YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
 
         callback();
-    }
-
-
-    /**
-     * ミュートボタンの設定
-     * @param isMute 
-     */
-    public ChangeDispMuteButton(isMute: boolean) {
-        document.getElementById('sbj-gadget-visitor-volume-on').hidden = isMute;
-        document.getElementById('sbj-gadget-visitor-volume-off').hidden = !isMute;
     }
 
 
@@ -102,9 +50,10 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-gadget-visitor-item-port') as HTMLElement;
-        let curport = document.getElementById('sbj-gadget-visitor-cursor-port') as HTMLElement;
-        this.Cursor = new CursorController(this.Controller.ConnCache, video, itemport, curport);
-        this.Cursor.DisplayAll();
+
+        //  let curport = document.getElementById('sbj-gadget-visitor-cursor-port') as HTMLElement;
+        //  this.Cursor = new CursorController(this.Controller.ConnCache, video, itemport, curport);
+        //  this.Cursor.DisplayAll();
     }
 
 
@@ -114,8 +63,6 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
      */
     public SetGadgetSetting(sender: GadgetCastSettingSender) {
 
-        let video = document.getElementById('sbj-video') as HTMLVideoElement;
-
         if (this.Cursor) {
             if (sender.dispUserCursor) {
                 this.Cursor.ClearQueue();
@@ -124,6 +71,29 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
                 this.Cursor.Clear();
             }
         }
+
+        this.SetYouTubePlayer(JSON.parse(sender.guide.embedstatus) as YouTubeOption);
+    }
+
+
+    /**
+     * 
+     * @param opt 
+     */
+    public SetYouTubePlayer(opt: YouTubeOption) {
+
+        if (this.YouTubeID !== opt.id) {
+
+            YouTubeUtil.GetPlayer(opt, false, (player) => {
+
+                YouTubeUtil.SetStartEndTime(opt);
+                player.playVideo();
+
+                this.YouTubeID = opt.id;
+            });
+
+        }
+        
     }
 
 }

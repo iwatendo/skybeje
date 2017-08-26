@@ -127,16 +127,16 @@ export default class GadgetInstanceController extends AbstractServiceController<
     
 
     /**
-     * ストリーミングの開始/停止の通知
-     * @param isStreaming 
+     * ガジェットキャストの開始/停止の通知
+     * @param isCasting 
      * @param isHide 
      */
-    public ServerSend(isStreaming: boolean, isClose: boolean) {
+    public ServerSend(isCasting: boolean, isClose: boolean) {
         
-        if (!isClose && this.CastInstance.isCasting == isStreaming)
+        if (!isClose && this.CastInstance.isCasting == isCasting)
             return;
 
-        this.CastInstance.isCasting = isStreaming;
+        this.CastInstance.isCasting = isCasting;
         this.CastInstance.isClose = isClose;
         this.CastInstance.isHide = false;
         this.SendCastInfo();

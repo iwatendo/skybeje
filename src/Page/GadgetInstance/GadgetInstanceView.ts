@@ -59,20 +59,19 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             }
         }
 
-        //  ストリーミング停止ボタン
+        //  停止ボタン
         stopButton.onclick = (e) => {
-            this.Controller.ServerSend(false, false);
-            location.href = "";
+            this.Controller.ServerSend(false, true);
         };
 
-        let options = LocalCache.LiveCastOptions;
+        let options = LocalCache.GadgetCastOptions;
 
         //  カーソル表示有無
         let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
         cursorDispElement.onchange = (e) => {
 
             let isCheced = cursorDispElement.checked;
-            LocalCache.SetLiveCastOptions((opt) => opt.IsIconCursor = isCheced);
+            LocalCache.SetGadgetCastOptions((opt) => opt.IsIconCursor = isCheced);
 
             this.Controller.CastSetting.dispUserCursor = isCheced;
             this.Controller.SendCastInfo();
@@ -114,7 +113,9 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         YouTubeUtil.GetPlayer(option, true, (player) => {
             YouTubeUtil.SetStartEndTime(option);
             this.SetYouTubeVideoListener(player);
-            player.playVideo();
+
+            this.Controller.CastSetting.guide = guide;
+            this.Controller.ServerSend(true, false);
         });
     }
 
@@ -144,16 +145,16 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
             switch ((event as any).data) {
                 case YT.PlayerState.PLAYING:
-                    LogUtil.Info(this.Controller,"PLAYING");
+                    LogUtil.Info(this.Controller, "PLAYING");
                     break;
                 case YT.PlayerState.ENDED:
-                    LogUtil.Info(this.Controller,"ENDED");
+                    LogUtil.Info(this.Controller, "ENDED");
                     break;
                 case YT.PlayerState.PAUSED:
-                    LogUtil.Info(this.Controller,"PAUSED");
+                    LogUtil.Info(this.Controller, "PAUSED");
                     break;
                 case YT.PlayerState.CUED:
-                    LogUtil.Info(this.Controller,"CUED");
+                    LogUtil.Info(this.Controller, "CUED");
                     break;
             }
         });

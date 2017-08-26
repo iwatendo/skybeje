@@ -12,6 +12,11 @@
     <link rel='stylesheet' href='../common.dialog.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
     <script src="/lib/material.min.js"></script>
+    <script>
+        function onYouTubeIframeAPIReady() {
+            document.getElementById('sbj-youtube-api-ready').click();
+        }
+    </script>
 </head>
 
 <body>
@@ -24,7 +29,9 @@
         <div class="sbj-gadget-visitor-contents-frame">
             <div class="sbj-gadget-visitor-contents-video">
 
-                <video id='sbj-video' autoplay="true"></video>
+                <div id="sbj-guide-youtube-player">
+                    <input type="text" id="sbj-youtube-api-ready" hidden/>
+                </div>
 
                 <div id="sbj-gadget-visitor-item-port">
                     <h2 id="sbj-gadget-visitor-voice-only" hidden>Voice only</h2>

@@ -5,7 +5,7 @@ import * as Personal from "../../Base/IndexedDB/Personal";
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
-import IconCursorSender  from "../../Base/Container/IconCursorSender";
+import IconCursorSender from "../../Base/Container/IconCursorSender";
 
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceController from "./GadgetInstanceController";
@@ -16,6 +16,8 @@ import { GuideSender, GetGuideSender } from "../HomeVisitor/HomeVisitorContainer
 
 export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstanceController> {
 
+
+    private _isGetGuide = false;
 
     /**
      * 
@@ -35,7 +37,10 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
             this.Controller.CastRoom = sender as RoomSender;
             this.Controller.View.SetRoom(this.Controller.CastRoom.room);
 
-            WebRTCService.SendToOwner(new GetGuideSender());
+            if (!this._isGetGuide) {
+                WebRTCService.SendToOwner(new GetGuideSender());
+                this._isGetGuide = true;
+            }
         }
 
         if (sender.type === GuideSender.ID) {

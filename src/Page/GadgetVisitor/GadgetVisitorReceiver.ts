@@ -23,7 +23,7 @@ export class GadgetVisitorReceiver extends AbstractServiceReceiver<GadgetVisitor
 
         //  カーソル表示
         if (sender.type === IconCursorSender.ID) {
-            this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
+            //  this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
         }
 
         //  キャスト情報の通知
