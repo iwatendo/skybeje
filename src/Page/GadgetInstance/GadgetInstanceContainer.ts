@@ -55,12 +55,43 @@ export class YouTubeStatusSender extends Sender {
     constructor() {
         super(YouTubeStatusSender.ID);
 
+        this.pid = null;
         this.state = -1;
         this.current = -1;
-        this.option = null;
+        this.playbackRate = 1;
+        this.isSyncing = false;
     }
 
+    pid: string;
     state: YT.PlayerState;
     current: number;
-    option: YouTubeOption;
+    playbackRate: number;
+    isSyncing : boolean;
+
+
+    /**
+     * ステータスの一致確認
+     * @param s1 
+     * @param s2 
+     */
+    public static IsEqual(s1: YouTubeStatusSender, s2: YouTubeStatusSender) {
+        if (s1.state !== s2.state) return false;
+        if (s1.current !== s2.current) return false;
+        if (s1.playbackRate !== s2.playbackRate) return false;
+        return true;
+    }
+
+
+    /**
+     * ステータスの近似確認
+     * @param s1 
+     * @param s2 
+     */
+    public static IsNeer(s1: YouTubeStatusSender, s2: YouTubeStatusSender) {
+        if (s1.state !== s2.state) return false;
+        if (s1.playbackRate !== s2.playbackRate) return false;
+        if (Math.abs(s1.current - s2.current) < 2.0 ) return false;
+        return true;
+    }
+    
 }

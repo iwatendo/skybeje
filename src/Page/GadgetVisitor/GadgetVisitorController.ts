@@ -15,6 +15,7 @@ export default class GadgetVisitorController extends AbstractServiceController<G
 
     public ControllerName(): string { return "GadgetVisitor"; }
 
+    public PeerId : string;
     public ConnCache: ConnectionCache;
     public View: GadgetVisitorView;
 
@@ -33,6 +34,7 @@ export default class GadgetVisitorController extends AbstractServiceController<G
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
 
+        this.PeerId = peer.id;
         this.View = new GadgetVisitorView(this, () => {
             //  
         });

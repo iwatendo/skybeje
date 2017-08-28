@@ -20,13 +20,12 @@ export default class GadgetInstanceController extends AbstractServiceController<
 
     public ControllerName(): string { return "GadgetInstance"; }
 
+    public PeerId :string;
     public View: GadgetInstanceView;
-
     public CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
     public CastSetting = new GadgetCastSettingSender();
     public CastRoom = new RoomSender();
     public Guide = new Personal.Guide;
-    public YouTubeOption = new YouTubeStatusSender();
     public CursorCache: CursorCache;
 
     /**
@@ -40,7 +39,6 @@ export default class GadgetInstanceController extends AbstractServiceController<
     };
 
 
-    private _peerid: string = null;
     private _isConnectOwner: boolean = false;
 
 
@@ -49,7 +47,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
      * @param peer
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
-        this._peerid = peer.id;
+        this.PeerId = peer.id;
         this.SendStageService();
     }
 
@@ -89,11 +87,11 @@ export default class GadgetInstanceController extends AbstractServiceController<
 
         //  peeridの取得とオーナー接続が完了している場合
         //  オーナーにURLを通知する
-        if (this._isConnectOwner && this._peerid) {
+        if (this._isConnectOwner && this.PeerId) {
 
             this.CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
             this.CastInstance.instanceUrl = location.href;
-            this.CastInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this._peerid);
+            this.CastInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this.PeerId);
 
             WebRTCService.SendToOwner(this.CastInstance);
         }

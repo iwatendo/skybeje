@@ -18,6 +18,8 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
     private _mainElement = document.getElementById("sbj-gadget-instance-main");
 
+    private YouTubeOption: YouTubeOption = null;
+
     /**
      * 初期化処理
      */
@@ -109,11 +111,12 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      */
     public SetGuide(guide: Personal.Guide) {
 
-        let option = JSON.parse(guide.embedstatus) as YouTubeOption;
-        YouTubeUtil.GetPlayer(option, true, (player) => {
-            YouTubeUtil.CueVideo(option);
-            this.SetYouTubeListener(option, player);
-            this.Controller.YouTubeOption.option = option;
+        let opt = JSON.parse(guide.embedstatus) as YouTubeOption;
+        this.YouTubeOption = opt;
+
+        YouTubeUtil.GetPlayer(opt, true, (player) => {
+            this.SetYouTubeListener(player);
+            YouTubeUtil.CueVideo(opt);
             this.Controller.CastSetting.guide = guide;
             this.Controller.ServerSend(true, false);
         });
@@ -134,42 +137,101 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
 
     /**
-     * YouTubeの再生状況の取得
+     * YouTubePlayerの再生ステータスの変更検知リスナーの登録
+     * @param player 
      */
-    public GetYouTubeStatus(): YouTubeStatusSender {
-        this.Controller.YouTubeOption.state = YouTubeUtil.Player.getPlayerState();
-        this.Controller.YouTubeOption.current = YouTubeUtil.Player.getCurrentTime();
-        return this.Controller.YouTubeOption;
+    private SetYouTubeListener(player: YT.Player) {
+
+        player.addEventListener('onStateChange', (event) => {
+            let state = ((event as any).data) as YT.PlayerState;
+            this.SendYouTubeStatus(state, player.getPlaybackRate(), player.getCurrentTime());
+        });
+
+        player.addEventListener('onPlaybackRateChange', (event) => {
+            let rate = ((event as any).data) as number;
+            this.SendYouTubeStatus(player.getPlayerState(), rate, player.getCurrentTime());
+        });
     }
 
 
     /**
-     * 
-     * @param options 
-     * @param player 
+     * YouTube動画の再生状況を取得する
+     * ※途中接続のVisitorへ再生状況を伝えるための処理
      */
-    private SetYouTubeListener(option: YouTubeOption, player: YT.Player) {
+    public CreateYouTubeStatus(): YouTubeStatusSender {
+        let pl = YouTubeUtil.Player;
+        let sender = new YouTubeStatusSender();
+        sender.pid = this.Controller.PeerId;
+        sender.state = pl.getPlayerState();
+        sender.playbackRate = pl.getPlaybackRate();
+        sender.current = pl.getCurrentTime();
+        return sender;
+    }
 
-        player.addEventListener('onStateChange', (event) => {
 
-            let state = ((event as any).data) as YT.PlayerState;
+    /**
+     * YouTubeの再生状況の変更を
+     * 接続クライアントに通知する
+     */
+    private SendYouTubeStatus(state: YT.PlayerState, pbr: number, curtime: number) {
 
-            switch ((event as any).data) {
-                case YT.PlayerState.PLAYING:
-                    WebRTCService.SendAll(this.GetYouTubeStatus());
-                    break;
-                case YT.PlayerState.ENDED:
-                    WebRTCService.SendAll(this.GetYouTubeStatus());
-                    break;
-                case YT.PlayerState.PAUSED:
-                    WebRTCService.SendAll(this.GetYouTubeStatus());
-                    break;
-                case YT.PlayerState.CUED:
-                    player.playVideo();
-                    break;
-            }
-        });
+        switch (state) {
+            case YT.PlayerState.PLAYING: break;
+            case YT.PlayerState.ENDED: break;
+            case YT.PlayerState.PAUSED: break;
+            case YT.PlayerState.CUED: break;
+            default: return;
+        }
 
+        //  通知情報の生成
+        let sender = new YouTubeStatusSender();
+        sender.pid = this.Controller.PeerId;
+        sender.state = state;
+        sender.playbackRate = pbr;
+        sender.current = curtime;
+        sender.isSyncing = true;
+
+        //  接続クライアントに通知
+        this._preSender = sender;
+        WebRTCService.SendAll(sender);
+    }
+
+    private _preSender = null;
+
+    /**
+     * 接続クライアントからのステータス通知の取得
+     * @param sender 
+     */
+    public SetYouTubeStatus(sender: YouTubeStatusSender) {
+
+        if (this._preSender === null) return;
+        if (YouTubeStatusSender.IsEqual(this._preSender, sender)) return;
+
+        let pl = YouTubeUtil.Player;
+
+        if( pl.getPlaybackRate() !== sender.playbackRate ){
+            pl.setPlaybackRate(sender.playbackRate);
+        }
+
+        switch (sender.state) {
+            case YT.PlayerState.PLAYING:
+                YouTubeUtil.Player.loadVideoById({
+                    videoId: this.YouTubeOption.id,
+                    startSeconds: sender.current,
+                    endSeconds: this.YouTubeOption.end,
+                });
+                break;
+            case YT.PlayerState.ENDED:
+                break;
+            case YT.PlayerState.PAUSED:
+                pl.pauseVideo();
+                pl.seekTo(sender.current, true);
+                break;
+            case YT.PlayerState.CUED:
+                break;
+        }
+
+        WebRTCService.SendAll(sender);
     }
 
 }

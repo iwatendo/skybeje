@@ -76,7 +76,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
     }
 
 
-    private _isLoad: boolean = false;
+    private _isLoaded: boolean = false;
     private _callback = null;
 
     /**
@@ -86,74 +86,115 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
     public SetYouTubePlayer(opt: YouTubeOption) {
 
         if (this.YouTubeOption === null || this.YouTubeOption.id !== opt.id) {
+
             this.YouTubeOption = opt;
-            YouTubeUtil.GetPlayer(opt, false, (player) => {
+
+            YouTubeUtil.GetPlayer(opt, true, (player) => {
+
                 this.SetYouTubeListener(player);
-                this._isLoad = true;
+                this._isLoaded = true;
+
                 if (this._callback != null) {
                     this._callback();
                 }
+                else {
+                    WebRTCService.SendToOwner(new GetYouTubeStatusSender());
+                }
+
             });
+
         }
     }
 
 
     /**
-     * 
+     * YouTubePlayerの再生ステータスの変更検知リスナーの登録
      * @param player 
      */
     private SetYouTubeListener(player: YT.Player) {
 
         player.addEventListener('onStateChange', (event) => {
-
             let state = ((event as any).data) as YT.PlayerState;
-
-            switch ((event as any).data) {
-                case YT.PlayerState.PLAYING:
-                    LogUtil.Info(this.Controller, "PLAYING");
-                    break;
-                case YT.PlayerState.ENDED:
-                    LogUtil.Info(this.Controller, "ENDED");
-                    break;
-                case YT.PlayerState.PAUSED:
-                    LogUtil.Info(this.Controller, "PAUSED");
-                    break;
-                case YT.PlayerState.CUED:
-                    LogUtil.Info(this.Controller, "CUED");
-                    WebRTCService.SendToOwner(new GetYouTubeStatusSender());
-                    break;
-            }
+            this.SendYouTubeStatus(state, player.getPlaybackRate(), player.getCurrentTime());
         });
+
+        player.addEventListener('onPlaybackRateChange', (event) => {
+            let rate = ((event as any).data) as number;
+            this.SendYouTubeStatus(player.getPlayerState(), rate, player.getCurrentTime());
+        });
+
     }
 
 
     /**
-     * 
+     * YouTubeの再生状況の変更を
+     * オーナーに通知する
+     */
+    private SendYouTubeStatus(state: YT.PlayerState, pbr: number, curtime: number) {
+
+        switch (state) {
+            case YT.PlayerState.PLAYING: break;
+            case YT.PlayerState.ENDED: break;
+            case YT.PlayerState.PAUSED: break;
+            case YT.PlayerState.CUED: break;
+            default: return;
+        }
+
+        //  通知情報の生成
+        let sender = new YouTubeStatusSender();
+        sender.pid = this.Controller.PeerId;
+        sender.state = state;
+        sender.playbackRate = pbr;
+        sender.current = curtime;
+
+        //  オーナーに通知する
+        WebRTCService.SendToOwner(sender);
+    }
+
+
+    private _preStatus: YouTubeStatusSender = null;
+
+
+    /**
+     * オーナーからのYouTube再生通知
      * @param sender 
      */
     public SetYouTubeStatus(sender: YouTubeStatusSender) {
 
+        this._preStatus = sender;
+
+        if (sender.pid === this.Controller.PeerId) {
+            return;
+        }
+
         let pl = YouTubeUtil.Player;
 
         let func = () => {
+
             this.YouTubeOption.start = sender.current;
+
+            if( pl.getPlaybackRate() !== sender.playbackRate ){
+                pl.setPlaybackRate(sender.playbackRate);
+            }
+
             switch (sender.state) {
                 case YT.PlayerState.PLAYING:
-                    YouTubeUtil.LoadVideo(this.YouTubeOption);
                     pl.playVideo();
                     break;
                 case YT.PlayerState.ENDED:
+                    //  pl.stopVideo();
                     break;
                 case YT.PlayerState.PAUSED:
                     pl.pauseVideo();
                     pl.seekTo(sender.current, true);
                     break;
                 case YT.PlayerState.CUED:
+                    YouTubeUtil.CueVideo(this.YouTubeOption);
                     break;
             }
         };
 
-        if (this._isLoad) {
+        if (this._isLoaded) {
             func();
         }
         else {

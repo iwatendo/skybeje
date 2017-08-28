@@ -56,9 +56,14 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
 
         //  YouTubeの再生状況の送信
         if (sender.type == GetYouTubeStatusSender.ID) {
-            WebRTCService.SendTo(conn, this.Controller.View.GetYouTubeStatus());
+            WebRTCService.SendTo(conn, this.Controller.View.CreateYouTubeStatus());
         }
 
+        //  YouTubeの再生状況の送信
+        if (sender.type == YouTubeStatusSender.ID) {
+            this.Controller.View.SetYouTubeStatus(sender as YouTubeStatusSender)
+        }
+        
     }
 
 }
