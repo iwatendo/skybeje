@@ -92,13 +92,16 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
             YouTubeUtil.GetPlayer(ytOpt, true, (player) => {
 
+                //  クライアント側は音がなる状態で起動
+                player.unMute();
+
                 player.seekTo(ytStatus.current, true);
 
                 //  初期化処理
                 this._isLoaded = true;
                 this.SetYouTubeListener(player);
                 this.SetYouTubeStatus(ytStatus);
-                
+
             });
 
         }
@@ -114,17 +117,11 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
         player.addEventListener('onStateChange', (event) => {
             let state = ((event as any).data) as YT.PlayerState;
             this.SendYouTubeStatus(state, player.getPlaybackRate(), player.getCurrentTime());
-            LogUtil.Info(this.Controller,"STATE CHANGE");
         });
 
         player.addEventListener('onPlaybackRateChange', (event) => {
             let rate = ((event as any).data) as number;
             this.SendYouTubeStatus(player.getPlayerState(), rate, player.getCurrentTime());
-        });
-
-        player.addEventListener('onReady',(event)=>{
-            let ev = event as YT.PlayerEvent;
-            LogUtil.Info(this.Controller,"ON READEY");
         });
 
     }
@@ -140,6 +137,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
             case YT.PlayerState.PLAYING: break;
             case YT.PlayerState.ENDED: break;
             case YT.PlayerState.PAUSED: break;
+            case YT.PlayerState.BUFFERING: break;
             case YT.PlayerState.CUED: break;
             default: return;
         }
@@ -162,7 +160,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
      */
     public SetYouTubeStatus(sender: YouTubeStatusSender) {
 
-        if( !this._isLoaded )
+        if (!this._isLoaded)
             return;
 
         if (sender.pid === this.Controller.PeerId) {
@@ -187,6 +185,8 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
             case YT.PlayerState.PAUSED:
                 pl.pauseVideo();
                 pl.seekTo(sender.current, true);
+                break;
+            case YT.PlayerState.BUFFERING:
                 break;
             case YT.PlayerState.CUED:
                 YouTubeUtil.CueVideo(this.YouTubeOption);

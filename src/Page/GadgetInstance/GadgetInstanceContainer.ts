@@ -60,14 +60,12 @@ export class YouTubeStatusSender extends Sender {
         this.state = -1;
         this.current = -1;
         this.playbackRate = 1;
-        this.isSyncing = false;
     }
 
     pid: string;
     state: YT.PlayerState;
     current: number;
     playbackRate: number;
-    isSyncing : boolean;
 
 
     /**

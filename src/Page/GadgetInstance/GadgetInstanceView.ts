@@ -115,6 +115,10 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         this.YouTubeOption = opt;
 
         YouTubeUtil.GetPlayer(opt, true, (player) => {
+
+            //  インスタンス側はミュート状態で起動
+            player.mute();
+
             this.SetYouTubeListener(player);
             //  YouTubeUtil.CueVideo(opt);
             YouTubeUtil.LoadVideo(opt);
@@ -151,7 +155,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         player.addEventListener('onPlaybackRateChange', (event) => {
             let rate = ((event as any).data) as number;
             this.SendYouTubeStatus(player.getPlayerState(), rate, player.getCurrentTime());
-        });
+        });        
     }
 
 
@@ -180,6 +184,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             case YT.PlayerState.PLAYING: break;
             case YT.PlayerState.ENDED: break;
             case YT.PlayerState.PAUSED: break;
+            case YT.PlayerState.BUFFERING: break;
             case YT.PlayerState.CUED: break;
             case YT.PlayerState.UNSTARTED: return;
             default: return;
@@ -191,7 +196,6 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         sender.state = state;
         sender.playbackRate = pbr;
         sender.current = curtime;
-        sender.isSyncing = true;
 
         //  接続クライアントに通知
         this._preSender = sender;
@@ -211,7 +215,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         let pl = YouTubeUtil.Player;
 
-        if( pl.getPlaybackRate() !== sender.playbackRate ){
+        if (pl.getPlaybackRate() !== sender.playbackRate) {
             pl.setPlaybackRate(sender.playbackRate);
         }
 
@@ -225,6 +229,8 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             case YT.PlayerState.PAUSED:
                 pl.pauseVideo();
                 pl.seekTo(sender.current, true);
+                break;
+            case YT.PlayerState.BUFFERING:
                 break;
             case YT.PlayerState.CUED:
                 break;
