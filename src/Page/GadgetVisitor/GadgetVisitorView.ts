@@ -72,35 +72,33 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
             }
         }
 
-        this.SetYouTubePlayer(JSON.parse(sender.guide.embedstatus) as YouTubeOption);
+        this.SetYouTubePlayer(JSON.parse(sender.guide.embedstatus) as YouTubeOption, sender.status);
     }
 
 
     private _isLoaded: boolean = false;
-    private _callback = null;
+
 
     /**
      * 
-     * @param opt 
+     * @param ytOpt 
+     * @param ytStatus 
      */
-    public SetYouTubePlayer(opt: YouTubeOption) {
+    public SetYouTubePlayer(ytOpt: YouTubeOption, ytStatus: YouTubeStatusSender) {
 
-        if (this.YouTubeOption === null || this.YouTubeOption.id !== opt.id) {
+        if (this.YouTubeOption === null || this.YouTubeOption.id !== ytOpt.id) {
 
-            this.YouTubeOption = opt;
+            this.YouTubeOption = ytOpt;
 
-            YouTubeUtil.GetPlayer(opt, true, (player) => {
+            YouTubeUtil.GetPlayer(ytOpt, true, (player) => {
 
-                this.SetYouTubeListener(player);
+                player.seekTo(ytStatus.current, true);
+
+                //  初期化処理
                 this._isLoaded = true;
-
-                if (this._callback != null) {
-                    this._callback();
-                }
-                else {
-                    WebRTCService.SendToOwner(new GetYouTubeStatusSender());
-                }
-
+                this.SetYouTubeListener(player);
+                this.SetYouTubeStatus(ytStatus);
+                
             });
 
         }
@@ -116,11 +114,17 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
         player.addEventListener('onStateChange', (event) => {
             let state = ((event as any).data) as YT.PlayerState;
             this.SendYouTubeStatus(state, player.getPlaybackRate(), player.getCurrentTime());
+            LogUtil.Info(this.Controller,"STATE CHANGE");
         });
 
         player.addEventListener('onPlaybackRateChange', (event) => {
             let rate = ((event as any).data) as number;
             this.SendYouTubeStatus(player.getPlayerState(), rate, player.getCurrentTime());
+        });
+
+        player.addEventListener('onReady',(event)=>{
+            let ev = event as YT.PlayerEvent;
+            LogUtil.Info(this.Controller,"ON READEY");
         });
 
     }
@@ -152,16 +156,14 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
     }
 
 
-    private _preStatus: YouTubeStatusSender = null;
-
-
     /**
      * オーナーからのYouTube再生通知
      * @param sender 
      */
     public SetYouTubeStatus(sender: YouTubeStatusSender) {
 
-        this._preStatus = sender;
+        if( !this._isLoaded )
+            return;
 
         if (sender.pid === this.Controller.PeerId) {
             return;
@@ -169,39 +171,28 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
         let pl = YouTubeUtil.Player;
 
-        let func = () => {
+        this.YouTubeOption.start = sender.current;
 
-            this.YouTubeOption.start = sender.current;
-
-            if( pl.getPlaybackRate() !== sender.playbackRate ){
-                pl.setPlaybackRate(sender.playbackRate);
-            }
-
-            switch (sender.state) {
-                case YT.PlayerState.PLAYING:
-                    pl.playVideo();
-                    break;
-                case YT.PlayerState.ENDED:
-                    //  pl.stopVideo();
-                    break;
-                case YT.PlayerState.PAUSED:
-                    pl.pauseVideo();
-                    pl.seekTo(sender.current, true);
-                    break;
-                case YT.PlayerState.CUED:
-                    YouTubeUtil.CueVideo(this.YouTubeOption);
-                    break;
-            }
-        };
-
-        if (this._isLoaded) {
-            func();
+        if (pl.getPlaybackRate() !== sender.playbackRate) {
+            pl.setPlaybackRate(sender.playbackRate);
         }
-        else {
-            this._callback = func;
+
+        switch (sender.state) {
+            case YT.PlayerState.PLAYING:
+                pl.playVideo();
+                break;
+            case YT.PlayerState.ENDED:
+                //  pl.stopVideo();
+                break;
+            case YT.PlayerState.PAUSED:
+                pl.pauseVideo();
+                pl.seekTo(sender.current, true);
+                break;
+            case YT.PlayerState.CUED:
+                YouTubeUtil.CueVideo(this.YouTubeOption);
+                break;
         }
 
     }
-
 
 }

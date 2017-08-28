@@ -29,6 +29,7 @@ export class GadgetCastSettingSender extends Sender {
     }
     dispUserCursor: boolean;
     guide: Personal.Guide;
+    status: YouTubeStatusSender;
 }
 
 

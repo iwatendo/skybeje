@@ -51,6 +51,7 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
 
         //  キャスト情報の送信
         if (sender.type === GetGadgetCastSettingSedner.ID) {
+            this.Controller.CastSetting.status = this.Controller.View.CreateYouTubeStatus();
             WebRTCService.SendTo(conn, this.Controller.CastSetting);
         }
 

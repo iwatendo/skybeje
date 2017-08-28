@@ -116,7 +116,8 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         YouTubeUtil.GetPlayer(opt, true, (player) => {
             this.SetYouTubeListener(player);
-            YouTubeUtil.CueVideo(opt);
+            //  YouTubeUtil.CueVideo(opt);
+            YouTubeUtil.LoadVideo(opt);
             this.Controller.CastSetting.guide = guide;
             this.Controller.ServerSend(true, false);
         });
@@ -180,6 +181,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             case YT.PlayerState.ENDED: break;
             case YT.PlayerState.PAUSED: break;
             case YT.PlayerState.CUED: break;
+            case YT.PlayerState.UNSTARTED: return;
             default: return;
         }
 
@@ -215,13 +217,10 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         switch (sender.state) {
             case YT.PlayerState.PLAYING:
-                YouTubeUtil.Player.loadVideoById({
-                    videoId: this.YouTubeOption.id,
-                    startSeconds: sender.current,
-                    endSeconds: this.YouTubeOption.end,
-                });
+                pl.playVideo();
                 break;
             case YT.PlayerState.ENDED:
+                //  pl.stopVideo();
                 break;
             case YT.PlayerState.PAUSED:
                 pl.pauseVideo();
@@ -229,6 +228,8 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
                 break;
             case YT.PlayerState.CUED:
                 break;
+            case YT.PlayerState.UNSTARTED: return;
+            default: return;
         }
 
         WebRTCService.SendAll(sender);
