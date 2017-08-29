@@ -34,6 +34,7 @@ export default class YouTubeUtil {
 
     public static Player: YT.Player = null;
     public static IsAPIReady: boolean = false;
+    public static IsCreatePlayer: boolean = false;
     public static ApiReadyElementId: string;
     public static ElementId: string;
 
@@ -200,6 +201,7 @@ export default class YouTubeUtil {
         };
 
         YouTubeUtil.Player = new YT.Player(this.ElementId, options);
+        YouTubeUtil.IsCreatePlayer = true;
     }
 
 }

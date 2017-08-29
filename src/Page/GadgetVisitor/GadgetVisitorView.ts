@@ -72,7 +72,19 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
             }
         }
 
-        this.SetYouTubePlayer(JSON.parse(sender.guide.embedstatus) as YouTubeOption, sender.status);
+        let option = JSON.parse(sender.guide.embedstatus) as YouTubeOption;
+
+        if (this.YouTubeOption === null || this.YouTubeOption.id !== option.id) {
+
+            this.YouTubeOption = option;
+
+            if(this._isLoaded){
+                YouTubeUtil.LoadVideo(option);
+            }
+            else{
+                this.SetYouTubePlayer(option, sender.status);
+            }
+        }
     }
 
 
@@ -86,25 +98,16 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
      */
     public SetYouTubePlayer(ytOpt: YouTubeOption, ytStatus: YouTubeStatusSender) {
 
-        if (this.YouTubeOption === null || this.YouTubeOption.id !== ytOpt.id) {
+        YouTubeUtil.GetPlayer(ytOpt, false, (player) => {
+            //  クライアント側は音がなる状態で起動
+            player.unMute();
+            player.seekTo(ytStatus.current, true);
 
-            this.YouTubeOption = ytOpt;
-
-            YouTubeUtil.GetPlayer(ytOpt, true, (player) => {
-
-                //  クライアント側は音がなる状態で起動
-                player.unMute();
-
-                player.seekTo(ytStatus.current, true);
-
-                //  初期化処理
-                this._isLoaded = true;
-                this.SetYouTubeListener(player);
-                this.SetYouTubeStatus(ytStatus);
-
-            });
-
-        }
+            //  初期化処理
+            this._isLoaded = true;
+            this.SetYouTubeListener(player);
+            this.SetYouTubeStatus(ytStatus);
+        });
     }
 
 
@@ -116,6 +119,16 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
         player.addEventListener('onStateChange', (event) => {
             let state = ((event as any).data) as YT.PlayerState;
+
+            switch (state) {
+                case YT.PlayerState.PLAYING: break;
+                case YT.PlayerState.ENDED: break;
+                case YT.PlayerState.PAUSED: break;
+                case YT.PlayerState.BUFFERING: break;
+                case YT.PlayerState.CUED: break;
+                default: return;
+            }
+
             this.SendYouTubeStatus(state, player.getPlaybackRate(), player.getCurrentTime());
         });
 
@@ -132,15 +145,6 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
      * オーナーに通知する
      */
     private SendYouTubeStatus(state: YT.PlayerState, pbr: number, curtime: number) {
-
-        switch (state) {
-            case YT.PlayerState.PLAYING: break;
-            case YT.PlayerState.ENDED: break;
-            case YT.PlayerState.PAUSED: break;
-            case YT.PlayerState.BUFFERING: break;
-            case YT.PlayerState.CUED: break;
-            default: return;
-        }
 
         //  通知情報の生成
         let sender = new YouTubeStatusSender();
@@ -169,8 +173,6 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
         let pl = YouTubeUtil.Player;
 
-        this.YouTubeOption.start = sender.current;
-
         if (pl.getPlaybackRate() !== sender.playbackRate) {
             pl.setPlaybackRate(sender.playbackRate);
         }
@@ -189,7 +191,6 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
             case YT.PlayerState.BUFFERING:
                 break;
             case YT.PlayerState.CUED:
-                YouTubeUtil.CueVideo(this.YouTubeOption);
                 break;
         }
 

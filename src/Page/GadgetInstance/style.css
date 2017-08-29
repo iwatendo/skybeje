@@ -51,13 +51,13 @@
 
 .sbj-split-left {
     float: left;
-    width: 300px;
+    width: 236px;
     padding: 0px 32px;
 }
 
 .sbj-split-right {
     float: right;
-    width: calc(100% - 364px);
+    width: calc(100% - 300px);
 }
 
 .sbj-dialog-close{
@@ -67,6 +67,6 @@
 }
 
 #sbj-guide-youtube-player{
-    width:320px;
-    height: 180px;
+    width:480px;
+    height: 270px;
 }

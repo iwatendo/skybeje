@@ -336,7 +336,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 this._naviView = new NotImplementView(mainElement);
                 {
                     let frame = document.getElementById('sbj-main-home-gadget-frame') as HTMLFrameElement;
-                    frame.contentDocument.getElementById('sbj-gadget-instance-cancel').focus();
+                    //  frame.contentDocument.getElementById('sbj-gadget-instance-cancel').focus();
                 }
                 break;
         }

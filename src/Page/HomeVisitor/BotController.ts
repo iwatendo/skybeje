@@ -7,7 +7,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import BotUtil from "../../Base/Util/BotUtil";
 
 import RoomCache from "./Cache/RoomCache";
-import { ChatMessageSender } from "./HomeVisitorContainer";
+import { ChatMessageSender, GuideSender } from "./HomeVisitorContainer";
 import HomeVisitorController from "./HomeVisitorController";
 import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
@@ -140,6 +140,11 @@ export default class BotController {
 
                 //  ガジェット登録されていた場合
                 if (guide.url.length > 0) {
+
+                    let guideSender = new GuideSender();
+                    guideSender.guide = guide;
+                    WebRTCService.SendAll(guideSender);
+
                     this._guideQuere = guide;
                     let peerid = this.Controller.PeerId;
                     this.Controller.NotifyBootLiveCast(peerid, CastTypeEnum.Gadget);

@@ -46,7 +46,7 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
         if (sender.type === GuideSender.ID) {
             let guide = (sender as GuideSender).guide;
             this.Controller.Guide = guide
-            this.Controller.View.SetGuide(guide);
+            this.Controller.View.SetGuide(guide);            
         }
 
         //  キャスト情報の送信

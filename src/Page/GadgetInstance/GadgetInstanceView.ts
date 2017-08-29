@@ -18,8 +18,6 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
     private _mainElement = document.getElementById("sbj-gadget-instance-main");
 
-    private YouTubeOption: YouTubeOption = null;
-
     /**
      * 初期化処理
      */
@@ -61,7 +59,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             }
         }
 
-        //  停止ボタン
+        //  ガジェットキャスト停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.ServerSend(false, true);
         };
@@ -111,20 +109,35 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      */
     public SetGuide(guide: Personal.Guide) {
 
-        let opt = JSON.parse(guide.embedstatus) as YouTubeOption;
-        this.YouTubeOption = opt;
+        let option = JSON.parse(guide.embedstatus) as YouTubeOption;
 
-        YouTubeUtil.GetPlayer(opt, true, (player) => {
+        if (YouTubeUtil.IsCreatePlayer) {
+            if (this.Controller.CastSetting.guide.gid !== guide.gid) {
+                this.LoadSend(guide, option);
+            }
+        }
+        else {
+            YouTubeUtil.GetPlayer(option, true, (player) => {
 
-            //  インスタンス側はミュート状態で起動
-            player.mute();
+                //  インスタンス側はミュート状態で起動
+                player.mute();
 
-            this.SetYouTubeListener(player);
-            //  YouTubeUtil.CueVideo(opt);
-            YouTubeUtil.LoadVideo(opt);
-            this.Controller.CastSetting.guide = guide;
-            this.Controller.ServerSend(true, false);
-        });
+                this.SetYouTubeListener(player);
+                this.LoadSend(guide, option);
+                this.Controller.ServerSend(true, false);
+            });
+        }
+    }
+
+
+    /**
+     * 
+     * @param guide 
+     */
+    public LoadSend(guide: Personal.Guide, opt: YouTubeOption) {
+        YouTubeUtil.LoadVideo(opt);
+        this.Controller.CastSetting.guide = guide;
+        WebRTCService.SendAll(this.Controller.CastSetting);
     }
 
 
@@ -149,13 +162,26 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         player.addEventListener('onStateChange', (event) => {
             let state = ((event as any).data) as YT.PlayerState;
+
+            switch (state) {
+                case YT.PlayerState.PLAYING: break;
+                case YT.PlayerState.ENDED: break;
+                case YT.PlayerState.PAUSED: break;
+                case YT.PlayerState.BUFFERING: break;
+                case YT.PlayerState.CUED: break;
+                case YT.PlayerState.UNSTARTED: return;
+                default: return;
+            }
+
             this.SendYouTubeStatus(state, player.getPlaybackRate(), player.getCurrentTime());
         });
 
         player.addEventListener('onPlaybackRateChange', (event) => {
             let rate = ((event as any).data) as number;
             this.SendYouTubeStatus(player.getPlayerState(), rate, player.getCurrentTime());
-        });        
+        });
+
+
     }
 
 
@@ -179,16 +205,6 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      * 接続クライアントに通知する
      */
     private SendYouTubeStatus(state: YT.PlayerState, pbr: number, curtime: number) {
-
-        switch (state) {
-            case YT.PlayerState.PLAYING: break;
-            case YT.PlayerState.ENDED: break;
-            case YT.PlayerState.PAUSED: break;
-            case YT.PlayerState.BUFFERING: break;
-            case YT.PlayerState.CUED: break;
-            case YT.PlayerState.UNSTARTED: return;
-            default: return;
-        }
 
         //  通知情報の生成
         let sender = new YouTubeStatusSender();
@@ -219,6 +235,8 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             pl.setPlaybackRate(sender.playbackRate);
         }
 
+        //  クライアントからの
+        //  停止/再開通知は受信する
         switch (sender.state) {
             case YT.PlayerState.PLAYING:
                 pl.playVideo();
@@ -229,6 +247,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             case YT.PlayerState.PAUSED:
                 pl.pauseVideo();
                 pl.seekTo(sender.current, true);
+
                 break;
             case YT.PlayerState.BUFFERING:
                 break;
@@ -238,7 +257,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             default: return;
         }
 
-        WebRTCService.SendAll(sender);
+        //  WebRTCService.SendAll(sender);
     }
 
 }
