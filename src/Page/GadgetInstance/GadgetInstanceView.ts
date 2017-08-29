@@ -111,33 +111,18 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         let option = JSON.parse(guide.embedstatus) as YouTubeOption;
 
-        if (YouTubeUtil.IsCreatePlayer) {
-            if (this.Controller.CastSetting.guide.gid !== guide.gid) {
-                this.LoadSend(guide, option);
-            }
-        }
-        else {
-            YouTubeUtil.GetPlayer(option, true, (player) => {
+        YouTubeUtil.GetPlayer(option, true, (player) => {
 
-                //  インスタンス側はミュート状態で起動
-                player.mute();
+            //  インスタンス側はミュート状態で起動
+            player.mute();
 
-                this.SetYouTubeListener(player);
-                this.LoadSend(guide, option);
-                this.Controller.ServerSend(true, false);
-            });
-        }
-    }
+            YouTubeUtil.LoadVideo(option);
+            this.SetYouTubeListener(player);
+            this.Controller.CastSetting.guide = guide;
 
-
-    /**
-     * 
-     * @param guide 
-     */
-    public LoadSend(guide: Personal.Guide, opt: YouTubeOption) {
-        YouTubeUtil.LoadVideo(opt);
-        this.Controller.CastSetting.guide = guide;
-        WebRTCService.SendAll(this.Controller.CastSetting);
+            this.Controller.ServerSend(true, false);
+            WebRTCService.SendAll(this.Controller.CastSetting);
+        });
     }
 
 
@@ -180,7 +165,6 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             let rate = ((event as any).data) as number;
             this.SendYouTubeStatus(player.getPlayerState(), rate, player.getCurrentTime());
         });
-
 
     }
 
@@ -226,8 +210,11 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      */
     public SetYouTubeStatus(sender: YouTubeStatusSender) {
 
-        if (this._preSender === null) return;
-        if (YouTubeStatusSender.IsEqual(this._preSender, sender)) return;
+        if (this._preSender !== null) {
+            if (YouTubeStatusSender.IsEqual(this._preSender, sender)) {
+                return;
+            }
+        }
 
         let pl = YouTubeUtil.Player;
 

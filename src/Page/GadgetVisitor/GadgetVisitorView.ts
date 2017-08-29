@@ -20,7 +20,6 @@ import { GadgetCastSettingSender, GetYouTubeStatusSender, YouTubeStatusSender } 
 export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorController> {
 
     public Cursor: CursorController;
-    private YouTubeOption: YouTubeOption = null;
 
 
     //
@@ -73,40 +72,14 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
         }
 
         let option = JSON.parse(sender.guide.embedstatus) as YouTubeOption;
+        option.start = sender.status.current;
 
-        if (this.YouTubeOption === null || this.YouTubeOption.id !== option.id) {
-
-            this.YouTubeOption = option;
-
-            if(this._isLoaded){
-                YouTubeUtil.LoadVideo(option);
-            }
-            else{
-                this.SetYouTubePlayer(option, sender.status);
-            }
-        }
-    }
-
-
-    private _isLoaded: boolean = false;
-
-
-    /**
-     * 
-     * @param ytOpt 
-     * @param ytStatus 
-     */
-    public SetYouTubePlayer(ytOpt: YouTubeOption, ytStatus: YouTubeStatusSender) {
-
-        YouTubeUtil.GetPlayer(ytOpt, false, (player) => {
+        YouTubeUtil.GetPlayer(option, false, (player) => {
             //  クライアント側は音がなる状態で起動
             player.unMute();
-            player.seekTo(ytStatus.current, true);
 
-            //  初期化処理
-            this._isLoaded = true;
+            YouTubeUtil.LoadVideo(option);
             this.SetYouTubeListener(player);
-            this.SetYouTubeStatus(ytStatus);
         });
     }
 
@@ -164,7 +137,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
      */
     public SetYouTubeStatus(sender: YouTubeStatusSender) {
 
-        if (!this._isLoaded)
+        if (!YouTubeUtil.IsCreatePlayer)
             return;
 
         if (sender.pid === this.Controller.PeerId) {

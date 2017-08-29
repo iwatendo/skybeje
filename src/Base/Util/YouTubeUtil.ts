@@ -33,6 +33,7 @@ export class YouTubeOption {
 export default class YouTubeUtil {
 
     public static Player: YT.Player = null;
+    public static Option: YouTubeOption = null;
     public static IsAPIReady: boolean = false;
     public static IsCreatePlayer: boolean = false;
     public static ApiReadyElementId: string;
@@ -131,7 +132,7 @@ export default class YouTubeUtil {
      * 
      * @param opt 
      */
-    public static CueVideo(opt:YouTubeOption){
+    public static CueVideo(opt: YouTubeOption) {
         if (this.IsAPIReady) {
             this.Player.cueVideoById({ videoId: opt.id, startSeconds: opt.start, endSeconds: opt.end });
         }
@@ -145,6 +146,22 @@ export default class YouTubeUtil {
      * @param callback 
      */
     public static GetPlayer(option: YouTubeOption, useControl: boolean, callback: OnCreateYouTubePlayer) {
+
+
+        if (YouTubeUtil.Option !== null) {
+
+            let pre = YouTubeUtil.Option;
+
+            if (pre.id === option.id &&
+                pre.start === option.start &&
+                pre.end === option.end &&
+                pre.loop === option.loop) {
+                //  同じデータが指定された場合は、何もしない。
+                return;
+            }
+        }
+
+        this.IsCreatePlayer = false;
 
         if (this.IsAPIReady) {
             this.CreatePlayer(option, useControl, callback);
@@ -187,9 +204,11 @@ export default class YouTubeUtil {
                 controls: (useControl ? YT.Controls.ShowLoadPlayer : YT.Controls.Hide),
                 showinfo: YT.ShowInfo.Hide,
                 rel: YT.RelatedVideos.Hide,
+                loop: (opt.loop ? YT.Loop.Loop : YT.Loop.SinglePlay),
             },
             events: {
                 onReady: (event: YT.PlayerEvent) => {
+                    YouTubeUtil.IsCreatePlayer = true;
                     if (callback) {
                         callback((event as any).target);
                     }
@@ -201,7 +220,7 @@ export default class YouTubeUtil {
         };
 
         YouTubeUtil.Player = new YT.Player(this.ElementId, options);
-        YouTubeUtil.IsCreatePlayer = true;
+        YouTubeUtil.Option = opt;
     }
 
 }
