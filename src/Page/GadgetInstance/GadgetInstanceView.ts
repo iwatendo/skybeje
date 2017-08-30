@@ -61,7 +61,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         //  ガジェットキャスト停止ボタン
         stopButton.onclick = (e) => {
-            this.Controller.ServerSend(false, true);
+            this.Controller.SendToOwner_Close();
         };
 
         let options = LocalCache.GadgetCastOptions;
@@ -74,7 +74,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             LocalCache.SetGadgetCastOptions((opt) => opt.IsIconCursor = isCheced);
 
             this.Controller.CastSetting.dispUserCursor = isCheced;
-            this.Controller.SendToOwnerCastInstanceInfo();
+            WebRTCService.SendAll(this.Controller.CastSetting);
         };
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
@@ -126,7 +126,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
             this.SetYouTubeListener(player);
             YouTubeUtil.CueVideo(option);
-            this.Controller.ServerSend(true, false);
+            this.Controller.SendToOwner_CastStart();
         });
     }
 
@@ -143,12 +143,12 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      * フレームを閉じる
      */
     public Close() {
-        //  ストリーミング中の場合は表示を切替える
-        this.Controller.CastInstance.isHide = this.Controller.CastInstance.isCasting;
-
-        //  ストリーミングしていない場合、フレームを閉じる
-        this.Controller.CastInstance.isClose = !this.Controller.CastInstance.isCasting;
-        this.Controller.SendToOwnerCastInstanceInfo();
+        if (this.Controller.CastInstance.isCasting) {
+            this.Controller.SendToOwner_Hide();
+        }
+        else {
+            this.Controller.SendToOwner_Close();
+        }
     }
 
 
@@ -253,10 +253,10 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             case YT.PlayerState.BUFFERING:
                 break;
             case YT.PlayerState.CUED:
-                if(YouTubeUtil.Player.getPlayerState() === YT.PlayerState.CUED){
-                    
+                if (YouTubeUtil.Player.getPlayerState() === YT.PlayerState.CUED) {
+
                 }
-                else{
+                else {
                     sender = this.CreateYouTubeStatus();
                 }
                 WebRTCService.SendTo(conn, sender);

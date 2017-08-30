@@ -56,7 +56,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
      */
     public OnPeerClose() {
         if (this.IsOpen) {
-            this.ServerSend(false, true);
+            this.SendToOwner_Close();
         }
     }
 
@@ -126,29 +126,40 @@ export default class GadgetInstanceController extends AbstractServiceController<
 
 
     /**
-     * ガジェットキャストの開始/停止の通知
-     * @param isCasting 
-     * @param isHide 
+     *　ガジェットキャストの開始通知
      */
-    public ServerSend(isCasting: boolean, isClose: boolean) {
-
-        if (!isClose && this.CastInstance.isCasting == isCasting)
+    public SendToOwner_CastStart() {
+        let sender = this.CastInstance;
+        if (sender.isCasting) {
             return;
-
-        this.CastInstance.isCasting = isCasting;
-        this.CastInstance.isClose = isClose;
-        this.CastInstance.isHide = false;
-        this.SendToOwnerCastInstanceInfo();
+        }
+        sender.isCasting = true;
+        sender.isClose = false;
+        WebRTCService.SendToOwner(sender);
     }
 
 
     /**
-     * ガジェットキャストの起動通知
+     * インスタンスの終了通知
      */
-    public SendToOwnerCastInstanceInfo() {
-        if (this.CastInstance) {
-            WebRTCService.SendToOwner(this.CastInstance);
-        }
+    public SendToOwner_Close() {
+        let sender = this.CastInstance;
+        sender.isCasting = false;
+        sender.isHide = false;
+        sender.isClose = true;
+        WebRTCService.SendToOwner(sender);
     }
+
+
+    /**
+     * インスタンスの非表示通知
+     */
+    public SendToOwner_Hide() {
+        let sender = this.CastInstance;
+        sender.isHide = true;
+        sender.isClose = false;
+        WebRTCService.SendToOwner(sender);
+    }
+    
 
 };
