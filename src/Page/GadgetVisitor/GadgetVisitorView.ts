@@ -78,8 +78,8 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
             //  クライアント側は音がなる状態で起動
             player.unMute();
 
-            YouTubeUtil.LoadVideo(option);
             this.SetYouTubeListener(player);
+            YouTubeUtil.CueVideo(option);
         });
     }
 
@@ -121,7 +121,6 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
         //  通知情報の生成
         let sender = new YouTubeStatusSender();
-        sender.pid = this.Controller.PeerId;
         sender.state = state;
         sender.playbackRate = pbr;
         sender.current = curtime;
@@ -139,10 +138,6 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
         if (!YouTubeUtil.IsCreatePlayer)
             return;
-
-        if (sender.pid === this.Controller.PeerId) {
-            return;
-        }
 
         let pl = YouTubeUtil.Player;
 

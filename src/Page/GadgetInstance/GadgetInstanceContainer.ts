@@ -56,13 +56,11 @@ export class YouTubeStatusSender extends Sender {
     constructor() {
         super(YouTubeStatusSender.ID);
 
-        this.pid = null;
         this.state = -1;
         this.current = -1;
         this.playbackRate = 1;
     }
 
-    pid: string;
     state: YT.PlayerState;
     current: number;
     playbackRate: number;

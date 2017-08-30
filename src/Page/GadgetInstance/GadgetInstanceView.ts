@@ -74,7 +74,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             LocalCache.SetGadgetCastOptions((opt) => opt.IsIconCursor = isCheced);
 
             this.Controller.CastSetting.dispUserCursor = isCheced;
-            this.Controller.SendCastInfo();
+            this.Controller.SendToOwnerCastInstanceInfo();
         };
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
@@ -116,13 +116,26 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             //  インスタンス側はミュート状態で起動
             player.mute();
 
-            YouTubeUtil.LoadVideo(option);
-            this.SetYouTubeListener(player);
             this.Controller.CastSetting.guide = guide;
-
-            this.Controller.ServerSend(true, false);
+            let status = new YouTubeStatusSender();
+            status.state = YT.PlayerState.CUED;
+            status.playbackRate = 1;
+            status.current = option.start;
+            this.Controller.CastSetting.status = status;
             WebRTCService.SendAll(this.Controller.CastSetting);
+
+            this.SetYouTubeListener(player);
+            YouTubeUtil.CueVideo(option);
+            this.Controller.ServerSend(true, false);
         });
+    }
+
+
+    /**
+     * 
+     */
+    public DoCurVideo() {
+        YouTubeUtil.Player.playVideo();
     }
 
 
@@ -135,7 +148,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         //  ストリーミングしていない場合、フレームを閉じる
         this.Controller.CastInstance.isClose = !this.Controller.CastInstance.isCasting;
-        this.Controller.SendCastInfo();
+        this.Controller.SendToOwnerCastInstanceInfo();
     }
 
 
@@ -153,7 +166,9 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
                 case YT.PlayerState.ENDED: break;
                 case YT.PlayerState.PAUSED: break;
                 case YT.PlayerState.BUFFERING: break;
-                case YT.PlayerState.CUED: break;
+                case YT.PlayerState.CUED:
+                    this.DoCurVideo();
+                    break;
                 case YT.PlayerState.UNSTARTED: return;
                 default: return;
             }
@@ -176,7 +191,6 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
     public CreateYouTubeStatus(): YouTubeStatusSender {
         let pl = YouTubeUtil.Player;
         let sender = new YouTubeStatusSender();
-        sender.pid = this.Controller.PeerId;
         sender.state = pl.getPlayerState();
         sender.playbackRate = pl.getPlaybackRate();
         sender.current = pl.getCurrentTime();
@@ -192,7 +206,6 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         //  通知情報の生成
         let sender = new YouTubeStatusSender();
-        sender.pid = this.Controller.PeerId;
         sender.state = state;
         sender.playbackRate = pbr;
         sender.current = curtime;
@@ -204,11 +217,12 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
     private _preSender = null;
 
+
     /**
      * 接続クライアントからのステータス通知の取得
      * @param sender 
      */
-    public SetYouTubeStatus(sender: YouTubeStatusSender) {
+    public SetYouTubeStatus(conn: PeerJs.DataConnection, sender: YouTubeStatusSender) {
 
         if (this._preSender !== null) {
             if (YouTubeStatusSender.IsEqual(this._preSender, sender)) {
@@ -239,6 +253,13 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             case YT.PlayerState.BUFFERING:
                 break;
             case YT.PlayerState.CUED:
+                if(YouTubeUtil.Player.getPlayerState() === YT.PlayerState.CUED){
+                    
+                }
+                else{
+                    sender = this.CreateYouTubeStatus();
+                }
+                WebRTCService.SendTo(conn, sender);
                 break;
             case YT.PlayerState.UNSTARTED: return;
             default: return;

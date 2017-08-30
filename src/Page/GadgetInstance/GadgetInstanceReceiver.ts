@@ -62,7 +62,7 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
 
         //  YouTubeの再生状況の送信
         if (sender.type == YouTubeStatusSender.ID) {
-            this.Controller.View.SetYouTubeStatus(sender as YouTubeStatusSender)
+            this.Controller.View.SetYouTubeStatus(conn,sender as YouTubeStatusSender)
         }
         
     }

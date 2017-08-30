@@ -5,7 +5,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
-import IconCursorSender  from "../../Base/Container/IconCursorSender";
+import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CursorCache from "../../Base/Common/CursorCache";
 import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
@@ -20,7 +20,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
 
     public ControllerName(): string { return "GadgetInstance"; }
 
-    public PeerId :string;
+    public PeerId: string;
     public View: GadgetInstanceView;
     public CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
     public CastSetting = new GadgetCastSettingSender();
@@ -123,7 +123,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
         this.CursorCache.Remove(conn.peer);
     }
-    
+
 
     /**
      * ガジェットキャストの開始/停止の通知
@@ -131,26 +131,21 @@ export default class GadgetInstanceController extends AbstractServiceController<
      * @param isHide 
      */
     public ServerSend(isCasting: boolean, isClose: boolean) {
-        
+
         if (!isClose && this.CastInstance.isCasting == isCasting)
             return;
 
         this.CastInstance.isCasting = isCasting;
         this.CastInstance.isClose = isClose;
         this.CastInstance.isHide = false;
-        this.SendCastInfo();
+        this.SendToOwnerCastInstanceInfo();
     }
 
 
     /**
-     * ストリーミングの開始/停止の通知
+     * ガジェットキャストの起動通知
      */
-    public SendCastInfo() {
-
-        //  クライアントへの通知
-        WebRTCService.SendAll(this.CastSetting);
-
-        //  オーナー側への通知
+    public SendToOwnerCastInstanceInfo() {
         if (this.CastInstance) {
             WebRTCService.SendToOwner(this.CastInstance);
         }
