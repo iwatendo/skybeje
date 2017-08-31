@@ -94,9 +94,10 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
             let state = ((event as any).data) as YT.PlayerState;
 
             switch (state) {
-                case YT.PlayerState.PLAYING: break;
-                case YT.PlayerState.ENDED: break;
-                case YT.PlayerState.PAUSED: break;
+                case YT.PlayerState.PLAYING: this._cancelExec(); break;
+                case YT.PlayerState.ENDED:
+                    break;
+                case YT.PlayerState.PAUSED: this._cancelExec(); break;
                 case YT.PlayerState.BUFFERING: break;
                 case YT.PlayerState.CUED: break;
                 default: return;
@@ -131,6 +132,13 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
 
     /**
+     * クライアント側での
+     * 停止/再生処理をキャンセルさせる為の処理
+     */
+    public _cancelExec = () => { YouTubeUtil.Player.playVideo(); };
+
+
+    /**
      * オーナーからのYouTube再生通知
      * @param sender 
      */
@@ -148,13 +156,14 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
         switch (sender.state) {
             case YT.PlayerState.PLAYING:
                 pl.playVideo();
+                this._cancelExec = () => { pl.playVideo(); }
                 break;
             case YT.PlayerState.ENDED:
-                //  pl.stopVideo();
                 break;
             case YT.PlayerState.PAUSED:
                 pl.pauseVideo();
                 pl.seekTo(sender.current, true);
+                this._cancelExec = () => { pl.pauseVideo(); }
                 break;
             case YT.PlayerState.BUFFERING:
                 break;
