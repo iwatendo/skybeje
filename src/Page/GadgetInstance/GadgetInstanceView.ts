@@ -26,6 +26,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
         let backpanel = document.getElementById('sbj-gadget-instance');
+        let mainpanel = document.getElementById('sbj-gadget-instance-layout');
         let startButton = document.getElementById('sbj-gadget-instance-start');
         let cancelButton = document.getElementById('sbj-gadget-instance-cancel');
         let stopButton = document.getElementById('sbj-gadget-instance-stop');
@@ -79,6 +80,27 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
+
+        //  ガイドエリアのイベント（ドラック＆ドロップ用）
+        mainpanel.ondragover = (event) => {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+            mainpanel.focus();
+        };
+
+        //  ドロップ時イベント
+        mainpanel.ondrop = (event: DragEvent) => {
+            event.preventDefault();
+            var items = event.dataTransfer.items;
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if (item.type == "text/uri-list") {
+                    item.getAsString((url) => { this.DropUrl(url); });
+                }
+            }
+        };
+        
+
         YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
 
         callback();
@@ -102,6 +124,27 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         document.getElementById("sbj-livecast-room-name").innerText = message;
     }
 
+
+    /**
+     * URLのドロップ時処理
+     * @param url
+     */
+    public DropUrl(url: string) {
+
+        let tubeId = YouTubeUtil.GetYouTubeID(url);
+
+        if (tubeId.length === 0)
+            return;
+
+        let guide = new Personal.Guide();
+        let option = new YouTubeOption();
+        option.id = tubeId;
+        guide.url = YouTubeUtil.ToEmbedYouTubeURL(tubeId);
+        guide.embedstatus = JSON.stringify(option);
+
+        this.SetGuide(guide);
+    }
+            
 
     /**
      * ガジェット情報の設定
