@@ -4,10 +4,14 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
+import CursorCache from "../../Base/Common/CursorCache";
+import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
+import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
+import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceScreenShareModel from "./CastInstanceScreenShareModel";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
-import { CastInstanceSender, CastSettingSender, CastCursorSender, CastRoomSender } from "../CastInstance/CastInstanceContainer";
+import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastInstanceScreenShareReceiver } from "./CastInstanceScreenShareReceiver";
 
 
@@ -17,11 +21,11 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
 
     public View: CastInstanceScreenShareView;
 
-    public CastInstance = new CastInstanceSender();
+    public CastInstance = new CastInstanceSender(CastTypeEnum.ScreenShare);
     public CastSetting = new CastSettingSender();
-    public CastRoom = new CastRoomSender();
+    public CastRoom = new RoomSender();
 
-    public CursorCache: Map<string, CastCursorSender>;
+    public CursorCache: CursorCache;
 
     /**
      *
@@ -30,8 +34,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
         super();
         this.Receiver = new CastInstanceScreenShareReceiver(this);
         this.View = new CastInstanceScreenShareView(this, () => { });
-        this.CursorCache = new Map<string, CastCursorSender>();
-        this.CastSetting.isScreenShare = true;
+        this.CursorCache = new CursorCache();
     };
 
 
@@ -91,8 +94,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
         //  オーナーにURLを通知する
         if (this._isConnectOwner && this._peerid) {
 
-            this.CastInstance = new CastInstanceSender();
-            this.CastInstance.setting = this.CastSetting;
+            this.CastInstance = new CastInstanceSender(CastTypeEnum.ScreenShare);
             this.CastInstance.instanceUrl = location.href;
             this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
 
@@ -109,8 +111,8 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
         super.OnChildConnection(conn);
 
         //  配置済みカーソルの通知
-        this.CursorCache.forEach((value, key) => {
-            WebRTCService.SendTo(conn, value);
+        this.CursorCache.forEach((cursor) => {
+            WebRTCService.SendTo(conn, cursor);
         });
 
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
@@ -124,7 +126,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
-        this.RemoveCursorCache(conn.peer);
+        this.CursorCache.Remove(conn.peer);
     }
 
 
@@ -153,13 +155,12 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
      */
     public ServerSend(isStreaming: boolean, isClose: boolean) {
 
-        if (!isClose && this.CastSetting.isStreaming == isStreaming)
+        if (!isClose && this.CastInstance.isCasting == isStreaming)
             return;
 
-        this.CastSetting.isStreaming = isStreaming;
-        this.CastSetting.isScreenShare = true;
-        this.CastSetting.isControlClose = isClose;
-        this.CastSetting.isControlHide = false;
+        this.CastInstance.isCasting = isStreaming;
+        this.CastInstance.isClose = isClose;
+        this.CastInstance.isHide = false;
         this.SendCastInfo();
     }
 
@@ -174,37 +175,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
 
         //  オーナー側への通知
         if (this.CastInstance) {
-            this.CastInstance.setting = this.CastSetting;
             WebRTCService.SendToOwner(this.CastInstance);
-        }
-    }
-
-
-    /**
-     * カーソル配置のキャッシュ
-     * @param cursor
-     */
-    public SetCursorCache(cursor: CastCursorSender) {
-
-        let peerid = cursor.castPeerId;
-        if (cursor.posRx >= 0 && cursor.posRy >= 0) {
-            this.CursorCache.set(peerid, cursor);
-        }
-        else {
-            if (this.CursorCache.has(peerid)) {
-                this.CursorCache.delete(peerid);
-            }
-        }
-    }
-
-
-    /**
-     * ピアの切断等によるカーソルの削除
-     * @param peerid 
-     */
-    public RemoveCursorCache(peerid: string) {
-        if (this.CursorCache.has(peerid)) {
-            this.CursorCache.delete(peerid);
         }
     }
 

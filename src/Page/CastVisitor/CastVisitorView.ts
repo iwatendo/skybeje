@@ -5,7 +5,8 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import CastVisitorController from "./CastVisitorController";
-import { CastCursorSender, CastSettingSender } from "../CastInstance/CastInstanceContainer";
+import IconCursorSender from "../../Base/Container/IconCursorSender";
+import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastCursor, CursorController } from "./Cursor/CurosrController";
 import { Icon } from "../../Base/IndexedDB/Personal";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";
@@ -124,15 +125,6 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
     public SetCastSetting(sender: CastSettingSender) {
 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
-
-        if (video) {
-            if (sender.isStreaming) {
-                video.hidden = false;
-            }
-            else {
-                video.hidden = true;
-            }
-        }
 
         if (this.Cursor) {
             if (sender.dispUserCursor) {

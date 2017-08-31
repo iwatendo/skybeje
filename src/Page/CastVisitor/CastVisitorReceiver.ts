@@ -3,11 +3,13 @@ import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import LogUtil from "../../Base/Util/LogUtil";
 import WebRTCService from "../../Base/Common/WebRTCService";
+import IconCursorSender  from "../../Base/Container/IconCursorSender";
 import CastVisitorController from "./CastVisitorController";
 import { CastVisitorView } from "./CastVisitorView";
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as HVContainer from "../HomeVisitor/HomeVisitorContainer";
 import * as CIContainer from "../CastInstance/CastInstanceContainer";
+
 
 
 export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorController> {
@@ -19,8 +21,8 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
     public Receive(conn: PeerJs.DataConnection, sender: Sender){
 
         //  カーソル表示
-        if (sender.type === CIContainer.CastCursorSender.ID) {
-            this.Controller.View.Cursor.SetCursor(sender as CIContainer.CastCursorSender);
+        if (sender.type === IconCursorSender.ID) {
+            this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
         }
 
         //  キャスト情報の通知

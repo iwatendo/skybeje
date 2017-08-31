@@ -1,33 +1,31 @@
-﻿
+﻿import * as Personal from "../../Base/IndexedDB/Personal";
+
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
+import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CursorCache from "../../Base/Common/CursorCache";
 import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
-import IconCursorSender from "../../Base/Container/IconCursorSender";
-import CastInstanceModel from "./CastInstanceModel";
-import CastInstanceView from "./CastInstanceView";
-import { CastSettingSender } from "./CastInstanceContainer";
-import { CastInstanceReceiver } from "./CastInstanceReceiver";
+import GadgetInstanceModel from "./GadgetInstanceModel";
+import GadgetInstanceView from "./GadgetInstanceView";
+import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
+import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
 
 
-export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
+export default class GadgetInstanceController extends AbstractServiceController<GadgetInstanceView, GadgetInstanceModel> {
 
-    public ControllerName(): string { return "CastInstance"; }
+    public ControllerName(): string { return "GadgetInstance"; }
 
-    public View: CastInstanceView;
-
-    public CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
-    public CastSetting = new CastSettingSender();
+    public PeerId: string;
+    public View: GadgetInstanceView;
+    public CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
+    public CastSetting = new GadgetCastSettingSender();
     public CastRoom = new RoomSender();
-
-    public AudioSource: string = null;
-    public VideoSource: string = null;
-
+    public Guide = new Personal.Guide;
     public CursorCache: CursorCache;
 
     /**
@@ -35,13 +33,12 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     constructor() {
         super();
-        this.Receiver = new CastInstanceReceiver(this);
-        this.View = new CastInstanceView(this, () => { });
+        this.Receiver = new GadgetInstanceReceiver(this);
+        this.View = new GadgetInstanceView(this, () => { });
         this.CursorCache = new CursorCache();
     };
 
 
-    private _peerid: string = null;
     private _isConnectOwner: boolean = false;
 
 
@@ -50,7 +47,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      * @param peer
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
-        this._peerid = peer.id;
+        this.PeerId = peer.id;
         this.SendStageService();
     }
 
@@ -59,7 +56,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public OnPeerClose() {
         if (this.IsOpen) {
-            this.ServerSend(false, true);
+            this.SendToOwner_Close();
         }
     }
 
@@ -90,11 +87,11 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
         //  peeridの取得とオーナー接続が完了している場合
         //  オーナーにURLを通知する
-        if (this._isConnectOwner && this._peerid) {
+        if (this._isConnectOwner && this.PeerId) {
 
-            this.CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
+            this.CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
             this.CastInstance.instanceUrl = location.href;
-            this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
+            this.CastInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this.PeerId);
 
             WebRTCService.SendToOwner(this.CastInstance);
         }
@@ -129,47 +126,40 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
 
     /**
-     * ストリーミングの開始
+     *　ガジェットキャストの開始通知
      */
-    public SetStreaming() {
-
-        //
-        WebRTCService.SetStreaming(this.AudioSource, this.VideoSource);
-
-        //  オーナー 及び 接続クライアントに通知
-        this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
-    }
-
-
-    /**
-     * ストリーミングの開始/停止の通知
-     * @param isStreaming 
-     * @param isHide 
-     */
-    public ServerSend(isStreaming: boolean, isClose: boolean) {
-
-        if (!isClose && this.CastInstance.isCasting == isStreaming)
+    public SendToOwner_CastStart() {
+        let sender = this.CastInstance;
+        if (sender.isCasting) {
             return;
-
-        this.CastInstance.isCasting = isStreaming;
-        this.CastInstance.isClose = isClose;
-        this.CastInstance.isHide = false;
-        this.SendCastInfo();
+        }
+        sender.isCasting = true;
+        sender.isClose = false;
+        WebRTCService.SendToOwner(sender);
     }
 
 
     /**
-     * ストリーミングの開始/停止の通知
+     * インスタンスの終了通知
      */
-    public SendCastInfo() {
-
-        //  クライアントへの通知
-        WebRTCService.SendAll(this.CastSetting);
-
-        //  オーナー側への通知
-        if (this.CastInstance) {
-            WebRTCService.SendToOwner(this.CastInstance);
-        }
+    public SendToOwner_Close() {
+        let sender = this.CastInstance;
+        sender.isCasting = false;
+        sender.isHide = false;
+        sender.isClose = true;
+        WebRTCService.SendToOwner(sender);
     }
+
+
+    /**
+     * インスタンスの非表示通知
+     */
+    public SendToOwner_Hide() {
+        let sender = this.CastInstance;
+        sender.isHide = true;
+        sender.isClose = false;
+        WebRTCService.SendToOwner(sender);
+    }
+    
 
 };

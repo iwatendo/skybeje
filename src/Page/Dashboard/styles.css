@@ -107,6 +107,10 @@
 	z-index: 5;
 }
 
+#sbj-main-home-gadget-frame{
+	z-index: 6;
+}
+
 .sbj-profile-frame{
      position: absolute;
      right: 0;

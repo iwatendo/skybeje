@@ -7,7 +7,7 @@ import StdUtil from "../../../Base/Util/StdUtil";
 import { Order } from "../../../Base/Container/Order";
 
 import ProfileController from "../ProfileController";
-import GuideDialogController from "../GuideDialogController";
+import GuideDialogController from "../GuideDialog/GuideDialogController";
 import GuideListComponent from "./GuideListComponent";
 
 

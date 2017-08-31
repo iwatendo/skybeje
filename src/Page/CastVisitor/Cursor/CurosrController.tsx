@@ -2,7 +2,7 @@
 import * as ReactDOM from 'react-dom';
 import * as Personal from "../../../Base/IndexedDB/Personal";
 import { CursorComponent } from "./CursorComponent";
-import { CastCursorSender } from "../../CastInstance/CastInstanceContainer";
+import IconCursorSender  from "../../../Base/Container/IconCursorSender";
 import WebRTCService from "../../../Base/Common/WebRTCService";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
@@ -58,8 +58,8 @@ export class CursorController {
     private _video: HTMLVideoElement;
     private _cursorDispElement: HTMLElement;
     private _busy: boolean = false;
-    private _queue: CastCursorSender = null;
-    private _baseCursorList = new Array<CastCursorSender>();   //  送られて来たカーソル情報の保持（相対座標）
+    private _queue: IconCursorSender = null;
+    private _baseCursorList = new Array<IconCursorSender>();   //  送られて来たカーソル情報の保持（相対座標）
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
     private _cursorSize: number;
     private _iconCache = new Map<string, Map<string, Personal.Icon>>();
@@ -148,7 +148,7 @@ export class CursorController {
     public Clear() {
 
         this.ClearQueue();
-        this._baseCursorList = new Array<CastCursorSender>();
+        this._baseCursorList = new Array<IconCursorSender>();
         this._cursorList = new Array<CastCursor>();
 
         //  カーソル表示があればクリア
@@ -192,7 +192,7 @@ export class CursorController {
      * Sendされてきたカーソルデータを保持して表示
      * @param cursor
      */
-    public SetCursor(cursor: CastCursorSender) {
+    public SetCursor(cursor: IconCursorSender) {
 
         //  前回の情報は削除
         this._baseCursorList = this._baseCursorList.filter((c) => c.homePeerId !== cursor.homePeerId);
@@ -229,7 +229,7 @@ export class CursorController {
      * マウスカーソルの表示処理
      * @param cursor
      */
-    private Display(cursor: CastCursorSender) {
+    private Display(cursor: IconCursorSender) {
 
         let vdo = this.GetVideoDispOffset(this._video);
 
@@ -281,9 +281,9 @@ export class CursorController {
         let posRy: number = (clientY - vdo.offsetTop) / vdo.dispHeight;
 
 
-        let sender = new CastCursorSender();
+        let sender = new IconCursorSender();
         sender.homePeerId = this._homePeerId;
-        sender.castPeerId = WebRTCService.PeerId();
+        sender.visitorPeerId = WebRTCService.PeerId();
         sender.aid = this._ownerAidElement.textContent;
         sender.iid = this._ownerIidElement.textContent;
 

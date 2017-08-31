@@ -4,6 +4,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 
 import * as Personal from "../../Base/IndexedDB/Personal";
+import CastInstanceSender from "../../Base/Container/CastInstanceSender";
 
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
 import * as HVContainer from "./HomeVisitorContainer";
@@ -100,6 +101,11 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             this.GetIcon(conn, sender as HVContainer.GetIconSender);
         }
 
+        //  ガイド要求
+        if (sender.type === HVContainer.GetGuideSender.ID) {
+            this.GetGuide(conn);
+        }
+
         //  アクター取得
         if (sender.type === HVContainer.ActorInfoSender.ID) {
             this.Controller.ActorCache.SetActor(conn.peer, (sender as HVContainer.ActorInfoSender).actorInfo);
@@ -111,8 +117,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  ライブキャストからの、起動通知 及び 設定変更通知
-        if (sender.type === CIContainer.CastInstanceSender.ID) {
-            this.SendCastInstance(conn, sender as CIContainer.CastInstanceSender);
+        if (sender.type === CastInstanceSender.ID) {
+            this.SendCastInstance(conn, sender as CastInstanceSender);
         }
 
         //  サーバント（ライブキャストを含む）の変更通知
@@ -177,24 +183,35 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         });
     }
 
+    
+    /**
+     * ガイド情報の取得
+     * @param conn 
+     */
+    public GetGuide(conn: PeerJs.DataConnection) {
+        let result = new HVContainer.GuideSender();
+        result.guide = this.Controller.Bot.GetGuideQueue();
+        WebRTCService.SendTo(conn, result);
+    }
+
 
     /**
      * ライブキャストからの起動（設定変更）通知
      * @param servantPid 
      * @param cib 
      */
-    private SendCastInstance(conn: PeerJs.DataConnection, cib: CIContainer.CastInstanceSender) {
+    private SendCastInstance(conn: PeerJs.DataConnection, cib: CastInstanceSender) {
 
         let servantPid = conn.peer;
 
         //  自身のダッシュボードへの通知
-        if (cib.setting.isControlClose) {
+        if (cib.isClose) {
             //  ダッシュボード側のフレームを閉じる
-            this.Controller.NotifyBootLiveCast("", cib.setting.isScreenShare);
+            this.Controller.NotifyBootLiveCast("", cib.castType);
         }
-        else if (cib.setting.isControlHide) {
+        else if (cib.isHide) {
             //  ダッシュボード側からフレームをハイド状態にする
-            this.Controller.NotifyHideLiveCast(cib.setting.isScreenShare);
+            this.Controller.NotifyHideLiveCast(cib.castType);
         }
 
         //
@@ -203,7 +220,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let hid = servantSender.hid;
 
             let castroom = this.Controller.RoomCache.Get(hid, (room) => {
-                let castSender = new CIContainer.CastRoomSender();
+                let castSender = new HIContainer.RoomSender();
                 castSender.room = room;
                 WebRTCService.SendTo(conn, castSender);
             })

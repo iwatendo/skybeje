@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import { DialogMode } from "../../../Base/Common/AbstractDialogController";
+import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";
@@ -73,7 +74,7 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
      */
     private OnLiveCastCkick(e) {
         let peerid = this.props.controller.PeerId;
-        this.props.controller.NotifyBootLiveCast(peerid, false);
+        this.props.controller.NotifyBootLiveCast(peerid, CastTypeEnum.LiveCast);
     }
 
 
@@ -83,7 +84,7 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
      */
     private OnLiveCastScreenShare(e) {
         let peerid = this.props.controller.PeerId;
-        this.props.controller.NotifyBootLiveCast(peerid, true);
+        this.props.controller.NotifyBootLiveCast(peerid, CastTypeEnum.ScreenShare);
     }
 
 

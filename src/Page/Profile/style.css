@@ -144,6 +144,11 @@
     width: calc(100% - 32px);
 }
 
+#sbj-guide-youtube-player{
+    width:320px;
+    height: 180px;
+}
+
 .sbj-guide-note{
     width: 100%;
 }
@@ -159,4 +164,33 @@
 	border-bottom: 3px;
 	border-style: solid;
 	border-color: var(--sbj-color-icon-selection);
+}
+
+.sbj-guide-delete-button{
+    float: right;
+}
+
+.sbj-guide-gadget{
+    width:100%;
+    min-height: 256px;
+}
+
+.sbj-guide-embed-title{
+    padding: 8px 16px;
+}
+
+.sbj-guide-embed-left{
+    float: left;
+    width: 300px;
+    margin: 8px 8px;
+}
+
+.sbj-guide-embed-right{
+    float: right;
+    width: calc(100% - 360px);
+    margin: 8px 8px;
+}
+
+.sbj-guide-no-embed{
+    text-align: center;
 }

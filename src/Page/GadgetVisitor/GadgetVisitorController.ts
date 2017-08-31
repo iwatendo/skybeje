@@ -4,25 +4,27 @@ import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import * as Personal from "../../Base/IndexedDB/Personal";
-import { CastVisitorView } from "./CastVisitorView";
-import CastVisitorModel from "./CastVisitorModel";
-import { CastVisitorReceiver } from "./CastVisitorReceiver";
+import { GadgetVisitorView } from "./GadgetVisitorView";
+import GadgetVisitorModel from "./GadgetVisitorModel";
+import { GadgetVisitorReceiver } from "./GadgetVisitorReceiver";
 import { GetCastSettingSedner } from "../CastInstance/CastInstanceContainer";
+import { GetGadgetCastSettingSedner } from "../GadgetInstance/GadgetInstanceContainer";
 
 
-export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
+export default class GadgetVisitorController extends AbstractServiceController<GadgetVisitorView, GadgetVisitorModel> {
 
-    public ControllerName(): string { return "CastVisitor"; }
+    public ControllerName(): string { return "GadgetVisitor"; }
 
+    public PeerId : string;
     public ConnCache: ConnectionCache;
-    public View: CastVisitorView;
+    public View: GadgetVisitorView;
 
     /**
      * コンストラクタ
      */
     constructor() {
         super();
-        this.Receiver = new CastVisitorReceiver(this);
+        this.Receiver = new GadgetVisitorReceiver(this);
         this.ConnCache = new ConnectionCache();
     };
 
@@ -32,7 +34,8 @@ export default class CastVisitorController extends AbstractServiceController<Cas
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
 
-        this.View = new CastVisitorView(this, () => {
+        this.PeerId = peer.id;
+        this.View = new GadgetVisitorView(this, () => {
             //  
         });
     }
@@ -44,7 +47,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnOwnerConnection() {
 
         //  キャスト情報の要求
-        WebRTCService.SendToOwner(new GetCastSettingSedner());
+        WebRTCService.SendToOwner(new GetGadgetCastSettingSedner());
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.initializeCursor();
@@ -68,16 +71,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.View.Cursor.Remove(conn.peer);
-    }
-
-
-    /**
-     * ストリーミングの再生開始後の処理
-     */
-    public OnStreamingPlay() {
-        if (this.View && this.View.Cursor) {
-            this.View.Cursor.DisplayAll();
-        }
     }
 
 };

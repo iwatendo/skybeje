@@ -5,9 +5,11 @@ import * as Personal from "../../Base/IndexedDB/Personal";
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
+import IconCursorSender  from "../../Base/Container/IconCursorSender";
 
+import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
-import { CastCursorSender, GetCastInfoSedner, CastSettingSender, CastRoomSender } from "../CastInstance/CastInstanceContainer";
+import { GetCastSettingSedner, CastSettingSender} from "../CastInstance/CastInstanceContainer";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
 
 
@@ -20,21 +22,21 @@ export class CastInstanceScreenShareReceiver extends AbstractServiceReceiver<Cas
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
         //  カーソル表示
-        if (sender.type === CastCursorSender.ID) {
+        if (sender.type === IconCursorSender.ID) {
             if (this.Controller.CastSetting.dispUserCursor) {
-                let cursor = sender as CastCursorSender;
-                this.Controller.SetCursorCache(cursor);
+                let cursor = sender as IconCursorSender;
+                this.Controller.CursorCache.Set(cursor);
                 WebRTCService.SendAll(sender);
             }
         }
 
-        if (sender.type === CastRoomSender.ID) {
-            this.Controller.CastRoom = sender as CastRoomSender;
+        if (sender.type === RoomSender.ID) {
+            this.Controller.CastRoom = sender as RoomSender;
             this.Controller.View.SetRoom(this.Controller.CastRoom.room);
         }
 
         //  キャスト情報の送信
-        if (sender.type === GetCastInfoSedner.ID) {
+        if (sender.type === GetCastSettingSedner.ID) {
             WebRTCService.SendTo(conn, this.Controller.CastSetting);
         }
 

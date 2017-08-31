@@ -1,9 +1,9 @@
 ﻿
-import { LiveCastOptions, ScreenShareOptions } from "../../Page/CastInstance/CastInstanceContainer";
 import StdUtil from "../Util/StdUtil";
 
 export interface OnSetLiveCastOptions { (option: LiveCastOptions): void };
 export interface OnSetScreenShareOptions { (option: ScreenShareOptions): void };
+export interface OnSetGadgetCastOptions { (option: GadgetCastOptions): void };
 
 /**
  * ローカルストレージに対するデータ操作を行います。
@@ -87,6 +87,20 @@ export default class LocalCache {
 
 
     /**
+     *  ガジェットキャストのオプション設定
+     */
+    public static get GadgetCastOptions(): GadgetCastOptions {
+        let value = localStorage.getItem('gadget-cast-options');
+        return (value ? JSON.parse(value) as GadgetCastOptions : new GadgetCastOptions());
+    }
+    public static SetGadgetCastOptions(setoptions: OnSetGadgetCastOptions) {
+        let options = this.GadgetCastOptions;
+        setoptions(options);
+        localStorage.setItem('gadget-cast-options', JSON.stringify(options));
+    }
+    
+
+    /**
      * チャット時のEnterの振舞い設定
      */
     public static set ChatEnterMode(val: number) {
@@ -110,3 +124,38 @@ export default class LocalCache {
     }
 
 }
+
+
+/**
+ * オプション設定の保持：ライブキャスト
+ */
+export class LiveCastOptions {
+    SelectMic: string;
+    SelectCam: string;
+    IsSpeechRecognition: boolean;
+    IsIconCursor: boolean;
+}
+
+
+/**
+ * オプション設定の保持：スクリーンシェア
+ */
+export class ScreenShareOptions {
+    constructor() {
+        this.FrameRage = 15;
+        this.Resolution = 1;
+        this.IsIconCursor = false;
+    }
+    Resolution: number;
+    FrameRage: number;
+    IsIconCursor: boolean;
+}
+
+
+/**
+ * ガジェットキャスト時のオプション設定
+ */
+export class GadgetCastOptions {
+    IsIconCursor: boolean;
+}
+
