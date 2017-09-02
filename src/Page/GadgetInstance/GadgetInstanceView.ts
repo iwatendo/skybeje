@@ -13,6 +13,7 @@ import GadgetInstanceController from "./GadgetInstanceController";
 import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import YouTubeUtil, { YouTubeOption } from "../../Base/Util/YouTubeUtil";
 import LogUtil from "../../Base/Util/LogUtil";
+import GuideUtil from "../../Base/Util/GuideUtil";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 
@@ -80,27 +81,12 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
-
-        //  ガイドエリアのイベント（ドラック＆ドロップ用）
-        mainpanel.ondragover = (event) => {
-            event.preventDefault();
-            event.dataTransfer.dropEffect = 'copy';
-            mainpanel.focus();
-        };
-
-        //  ドロップ時イベント
-        mainpanel.ondrop = (event: DragEvent) => {
-            event.preventDefault();
-            var items = event.dataTransfer.items;
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i];
-                if (item.type == "text/uri-list") {
-                    item.getAsString((url) => { this.DropUrl(url); });
-                }
-            }
-        };
-
-
+        GuideUtil.SetEvent(mainpanel, (url, embedstatus) => {
+            let guide = new Personal.Guide();
+            guide.url = url;
+            guide.embedstatus = embedstatus;
+            this.SetGuide(guide);
+        });
         YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
 
         callback();
@@ -120,29 +106,8 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      * @param room 
      */
     public SetRoom(room: Home.Room) {
-        let message = "「" + room.name + "」に\nガジェットキャストしています";
+        let message = "「" + room.name + "」に\nキャストしています";
         document.getElementById("sbj-livecast-room-name").innerText = message;
-    }
-
-
-    /**
-     * URLのドロップ時処理
-     * @param url
-     */
-    public DropUrl(url: string) {
-
-        let tubeId = YouTubeUtil.GetYouTubeID(url);
-
-        if (tubeId.length === 0)
-            return;
-
-        let guide = new Personal.Guide();
-        let option = new YouTubeOption();
-        option.id = tubeId;
-        guide.url = YouTubeUtil.ToEmbedYouTubeURL(tubeId);
-        guide.embedstatus = JSON.stringify(option);
-
-        this.SetGuide(guide);
     }
 
 
@@ -249,9 +214,9 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
                 case YT.PlayerState.ENDED:
                     isEnd = true;
                     break;
-                case YT.PlayerState.PAUSED: 
+                case YT.PlayerState.PAUSED:
                     //  自働
-                    if( YouTubeUtil.Option.end <= YouTubeUtil.Player.getCurrentTime()){
+                    if (YouTubeUtil.Option.end <= YouTubeUtil.Player.getCurrentTime()) {
                         return;
                     }
                     break;

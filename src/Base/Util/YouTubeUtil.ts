@@ -34,10 +34,11 @@ export default class YouTubeUtil {
 
     public static Player: YT.Player = null;
     public static Option: YouTubeOption = null;
-    public static IsAPIReady: boolean = false;
     public static IsCreatePlayer: boolean = false;
-    public static ApiReadyElementId: string;
-    public static ElementId: string;
+
+    private static _isAPIReady: boolean = false;
+    private static _apiReadyElementId: string;
+    private static _elementId: string;
 
     /**
      * YouTubeのID部分を取得します
@@ -112,8 +113,17 @@ export default class YouTubeUtil {
      * @param elementid 
      */
     public static Initialize(apiReadyElement: string, elementid: string) {
-        this.ApiReadyElementId = apiReadyElement;
-        this.ElementId = elementid;
+        this.Option = null;
+        this._apiReadyElementId = apiReadyElement;
+        this._elementId = elementid;
+    }
+
+
+    /**
+     * 
+     */
+    public static ClearPlayer() {
+        YouTubeUtil.Option = null;
     }
 
 
@@ -122,7 +132,7 @@ export default class YouTubeUtil {
      * @param opt 
      */
     public static LoadVideo(opt: YouTubeOption) {
-        if (this.IsAPIReady) {
+        if (this._isAPIReady) {
             this.Player.loadVideoById({ videoId: opt.id, startSeconds: opt.start, endSeconds: opt.end });
         }
     }
@@ -133,7 +143,7 @@ export default class YouTubeUtil {
      * @param opt 
      */
     public static CueVideo(opt: YouTubeOption) {
-        if (this.IsAPIReady) {
+        if (this._isAPIReady) {
             this.Player.cueVideoById({ videoId: opt.id, startSeconds: opt.start, endSeconds: opt.end });
         }
     }
@@ -163,14 +173,14 @@ export default class YouTubeUtil {
 
         this.IsCreatePlayer = false;
 
-        if (this.IsAPIReady) {
+        if (this._isAPIReady) {
             this.CreatePlayer(option, useControl, callback);
         }
         else {
 
-            document.getElementById(this.ApiReadyElementId).onclick = (e) => {
+            document.getElementById(this._apiReadyElementId).onclick = (e) => {
                 YouTubeUtil.CreatePlayer(option, useControl, callback);
-                YouTubeUtil.IsAPIReady = true;
+                YouTubeUtil._isAPIReady = true;
             }
 
             let tag = document.createElement('script');
@@ -219,7 +229,7 @@ export default class YouTubeUtil {
             }
         };
 
-        YouTubeUtil.Player = new YT.Player(this.ElementId, options);
+        YouTubeUtil.Player = new YT.Player(this._elementId, options);
         YouTubeUtil.Option = opt;
     }
 
