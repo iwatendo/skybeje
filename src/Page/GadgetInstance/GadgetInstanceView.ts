@@ -117,6 +117,9 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      */
     public SetGuide(guide: Personal.Guide) {
 
+        if (!guide)
+            return;
+
         let option = JSON.parse(guide.embedstatus) as YouTubeOption;
 
         YouTubeUtil.GetPlayer(option, true, (player) => {

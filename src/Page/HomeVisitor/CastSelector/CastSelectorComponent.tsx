@@ -43,62 +43,8 @@ export default class CastSelectorComponent extends React.Component<CastSelectorP
                 <div className="sbj-cast-selector">
                     {servantsList}
                 </div>
-                <div className="sbj-cast-control">
-                    <div className="sbj-cast-control-action mdl-card__actions">
-                        <button className="mdl-button mdl-button--colored" onClick={this.OnLiveCastCkick.bind(this)}>
-                            <i className="material-icons">contacts</i>
-                            ライブキャスト
-                        </button>
-                        <button className="mdl-button mdl-button--colored" onClick={this.OnLiveCastScreenShare.bind(this)}>
-                            <i className="material-icons">screen_share</i>
-                            スクリーンシェア
-                        </button>
-                        <button className="mdl-button mdl-button--colored" onClick={this.OnLiveCastMobileCkick.bind(this)}>
-                            <i className="material-icons">android</i>
-                            モバイル
-                        </button>
-                        <button className="mdl-button mdl-button--colored" hidden>
-                            <i className="material-icons">library_books</i>
-                            ガジェット（未実装）
-                        </button>
-                    </div>
-                </div>
             </div>
         );
-    }
-
-
-    /**
-     * ライブキャストボタン押下時処理
-     * @param e 
-     */
-    private OnLiveCastCkick(e) {
-        let peerid = this.props.controller.PeerId;
-        this.props.controller.NotifyBootLiveCast(peerid, CastTypeEnum.LiveCast);
-    }
-
-
-    /**
-     * スクリーンシェアボタン押下処理
-     * @param e 
-     */
-    private OnLiveCastScreenShare(e) {
-        let peerid = this.props.controller.PeerId;
-        this.props.controller.NotifyBootLiveCast(peerid, CastTypeEnum.ScreenShare);
-    }
-
-
-    /**
-     * モバイルボタン押下時処理
-     * @param e 
-     */
-    private OnLiveCastMobileCkick(e) {
-        let peerid = this.props.controller.PeerId;
-
-        let dialog = new MobileDialog(this.props.controller);
-        let url = LinkUtil.CreateLink("../CastInstanceMobile/", this.props.controller.PeerId);
-        dialog.Show(DialogMode.View, url, () => { });
-
     }
 
 }
