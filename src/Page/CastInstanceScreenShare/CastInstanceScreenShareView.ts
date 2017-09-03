@@ -27,6 +27,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let roomName = document.getElementById('sbj-livecast-room-name');
+        let note = document.getElementById('sbj-screenshare-note');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let framerateRange = document.getElementById('sbj-screenshare-framerate') as HTMLInputElement;
         let framerateTip = document.getElementById('sbj-screenshare-framerate-tip');
@@ -88,6 +89,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
                 stopButton.hidden = false;
                 accountCount.hidden = false;
                 roomName.hidden = false;
+                note.hidden = true;
             });
         };
 
@@ -157,20 +159,9 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
      * @param room 
      */
     public SetRoom(room: Home.Room) {
-        let message = "「" + room.name + "」に\nスクリーンシェアしています";
+        let message = "「" + room.name + "」に配信中";
         document.getElementById("sbj-livecast-room-name").innerText = message;
     }
-
-
-    /**
-     * 
-     */
-    public SetDisabled(idname: string) {
-        let element = document.getElementById(idname);
-        element.setAttribute('disabled', 'true');
-    }
-
-
 
 
     /**
