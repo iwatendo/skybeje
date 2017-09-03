@@ -14,6 +14,7 @@ import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
 import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
+import { GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
 
 
 export default class GadgetInstanceController extends AbstractServiceController<GadgetInstanceView, GadgetInstanceModel> {
@@ -34,8 +35,9 @@ export default class GadgetInstanceController extends AbstractServiceController<
     constructor() {
         super();
         this.Receiver = new GadgetInstanceReceiver(this);
-        this.View = new GadgetInstanceView(this, () => { });
         this.CursorCache = new CursorCache();
+        this.View = new GadgetInstanceView(this, () => { 
+        });
     };
 
 
@@ -94,6 +96,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
             this.CastInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this.PeerId);
 
             WebRTCService.SendToOwner(this.CastInstance);
+            WebRTCService.SendToOwner(new GetGuideSender());
         }
     }
 
