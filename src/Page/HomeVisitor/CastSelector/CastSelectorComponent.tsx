@@ -8,7 +8,6 @@ import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";
 import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanceContainer";
-import MobileDialog from "../Mobile/MobileDialog";
 import { CastSelectorItemComponent } from "./CastSelectorItemComponent";
 import CastSelectorController from "./CastSelectorController";
 

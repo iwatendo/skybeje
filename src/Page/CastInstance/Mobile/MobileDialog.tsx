@@ -3,12 +3,11 @@ import * as ReactDOM from 'react-dom';
 
 import AbstractDialogController from "../../../Base/Common/AbstractDialogController";
 
-import HomeVisitorController from "../HomeVisitorController";
-import { UseActorSender } from "../HomeVisitorContainer";
+import CastInstanceController from "../CastInstanceController";
 import MobileDialogComponent from "./MobileDialogComponent";
 
 
-export default class MobileDialog extends AbstractDialogController<HomeVisitorController, string> {
+export default class MobileDialog extends AbstractDialogController<CastInstanceController, string> {
 
     private _linkUrl: string;
 
@@ -17,8 +16,8 @@ export default class MobileDialog extends AbstractDialogController<HomeVisitorCo
      * 
      * @param controller 
      */
-    public constructor(controller: HomeVisitorController) {
-        super(controller, "モバイル", "cast", 392, 500);
+    public constructor(controller: CastInstanceController) {
+        super(controller, "モバイル配信", "cast", 392, 500);
     }
 
 

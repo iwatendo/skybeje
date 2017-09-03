@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/lib/split-pane.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='../common.dialog.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
     <script src="/lib/material.min.js"></script>
 </head>
@@ -23,7 +24,7 @@
                 <div class="sbj-cast-instance--header-row mdl-layout__header-row">
 
                     <span id="sbj-cast-instance-title" class="mdl-layout-title">
-                        ライブキャスト
+                        ライブ配信
                     </span>
 
                     <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
@@ -38,64 +39,29 @@
             </header>
 
             <main id="sbj-cast-instance-main" class="mdl-layout__content">
-                <div class="sbj-split-left mdl-color-text--grey-600">
+                <div class="mdl-color-text--grey-600">
 
-                    <div>
-                        <h6 class="mdl-color-text--grey-600">配信</h6>
-                    </div>
-
-                    <div>
+                    <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
                         <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
                             <i class="material-icons">play_arrow</i>
                             &nbsp;開始&nbsp;
                         </button>
-
                         <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
                             <i class="material-icons">stop</i>
                             &nbsp;停止&nbsp;
                         </button>
-
-                        <button id="sbj-cast-instance-pause" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
-                            hidden>
-                            <i class="material-icons">pause</i>
-                            &nbsp;一時停止&nbsp;
+                        <button id="sbj-cast-instance-settings" class="mdl-button mdl-js-button mdl-button--colored">
+                            <i class="material-icons">settings</i>
+                            &nbsp;配信設定&nbsp;
                         </button>
-
-                        <button id="sbj-cast-instance-restart" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
-                            hidden>
-                            <i class="material-icons">play_arrow</i>
-                            &nbsp;再開&nbsp;
+                        <button id="sbj-cast-instance-qrcode" class="mdl-button mdl-js-button mdl-button--colored">
+                            <i class="material-icons">android</i>
+                            モバイル配信
                         </button>
-                    </div>
-
-                    <div>
                         <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
+
                     </div>
 
-                    <!-- Mic -->
-                    <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
-                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
-                        <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
-                        <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
-                            <li class="mdl-menu__item"></li>
-                        </ul>
-                    </div>
-                    <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="mic-select-div">ライブキャスト中は<br/>マイクの変更はできません</span>
-
-                    <!-- Camera -->
-                    <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
-                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
-                        <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
-                        <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
-                            <li class="mdl-menu__item" onclick=""></li>
-                        </ul>
-                    </div>
-                    <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="webcam-select-div">ライブキャスト中は<br/>カメラの変更はできません</span>
-
-                </div>
-                <div class="sbj-split-right">
-                    <h6 class="mdl-color-text--grey-600">プレビュー</h6>
-                    <!-- PreView -->
                     <div class="mdl-list__item-primary-content">
                         <video id='video' autoplay="true"></video>
                     </div>
@@ -113,6 +79,101 @@
             </main>
         </div>
     </div>
+
+    <!--Common Dialog-->
+    <dialog id='sbj-dialog' class='sbj-dialog'>
+        <div class="sbj-dialog-background" id="sbj-dialog-background">
+
+            <div id="sbj-dialog-card" class="sbj-dialog-card mdl-card mdl-shadow--2dp flexiblebox">
+
+                <!-- 上部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
+                        <i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon"></i>
+                        <h4 class="sbj-dialog-title">
+                            <span id="sbj-dialog-title-value"></span>
+                        </h4>
+                    </div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-dialog-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
+							<i class="material-icons">close</i>
+						</button>
+                    </div>
+                </div>
+
+                <!--表示エリア-->
+                <div id="sbj-dialog-view" class="sbj-dialog-view mdl-card__supporting-text mdl-card--expand">
+                    <!--Reactで生成-->
+                </div>
+
+                <!-- 下部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left">
+                    </div>
+
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-dialog-delete' tabindex=-1 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+							<i class="material-icons">delete_forever</i>&nbsp;削除&nbsp;
+						</button>
+                        <button id='sbj-dialog-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+							<i class="material-icons">done</i>&nbsp;更新&nbsp;
+						</button>
+                        <button id='sbj-dialog-done' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+							<i class="material-icons">done</i>&nbsp;追加&nbsp;
+						</button>
+                        <button id='sbj-dialog-select' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+							<i class="material-icons">done</i>&nbsp;選択&nbsp;
+						</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!--sbj-cast-instance-setting Dialog-->
+    <dialog id='sbj-cast-instance-setting-dialog' class='sbj-dialog'>
+        <div id="sbj-cast-instance-setting-background" class="sbj-dialog-background">
+
+            <div class="sbj-cast-instance-setting-card mdl-card mdl-shadow--2dp flexiblebox">
+
+                <!-- 上部ボタン郡 -->
+                <div class="mdl-card__actions">
+
+                    <div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
+                        <h4 class="sbj-dialog-title">
+                            <span id="sbj-dialog-title-value">配信設定</span>
+                        </h4>
+                    </div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-cast-instance-setting-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sbj-cast-instance-device">
+                    <!-- Mic -->
+                    <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
+                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
+                        <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
+                        <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
+                            <li class="mdl-menu__item"></li>
+                        </ul>
+                    </div>
+
+                    <!-- Camera -->
+                    <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
+                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
+                        <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
+                        <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
+                            <li class="mdl-menu__item" onclick=""></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
 
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>
