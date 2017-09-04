@@ -3,6 +3,7 @@ import * as Timeline from "../../Base/IndexedDB/Timeline";
 
 import Sender from "../../Base/Container/Sender";
 import ActorInfo from "../../Base/Container/ActorInfo";
+import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 
 
@@ -188,6 +189,7 @@ export class ServantSender extends Sender {
         this.hid = "";
         this.clientUrl = "";
         this.instanceUrl = "";
+        this.castType = CastTypeEnum.None;
         this.isCasting = false;
     }
 
@@ -204,6 +206,8 @@ export class ServantSender extends Sender {
     public clientUrl: string;
 
     public instanceUrl: string;
+
+    public castType: CastTypeEnum;
 
     /**
      * 配信有無

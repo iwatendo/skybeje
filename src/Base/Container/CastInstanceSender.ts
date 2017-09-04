@@ -5,6 +5,7 @@ import Sender from "../../Base/Container/Sender";
  * 配信する種類
  */
 export enum CastTypeEnum {
+    None = 0,
     LiveCast = 1,
     ScreenShare = 2,
     Gadget = 3,

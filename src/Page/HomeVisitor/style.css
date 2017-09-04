@@ -140,6 +140,20 @@
     height: 100%;
 }
 
+.sbj-tabs{
+    width: 100%;
+    height: 100%;
+}
+
+.sbj-tabs-bar{
+    background-color: whitesmoke;
+    justify-content: right;    
+}
+
+.sbj-tabs-panel{
+    width: 100%;
+    height: 100%;
+}
 
 .sbj-room-info-icon{
     color: var(--sbj-color-default-text);
@@ -430,10 +444,10 @@ p.sbj-timeline-message-ignore {
 /*-----------------------------
  *  livecast
  *---------------------------*/
-#sbj-home-visitor-livecast{
+.sbj-home-visitor-livecast{
     padding: 8px;
     width: calc(100% - 16px);
-    height: calc(100% - 176px);
+    height: calc(100% - 66px);
 }
 
 .sbj-home-visitor-mobile-label{
