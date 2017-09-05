@@ -125,6 +125,9 @@ export default class CastSelectorController {
                     i = this._FrameCount;
                 }
             });
+
+            //  アクティブタブの確認
+            this.CheckChangeActiveTab();
         }
     }
 
@@ -262,6 +265,31 @@ export default class CastSelectorController {
         for (let i = 0; i < this._FrameCount; i++) {
             this.NotifyServantToActor(this.GetFrmaeElement(i));
         }
+    }
+
+
+    /**
+     * アクティブタブが閉じられた場合、表示されている先頭タブをアクティブにする
+     */
+    public CheckChangeActiveTab() {
+
+        let first: HTMLElement = null;
+
+        for (let i = 0; i < this._FrameCount; i++) {
+            let tab = this.GetTabElement(i);
+
+            if (tab.hidden)
+                continue;
+
+            if (tab.classList.contains('is-active'))
+                return;
+
+            if (!first)
+                first = tab;
+        }
+
+        if (first)
+            first.click();
     }
 
 }
