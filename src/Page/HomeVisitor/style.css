@@ -145,6 +145,15 @@
     height: 100%;
 }
 
+.sbj-tab{
+    display: inline-flex;
+}
+
+.sbj-tab-icon{
+    line-height: 48px;
+    margin: 0px 12px 0px 0px;
+}
+
 .sbj-tabs-bar{
     background-color: whitesmoke;
     justify-content: right;    

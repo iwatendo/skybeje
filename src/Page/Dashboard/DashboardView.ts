@@ -407,7 +407,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
      * ホームビジターが起動しているか？
      */
     public IsBootHomeVisitor(): boolean {
-        return (!document.getElementById("sbj-navi-home-visitor-group").hidden);
+        return (!document.getElementById("sbj-navi-home-visitor-disp").hidden);
     }
 
 
@@ -440,9 +440,10 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             doDispCtrl();
         }
         else {
-            document.getElementById("sbj-navi-home-visitor-group").hidden = isRemove;
+            document.getElementById("sbj-navi-home-visitor-disp").hidden = isRemove;
             frame.onload = (e) => {
                 doDispCtrl();
+                document.getElementById("sbj-navi-livecast-group-disp").hidden = isRemove;
                 frame.onload = null;
             }
             frame.src = (isRemove ? "" : newUrl);

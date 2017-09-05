@@ -11,7 +11,7 @@ import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 
 export default class CastSelectorController {
 
-    private _FrameCount = 6;
+    private _FrameCount = 4;
 
     private _castctrlpaneElement = document.getElementById('sbj-home-visitor-castctrl-pane');
     private _ownerController: HomeVisitorController;
@@ -50,6 +50,26 @@ export default class CastSelectorController {
     private GetTabElement(index: number) {
         return document.getElementById("sbj-home-visitor-tab-" + index.toString());
     }
+
+
+    /**
+     * 
+     * @param index 
+     */
+    private GetTabTitleElement(index: number) {
+        return document.getElementById("sbj-home-visitor-tab-title-" + index.toString());
+    }
+
+
+    /**
+     * 
+     * @param index 
+     */
+    private GetTabIconElement(index: number) {
+        return document.getElementById("sbj-home-visitor-tab-icon-" + index.toString());
+    }
+
+
 
 
     /**
@@ -133,13 +153,14 @@ export default class CastSelectorController {
      */
     public SetServantTab(index: number, servant: ServantSender) {
 
-        let tabElement = this.GetTabElement(index);
         let frameElement = this.GetFrmaeElement(index);
+        let tabElement = this.GetTabElement(index);
+        let tabTitleElement = this.GetTabTitleElement(index);
+        let tabIconElement = this.GetTabIconElement(index);
 
         if (servant) {
-            tabElement.textContent = "";
+            this.SetTabName(tabTitleElement, tabIconElement, servant);
             tabElement.hidden = false;
-            this.SetTabName(tabElement, servant);
             this.SetServant(frameElement, servant);
         }
         else {
@@ -151,12 +172,14 @@ export default class CastSelectorController {
 
     /**
      * 
-     * @param tabElement 
+     * @param tabTitleElement 
+     * @param tabIconElement 
      * @param servant 
      */
-    public SetTabName(tabElement: HTMLElement, servant: ServantSender) {
+    public SetTabName(tabTitleElement: HTMLElement, tabIconElement: HTMLElement, servant: ServantSender) {
         this._ownerController.ActorCache.GetActor(servant.ownerPeerid, servant.ownerAid, (actor) => {
-            tabElement.textContent = actor.name + "：" + this.GetCastName(servant.castType);
+            tabTitleElement.textContent = actor.name;
+            tabIconElement.textContent = this.GetCastIconName(servant.castType);
         });
     }
 
@@ -165,11 +188,11 @@ export default class CastSelectorController {
      * キャスト名称の取得
      * @param servant 
      */
-    public GetCastName(castType: CastTypeEnum) {
+    public GetCastIconName(castType: CastTypeEnum) {
         switch (castType) {
-            case CastTypeEnum.LiveCast: return "ライブ配信";
-            case CastTypeEnum.ScreenShare: return "画面共有";
-            case CastTypeEnum.Gadget: return "YouTube";
+            case CastTypeEnum.LiveCast: return "videocam";
+            case CastTypeEnum.ScreenShare: return "screen_share";
+            case CastTypeEnum.Gadget: return "ondemand_video";
         }
     }
 
