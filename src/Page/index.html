@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="common.css?v={version}">
     <link rel="stylesheet" href="style.css?v={version}">
+    <script src="/lib/material.min.js"></script>
 </head>
 
 <body>
@@ -39,26 +40,41 @@
                 <div class="sbj-container mdl-grid mdl-color-text--grey-600">
 
                     <div class="sbj-content mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-                        <h3>Skybejeとは？</h3>
                         <h5>
-                            創る・遊ぶ・伝える「場」を構築することを目的とした<br/>
-                            アカウント登録不要で利用できるリアルタイムコミュニケーションサービスです。
+                            SkyBejeは、友人や知人にむけて、気軽にライブ配信や画面共有ができるサービスです。<br/>
+                            ユーザー登録やアカウント登録不要で、すぐにご利用できます。<br/>
                         </h5>
                         <div class="mdl-card__actions">
-                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick='location.href="/dashboard/"'>
-                                <i class="material-icons">play_circle_filled</i>
-                                &nbsp;始める&nbsp;
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick='location.href="/dashboard/"'>
+                                <span id="sbj-start-tooltip" class="mdl-tooltip" data-mdl-for="sbj-start-button">
+                                    SkyBejeのご利用<br/>
+                                    ありがとうございます。<br/>
+                                    <br/>
+                                    まだまだ開発途中で不具合も多いですが<br/>
+                                    色々と試してみて頂ければ幸いです。<br/>
+                                </span>
+                                <i class="material-icons">build</i>
+                                &nbsp;ちょっと試してみる&nbsp;
                             </button>
-                            <span class="alpha">　※α版です。PC版のGoogle Chromeでのみ動作します。</span>
+                            <span class="alpha">　※アルファ版です。PCのGoogle Chromeでのみ動作します。</span>
                         </div>
                         <h6>
-                            Skybejeの特徴<br/>
-                            　・外部のデータベースを使用しません。<br/> 
-                            　・プロフィールやチャットの内容は、あなたのブラウザのデータベースに保存されます。<br/> 
+                            <a target="_blank" href="https://github.com/iwatendo/skybeje/wiki/Terms-of-Service">プライバシーポリシーと利用規約</a>
+                        </h6>
+                        <h6>
+                            SkyBejeの特徴<br/>
+                            <br/> 
+                            　・外部データベースを使用しておらず、チャットや会話の内容は残りません。<br/> 
+                            　・プロフィールやチャットの内容は、ブラウザのデータベースに保存します。<br/> 
                             　・NTT Communicationsの<a target="_blank" href="https://nttcom.github.io/skyway/">SkyWay</a>を利用したサービスです。<br/>
                         </h6>
                         <h6>
-                            <a target="_blank" href="https://github.com/iwatendo/skybeje/wiki/Terms-of-Service">プライバシーポリシーと利用規約</a>
+                            SkyBejeは<a target="_blank" href="https://github.com/iwatendo/skybeje">オープンソース</a>です<br/>
+                            <br/> 
+                            　・気軽にカスタマイズできて個人のホームページに埋め込めるサービスを目指しています。<br/>
+                            　・不具合報告や要望等を歓迎します。以下のブログかツイターに連絡ください。<br/>
+                            　・ブログ：<a target="_blank" href="http://iwatendo.hateblo.jp/">http://iwatendo.hateblo.jp/</a><br/>
+                            　・ツイター：<a target="_blank" href="https://twitter.com/iwatendo">https://twitter.com/iwatendo</a><br/>
                         </h6>
                     </div>
                 </div>

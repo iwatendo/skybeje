@@ -369,8 +369,8 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         if ((document.getElementById("sbj-main-home-instance-id") as HTMLInputElement).textContent) return true;
         if ((document.getElementById("sbj-main-home-visitor-id") as HTMLInputElement).textContent) return true;
         if ((document.getElementById("sbj-main-home-livecast-id") as HTMLInputElement).textContent) return true;
-        if ((document.getElementById("sbj-main-home-screenshare-id") as HTMLInputElement).textContent) return true;
-        if ((document.getElementById("sbj-main-home-gadget-id") as HTMLInputElement).textContent) return true;
+        if ((document.getElementById("sbj-main-home-livecast-screenshare-id") as HTMLInputElement).textContent) return true;
+        if ((document.getElementById("sbj-main-home-livecast-gadget-id") as HTMLInputElement).textContent) return true;
         return false;
     }
 
