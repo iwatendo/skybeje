@@ -81,8 +81,7 @@
 	height: 100%;
 }
 
- .sbj-main,
- .sbj-main-frame{
+.sbj-main-frame{
 	overflow: hidden;
 	position: absolute;
 	top: 0;
@@ -92,6 +91,11 @@
  }
 
 .sbj-main{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
 	z-index: 3;
 }
 
