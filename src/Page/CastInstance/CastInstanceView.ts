@@ -11,6 +11,10 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 import { DeviceView } from "./Device/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import { CastSettingSender, CastSpeechRecognitionSender } from "./CastInstanceContainer";
+import MobileDialog from "./Mobile/MobileDialog";
+import LinkUtil from "../../Base/Util/LinkUtil";
+import { DialogMode } from "../../Base/Common/AbstractDialogController";
+import SettingDialogController from "./SettingDialog/SettingDialogController";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -27,10 +31,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let startButton = document.getElementById('sbj-cast-instance-start');
         let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let pauseButton = document.getElementById('sbj-cast-instance-pause');
-        let pauseRestart = document.getElementById('sbj-cast-instance-restart');
+        let settingButton = document.getElementById('sbj-cast-instance-settings');
+        let qrcodeButton = document.getElementById('sbj-cast-instance-qrcode');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
+        let micElement = document.getElementById('mic-select-div');
+        let camElement = document.getElementById('webcam-select-div');
 
         //
         backpanel.onclick = (e: MouseEvent) => {
@@ -50,16 +56,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             startButton.hidden = true;
             stopButton.hidden = false;
             accountCount.hidden = false;
-            //  pauseButton.hidden = false;
             roomName.hidden = false;
-            this.SetDisabled('mic-select');
-            this.SetDisabled('webcam-select');
-
-            var tooltips = document.getElementsByClassName("sbj-cast-instance-device-tooltip");
-            for (let i = 0; i < tooltips.length; i++) {
-                (tooltips.item(i) as HTMLElement).hidden = false;
-            }
-        };
+            micElement.hidden = true;
+            camElement.hidden = true;
+            if (settingButton) settingButton.hidden = true;
+            if (qrcodeButton) qrcodeButton.hidden = true;
+        }
 
         //  キャンセルボタン押下時
         cancelButton.onclick = (e) => {
@@ -81,17 +83,21 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         };
 
 
-        //  Puaseボタン
-        pauseButton.onclick = (e) => {
-            WebRTCService.Puase = true;
-            pauseButton.hidden = true;
-            pauseRestart.hidden = false;
+        //  配信設定ボタン（※モバイル配信画面には無いボタン）
+        if (settingButton) {
+            settingButton.onclick = (e) => {
+                SettingDialogController.Show();
+            }
         }
 
-        pauseRestart.onclick = (e) => {
-            WebRTCService.Puase = false;
-            pauseButton.hidden = false;
-            pauseRestart.hidden = true;
+        //  モバイル配信ボタン（※モバイル配信画面には無いボタン）
+        if (qrcodeButton) {
+            qrcodeButton.onclick = (e) => {
+                let peerid = LinkUtil.GetPeerID();
+                let dialog = new MobileDialog(this.Controller);
+                let url = LinkUtil.CreateLink("../CastInstanceMobile/", peerid);
+                dialog.Show(DialogMode.View, url, () => { });
+            }
         }
 
         let options = LocalCache.LiveCastOptions;
@@ -154,17 +160,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      * @param room 
      */
     public SetRoom(room: Home.Room) {
-        let message = "「" + room.name + "」に\nライブキャストしています";
+        let message = "「" + room.name + "」に配信中";
         document.getElementById("sbj-livecast-room-name").innerText = message;
-    }
-
-
-    /**
-     * 
-     */
-    public SetDisabled(idname: string) {
-        let element = document.getElementById(idname);
-        element.setAttribute('disabled', 'true');
     }
 
 

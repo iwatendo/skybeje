@@ -9,20 +9,30 @@
 }
 
 .sbj-cast-instance-layout{
-    width: 800px;
-    height: 600px;
+    width: 680px;
+    height: 540px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -300px 0 0 -400px;
+    top: 204px;
+    left: 0;
+    margin: 0 0 0 0;
 }
 
 #sbj-cast-instance-main{
     overflow: hidden;
+    padding: 16px 32px
 }
 
-.sbj-cast-instance-device-select{
-    outline: 0;
+#sbj-cast-instance-main-no-extension{
+    padding: 16px 32px
+}
+
+#sbj-livecast-room-name{
+    display: inline-block;
+    margin: 0px 20px;
+}
+
+.sbj-cast-instance-actions{
+    margin: 16px 0px;
 }
 
 .sbj-cast-instance--header-row{
@@ -38,26 +48,26 @@
 }
 
 #sbj-cast-instance-start{
-    margin: 32px 0px 16px 0px;
+    margin: 0px;
 }
 
 #sbj-cast-instance-stop{
-    margin: 32px 0px 16px 0px;
+    margin: 0px;
 }
 
 .sbj-cast-instance-option{
-    margin: 20px 4px 0px 0px;
+    margin: 0px 20px;
 }
 
 .sbj-split-left {
     float: left;
     width: 300px;
-    padding: 0px 32px;
+    padding: 0px;
 }
 
 .sbj-split-right {
     float: right;
-    width: calc(100% - 364px);
+    width: calc(100% - 324px);
 }
 
 .sbj-screenshare-resolution{
@@ -65,8 +75,12 @@
     width: 160px;
 }
 
+.sbj-screenshare-label{
+    margin: 12px 0px;
+}
+
 .sbj-screenshare-note{
-    padding: 8px 32px;
+    margin: 12px 0px;
 }
 
 .sbj-dialog-close{

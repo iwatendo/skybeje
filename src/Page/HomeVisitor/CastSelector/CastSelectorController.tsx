@@ -5,16 +5,18 @@ import * as ReactDOM from 'react-dom';
 import ServantCache from "../Cache/ServantCache";
 import HomeVisitorController from "../HomeVisitorController";
 import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanceContainer";
-import CastSelectorComponent from "./CastSelectorComponent";
+import ActorCache from "../Cache/ActorCache";
+import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 
 
 export default class CastSelectorController {
 
-    private _castElement = document.getElementById('sbj-home-visitor-livecast') as HTMLFrameElement;
+    private _FrameCount = 4;
+
     private _castctrlpaneElement = document.getElementById('sbj-home-visitor-castctrl-pane');
     private _ownerController: HomeVisitorController;
     private _selectServant: string;
-    private _servantList = new Array<ServantSender>();
+    private _servantMap = new Map<number, string>();
 
 
     /**
@@ -22,27 +24,52 @@ export default class CastSelectorController {
      * @param controller 
      */
     constructor(controller: HomeVisitorController) {
-        this._ownerController = controller;
-        this.Create();
 
-        this._castElement = document.getElementById('sbj-home-visitor-livecast') as HTMLFrameElement;
-        this._castElement.onload = (ev) => {
-            this.NotifyServantToActor();
-        };
+        this._ownerController = controller;
+
+        for (let i = 0; i < this._FrameCount; i++) {
+            let element = this.GetFrmaeElement(i);
+            element.onload = (ev) => { this.NotifyServantToActor(element); }
+        }
     }
 
 
     /**
      * 
-     * @param servantList 
+     * @param index 
      */
-    private Create() {
-        ReactDOM.render(<CastSelectorComponent controller={this._ownerController} owner={this} servants={this._servantList} select={this._selectServant} />, this._castctrlpaneElement, () => {
-            this._servantList.forEach((svt) => {
-                this._ownerController.IconCache.GetIcon(svt.ownerPeerid, svt.ownerIid)
-            });
-        });
+    private GetFrmaeElement(index: number): HTMLFrameElement {
+        return document.getElementById("sbj-home-visitor-livecast-" + index.toString()) as HTMLFrameElement;
     }
+
+
+    /**
+     * 
+     * @param index 
+     */
+    private GetTabElement(index: number) {
+        return document.getElementById("sbj-home-visitor-tab-" + index.toString());
+    }
+
+
+    /**
+     * 
+     * @param index 
+     */
+    private GetTabTitleElement(index: number) {
+        return document.getElementById("sbj-home-visitor-tab-title-" + index.toString());
+    }
+
+
+    /**
+     * 
+     * @param index 
+     */
+    private GetTabIconElement(index: number) {
+        return document.getElementById("sbj-home-visitor-tab-icon-" + index.toString());
+    }
+
+
 
 
     /**
@@ -62,23 +89,113 @@ export default class CastSelectorController {
      */
     public ChangeRoomServantList(rs: RoomServantSender) {
 
-        this._servantList = rs.servants;
+        let newServant = new Array<ServantSender>();
+        let preMap = new Map<number, ServantSender>();
 
-        if (this._servantList.length === 0) {
-            this._selectServant = "";
-            this._castElement.setAttribute('src', '');
-            this.Create();
+        if (rs.servants) {
+
+            //  設置済みのサーバント判定
+            rs.servants.forEach((servant) => {
+                let preIndex = this.GetServantPos(servant);
+                if (preIndex >= 0) {
+                    preMap.set(preIndex, servant);
+                }
+                else {
+                    newServant.push(servant);
+                }
+            });
+
+            //  削除されたサーバントの除去
+            for (let i = 0; i < this._FrameCount; i++) {
+                if (!preMap.has(i)) {
+                    this.SetServantTab(i, null);
+                    this._servantMap.delete(i);
+                }
+            }
+
+            //  新規サーバントの追加
+            newServant.forEach((servant) => {
+                for (let i = 0; i < this._FrameCount; i++) {
+                    if (preMap.has(i))
+                        continue;
+
+                    this.SetServantTab(i, servant);
+                    preMap.set(i, servant);
+                    this._servantMap.set(i, servant.clientUrl);
+                    i = this._FrameCount;
+                }
+            });
+
+            //  アクティブタブの確認
+            this.CheckChangeActiveTab();
+        }
+    }
+
+
+    /**
+     * 指定されたサーバントが含まれているか？
+     * @param servant 
+     */
+    private GetServantPos(servant: ServantSender): number {
+
+        let result = -1;
+
+        this._servantMap.forEach((url, index) => {
+            if (servant.clientUrl === url) {
+                result = index;
+            }
+        });
+        return result;
+    }
+
+
+    /**
+     * 
+     * @param index 
+     * @param servant 
+     */
+    public SetServantTab(index: number, servant: ServantSender) {
+
+        let frameElement = this.GetFrmaeElement(index);
+        let tabElement = this.GetTabElement(index);
+        let tabTitleElement = this.GetTabTitleElement(index);
+        let tabIconElement = this.GetTabIconElement(index);
+
+        if (servant) {
+            this.SetTabName(tabTitleElement, tabIconElement, servant);
+            tabElement.hidden = false;
+            this.SetServant(frameElement, servant);
         }
         else {
-            let preSelect = this._servantList.filter(n => n.servantPeerId === this._selectServant);
-            if (preSelect.length === 0) {
-                //  前回選択データが無い場合は１つ目を選択状態にする
-                this.ChangeDispServant(this._servantList[0]);
-            }
-            else {
-                //  前回選択データがある場合はそのまま描画
-                this.Create();
-            }
+            tabElement.hidden = true;
+            frameElement.setAttribute('src', '');
+        }
+    }
+
+
+    /**
+     * 
+     * @param tabTitleElement 
+     * @param tabIconElement 
+     * @param servant 
+     */
+    public SetTabName(tabTitleElement: HTMLElement, tabIconElement: HTMLElement, servant: ServantSender) {
+        this._ownerController.ActorCache.GetActor(servant.ownerPeerid, servant.ownerAid, (actor) => {
+            tabTitleElement.textContent = actor.name;
+            tabIconElement.textContent = this.GetCastIconName(servant.castType);
+        });
+    }
+
+
+    /**
+     * キャスト名称の取得
+     * @param servant 
+     */
+    public GetCastIconName(castType: CastTypeEnum) {
+        switch (castType) {
+            case CastTypeEnum.LiveCast: return "videocam";
+            case CastTypeEnum.ScreenShare: return "screen_share";
+            case CastTypeEnum.Gadget: return "ondemand_video";
         }
     }
 
@@ -87,16 +204,14 @@ export default class CastSelectorController {
      * サーバントの表示切替
      * @param servant 
      */
-    public ChangeDispServant(servant: ServantSender) {
+    public SetServant(element: HTMLFrameElement, servant: ServantSender) {
 
         if (servant.hid !== this._ownerController.CurrentHid) {
             return;
         }
 
         this._selectServant = servant.servantPeerId;
-        this.Create();
 
-        let element = this._castElement;
         let url: string = servant.clientUrl;
 
         if (servant.ownerPeerid === this._ownerController.PeerId) {
@@ -108,7 +223,6 @@ export default class CastSelectorController {
         let preUrl = element.getAttribute('src');
 
         if (preUrl !== url) {
-
             element.onload = (e) => {
                 //  エンターキー押下時に、テキストボックスにフォーカスが移るようにする
                 element.contentDocument.onkeyup = this._ownerController.View.InputPane.OnOtherKeyPress;
@@ -116,9 +230,8 @@ export default class CastSelectorController {
                 element.contentDocument.onmouseover = (e) => {
                     element.contentWindow.document.body.focus();
                 }
-                this._ownerController.View.CastSelector.NotifyServantToActor();
+                this._ownerController.View.CastSelector.NotifyServantToActor(element);
             }
-
             element.setAttribute('src', url);
         }
 
@@ -128,9 +241,7 @@ export default class CastSelectorController {
     /**
      * サーバント側に使用アクターを通知
      */
-    public NotifyServantToActor() {
-
-        let element = this._castElement;
+    public NotifyServantToActor(element: HTMLFrameElement) {
 
         if (element) {
             let childDocument = element.contentDocument;
@@ -144,6 +255,41 @@ export default class CastSelectorController {
                 iidElement.textContent = this._ownerController.CurrentActor.dispIid;
             }
         }
+    }
+
+
+    /**
+     * サーバント側に使用アクターを通知
+     */
+    public NotifyServantToActorAll() {
+        for (let i = 0; i < this._FrameCount; i++) {
+            this.NotifyServantToActor(this.GetFrmaeElement(i));
+        }
+    }
+
+
+    /**
+     * アクティブタブが閉じられた場合、表示されている先頭タブをアクティブにする
+     */
+    public CheckChangeActiveTab() {
+
+        let first: HTMLElement = null;
+
+        for (let i = 0; i < this._FrameCount; i++) {
+            let tab = this.GetTabElement(i);
+
+            if (tab.hidden)
+                continue;
+
+            if (tab.classList.contains('is-active'))
+                return;
+
+            if (!first)
+                first = tab;
+        }
+
+        if (first)
+            first.click();
     }
 
 }

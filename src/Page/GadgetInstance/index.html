@@ -28,10 +28,11 @@
                 <div class="sbj-gadget-instance--header-row mdl-layout__header-row">
 
                     <span id="sbj-gadget-instance-title" class="mdl-layout-title">
-                        ガジェットキャスト
+                        YouTube同期再生
                     </span>
 
-                    <div id="sbj-gadget-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
+                    <div id="sbj-gadget-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
+                    <div class="mdl-tooltip" data-mdl-for="sbj-gadget-instance-account-count">この配信への接続数</div>
 
                     <div class="mdl-layout-spacer"></div>
 
@@ -43,46 +44,35 @@
             </header>
 
             <main id="sbj-gadget-instance-main" class="mdl-layout__content">
-                <div class="sbj-split-left mdl-color-text--grey-600">
-
-                    <div>
-                        <h6 class="mdl-color-text--grey-600">配信</h6>
-                    </div>
-
-                    <div>
-                        <button id="sbj-gadget-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-                            <i class="material-icons">stop</i>
-                            &nbsp;ガジェットキャストの停止&nbsp;
+                <div class="mdl-color-text--grey-600">
+                    <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
+                        <button id="sbj-gadget-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
+                            <i class="material-icons">play_arrow</i>
+                            &nbsp;開始&nbsp;
                         </button>
-                    </div>
-
-                    <div>
+                        <button id="sbj-gadget-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                            <i class="material-icons">stop</i>
+                            &nbsp;停止&nbsp;
+                        </button>
                         <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
                     </div>
-
                 </div>
-                <div class="sbj-split-right">
-                    <h6 class="mdl-color-text--grey-600">プレビュー</h6>
-                    <!-- PreView -->
-                    <div class="mdl-list__item-primary-content">
-                        <div id="sbj-guide-youtube-player"></div>
-                        <input type="text" id="sbj-youtube-api-ready" hidden/>
+                <div class="mdl-list__item-primary-content">
+                    <div id="sbj-guide-youtube-player">
+                        <h6 class="sbj-guide-youtube-text">ここにYouTube動画をドロップ</h6>
                     </div>
-                    <div>
-                        <label class="sbj-gadget-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="cursor_disp">
-                            <input type="checkbox" id="cursor_disp" class="mdl-switch__input" checked>
-                            <span class="mdl-switch__label">接続ユーザーのカーソル表示許可</span>
-                        </label>
-                    </div>
+                    <input type="text" id="sbj-youtube-api-ready" hidden/>
                 </div>
+                <label class="sbj-gadget-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="cursor_disp" hidden>
+                    <input type="checkbox" id="cursor_disp" class="mdl-switch__input" checked>
+                    <span class="mdl-switch__label">接続ユーザーのカーソル表示許可</span>
+                </label>
             </main>
         </div>
     </div>
-
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>
     <script src="bundle.js?v={version}"></script>
-
 </body>
 
 </html>

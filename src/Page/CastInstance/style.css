@@ -9,16 +9,30 @@
 }
 
 .sbj-cast-instance-layout{
-    width: 800px;
+    width: 550px;
     height: 600px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -300px 0 0 -400px;
+    top: 204px;
+    left: 0;
+    margin: 0 0 0 0;
 }
 
 #sbj-cast-instance-main{
     overflow: hidden;
+    margin: 16px 32px;
+}
+
+#sbj-livecast-room-name{
+    display: inline-block;
+    margin: 0px 20px;
+}
+
+.sbj-cast-instance-actions{
+    margin: 16px 0px;
+}
+
+.sbj-cast-instance-device{
+    padding: 16px;
 }
 
 .sbj-cast-instance-device-select{
@@ -37,32 +51,13 @@
     margin-right: 16px;
 }
 
-#sbj-cast-instance-start{
-    margin: 0px 0px 16px 0px;
-}
-
-#sbj-cast-instance-stop{
-    margin: 0px;
-}
-
 .sbj-cast-instance-option{
     margin: 20px 4px 0px 0px;
 }
 
-.sbj-split-left {
-    float: left;
-    width: 300px;
-    padding: 0px 32px;
-}
-
-.sbj-split-right {
-    float: right;
-    width: calc(100% - 364px);
-}
-
 #video {
-    width: 400px;
-    height: 300px;
+    width: 480px;
+    height: 360px;
     background-color: var(--sbj-color-edge-background);
 }
 
@@ -70,4 +65,22 @@
 	min-width: 36px;
     width: 36px;
     padding: 0px;
+}
+
+.sbj-cast-instance-mobile-label{
+    margin: 0px;
+}
+
+.sbj-cast-instance-qrcode{
+    width: 340px;
+    height: 340px;
+}
+
+.sbj-cast-instance-setting-card.mdl-card {
+    padding: 10px;
+    width: 400px;
+    height: 600px;
+    position: absolute;
+    top: 204px;
+    left: 550px;
 }

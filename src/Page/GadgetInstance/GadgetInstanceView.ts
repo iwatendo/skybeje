@@ -13,10 +13,13 @@ import GadgetInstanceController from "./GadgetInstanceController";
 import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import YouTubeUtil, { YouTubeOption } from "../../Base/Util/YouTubeUtil";
 import LogUtil from "../../Base/Util/LogUtil";
+import GuideUtil from "../../Base/Util/GuideUtil";
+import { GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 
     private _mainElement = document.getElementById("sbj-gadget-instance-main");
+    private _startFunc: any;
 
     /**
      * 初期化処理
@@ -26,7 +29,8 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
         let backpanel = document.getElementById('sbj-gadget-instance');
-        let startButton = document.getElementById('sbj-gadget-instance-start');
+        let mainpanel = document.getElementById('sbj-gadget-instance-layout');
+        let startButton = document.getElementById('sbj-gadget-instance-start') as HTMLInputElement;
         let cancelButton = document.getElementById('sbj-gadget-instance-cancel');
         let stopButton = document.getElementById('sbj-gadget-instance-stop');
         let pauseButton = document.getElementById('sbj-gadget-instance-pause');
@@ -59,9 +63,15 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             }
         }
 
-        //  ガジェットキャスト停止ボタン
+        //  開始ボタン
+        startButton.onclick = (e) => {
+            this.Start();
+        }
+
+        //  停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.SendToOwner_Close();
+            location.href = "";
         };
 
         let options = LocalCache.GadgetCastOptions;
@@ -79,8 +89,15 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
-        YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
+        let controller = this.Controller;
 
+        GuideUtil.SetEvent(mainpanel, (url, embedstatus) => {
+            let guide = new Personal.Guide();
+            guide.url = url;
+            guide.embedstatus = embedstatus;
+            this.SetGuide(guide, true);
+        });
+        YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
         callback();
     }
 
@@ -98,16 +115,20 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      * @param room 
      */
     public SetRoom(room: Home.Room) {
-        let message = "「" + room.name + "」に\nガジェットキャストしています";
+        let message = "「" + room.name + "」に配信中";
         document.getElementById("sbj-livecast-room-name").innerText = message;
     }
 
 
     /**
-     * ガジェット情報の設定
+     * 
      * @param guide 
+     * @param isStart 
      */
-    public SetGuide(guide: Personal.Guide) {
+    public SetGuide(guide: Personal.Guide, isStart: boolean) {
+
+        if (!guide)
+            return;
 
         let option = JSON.parse(guide.embedstatus) as YouTubeOption;
 
@@ -116,26 +137,87 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             //  インスタンス側はミュート状態で起動
             player.mute();
 
+            //  動画の再生時間情報がセットされていない場合は設定する
+            option.last = player.getDuration();
+            if (option.start <= 0) option.start = 0;
+            if (option.end <= 0) option.end = option.last;
+
             this.Controller.CastSetting.guide = guide;
             let status = new YouTubeStatusSender();
             status.state = YT.PlayerState.CUED;
             status.playbackRate = 1;
             status.current = option.start;
             this.Controller.CastSetting.status = status;
-            WebRTCService.SendAll(this.Controller.CastSetting);
 
-            this.SetYouTubeListener(player);
-            YouTubeUtil.CueVideo(option);
-            this.Controller.SendToOwner_CastStart();
+            (document.getElementById('sbj-gadget-instance-start') as HTMLInputElement).disabled = false;
+
+            this._startFunc = () => {
+                WebRTCService.SendAll(this.Controller.CastSetting);
+                this.SetYouTubeListener(player);
+                YouTubeUtil.CueVideo(option);
+                this.Controller.SendToOwner_CastStart();
+            }
+
+            if (isStart) { this.Start(); }
         });
+    }
+
+
+    /**
+     * 配信開始
+     */
+    public Start() {
+        if (this._startFunc) {
+            this._startFunc();
+            document.getElementById('sbj-gadget-instance-start').hidden = true;
+            document.getElementById('sbj-gadget-instance-stop').hidden = false;
+            document.getElementById('sbj-livecast-room-name').hidden = false;
+            document.getElementById('sbj-gadget-instance-account-count').hidden = false;
+        }
     }
 
 
     /**
      * 
      */
-    public DoCurVideo() {
-        YouTubeUtil.Player.playVideo();
+    private _cueMap: Map<string, string>;
+
+
+    /**
+     * 
+     * @param peerid 
+     */
+    public SetCueMap(peerid: string) {
+        this._cueMap.set(peerid, peerid);
+    }
+
+
+    /**
+     * 
+     * @param polingTime 
+     */
+    public CueSyncPolling(polingTime: number) {
+
+        let interval = 200;
+        let timeout = 5000;
+
+        let clcount = WebRTCService.GetAliveConnectionCount();
+
+        if ((clcount > 0 && clcount <= this._cueMap.size) || polingTime > timeout) {
+            YouTubeUtil.Player.playVideo();
+        }
+        else {
+            setTimeout(() => { this.CueSyncPolling(polingTime + interval) }, interval);
+        }
+    }
+
+
+    /**
+     * 
+     */
+    public SyncWait() {
+        this._cueMap = new Map<string, string>();
+        this.CueSyncPolling(0);
     }
 
 
@@ -158,16 +240,29 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      */
     private SetYouTubeListener(player: YT.Player) {
 
+        let isEnd = false;
+
         player.addEventListener('onStateChange', (event) => {
             let state = ((event as any).data) as YT.PlayerState;
 
             switch (state) {
-                case YT.PlayerState.PLAYING: break;
-                case YT.PlayerState.ENDED: break;
-                case YT.PlayerState.PAUSED: break;
-                case YT.PlayerState.BUFFERING: break;
+                case YT.PlayerState.PLAYING:
+                    break;
+                case YT.PlayerState.ENDED:
+                    isEnd = true;
+                    break;
+                case YT.PlayerState.PAUSED:
+                    //  自働
+                    if (YouTubeUtil.Option.end <= YouTubeUtil.Player.getCurrentTime()) {
+                        return;
+                    }
+                    break;
+                case YT.PlayerState.BUFFERING:
+                    break;
                 case YT.PlayerState.CUED:
-                    this.DoCurVideo();
+                    if (!isEnd) {
+                        this.SyncWait();
+                    }
                     break;
                 case YT.PlayerState.UNSTARTED: return;
                 default: return;
@@ -224,48 +319,30 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      */
     public SetYouTubeStatus(conn: PeerJs.DataConnection, sender: YouTubeStatusSender) {
 
-        if (this._preSender !== null) {
-            if (YouTubeStatusSender.IsEqual(this._preSender, sender)) {
-                return;
-            }
-        }
-
-        let pl = YouTubeUtil.Player;
-
-        if (pl.getPlaybackRate() !== sender.playbackRate) {
-            pl.setPlaybackRate(sender.playbackRate);
-        }
-
-        //  クライアントからの
-        //  停止/再開通知は受信する
         switch (sender.state) {
             case YT.PlayerState.PLAYING:
-                pl.playVideo();
                 break;
             case YT.PlayerState.ENDED:
-                //  pl.stopVideo();
                 break;
             case YT.PlayerState.PAUSED:
-                pl.pauseVideo();
-                pl.seekTo(sender.current, true);
-
                 break;
             case YT.PlayerState.BUFFERING:
                 break;
             case YT.PlayerState.CUED:
-                if (YouTubeUtil.Player.getPlayerState() === YT.PlayerState.CUED) {
-
+                if (YouTubeUtil.IsCreatePlayer) {
+                    if (YouTubeUtil.Player.getPlayerState() === YT.PlayerState.CUED) {
+                        this.SetCueMap(conn.peer);
+                    }
+                    else {
+                        WebRTCService.SendTo(conn, this.CreateYouTubeStatus());
+                    }
                 }
-                else {
-                    sender = this.CreateYouTubeStatus();
-                }
-                WebRTCService.SendTo(conn, sender);
                 break;
             case YT.PlayerState.UNSTARTED: return;
             default: return;
         }
 
-        //  WebRTCService.SendAll(sender);
     }
+
 
 }

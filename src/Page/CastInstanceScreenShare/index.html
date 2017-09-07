@@ -22,42 +22,35 @@
 
             <header class="sbj-cast-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
                 <div class="sbj-cast-instance--header-row mdl-layout__header-row">
-
                     <span id="sbj-cast-instance-title" class="mdl-layout-title">
-                        スクリーンシェア
+                        画面共有
                     </span>
-
                     <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
-
+                    <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
                     <div class="mdl-layout-spacer"></div>
-
                     <button id="sbj-cast-instance-cancel" class="mdl-button mdl-js-button mdl-button--raised sbj-dialog-close" type="button">
                         <i class="material-icons">close</i>
                     </button>
-
                 </div>
             </header>
 
             <main id="sbj-cast-instance-main" class="mdl-layout__content">
+
+                <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
+                    <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    <i class="material-icons">play_arrow</i>
+                        &nbsp;開始&nbsp;
+                    </button>
+                    <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                    <i class="material-icons">stop</i>
+                        &nbsp;停止&nbsp;
+                    </button>
+                    <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
+                </div>
+
                 <div class="sbj-split-left mdl-color-text--grey-600">
-                    <div>
-                        <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                            <i class="material-icons">play_arrow</i>
-                            &nbsp;スクリーンシェアの開始&nbsp;
-                        </button>
-
-                        <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
-                            <i class="material-icons">stop</i>
-                            &nbsp;スクリーンシェアの停止&nbsp;
-                        </button>
-                    </div>
-
-                    <div>
-                        <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
-                    </div>
-
                     <div id="sbj-screenshare-setting">
-                        <h6 class="mdl-color-text--grey-600">配信解像度</h6>
+                        <h6 class="sbj-screenshare-label mdl-color-text--grey-600">配信解像度</h6>
                         <div class="sbj-screenshare-resolution">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-1">
                                 <input type="radio" id="sbj-screenshare-option-1" class="mdl-radio__button" name="sbj-screenshare-option" value="1" checked>
@@ -91,7 +84,7 @@
                     </div>
                 </div>
                 <div class="sbj-split-right">
-                    <h6 class="sbj-screenshare-note mdl-color-text--grey-600">
+                    <h6 class="sbj-screenshare-note mdl-color-text--grey-600" id="sbj-screenshare-note">
                         注意事項<br/>
                         <br/> 高解像度／高フレームレートでの利用は CPU に高い負荷が掛かります。接続人数に応じて負荷が増加する事にも注意してください。<br/>
                         <br/> 受信側の方にも負荷が掛かるため、低解像度／低フレームレートから試すことをお勧めします。
@@ -100,6 +93,8 @@
                 </div>
             </main>
 
+            <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
+                    
             <main id="sbj-cast-instance-main-no-extension" hidden class="mdl-layout__content">
                 <h6 class="sbj-screenshare-note">
                     スクリーンシェア機能を利用するには、<br/> 以下の Chrome Extension の追加が必要です。<br/>

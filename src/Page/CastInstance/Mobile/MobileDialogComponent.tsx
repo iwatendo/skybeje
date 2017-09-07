@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import LinkUtil from "../../../Base/Util/LinkUtil";
 
-import HomeVisitorController from "../HomeVisitorController";
+import CastInstanceController from "../CastInstanceController";
 import MobileDialog from "./MobileDialog";
 
 
@@ -11,7 +11,7 @@ import MobileDialog from "./MobileDialog";
  * 
  */
 export interface MobileDialogProp {
-    controller: HomeVisitorController;
+    controller: CastInstanceController;
     linkurl: string;
 }
 
@@ -31,9 +31,9 @@ export default class MobileDialogComponent extends React.Component<MobileDialogP
 
         return (
             <div>
-                <h6 className="sbj-home-visitor-mobile-label">Android端末からライブキャストします。</h6>
+                <h6 className="sbj-cast-instance-mobile-label">Android端末からライブ配信します。</h6>
                 <div className="mdl-shadow--3dp">
-                    <iframe className="sbj-home-visitor-qrcode" src={linkrul}></iframe>
+                    <iframe className="sbj-cast-instance-qrcode" src={linkrul}></iframe>
                 </div>
             </div>
         );

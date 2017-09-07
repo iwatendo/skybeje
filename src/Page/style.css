@@ -10,7 +10,7 @@ body {
 }
 
 .sbj-main {
-    background: url("/image/default-startpage.jpg");
+    background-color: var(--sbj-color-default-background);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: bottom;
@@ -29,7 +29,7 @@ body {
 .sbj-content {
   border-radius: 2px;
   padding: 28px 54px;
-  margin-top: 120px;
+  margin-top: 80px;
   background-color: var(--sbj-color-default-background);
 }
 
@@ -39,6 +39,11 @@ body {
 
 .sbj-footer .mdl-mini-footer--link-list a {
   font-size: 13px;
+}
+
+#sbj-start-tooltip{
+  text-align: left;
+  max-width: 280px;
 }
 
 .alpha{

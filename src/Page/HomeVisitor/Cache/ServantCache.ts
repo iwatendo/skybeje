@@ -52,6 +52,7 @@ export default class ServantCache {
                     servant.ownerIid = profile.dispIid;
                     servant.hid = room.hid;
                     servant.clientUrl = cib.clientUrl;
+                    servant.castType = cib.castType;
                     servant.instanceUrl = cib.instanceUrl;
                     servant.isCasting = cib.isCasting;
                     callback(servant);

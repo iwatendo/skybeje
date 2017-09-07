@@ -160,7 +160,9 @@ export default class BotController {
      * 
      */
     public GetGuideQueue(): Personal.Guide {
-        return this._guideQuere;
+        let queue = this._guideQuere;
+        this._guideQuere = null;
+        return queue;
     }
 
 

@@ -49,7 +49,9 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
     private _currentActor: Personal.Actor;
 
-    public get CurrentAid(): string { return this._currentActor.aid; }
+    public get CurrentAid(): string {
+        return (this._currentActor ? this._currentActor.aid : "");
+    }
     public get CurrentActor(): Personal.Actor { return this._currentActor; }
     public CurrentHid: string;
     public HasError: boolean;
@@ -292,7 +294,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             //  変更したアクターの部屋へ変更
             this.RoomCache.GetRoomByActorId(aid, (room) => {
                 this.View.SetRoomInfo(room);
-                this.View.CastSelector.NotifyServantToActor();
+                this.View.CastSelector.NotifyServantToActorAll();
             });
         });
     }
@@ -354,7 +356,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public NotifyHideLiveCast(castType: CastTypeEnum) {
 
         let elementName = "";
-        
+
         switch (castType) {
             case CastTypeEnum.LiveCast: elementName = "sbj-main-home-livecast-hide"; break;
             case CastTypeEnum.ScreenShare: elementName = "sbj-main-home-livecast-screenshare-hide"; break;
