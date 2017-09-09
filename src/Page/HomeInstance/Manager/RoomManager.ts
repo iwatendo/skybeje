@@ -57,9 +57,6 @@ export default class RoomManager {
         }
 
         this.GetDefaultRoomID((defaultRoomId) => {
-            //  コネクションキャッシュ
-            this._controller.ConnCache.Set(conn);
-
             //  ルームアクター情報の更新
             this.RoomActorMerge(conn.peer, useActor, defaultRoomId);
         });
@@ -226,11 +223,8 @@ export default class RoomManager {
 
         //  通知処理
         sendPeers.forEach((peerid) => {
-
-            this._controller.ConnCache.GetExec(peerid, (conn) => {
-                //  各ユーザーへ通知
-                WebRTCService.SendTo(conn, rmi);
-            });
+            //  各ユーザーへ通知
+            WebRTCService.SendTo(peerid, rmi);
         });
 
         //  RoomViewへの通知

@@ -1,6 +1,5 @@
 ﻿import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import WebRTCService from "../../Base/Common/WebRTCService";
-import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import * as Personal from "../../Base/IndexedDB/Personal";
@@ -16,7 +15,6 @@ export default class GadgetVisitorController extends AbstractServiceController<G
     public ControllerName(): string { return "GadgetVisitor"; }
 
     public PeerId : string;
-    public ConnCache: ConnectionCache;
     public View: GadgetVisitorView;
 
     /**
@@ -25,7 +23,6 @@ export default class GadgetVisitorController extends AbstractServiceController<G
     constructor() {
         super();
         this.Receiver = new GadgetVisitorReceiver(this);
-        this.ConnCache = new ConnectionCache();
     };
 
 
@@ -51,16 +48,6 @@ export default class GadgetVisitorController extends AbstractServiceController<G
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.initializeCursor();
-    }
-
-
-    /**
-     * 
-     * @param conn 
-     */
-    public OnChildConnection(conn: PeerJs.DataConnection) {
-        super.OnChildConnection(conn);
-        this.ConnCache.Set(conn);
     }
 
 

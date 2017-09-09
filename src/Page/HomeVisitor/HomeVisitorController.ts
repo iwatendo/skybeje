@@ -6,7 +6,6 @@ import * as Home from "../../Base/IndexedDB/Home";
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
-import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LogUtil from "../../Base/Util/LogUtil";
 import ActorInfo from "../../Base/Container/ActorInfo";
 import { OnRead } from "../../Base/Common/AbstractServiceModel";
@@ -36,7 +35,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
     public PeerId: string;
     public ConnStartTime: number;
-    public ConnCache: ConnectionCache;
     public ActorCache: ActorCache;
     public RoomCache: RoomCache;
     public IconCache: IconCache;
@@ -64,7 +62,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.HasError = false;
         this.Log = new LogController(this);
         this.Receiver = new HomeVisitorReceiver(this);
-        this.ConnCache = new ConnectionCache();
         this.ActorCache = new ActorCache(this);
         this.RoomCache = new RoomCache(this);
         this.IconCache = new IconCache(this);
@@ -120,7 +117,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         if ((err as any).type === "peer-unavailable") {
             LogUtil.Warning(this, err.message);
             let peerid = err.message.replace("Could not connect to peer ", "").replace("'", "");
-            this.ConnCache.SetErrorPeer(peerid);
         }
         else {
             this.View.DisConnect();
@@ -137,7 +133,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
         super.OnChildConnection(conn);
-        this.ConnCache.Set(conn);
     }
 
 

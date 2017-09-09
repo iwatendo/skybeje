@@ -2,6 +2,7 @@ import { IServiceController } from "./IServiceController";
 import LogUtil from "../Util/LogUtil";
 import Sender from "../Container/Sender";
 import LocalCache from "./LocalCache";
+import ConnectionCache from "./Connect/ConnectionCache";
 
 
 interface OnGetMediaStream { (stream: MediaStream): void }
@@ -10,12 +11,11 @@ declare var SkyWay: any;
 
 export default class WebRTCService {
 
-    private static _peer: PeerJs.Peer;
-    private static _owner: PeerJs.DataConnection;
-    private static _clients: Array<PeerJs.DataConnection> = new Array<PeerJs.DataConnection>();
+    public static _peer: PeerJs.Peer;
     private static _service: IServiceController;
     private static _serviceName: string;
     private static _videoElement: HTMLElement;
+    private static _connCache: ConnectionCache;
 
 
     /**
@@ -35,13 +35,14 @@ export default class WebRTCService {
     public static Start(service: IServiceController, ownerid: string, serviceName: string, videoElement: HTMLElement = null) {
 
         this._serviceName = serviceName;
+        this._connCache = new ConnectionCache(service);
 
         Sender.Uid = LocalCache.UserID;
 
         LogUtil.Info(service, "Start WebRTC " + (ownerid ? "(owner " + ownerid + ")" : ""));
 
         this.GetApiKey((apikey) => {
-            this._peer = new Peer({ key: apikey, debug: 1 }, );
+            this._peer = new Peer({ key: apikey, debug: 1 });
             this._service = service;
             WebRTCService._videoElement = videoElement;
 
@@ -59,23 +60,14 @@ export default class WebRTCService {
             //  ストリーミング用設定
             navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
 
-
-            if (ownerid != null && ownerid.length > 0) {
-                this._owner = this._peer.connect(ownerid);
-            }
-
-            this.PeerSetting(service, this._peer, () => {
-
-                if (this._owner) {
-                    this.OwnerPeerSetting(service, this._owner, ownerid);
-                }
-            });
+            this.PeerSetting(service, this._peer, ownerid);
         });
 
     }
 
+
     /**
-     * 
+     * SkyWayのAPIキーが記述されたファイルを読み込みます
      */
     public static GetApiKey(callback) {
 
@@ -108,28 +100,7 @@ export default class WebRTCService {
      * 有効なPeer接続件数の取得
      */
     public static GetAliveConnectionCount(): number {
-        let result: number = 0;
-
-        if (this._clients) {
-            this._clients.forEach((client) => {
-                if (client.open) {
-                    result += 1;
-                }
-            });
-        }
-
-        return result;
-    }
-
-
-    /**
-     * 追加接続
-     * @param peerid 
-     */
-    public static OtherConnect(peerid: string): PeerJs.DataConnection {
-        let conn = this._peer.connect(peerid);
-        this.ChildPeerSetting(this._service, conn);
-        return conn;
+        return this._connCache.AliveConnectionCount();
     }
 
 
@@ -138,15 +109,22 @@ export default class WebRTCService {
      * @param service 自身のサービスコントローラー
      * @param peer 自身のPeer接続
      */
-    private static PeerSetting(service: IServiceController, peer: PeerJs.Peer, ownerConnect) {
+    private static PeerSetting(service: IServiceController, peer: PeerJs.Peer, ownerid: string) {
 
         peer.on('open', () => {
 
             LogUtil.Info(service, "peer opened");
-
             service.OnPeerOpen(peer);
-            if (ownerConnect)
-                ownerConnect();
+
+            if (ownerid != null && ownerid.length > 0) {
+                let owner = this._peer.connect(ownerid, { reliable: true });
+                this._connCache.SetOwner(owner);
+                this.OwnerPeerSetting(service, owner, ownerid);
+            }
+        });
+
+        peer.on('connection', (conn) => {
+            this._connCache.Set(conn);
         });
 
         peer.on('error', (e) => {
@@ -185,10 +163,6 @@ export default class WebRTCService {
             }
         });
 
-        peer.on('connection', (conn) => {
-            this.ChildPeerSetting(service, conn);
-        });
-
     }
 
 
@@ -197,7 +171,7 @@ export default class WebRTCService {
      * @param service 自身のサービスコントローラー
      * @param owner 呼出元の接続情報
      */
-    private static OwnerPeerSetting(service: IServiceController, owner: PeerJs.DataConnection, onownerid: string, ) {
+    private static OwnerPeerSetting(service: IServiceController, owner: PeerJs.DataConnection, onownerid: string) {
 
         owner.on("open", () => {
             LogUtil.Info(service, "peer connected to [" + onownerid + "]");
@@ -222,51 +196,6 @@ export default class WebRTCService {
 
 
     /**
-     * 自身に接続されている子Peerの設定
-     * @param service 自身のサービスコントローラー
-     * @param child 子のPeerID
-     */
-    private static ChildPeerSetting(service: IServiceController, conn: PeerJs.DataConnection) {
-
-        //
-        conn.on("open", () => {
-
-            //  クライアントリストに追加
-            WebRTCService._clients.push(conn);
-
-            //  ストリーミングしている場合は動画を送る
-            if (WebRTCService._localStream) {
-
-                if (WebRTCService._existingCallList == null)
-                    WebRTCService._existingCallList = new Array<PeerJs.MediaConnection>();
-
-                WebRTCService._existingCallList.push(WebRTCService._peer.call(conn.peer, WebRTCService._localStream));
-            }
-
-            //  イベント通知
-            service.OnChildConnection(conn);
-
-        });
-
-        //
-        conn.on('error', (e) => {
-            service.OnChildError(e);
-        });
-
-        //
-        conn.on("close", () => {
-            service.OnChildClose(conn);
-        });
-
-        //
-        conn.on("data", (data) => {
-            service.Recv(conn, data);
-        });
-
-    }
-
-
-    /**
      * ピア接続の存続チェック
      * なんらかの要因でピアのCloseイベントが発動せず切断された場合に、Close処理を実行
      * 
@@ -279,17 +208,7 @@ export default class WebRTCService {
             return;
         }
 
-        if (this._owner) {
-            if (!this._owner.open) {
-                this._service.OnOwnerClose();
-            }
-        }
-
-        this._clients.forEach((cl) => {
-            if (!cl.open) {
-                this._service.OnChildClose(cl);
-            }
-        });
+        this._connCache.CheckAlive();
     }
 
 
@@ -298,15 +217,8 @@ export default class WebRTCService {
      *  全てクライアントとの接続を切断します
      */
     public static Close() {
-        this._clients.forEach((client) => {
-            client.close();
-        });
+        this._connCache.Close();
         this._peer.destroy();
-    }
-
-
-    public static get peerid(): string {
-        return this._peer.id;
     }
 
 
@@ -315,44 +227,23 @@ export default class WebRTCService {
      * @param data
      */
     public static SendToOwner(data: Sender) {
-
-        let senddata = JSON.stringify(data);
-
-        if (!this._owner) {
-            LogUtil.Warning(this._service, "Owner not found : lost send : " + senddata);
-        }
-
-        if (this._owner.open) {
-            this._owner.send(senddata);
-
-            if (LogUtil.IsOutputSender(data))
-                LogUtil.Info(this._service, "send(Owner) : " + senddata.toString());
-        }
-        else {
-            LogUtil.Warning(this._service, "Owner not open : lost send : " + senddata);
-        }
-
+        this._connCache.SendToOwner(data);
     }
 
 
     /**
      * 指定クライアントへの送信
-     * @param conn
+     * @param peer
      * @param data
      */
-    public static SendTo(conn: PeerJs.DataConnection, data: Sender) {
+    public static SendTo(peer: string | PeerJs.DataConnection, data: Sender) {
 
-        let json = JSON.stringify(data);
+        let peerid = "";
+        let dc = peer as PeerJs.DataConnection;
+        if (dc) { peerid = dc.peer; }
+        if (!peerid) { peerid = peer.toString(); }
 
-        //  開いているクライアントにのみ通知
-        if (conn.open) {
-            conn.send(json);
-            if (LogUtil.IsOutputSender(data))
-                LogUtil.Info(this._service, "send : " + json.toString());
-        }
-        else {
-            LogUtil.Warning(this._service, "Client not open : lost send : " + json);
-        }
+        this._connCache.Send(peerid, data);
     }
 
 
@@ -361,27 +252,14 @@ export default class WebRTCService {
      * @param data
      */
     public static SendAll(data: Sender) {
-
-        let json = JSON.stringify(data);
-
-        WebRTCService._clients.forEach(client => {
-
-            //  開いているクライアントにのみ通知
-            if (client.open) {
-                client.send(json);
-            }
-
-        });
-
-        if (LogUtil.IsOutputSender(data))
-            LogUtil.Info(this._service, "send(All) : " + json.toString());
+        this._connCache.SendAll(data);
     }
 
 
-    private static _localStream: MediaStream;
-    private static _previewStream: MediaStream;
-    private static _screenShare = null;
-    private static _existingCallList: Array<PeerJs.MediaConnection>;
+    public static _localStream: MediaStream;
+    public static _previewStream: MediaStream;
+    public static _screenShare = null;
+    public static _existingCallList: Array<PeerJs.MediaConnection>;
 
 
     /**
@@ -556,20 +434,34 @@ export default class WebRTCService {
      * @param stream 
      */
     private static StartStreaming(stream) {
+
         //  ストリーミング開始 / 設定変更
         this._localStream = stream;
 
-        //  接続済みのクライアントに動画配信開始
-        this._clients.forEach(conn => {
-
-            if (this._existingCallList == null)
-                this._existingCallList = new Array<PeerJs.MediaConnection>();
-
-            this._existingCallList.push(this._peer.call(conn.peer, this._localStream));
-        });
+        //
+        this._connCache.StartStreaming();
 
         //
         this._service.OnStartStreaming();
+    }
+
+
+    /**
+     * 指定されたPeerIDへストリーミングを開始します
+     * @param peerid 
+     */
+    public static StartStreamingPeer(peerid: string): boolean {
+
+        if (this._localStream) {
+            if (this._existingCallList == null)
+                this._existingCallList = new Array<PeerJs.MediaConnection>();
+
+            this._existingCallList.push(this._peer.call(peerid, this._localStream));
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 

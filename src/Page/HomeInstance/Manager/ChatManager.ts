@@ -120,12 +120,7 @@ export default class ChatManager {
         sender.msgs.push(tlmsg);
 
         this._roomManager.GetRoomInPeers(tlmsg.hid).forEach((peerid) => {
-
-            this._controller.ConnCache.GetExec(peerid, (conn) => {
-                if (conn && conn.open) {
-                    WebRTCService.SendTo(conn, sender);
-                }
-            });
+            WebRTCService.SendTo(peerid, sender);
         });
     }
 

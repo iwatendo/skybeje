@@ -87,13 +87,12 @@ export default class ActorCache {
             });
         }
         else {
-            this._controller.ConnCache.GetExec(peerid, (conn) => {
-                let key = peerid + aid;
-                this.PushQueue(key, callback);
-                let sender = new GetActorSender();
-                sender.aid = aid;
-                WebRTCService.SendTo(conn, sender);
-            });
+            let key = peerid + aid;
+            this.PushQueue(key, callback);
+            
+            let sender = new GetActorSender();
+            sender.aid = aid;
+            WebRTCService.SendTo(peerid, sender);
         }
 
     }

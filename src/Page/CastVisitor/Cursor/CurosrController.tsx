@@ -7,7 +7,6 @@ import WebRTCService from "../../../Base/Common/WebRTCService";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import { GetIconSender } from "../../HomeVisitor/HomeVisitorContainer";
-import ConnectionCache from "../../../Base/Common/ConnectionCache";
 import LogUtil from "../../../Base/Util/LogUtil";
 
 
@@ -63,7 +62,6 @@ export class CursorController {
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
     private _cursorSize: number;
     private _iconCache = new Map<string, Map<string, Personal.Icon>>();
-    private _connCache: ConnectionCache;
 
     private _ownerPeerIdElement = document.getElementById('peerid') as HTMLInputElement;
     private _ownerAidElement = document.getElementById('aid') as HTMLInputElement;
@@ -79,9 +77,8 @@ export class CursorController {
      * @param itemDivElement 
      * @param cursorDivElement 
      */
-    public constructor(connCache: ConnectionCache, video: HTMLVideoElement, itemDivElement: HTMLElement, cursorDivElement: HTMLElement) {
+    public constructor(video: HTMLVideoElement, itemDivElement: HTMLElement, cursorDivElement: HTMLElement) {
 
-        this._connCache = connCache;
         this._video = video;
         this._cursorDispElement = cursorDivElement;
         this._cursorSize = 48;
@@ -386,14 +383,11 @@ export class CursorController {
     private GetIcon(peerid: string, iid: string) {
 
         //  他ユーザーへ接続しアイコンの要求
-        this._connCache.GetExec(peerid, (conn) => {
-            let sender = new GetIconSender();
-            sender.iid = iid;
-            WebRTCService.SendTo(conn, sender);
-        });
+        let sender = new GetIconSender();
+        sender.iid = iid;
+        WebRTCService.SendTo(peerid, sender);
 
         //  アイコンが取得できるまで、再要求しないように空アイコンをキャッシュ
-
         let emptyIcon = new Personal.Icon();
         emptyIcon.iid = iid;
         this.SetIcon(peerid, emptyIcon);

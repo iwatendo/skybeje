@@ -93,12 +93,10 @@ export default class IconCache {
             return;
         }
 
-        //  他ユーザーへ接続しアイコンの要求
-        this._controller.ConnCache.GetExec(peerid, (conn) => {
-            let sender = new GetIconSender();
-            sender.iid = iid;
-            WebRTCService.SendTo(conn, sender);
-        });
+        let sender = new GetIconSender();
+        sender.iid = iid;
+        //  他ユーザーへアイコン要求
+        WebRTCService.SendTo(peerid, sender);
     }
 
 

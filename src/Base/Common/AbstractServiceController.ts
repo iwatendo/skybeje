@@ -116,7 +116,6 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param conn
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
-        LogUtil.Info(this, "peer connected from [" + conn.peer + "]");
     }
 
 

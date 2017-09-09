@@ -117,12 +117,8 @@ export default class ServantManager {
 
         this._roomManager.GetRoomInPeers(hid).forEach((peerid) => {
 
-            this._controller.ConnCache.GetExec(peerid, (conn) => {
-                if (conn && conn.open) {
-                    let sender = this.GetServant(hid);
-                    WebRTCService.SendTo(conn, sender);
-                }
-            });
+            let sender = this.GetServant(hid);
+            WebRTCService.SendTo(peerid, sender);
         });
     }
 

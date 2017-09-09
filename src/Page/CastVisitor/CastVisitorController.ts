@@ -1,6 +1,5 @@
 ﻿import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import WebRTCService from "../../Base/Common/WebRTCService";
-import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import * as Personal from "../../Base/IndexedDB/Personal";
@@ -14,7 +13,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
 
     public ControllerName(): string { return "CastVisitor"; }
 
-    public ConnCache: ConnectionCache;
     public View: CastVisitorView;
 
     /**
@@ -23,7 +21,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     constructor() {
         super();
         this.Receiver = new CastVisitorReceiver(this);
-        this.ConnCache = new ConnectionCache();
     };
 
 
@@ -57,7 +54,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
         super.OnChildConnection(conn);
-        this.ConnCache.Set(conn);
     }
 
 

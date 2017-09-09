@@ -4,7 +4,6 @@ import { Room } from "../../Base/IndexedDB/Home";
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import LocalCache from "../../Base/Common/LocalCache";
 import WebRTCService from "../../Base/Common/WebRTCService";
-import ConnectionCache from "../../Base/Common/ConnectionCache";
 import LogUtil from "../../Base/Util/LogUtil";
 
 import * as HIContainer from "./HomeInstanceContainer";
@@ -23,7 +22,6 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     public ControllerName(): string { return "HomeInstance"; }
 
     public PeerID: string;
-    public ConnCache: ConnectionCache = new ConnectionCache();
     public Manager: ManagerController;
     public Room: RoomView;
 

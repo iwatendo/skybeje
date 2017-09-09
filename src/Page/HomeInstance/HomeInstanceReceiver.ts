@@ -8,10 +8,11 @@ import * as HIContainer from "./HomeInstanceContainer";
 
 import HomeInstanceController from "./HomeInstanceController";
 import ChatManager from "./Manager/ChatManager";
+import LocalCache from "../../Base/Common/LocalCache";
+import LogUtil from "../../Base/Util/LogUtil";
 
 
 export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeInstanceController> {
-
 
     /**
      * 
@@ -22,9 +23,10 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
         if (sender.type === HVContainer.ClientBootSender.ID) {
             let ci = new HIContainer.ConnInfoSender();
             ci.isConnect = true;
-            let checkResult = this.Controller.ConnCache.SetUser(sender.uid, conn);
-            ci.isBootCheck = checkResult;
-            ci.isMultiBoot = !checkResult;
+
+            let mbc = this.IsMultiBoot(sender.uid, conn);
+            ci.isBootCheck = !mbc;
+            ci.isMultiBoot = mbc;
             WebRTCService.SendTo(conn, ci);
             return;
         }
@@ -76,5 +78,46 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
         }
 
     }
+
+
+    /**
+     * ユーザーID毎の接続MAP
+     */
+    private _userConnMap = new Map<string, PeerJs.DataConnection>();
+
+
+    /**
+     * 
+     * @param uid 
+     * @param peerid 
+     */
+    private IsMultiBoot(uid: string, conn: PeerJs.DataConnection): boolean {
+
+        LogUtil.Info(null,"MultiBoot : " + uid);
+
+        if (this._userConnMap.has(uid)) {
+            let preConn = this._userConnMap.get(uid);
+
+            if (preConn.open) {
+                if (preConn.peer === conn.peer) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            else {
+                //  接続が切れていた場合は上書き
+                this._userConnMap.set(uid, conn);
+                return false;
+            }
+        }
+        else {
+            //  未登録だった場合
+            this._userConnMap.set(uid, conn);
+            return false;
+        }
+    }
+
 
 }
