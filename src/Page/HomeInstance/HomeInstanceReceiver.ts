@@ -93,8 +93,6 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
      */
     private IsMultiBoot(uid: string, conn: PeerJs.DataConnection): boolean {
 
-        LogUtil.Info(null,"MultiBoot : " + uid);
-
         if (this._userConnMap.has(uid)) {
             let preConn = this._userConnMap.get(uid);
 

@@ -133,7 +133,6 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param conn
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
-        LogUtil.Info(this, "connection closed : " + conn.peer);
     }
 
 
@@ -169,7 +168,6 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param e 
      */
     public OnStreamingClose() {
-        LogUtil.Info(this, "streaming close");
     }
 
 

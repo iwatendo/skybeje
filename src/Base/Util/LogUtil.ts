@@ -187,7 +187,7 @@ export default class LogUtil {
         if (sender.type === 'Icon') return false;
 
         //  カーソルもログの量が多すぎるので除外する
-        if (sender.type === 'CastCursor') return false;
+        if (sender.type === 'IconCursor') return false;
 
         return true;
     }

@@ -44,7 +44,7 @@ export default class PeerPair {
         conn.on("close", () => { this._service.OnChildClose(conn); });
         conn.on("data", (data) => { this._service.Recv(conn, data); });
 
-        LogUtil.Info(this._service, "Recv DataConnection [" + conn.peer + "] -> [" + WebRTCService.PeerId() + "]");
+        LogUtil.Info(this._service, "data connection(recv) [" + conn.peer + "] -> [" + WebRTCService.PeerId() + "]");
         //  イベント通知
         this._service.OnChildConnection(conn);
     }
@@ -60,11 +60,7 @@ export default class PeerPair {
         if (this._outPeer && this._outPeer.open) {
 
             this._outPeer.send(data);
-
-            if (LogUtil.IsOutputSender(data)) {
-                LogUtil.Info(this._service, "send : " + data.toString());
-            }
-
+            
         }
         else {
             if (!this._isCreate) {
@@ -93,7 +89,7 @@ export default class PeerPair {
             this._sendQueue.forEach((data) => { conn.send(data); });
             this._sendQueue = new Array<any>();
             //  this._service.OnChildConnection(conn);
-            LogUtil.Info(this._service, "Send DataConnection [" + WebRTCService.PeerId() + "] -> [" + conn.peer + "]");
+            LogUtil.Info(this._service, "data connection(send) [" + WebRTCService.PeerId() + "] -> [" + conn.peer + "]");
         });
 
         conn.on('error', (e) => {

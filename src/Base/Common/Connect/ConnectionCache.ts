@@ -3,6 +3,7 @@ import WebRTCService from "../WebRTCService";
 import PeerPair from "./PeerPair";
 import { IServiceController } from "../IServiceController";
 import Sender from "../../Container/Sender";
+import LogUtil from "../../Util/LogUtil";
 
 
 /**
@@ -57,28 +58,43 @@ export default class ConnectionCache {
      * 
      * @param data 
      */
-    public SendToOwner(data: Sender) {
-        this._owner.Send(JSON.stringify(data));
+    public SendToOwner(sender: Sender) {
+
+        let data = JSON.stringify(sender);
+        this._owner.Send(data);
+
+        if (LogUtil.IsOutputSender(sender)) {
+            LogUtil.Info(this._service, "send(owner) : " + data.toString());
+        }
     }
 
 
     /**
      * 子の接続先にデータ送信
      */
-    public Send(peerid: string, data: Sender) {
+    public Send(peerid: string, sender: Sender) {
+        let data = JSON.stringify(sender);
         let pp = this.GetPeerPair(peerid);
-        pp.Send(JSON.stringify(data));
+        pp.Send(data);
+
+        if (LogUtil.IsOutputSender(sender)) {
+            LogUtil.Info(this._service, "send : " + data.toString());
+        }
     }
 
 
     /**
      * 全ての接続クライアントへ通知
      */
-    public SendAll(data: Sender) {
-        let json = JSON.stringify(data);
+    public SendAll(sender: Sender) {
+        let data = JSON.stringify(sender);
         this._map.forEach((peerPair, key) => {
-            peerPair.Send(json);
+            peerPair.Send(data);
         });
+
+        if (LogUtil.IsOutputSender(sender)) {
+            LogUtil.Info(this._service, "send(all) : " + data.toString());
+        }
     }
 
 
@@ -126,8 +142,10 @@ export default class ConnectionCache {
         let result: number = 0;
 
         this._map.forEach((peerPair, key) => {
-            if (peerPair.IsAlive())
+            if (peerPair.IsAlive()) {
+                LogUtil.Info(null, "Count : " + peerPair.peerid);
                 result++;
+            }
         });
 
         return result;
@@ -138,7 +156,7 @@ export default class ConnectionCache {
      * ピアペアを取得します
      * @param peerid 
      */
-    private GetPeerPair(peerid: string) {
+    private GetPeerPair(peerid: string): PeerPair {
 
         let map = this._map;
 
@@ -146,6 +164,12 @@ export default class ConnectionCache {
             return map.get(peerid);
         }
         else {
+            if (this._owner) {
+                if (this._owner.peerid === peerid) {
+                    return this._owner;
+                }
+            }
+
             let pp = new PeerPair(peerid, this._service);
             map.set(peerid, pp);
             return pp;
