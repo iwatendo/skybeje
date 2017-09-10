@@ -41,7 +41,9 @@ export default class PeerPair {
 
         //
         conn.on('error', (e) => { this._service.OnChildError(e); });
-        conn.on("close", () => { this._service.OnChildClose(conn); });
+        conn.on("close", () => {
+            // this._service.OnChildClose(conn); 
+        });
         conn.on("data", (data) => { this._service.Recv(conn, data); });
 
         LogUtil.Info(this._service, "data connection(recv) [" + conn.peer + "] -> [" + WebRTCService.PeerId() + "]");
@@ -60,7 +62,7 @@ export default class PeerPair {
         if (this._outPeer && this._outPeer.open) {
 
             this._outPeer.send(data);
-            
+
         }
         else {
             if (!this._isCreate) {
