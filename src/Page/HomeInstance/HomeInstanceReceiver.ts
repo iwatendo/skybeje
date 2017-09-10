@@ -22,8 +22,6 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
         //  クライアントの起動通知
         if (sender.type === HVContainer.ClientBootSender.ID) {
             let ci = new HIContainer.ConnInfoSender();
-            ci.isConnect = true;
-
             let mbc = this.IsMultiBoot(sender.uid, conn);
             ci.isBootCheck = !mbc;
             ci.isMultiBoot = mbc;

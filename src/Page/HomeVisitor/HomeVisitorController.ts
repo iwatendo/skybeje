@@ -3,6 +3,8 @@ import * as Timeline from "../../Base/IndexedDB/Timeline";
 import * as Personal from "../../Base/IndexedDB/Personal";
 import * as Home from "../../Base/IndexedDB/Home";
 
+import * as HVContainer from "./HomeVisitorContainer";
+
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
@@ -97,6 +99,8 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 
      */
     public OnOwnerConnection() {
+        //  多重起動の確認の為に、UserIDを送信
+        WebRTCService.SendToOwner(new HVContainer.ClientBootSender());
     }
 
 

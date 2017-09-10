@@ -9,11 +9,10 @@ export default class PeerPair {
 
     private _service: IServiceController
     private _isStreaming: boolean;
-    private _inPeer: PeerJs.DataConnection;
-    private _outPeer: PeerJs.DataConnection;
+    private _conn: PeerJs.DataConnection;
     private _sendQueue = new Array<any>();
+    private _isOpen = false;
     private _isCreate = false;
-    private _isError = false;
 
 
     /**
@@ -24,31 +23,21 @@ export default class PeerPair {
     constructor(peerid: string, service: IServiceController) {
         this.peerid = peerid;
         this._service = service;
-        this._inPeer = null;
-        this._outPeer = null;
+        this._conn = null;
     }
 
 
     /**
      * 
-     * @param service 
      * @param conn 
      */
     public Set(conn: PeerJs.DataConnection) {
 
-        this._inPeer = conn;
-        this.StartStreaming();
-
-        //
+        this._conn = conn;
+        conn.on('open', () => { this.OnConnectionOpen(this._conn); });
+        conn.on("data", (data) => { this._service.Recv(this._conn, data); });
         conn.on('error', (e) => { this._service.OnChildError(e); });
-        conn.on("close", () => {
-            // this._service.OnChildClose(conn); 
-        });
-        conn.on("data", (data) => { this._service.Recv(conn, data); });
-
-        LogUtil.Info(this._service, "data connection(recv) [" + conn.peer + "] -> [" + WebRTCService.PeerId() + "]");
-        //  イベント通知
-        this._service.OnChildConnection(conn);
+        conn.on("close", () => { this._service.OnChildClose(this._conn); });
     }
 
 
@@ -59,55 +48,33 @@ export default class PeerPair {
     public Send(data: any) {
 
         //  接続済みの場合は即送信
-        if (this._outPeer && this._outPeer.open) {
-
-            this._outPeer.send(data);
-
+        if (this._isOpen) {
+            if (this._conn.open) {
+                this._conn.send(data);
+            }
         }
         else {
             if (!this._isCreate) {
                 this._isCreate = true;
-                this._outPeer = this.CreateOutPeer();
+                this.Set(WebRTCService._peer.connect(this.peerid));
             }
 
-            if (!this._isError) {
-                this._sendQueue.push(data);
-            }
+            this._sendQueue.push(data);
         }
     }
 
 
     /**
      * 
-     * @param service 
      * @param conn 
      */
-    public CreateOutPeer(): PeerJs.DataConnection {
-
-        let conn = WebRTCService._peer.connect(this.peerid);
+    private OnConnectionOpen(conn: PeerJs.DataConnection) {
+        this._isOpen = true;
+        LogUtil.Info(this._service, "data connection [" + WebRTCService.PeerId() + "] <-> [" + conn.peer + "]");
+        this._sendQueue.forEach((data) => { conn.send(data); });
+        this._sendQueue = new Array<any>();
+        this._service.OnChildConnection(conn);
         this.StartStreaming();
-
-        conn.on('open', () => {
-            this._sendQueue.forEach((data) => { conn.send(data); });
-            this._sendQueue = new Array<any>();
-            //  this._service.OnChildConnection(conn);
-            LogUtil.Info(this._service, "data connection(send) [" + WebRTCService.PeerId() + "] -> [" + conn.peer + "]");
-        });
-
-        conn.on('error', (e) => {
-            this._isError = true;
-            this._service.OnChildError(e);
-        });
-
-        conn.on("close", () => {
-            this._service.OnChildClose(conn);
-        });
-
-        conn.on("data", (data) => {
-            this._service.Recv(conn, data);
-        });
-
-        return conn;
     }
 
 
@@ -115,8 +82,12 @@ export default class PeerPair {
      * 終了処理
      */
     public Close() {
-        this.PeerClose(this._inPeer);
-        this.PeerClose(this._outPeer);
+        if (this._conn === null)
+            return;
+
+        if (this._conn.open) {
+            this._conn.close();
+        }
     }
 
 
@@ -124,9 +95,8 @@ export default class PeerPair {
      * 
      */
     public IsAlive() {
-        if (this.PeerIsAlive(this._inPeer)) return true;
-        if (this.PeerIsAlive(this._outPeer)) return true;
-        return false;
+        if (this._conn === null) return false;
+        return this._conn.open;
     }
 
 
@@ -134,37 +104,18 @@ export default class PeerPair {
      * 
      */
     public CheckAlive() {
-        if (this._outPeer) {
-            if (this._outPeer.open) {
+        if (this._conn) {
+            if (this._conn.open) {
                 return true;
             }
             else {
-                this._service.OnChildClose(this._outPeer);
+                this._service.OnChildClose(this._conn);
                 return false;
             }
         }
         else {
             return false;
         }
-    }
-
-
-    /**
-     * 
-     * @param conn 
-     */
-    private PeerClose(conn: PeerJs.DataConnection) {
-        if (this.PeerIsAlive(conn))
-            conn.close();
-    }
-
-
-    /**
-     * 
-     * @param conn 
-     */
-    private PeerIsAlive(conn: PeerJs.DataConnection): boolean {
-        return (conn && conn.open);
     }
 
 

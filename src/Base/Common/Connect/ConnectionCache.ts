@@ -59,12 +59,12 @@ export default class ConnectionCache {
      * @param data 
      */
     public SendToOwner(sender: Sender) {
-
-        let data = JSON.stringify(sender);
-        this._owner.Send(data);
-
-        if (LogUtil.IsOutputSender(sender)) {
-            LogUtil.Info(this._service, "send(owner) : " + data.toString());
+        if (this._owner) {
+            let data = JSON.stringify(sender);
+            this._owner.Send(data);
+            if (LogUtil.IsOutputSender(sender)) {
+                LogUtil.Info(this._service, "send(owner) : " + data.toString());
+            }
         }
     }
 
@@ -143,7 +143,6 @@ export default class ConnectionCache {
 
         this._map.forEach((peerPair, key) => {
             if (peerPair.IsAlive()) {
-                LogUtil.Info(null, "Count : " + peerPair.peerid);
                 result++;
             }
         });

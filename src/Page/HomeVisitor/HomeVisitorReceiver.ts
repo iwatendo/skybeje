@@ -40,10 +40,6 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 this.Controller.View.MutilBootError();
                 WebRTCService.Close();
             }
-            else if (ci.isConnect) {
-                //  多重起動の確認の為に、UserIDを送信
-                WebRTCService.SendToOwner(new HVContainer.ClientBootSender());
-            }
             return;
         }
 
