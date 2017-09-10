@@ -1,6 +1,6 @@
 
 import WebRTCService from "../WebRTCService";
-import PeerPair from "./PeerPair";
+import Connection from "./Connection";
 import { IServiceController } from "../IServiceController";
 import Sender from "../../Container/Sender";
 import LogUtil from "../../Util/LogUtil";
@@ -26,13 +26,13 @@ export default class ConnectionCache {
     /**
      * 
      */
-    private _owner: PeerPair
+    private _owner: Connection
 
 
     /**
      * コネクションMAP
      */
-    private _map = new Map<string, PeerPair>();
+    private _map = new Map<string, Connection>();
 
 
     /**
@@ -50,7 +50,7 @@ export default class ConnectionCache {
      * @param conn 
      */
     public SetOwner(conn: PeerJs.DataConnection) {
-        this._owner = new PeerPair(conn.peer, this._service);
+        this._owner = new Connection(conn.peer, this._service);
     }
 
 
@@ -130,7 +130,9 @@ export default class ConnectionCache {
      */
     public Close() {
         this._map.forEach((peerPair, key) => {
-            peerPair.Close();
+            if (peerPair.IsAlive()) {
+                peerPair.Close();
+            }
         });
     }
 
@@ -155,7 +157,7 @@ export default class ConnectionCache {
      * ピアペアを取得します
      * @param peerid 
      */
-    private GetPeerPair(peerid: string): PeerPair {
+    private GetPeerPair(peerid: string): Connection {
 
         let map = this._map;
 
@@ -169,7 +171,7 @@ export default class ConnectionCache {
                 }
             }
 
-            let pp = new PeerPair(peerid, this._service);
+            let pp = new Connection(peerid, this._service);
             map.set(peerid, pp);
             return pp;
         }

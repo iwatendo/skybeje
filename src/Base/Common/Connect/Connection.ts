@@ -3,7 +3,7 @@ import WebRTCService from "../WebRTCService";
 import LogUtil from "../../Util/LogUtil";
 
 
-export default class PeerPair {
+export default class Connection {
 
     public peerid: string;
 
