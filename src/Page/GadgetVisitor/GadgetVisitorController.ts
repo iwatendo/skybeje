@@ -14,7 +14,7 @@ export default class GadgetVisitorController extends AbstractServiceController<G
 
     public ControllerName(): string { return "GadgetVisitor"; }
 
-    public PeerId : string;
+    public PeerId: string;
     public View: GadgetVisitorView;
 
     /**
@@ -57,7 +57,9 @@ export default class GadgetVisitorController extends AbstractServiceController<G
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.View.Cursor.Remove(conn.peer);
+        if (this.View.Cursor) {
+            this.View.Cursor.Remove(conn.peer);
+        }
     }
 
 };

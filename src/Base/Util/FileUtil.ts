@@ -2,6 +2,7 @@
 
 interface OnFileSelect { (file: File) };
 interface OnImport { (data: string) };
+interface OnImportError { (err: Error) };
 
 /**
  * 
@@ -40,8 +41,9 @@ export default class FileUtil {
      * インポート処理
      * @param file 
      * @param callback 
+     * @param errorcb 
      */
-    public static Import(file: File, callback: OnImport) {
+    public static Import(file: File, callback: OnImport, errorcb: OnImportError) {
 
         if (!file || file.name.length === 0)
             return;
@@ -50,13 +52,22 @@ export default class FileUtil {
         reader.readAsText(file);
 
         let data: any;
+        let hasError = false;
 
         reader.onload = (ev) => {
-            data = JSON.parse(reader.result);
+            try {
+                data = JSON.parse(reader.result);
+            }
+            catch (err) {
+                hasError = true;
+                errorcb(err);
+            }
         }
 
         reader.onloadend = (ev) => {
-            callback(data);
+            if (!hasError) {
+                callback(data);
+            }
         }
     }
 
@@ -154,10 +165,12 @@ export default class FileUtil {
      */
     private static JsonFormatter(str: string): string {
 
-        str = str.replace(/},/g, '},\r\n');
-        str = str.replace(/],/g, '],\r\n');
-        str = str.replace(/}],/g, '}\r\n],');
-        str = str.replace(/\[/g, '\[\r\n');
+        //  以下のような簡易変換の場合
+        //  テキスト情報に {}[]が含まれるとエラーになる為、テスト時のみ使用
+        // str = str.replace(/},/g, '},\r\n');
+        // str = str.replace(/],/g, '],\r\n');
+        // str = str.replace(/}],/g, '}\r\n],');
+        // str = str.replace(/\[/g, '\[\r\n');
 
         return str;
     }

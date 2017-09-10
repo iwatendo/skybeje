@@ -97,25 +97,27 @@ export default class ImportComponent extends React.Component<ImportProp, ImportS
 
         FileUtil.SelectImportFile((file) => {
 
-            FileUtil.Import(file, (data) => {
-
-
-                this.props.owner.Import(data, (isSucceed, msg) => {
-
-                    let result = new ImportResult();
-                    result.isSucceed = isSucceed;
-                    result.message = msg;
-
-                    let msgs = this.state.message;
-                    msgs.push(result);
-
-                    this.setState({
-                        message: msgs,
-                    });
-                });
-            });
-
+            FileUtil.Import(file,
+                (data) => {
+                    this.props.owner.Import(data,
+                        (isSucceed, msg) => {
+                            let result = new ImportResult();
+                            result.isSucceed = isSucceed;
+                            result.message = msg;
+                            let msgs = this.state.message;
+                            msgs.push(result);
+                            this.setState({
+                                message: msgs
+                            });
+                        }
+                    );
+                }, (err: Error) => {
+                    let msg = file.name + "\n" + err;
+                    alert(msg); 
+                }
+            );
         });
+
     }
 
 }
