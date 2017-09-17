@@ -13,11 +13,22 @@ export default class CastSelectorController {
 
     private _FrameCount = 4;
 
-    private _castctrlpaneElement = document.getElementById('sbj-home-visitor-castctrl-pane');
+    private _castSelectorElement = document.getElementById('sbj-home-visitor-castselect-pane');
+    private _castFrameElement = document.getElementById('sbj-home-visitor-castfrmae-pane');
+
+    private _layoutButton = document.getElementById('sbj-home-visitor-livecast-layout');
+    private _layoutButton1 = document.getElementById('sbj-home-visitor-livecast-layout-1');
+    private _layoutButton2 = document.getElementById('sbj-home-visitor-livecast-layout-2');
+
+
+
     private _ownerController: HomeVisitorController;
     private _selectServant: string;
     private _servantMap = new Map<number, string>();
 
+    private _isDispMenu = true;
+    private _dispFrameCount = 1;
+    private _dispFrameArray = new Array<number>();
 
     /**
      * コンストラクタ
@@ -28,9 +39,21 @@ export default class CastSelectorController {
         this._ownerController = controller;
 
         for (let i = 0; i < this._FrameCount; i++) {
+            let button = this.GetSelectButtonElement(i);
             let element = this.GetFrmaeElement(i);
             element.onload = (ev) => { this.NotifyServantToActor(element); }
+
+            button.onclick = (ev) => {
+                let index = i;
+                this.LiveCastSelectClick(index);
+            }
+
         }
+
+        this._layoutButton.onclick = (ev) => { this.ChangeLayout() };
+        this._layoutButton1.onclick = (ev) => { this.SetLiveCastLayout(1); };
+        this._layoutButton2.onclick = (ev) => { this.SetLiveCastLayout(2); };
+
     }
 
 
@@ -47,8 +70,8 @@ export default class CastSelectorController {
      * 
      * @param index 
      */
-    private GetTabElement(index: number) {
-        return document.getElementById("sbj-home-visitor-tab-" + index.toString());
+    private GetSelectButtonElement(index: number) {
+        return document.getElementById("sbj-home-visitor-livecast-select-" + index.toString());
     }
 
 
@@ -56,8 +79,8 @@ export default class CastSelectorController {
      * 
      * @param index 
      */
-    private GetTabTitleElement(index: number) {
-        return document.getElementById("sbj-home-visitor-tab-title-" + index.toString());
+    private GetSelectButtonTitleElement(index: number) {
+        return document.getElementById("sbj-home-visitor-livecast-select-title-" + index.toString());
     }
 
 
@@ -65,8 +88,8 @@ export default class CastSelectorController {
      * 
      * @param index 
      */
-    private GetTabIconElement(index: number) {
-        return document.getElementById("sbj-home-visitor-tab-icon-" + index.toString());
+    private GetSelectButtonIconElement(index: number) {
+        return document.getElementById("sbj-home-visitor-livecast-select-icon-" + index.toString());
     }
 
 
@@ -108,7 +131,7 @@ export default class CastSelectorController {
             //  削除されたサーバントの除去
             for (let i = 0; i < this._FrameCount; i++) {
                 if (!preMap.has(i)) {
-                    this.SetServantTab(i, null);
+                    this.SetServantFrame(i, null);
                     this._servantMap.delete(i);
                 }
             }
@@ -119,7 +142,7 @@ export default class CastSelectorController {
                     if (preMap.has(i))
                         continue;
 
-                    this.SetServantTab(i, servant);
+                    this.SetServantFrame(i, servant);
                     preMap.set(i, servant);
                     this._servantMap.set(i, servant.clientUrl);
                     i = this._FrameCount;
@@ -127,7 +150,7 @@ export default class CastSelectorController {
             });
 
             //  アクティブタブの確認
-            this.CheckChangeActiveTab();
+            this.CheckChangeActiveFrame();
         }
     }
 
@@ -154,35 +177,44 @@ export default class CastSelectorController {
      * @param index 
      * @param servant 
      */
-    public SetServantTab(index: number, servant: ServantSender) {
+    public SetServantFrame(index: number, servant: ServantSender) {
 
         let frameElement = this.GetFrmaeElement(index);
-        let tabElement = this.GetTabElement(index);
-        let tabTitleElement = this.GetTabTitleElement(index);
-        let tabIconElement = this.GetTabIconElement(index);
+        let btnElement = this.GetSelectButtonElement(index);
+        let btnTitleElement = this.GetSelectButtonTitleElement(index);
+        let btnIconElement = this.GetSelectButtonIconElement(index);
+
 
         if (servant) {
-            this.SetTabName(tabTitleElement, tabIconElement, servant);
-            tabElement.hidden = false;
+            this.SetTabName(btnTitleElement, btnIconElement, servant);
+            btnElement.hidden = false;
             this.SetServant(frameElement, servant);
+
+            if (this._dispFrameCount < this._dispFrameArray.length) {
+                this._dispFrameArray.push(index);
+                this.SetCastFrame();
+            }
+
         }
         else {
-            tabElement.hidden = true;
+            btnElement.hidden = true;
             frameElement.setAttribute('src', '');
+            this._dispFrameArray = this._dispFrameArray.filter((pre) => pre !== index);
+            this.SetCastFrame();
         }
     }
 
 
     /**
      * 
-     * @param tabTitleElement 
-     * @param tabIconElement 
+     * @param btnTitleElement 
+     * @param btnIconElement 
      * @param servant 
      */
-    public SetTabName(tabTitleElement: HTMLElement, tabIconElement: HTMLElement, servant: ServantSender) {
+    public SetTabName(btnTitleElement: HTMLElement, btnIconElement: HTMLElement, servant: ServantSender) {
         this._ownerController.ActorCache.GetActor(servant.ownerPeerid, servant.ownerAid, (actor) => {
-            tabTitleElement.textContent = actor.name;
-            tabIconElement.textContent = this.GetCastIconName(servant.castType);
+            btnTitleElement.textContent = actor.name;
+            btnIconElement.textContent = this.GetCastIconName(servant.castType);
         });
     }
 
@@ -269,23 +301,139 @@ export default class CastSelectorController {
 
 
     /**
-     * アクティブタブが閉じられた場合、表示されている先頭タブをアクティブにする
+     * 表示するライブキャストのボタン
+     * @param index 
      */
-    public CheckChangeActiveTab() {
+    private LiveCastSelectClick(index: number) {
+
+        let isDisp = false;
+
+        this._dispFrameArray.forEach((pre) => {
+            if (pre === index) {
+                isDisp = true;
+            }
+        });
+
+        //  表示済みの場合は何も処理しない
+        if (isDisp)
+            return;
+
+        //  未表示キャストが選択された場合は最後尾に追加
+        this._dispFrameArray.push(index);
+
+        if (this._dispFrameArray.length > this._dispFrameCount) {
+            this._dispFrameArray = this._dispFrameArray.slice(1);
+        }
+
+        this.SetCastFrame();
+    }
+
+
+    /**
+     * レイアウト変更
+     */
+    private ChangeLayout() {
+        this._isDispMenu = !this._isDispMenu;
+        let isMenuHide = !this._isDispMenu;
+
+        this._castSelectorElement.hidden = isMenuHide;
+        this._layoutButton1.hidden = isMenuHide;
+        this._layoutButton2.hidden = isMenuHide;
+        let xpx = (this._isDispMenu ? 64 : 8).toString() + "px";
+        let ypx = (this._isDispMenu ? 48 : 8).toString() + "px";
+        this._castFrameElement.style.left = xpx;
+        this._castFrameElement.style.top = ypx;
+        this._castFrameElement.style.width = "calc(100% - " + xpx + ")"
+        this._castFrameElement.style.height = "calc(100% - " + ypx + ")"
+    }
+
+
+    /**
+     * 
+     * @param count 
+     */
+    private SetLiveCastLayout(count: number) {
+        this._dispFrameCount = count;
+        this._dispFrameArray = this._dispFrameArray.slice(0, count);
+
+        while (this._dispFrameArray.length < this._dispFrameCount) {
+            let index = this.GetNoDispFrameIndex();
+            if (index >= 0) {
+                this._dispFrameArray.push(index);
+            }
+            else {
+                break;
+            }
+        }
+
+        this.SetCastFrame();
+    }
+
+
+    /**
+     * キャスト中かつ非表示のフレーム番号を取得
+     */
+    private GetNoDispFrameIndex(): number {
+
+        for (let i = 0; i < this._FrameCount; i++) {
+            let frameElement = this.GetFrmaeElement(i);
+            let isCast = (frameElement.src.length > 0);
+
+            if (isCast) {
+                let pre = this._dispFrameArray.filter(n => (n === i));
+
+                if (pre.length === 0) {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+
+    /**
+     * 
+     */
+    private SetCastFrame() {
+
+        for (let i = 0; i < this._FrameCount; i++) {
+            let frameElement = this.GetFrmaeElement(i);
+            frameElement.hidden = true;
+        }
+
+        let persent = 100 / this._dispFrameArray.length;
+
+        for (let i = 0; i < this._dispFrameArray.length; i++) {
+            let frameElement = this.GetFrmaeElement(this._dispFrameArray[i]);
+            frameElement.hidden = false;
+            frameElement.style.height = "calc(" + persent.toString() + "% - 8px)";
+        }
+
+    }
+
+
+    /**
+     * アクティブボタンが閉じられた場合、表示されている先頭タブをアクティブにする
+     */
+    public CheckChangeActiveFrame() {
 
         let first: HTMLElement = null;
 
         for (let i = 0; i < this._FrameCount; i++) {
-            let tab = this.GetTabElement(i);
 
-            if (tab.hidden)
+            let frame = this.GetFrmaeElement(i);
+            let button = this.GetSelectButtonElement(i);
+
+            if (button.hidden)
                 continue;
 
-            if (tab.classList.contains('is-active'))
+            if (!frame.hidden) {
                 return;
+            }
 
             if (!first)
-                first = tab;
+                first = button;
         }
 
         if (first)
