@@ -17,16 +17,16 @@ export default class CastSelectorController {
     private _castFrameElement = document.getElementById('sbj-home-visitor-castfrmae-pane');
 
     private _layoutButton = document.getElementById('sbj-home-visitor-livecast-layout');
+    private _layoutButtonIcon = document.getElementById('sbj-home-visitor-livecast-layout-icon');
     private _layoutButton1 = document.getElementById('sbj-home-visitor-livecast-layout-1');
     private _layoutButton2 = document.getElementById('sbj-home-visitor-livecast-layout-2');
-
-
+    private _livecastStatus = document.getElementById('sbj-home-visitor-livecast-display-status-label');
 
     private _ownerController: HomeVisitorController;
     private _selectServant: string;
-    private _servantMap = new Map<number, string>();
+    private _servantMap = new Map<number, ServantSender>();
 
-    private _isDispMenu = true;
+    private _isDispLayoutSetting = false;
     private _dispFrameCount = 1;
     private _dispFrameArray = new Array<number>();
 
@@ -93,8 +93,6 @@ export default class CastSelectorController {
     }
 
 
-
-
     /**
      * 部屋変更に伴うサーバント一覧の変更
      * @param hid 
@@ -144,7 +142,7 @@ export default class CastSelectorController {
 
                     this.SetServantFrame(i, servant);
                     preMap.set(i, servant);
-                    this._servantMap.set(i, servant.clientUrl);
+                    this._servantMap.set(i, servant);
                     i = this._FrameCount;
                 }
             });
@@ -163,8 +161,8 @@ export default class CastSelectorController {
 
         let result = -1;
 
-        this._servantMap.forEach((url, index) => {
-            if (servant.clientUrl === url) {
+        this._servantMap.forEach((item, index) => {
+            if (servant.clientUrl === item.clientUrl) {
                 result = index;
             }
         });
@@ -184,9 +182,8 @@ export default class CastSelectorController {
         let btnTitleElement = this.GetSelectButtonTitleElement(index);
         let btnIconElement = this.GetSelectButtonIconElement(index);
 
-
         if (servant) {
-            this.SetTabName(btnTitleElement, btnIconElement, servant);
+            this.SetButton(btnTitleElement, btnIconElement, servant);
             btnElement.hidden = false;
             this.SetServant(frameElement, servant);
 
@@ -199,7 +196,9 @@ export default class CastSelectorController {
         else {
             btnElement.hidden = true;
             frameElement.setAttribute('src', '');
-            this._dispFrameArray = this._dispFrameArray.filter((pre) => pre !== index);
+            if (this._dispFrameArray.length > 0) {
+                this._dispFrameArray = this._dispFrameArray.filter((i) => (i !== index));
+            }
             this.SetCastFrame();
         }
     }
@@ -209,9 +208,10 @@ export default class CastSelectorController {
      * 
      * @param btnTitleElement 
      * @param btnIconElement 
+     * @param toolTipElement 
      * @param servant 
      */
-    public SetTabName(btnTitleElement: HTMLElement, btnIconElement: HTMLElement, servant: ServantSender) {
+    public SetButton(btnTitleElement: HTMLElement, btnIconElement: HTMLElement, servant: ServantSender) {
         this._ownerController.ActorCache.GetActor(servant.ownerPeerid, servant.ownerAid, (actor) => {
             btnTitleElement.textContent = actor.name;
             btnIconElement.textContent = this.GetCastIconName(servant.castType);
@@ -333,14 +333,15 @@ export default class CastSelectorController {
      * レイアウト変更
      */
     private ChangeLayout() {
-        this._isDispMenu = !this._isDispMenu;
-        let isMenuHide = !this._isDispMenu;
+        this._isDispLayoutSetting = !this._isDispLayoutSetting;
+        let isMenuHide = !this._isDispLayoutSetting;
+        this._layoutButtonIcon.textContent = (this._isDispLayoutSetting ? "fullscreen" : "settings");
 
         this._castSelectorElement.hidden = isMenuHide;
         this._layoutButton1.hidden = isMenuHide;
         this._layoutButton2.hidden = isMenuHide;
-        let xpx = (this._isDispMenu ? 64 : 8).toString() + "px";
-        let ypx = (this._isDispMenu ? 48 : 8).toString() + "px";
+        let xpx = (this._isDispLayoutSetting ? 64 : 0).toString() + "px";
+        let ypx = (this._isDispLayoutSetting ? 96 : 0).toString() + "px";
         this._castFrameElement.style.left = xpx;
         this._castFrameElement.style.top = ypx;
         this._castFrameElement.style.width = "calc(100% - " + xpx + ")"
@@ -399,17 +400,100 @@ export default class CastSelectorController {
 
         for (let i = 0; i < this._FrameCount; i++) {
             let frameElement = this.GetFrmaeElement(i);
+            let button = this.GetSelectButtonElement(i);
             frameElement.hidden = true;
+            button.removeAttribute('disabled');
         }
 
-        let persent = 100 / this._dispFrameArray.length;
+        let displayLabel = "";
 
         for (let i = 0; i < this._dispFrameArray.length; i++) {
-            let frameElement = this.GetFrmaeElement(this._dispFrameArray[i]);
-            frameElement.hidden = false;
-            frameElement.style.height = "calc(" + persent.toString() + "% - 8px)";
+            let index = this._dispFrameArray[i];
+            let frameElement = this.GetFrmaeElement(index);
+            let button = this.GetSelectButtonElement(index);
+            this.SetFrameStatus(i, frameElement);
+            button.setAttribute('disabled', "1");
+
+            displayLabel += this.GetStatusText(i);
+            displayLabel += this.GetDisplayNameStatus(index);
         }
 
+        this._livecastStatus.textContent = displayLabel;
+    }
+
+
+    /**
+     * 
+     * @param dispPos 
+     * @param element 
+     */
+    public SetFrameStatus(dispPos: number, element: HTMLFrameElement) {
+
+        let persent = 100 / this._dispFrameArray.length;
+        element.hidden = false;
+        element.style.position = "absolute";
+        element.style.zIndex = "2";
+        element.style.height = "calc(" + persent.toString() + "% - 8px)";
+
+        let topPos = "0px";
+
+        switch (this._dispFrameCount) {
+            case 2:
+                switch (dispPos) {
+                    case 1: topPos = "50%"; break;
+                }
+        }
+
+        element.style.top = topPos;
+    }
+
+
+    /**
+     * 
+     * @param dispPos 
+     */
+    public GetStatusText(dispPos: number): string {
+
+        if (dispPos < 0) {
+            return "";
+        }
+
+        switch (this._dispFrameCount) {
+            case 1:
+                return "";
+            case 2:
+                switch (dispPos) {
+                    case 0:
+                        return "（上段）";
+                    case 1:
+                        return "　（下段）";
+                }
+        }
+    }
+
+
+    /**
+     * キャスト名称の取得
+     * @param servant 
+     */
+    public GetDisplayNameStatus(index: number): string {
+
+        if (this._servantMap.has(index)) {
+
+            let name = this.GetSelectButtonTitleElement(index).textContent;
+            let servant = this._servantMap.get(index);
+            let castTypeName = "";
+            switch (servant.castType) {
+                case CastTypeEnum.LiveCast: castTypeName = "ライブ配信"; break;
+                case CastTypeEnum.ScreenShare: castTypeName = "画面共有"; break;
+                case CastTypeEnum.Gadget: castTypeName = "ガジェット配信"; break;
+            }
+
+            return castTypeName + "[" + name + "]";
+        }
+        else {
+            return "";
+        }
     }
 
 

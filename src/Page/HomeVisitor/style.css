@@ -377,22 +377,38 @@ p.sbj-timeline-message-ignore {
     background-color: var(--sbj-color-livecast-background);
 }
 
+.sbj-home-visitor-livecast-display-status{
+    background-color: var(--sbj-color-default-background);
+    padding-left: 6px;
+    border-radius: 6px;
+    width: calc(100% - 36px);
+    overflow: hidden;
+    margin: 10px 4px 0px;
+}
+
+#sbj-home-visitor-livecast-display-status-label{
+    margin: 8px;
+    overflow: hidden;
+    min-width: 1000px;
+    min-height: 24px;    
+}
+
 #sbj-home-visitor-livecast-layout{
     position: absolute;
     top: 8px;
     left: 12px;
-    z-index: 1;
+    z-index: 3;
 }
 
 #sbj-home-visitor-livecast-layout-1{
     position: absolute;
-    top: 72px;
+    top: 100px;
     left: 12px;
 }
 
 #sbj-home-visitor-livecast-layout-2{
     position: absolute;
-    top: 124px;
+    top: 150px;
     left: 12px;
 }
 
@@ -402,22 +418,29 @@ p.sbj-timeline-message-ignore {
     left:64px;
     width: calc(100% - 48px);
     height: 48px;
-    padding: 8px;
+}
+
+.sbj-home-visitor-livecast-select-button{
+    margin: 8px 4px;
+}
+
+.sbj-home-visitor-livecast-select-status{
+    width: 100px;
 }
 
 #sbj-home-visitor-castfrmae-pane{
     position: absolute;
-    top: 48px;
-    left: 64px;
-    height: calc(100% - 48px);
-    width: calc(100% - 64px);
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
 }
-
 
 /*-----------------------------
  *  livecast
  *---------------------------*/
 .sbj-home-visitor-livecast{
+    position: absolute;
     padding: 4px;
     width: calc(100% - 8px);
     height: calc(100% - 8px);
