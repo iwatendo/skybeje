@@ -42,7 +42,6 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
 
     private _peerid: string = null;
-    private _isConnectOwner: boolean = false;
 
 
     /**
@@ -51,7 +50,6 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
         this._peerid = peer.id;
-        this.SendStageService();
     }
 
     /**
@@ -68,8 +66,10 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      * オーナー接続時イベント
      */
     public OnOwnerConnection() {
-        this._isConnectOwner = true;
-        this.SendStageService();
+        this.CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
+        this.CastInstance.instanceUrl = location.href;
+        this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
+        WebRTCService.SendToOwner(this.CastInstance);
     }
 
 
@@ -79,25 +79,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
         WebRTCService.Close();
-        window.open('about:blank', '_self').close();
-    }
-
-
-    /**
-     * ステージ情報通知用データを作成
-     */
-    private SendStageService() {
-
-        //  peeridの取得とオーナー接続が完了している場合
-        //  オーナーにURLを通知する
-        if (this._isConnectOwner && this._peerid) {
-
-            this.CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
-            this.CastInstance.instanceUrl = location.href;
-            this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
-
-            WebRTCService.SendToOwner(this.CastInstance);
-        }
+        this.View.SetControllHidden();
     }
 
 

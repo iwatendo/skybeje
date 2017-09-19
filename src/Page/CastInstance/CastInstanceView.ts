@@ -15,6 +15,7 @@ import MobileDialog from "./Mobile/MobileDialog";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Base/Common/AbstractDialogController";
 import SettingDialogController from "./SettingDialog/SettingDialogController";
+import LogUtil from "../../Base/Util/LogUtil";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -47,7 +48,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         };
 
         window.onfocus = (ev) => {
-            this.Controller.CastInstance.isHide = false;
+            if (this.Controller && this.Controller.CastInstance) {
+                this.Controller.CastInstance.isHide = false;
+            }
         }
 
         //  ストリーミング開始ボタン
@@ -79,7 +82,15 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         //  ストリーミング停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.ServerSend(false, false);
-            location.href = "";
+
+            startButton.hidden = false;
+            stopButton.hidden = true;
+            accountCount.hidden = true;
+            roomName.hidden = true;
+            micElement.hidden = false;
+            camElement.hidden = false;
+            if (settingButton) settingButton.hidden = false;
+            if (qrcodeButton) qrcodeButton.hidden = false;
         };
 
 
@@ -237,6 +248,19 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
         let options = LocalCache.LiveCastOptions;
         startButton.disabled = !((options.SelectCam ? true : false) || (options.SelectMic ? true : false));
+    }
+
+
+    /**
+     * 
+     * @param hidden 
+     */
+    public SetControllHidden() {
+        document.getElementById('sbj-cast-instance-main').hidden = true;
+
+        let disconnect = document.getElementById('sbj-cast-instance-disconnect');
+        if (disconnect)
+            disconnect.hidden = false;
     }
 
 
