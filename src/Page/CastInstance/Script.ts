@@ -4,7 +4,7 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LocalCache from "../../Base/Common/LocalCache";
 import CastInstanceController from "./CastInstanceController";
 
-if (StdUtil.IsExecute()) {
+if (StdUtil.IsExecute(true)) {
 
     if (!LocalCache.IsCheckDevicePermision) {
         let reload = () => {

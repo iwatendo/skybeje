@@ -1,7 +1,7 @@
 ﻿
 import StdUtil from "../../Base/Util/StdUtil";
 
-if (StdUtil.IsSupportBrowser()) {
+if (StdUtil.IsSupportBrowser(false)) {
     document.getElementById('sbj-error-msg').innerHTML = "";
 }
 

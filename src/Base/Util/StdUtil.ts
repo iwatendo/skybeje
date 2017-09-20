@@ -11,10 +11,16 @@ export default class StdUtil {
      * 動作するブラウザかチェック
      * ※現状は Google Chromeにのみ対応
      */
-    public static IsSupportBrowser(): boolean {
+    public static IsSupportBrowser(isLiveCast: boolean): boolean {
 
         //  対応ブラウザかチェック
         let ua = window.navigator.userAgent.toLowerCase();
+
+        if (isLiveCast) {
+            if (ua.indexOf('safari') >= 0) {
+                return true;
+            }
+        }
 
         if (ua.indexOf('chrome') >= 0) {
             if ((ua.indexOf('msie') < 0) && (ua.indexOf('trident/7') < 0) && (ua.indexOf('edge') < 0)) {
@@ -27,9 +33,9 @@ export default class StdUtil {
     /**
      * ブラウザチェック
      */
-    public static IsExecute(): boolean {
+    public static IsExecute(isLiveCast : boolean = false): boolean {
 
-        if (this.IsSupportBrowser()) {
+        if (this.IsSupportBrowser(isLiveCast)) {
             return true;
         }
         else {
