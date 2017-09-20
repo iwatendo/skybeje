@@ -32,10 +32,12 @@ export default class DeviceComponent extends React.Component<DeviceProp, any> {
     public render() {
 
         let deviceTable = this.props.deviceList.map((device, index, array) => {
-            let name = device.label;
-            if (name) {
-                return (<DeviceItemComponent key={name} owner={this.props.owner} deviceId={device.deviceId} deviceName={name} />);
+            let name: string = device.label;
+            if (name.length == 0 && device.deviceId) {
+                name = "(NoName)";
             }
+
+            return (<DeviceItemComponent key={name} owner={this.props.owner} deviceId={device.deviceId} deviceName={name} />);
         });
 
         //  コンボボックスの初期化（先頭には空白行を入れる）

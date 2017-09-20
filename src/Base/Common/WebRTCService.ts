@@ -3,6 +3,7 @@ import LogUtil from "../Util/LogUtil";
 import Sender from "../Container/Sender";
 import LocalCache from "./LocalCache";
 import ConnectionCache from "./Connect/ConnectionCache";
+import StdUtil from "../Util/StdUtil";
 
 
 interface OnGetMediaStream { (stream: MediaStream): void }
@@ -284,7 +285,13 @@ export default class WebRTCService {
     public static StartPreview(element: HTMLVideoElement, stream: MediaStream) {
         this._previewStream = stream;
         element.src = null;
-        element.src = URL.createObjectURL(stream);
+
+        if( StdUtil.IsSafari()){
+            element.srcObject = stream;        
+        }
+        else{
+            element.src = URL.createObjectURL(stream);
+        }
     }
 
 

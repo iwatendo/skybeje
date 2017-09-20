@@ -29,6 +29,20 @@ export default class StdUtil {
         }
     }
 
+    
+    /**
+     * 
+     */
+    public static IsSafari(){
+        let ua = window.navigator.userAgent.toLowerCase();
+        if (ua.indexOf('safari') >= 0) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 
     /**
      * ブラウザチェック
