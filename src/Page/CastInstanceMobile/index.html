@@ -25,8 +25,9 @@
                     <span id="sbj-cast-instance-title" class="mdl-layout-title">
                         ライブキャスト
                     </span>
-
                     <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
+
+                    <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
 
                     <div class="mdl-layout-spacer"></div>
 
@@ -38,26 +39,22 @@
             </header>
 
             <main id="sbj-cast-instance-main" class="mdl-layout__content">
-                <div class="mdl-grid">
+
+                <video id='video' autoplay="true" playsinline="true"></video>
+
+                <div id="sbj-cast-instance-mobile-menu">
                     <div class="sbj-cast-instance-mobile-cell mdl-cell mdl-cell--6-col mdl-color-text--grey-600">
                         <div>
                             <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
                                 <i class="material-icons">play_arrow</i>
                                 &nbsp;開始&nbsp;
                             </button>
-
                             <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
                                 <i class="material-icons">stop</i>
                                 &nbsp;停止&nbsp;
                             </button>
-                            
                         </div>
-
-                        <div>
-                            <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
-                        </div>
-
-                        <div>
+                        <div>                            
                             <!-- Mic -->
                             <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
                                 <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
@@ -79,9 +76,6 @@
                             </div>
                             <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="webcam-select-div">ライブキャスト中は<br/>カメラの変更はできません</span>
                         </div>
-                    </div>
-                    <div class="sbj-cast-instance-mobile-cell mdl-cell mdl-cell--6-col">
-                        <video id='video' autoplay="true" playsinline="true"></video>
                         <div>
                             <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="cursor_disp">
                                 <input type="checkbox" id="cursor_disp" class="mdl-switch__input" checked>

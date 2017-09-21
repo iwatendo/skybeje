@@ -29,16 +29,21 @@ export default class StdUtil {
         }
     }
 
-    
+
     /**
      * 
      */
-    public static IsSafari(){
+    public static IsSafari() {
         let ua = window.navigator.userAgent.toLowerCase();
+
+        if (ua.indexOf('chrome') >= 0) {
+            return false;
+        }
+
         if (ua.indexOf('safari') >= 0) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     }
@@ -47,7 +52,7 @@ export default class StdUtil {
     /**
      * ブラウザチェック
      */
-    public static IsExecute(isLiveCast : boolean = false): boolean {
+    public static IsExecute(isLiveCast: boolean = false): boolean {
 
         if (this.IsSupportBrowser(isLiveCast)) {
             return true;

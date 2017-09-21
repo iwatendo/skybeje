@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import DeviceItemComponent from "./DeviceItemComponent";
 import { DeviceView } from "./DeviceVew";
+import DeviceUtil from '../../../Base/Util/DeviceUtil';
 
 
 /**
@@ -32,11 +33,7 @@ export default class DeviceComponent extends React.Component<DeviceProp, any> {
     public render() {
 
         let deviceTable = this.props.deviceList.map((device, index, array) => {
-            let name: string = device.label;
-            if (name.length == 0 && device.deviceId) {
-                name = "(NoName)";
-            }
-
+            let name = DeviceUtil.GetDeviceName(device);
             return (<DeviceItemComponent key={name} owner={this.props.owner} deviceId={device.deviceId} deviceName={name} />);
         });
 

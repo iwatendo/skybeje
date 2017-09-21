@@ -73,6 +73,18 @@ export class DeviceView {
 
 
     /**
+     * 
+     */
+    public SelectClear() {
+        this._selectDeviceId = "";
+        this._textElement.value = "";
+        if (this._onChangeDevice) {
+            this._onChangeDevice("", "");
+        }
+    }
+
+
+    /**
      * 先頭のデバイスを選択状態にする
      */
     public SelectFirstDevice() {
@@ -88,7 +100,7 @@ export class DeviceView {
      */
     public SelectDeivce(deviceName: string) {
         this._textElement.value = deviceName;
-        let id = DeviceUtil.DeviceMap.get(deviceName);
+        let id = DeviceUtil.GetDeviceId(deviceName);
         if (this._onChangeDevice) {
             this._onChangeDevice(id, deviceName);
         }

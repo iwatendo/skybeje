@@ -19,7 +19,9 @@ import LogUtil from "../../Base/Util/LogUtil";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
-    private _mainElement = document.getElementById("sbj-cast-instance-main");
+    private _micDeviceView: DeviceView;
+    private _camDeviceView: DeviceView;
+
 
     /**
      * 初期化処理
@@ -56,15 +58,14 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         //  ストリーミング開始ボタン
         startButton.onclick = (e) => {
             this.Controller.SetStreaming();
-            startButton.hidden = true;
-            stopButton.hidden = false;
-            accountCount.hidden = false;
-            roomName.hidden = false;
-            micElement.hidden = true;
-            camElement.hidden = true;
-            if (settingButton) settingButton.hidden = true;
-            if (qrcodeButton) qrcodeButton.hidden = true;
+            this.ChangeDisplayMode(true);
         }
+
+        //  ストリーミング停止ボタン
+        stopButton.onclick = (e) => {
+            this.Controller.ServerSend(false, false);
+            this.ChangeDisplayMode(false);
+        };
 
         //  キャンセルボタン押下時
         cancelButton.onclick = (e) => {
@@ -78,21 +79,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 this.Close();
             }
         }
-
-        //  ストリーミング停止ボタン
-        stopButton.onclick = (e) => {
-            this.Controller.ServerSend(false, false);
-
-            startButton.hidden = false;
-            stopButton.hidden = true;
-            accountCount.hidden = true;
-            roomName.hidden = true;
-            micElement.hidden = false;
-            camElement.hidden = false;
-            if (settingButton) settingButton.hidden = false;
-            if (qrcodeButton) qrcodeButton.hidden = false;
-        };
-
 
         //  配信設定ボタン（※モバイル配信画面には無いボタン）
         if (settingButton) {
@@ -152,8 +138,56 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
         this.SetMediaDevice();
-        
+
         callback();
+    }
+
+
+    /**
+     * 
+     * @param isLiveCasting 
+     */
+    public ChangeDisplayMode(isLiveCasting: boolean) {
+
+        let videoElement = document.getElementById('video');
+        let startButton = document.getElementById('sbj-cast-instance-start');
+        let stopButton = document.getElementById('sbj-cast-instance-stop');
+        let settingButton = document.getElementById('sbj-cast-instance-settings');
+        let qrcodeButton = document.getElementById('sbj-cast-instance-qrcode');
+        let roomName = document.getElementById('sbj-livecast-room-name');
+        let accountCount = document.getElementById('sbj-cast-instance-account-count');
+        let micElement = document.getElementById('mic-select-div');
+        let camElement = document.getElementById('webcam-select-div');
+
+        startButton.hidden = isLiveCasting;
+        stopButton.hidden = !isLiveCasting;
+        accountCount.hidden = !isLiveCasting;
+        roomName.hidden = !isLiveCasting;
+        micElement.hidden = isLiveCasting;
+        camElement.hidden = isLiveCasting;
+
+        if (settingButton)
+            settingButton.hidden = isLiveCasting;
+
+        if (qrcodeButton) {
+            qrcodeButton.hidden = isLiveCasting;
+        }
+
+        //  QrCodeボタンが無い場合はモバイルと判断
+        let isMoblie: boolean = (!qrcodeButton);
+
+        if (isMoblie) {
+            videoElement.hidden = isLiveCasting;
+
+            if (!isLiveCasting) {
+
+                if (StdUtil.IsSafari()) {
+                    this._micDeviceView.SelectClear();
+                    this._camDeviceView.SelectClear();
+                }
+            }
+        }
+
     }
 
 
@@ -204,6 +238,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 view.SelectDeivce(preMic);
             }
 
+            this._micDeviceView = view;
             document.getElementById("mic-select-div").classList.add("is-dirty");
             this.ChnageDevice();
         });
@@ -219,7 +254,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 controller.VideoSource = deviceId;
                 LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceName);
                 this.ChnageDevice();
-                
+
                 if (deviceId) {
                     WebRTCService.SetPreview(previewElement, deviceId);
                 }
@@ -234,6 +269,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 view.SelectDeivce(preCam);
             }
 
+            this._camDeviceView = view;
             document.getElementById("webcam-select-div").classList.add("is-dirty");
             this.ChnageDevice();
         });
