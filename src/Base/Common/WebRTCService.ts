@@ -286,10 +286,10 @@ export default class WebRTCService {
         this._previewStream = stream;
         element.src = null;
 
-        if( StdUtil.IsSafari()){
-            element.srcObject = stream;        
+        if (StdUtil.IsSafari()) {
+            element.srcObject = stream;
         }
-        else{
+        else {
             element.src = URL.createObjectURL(stream);
         }
     }
@@ -407,8 +407,10 @@ export default class WebRTCService {
      */
     public static SetStreaming(audioSource: string, videoSource: string) {
 
-        this.VideoMute();
-        this.AudioMute();
+        if (!StdUtil.IsSafari()) {
+            this.VideoMute();
+            this.AudioMute();
+        }
 
         if (videoSource || audioSource) {
             this.GetMediaStream(videoSource, audioSource, (stream) => {

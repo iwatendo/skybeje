@@ -178,14 +178,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         if (isMoblie) {
             videoElement.hidden = isLiveCasting;
-
-            if (!isLiveCasting) {
-
-                if (StdUtil.IsSafari()) {
-                    this._micDeviceView.SelectClear();
-                    this._camDeviceView.SelectClear();
-                }
-            }
         }
 
     }
