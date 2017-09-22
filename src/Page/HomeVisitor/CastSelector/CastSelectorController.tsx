@@ -484,7 +484,14 @@ export default class CastSelectorController {
             let servant = this._servantMap.get(index);
             let castTypeName = "";
             switch (servant.castType) {
-                case CastTypeEnum.LiveCast: castTypeName = "ライブ配信"; break;
+                case CastTypeEnum.LiveCast:
+                    if (servant.instanceUrl.indexOf('mobile') >= 0) {
+                        castTypeName = "モバイル配信";
+                    }
+                    else {
+                        castTypeName = "ライブ配信";
+                    }
+                    break;
                 case CastTypeEnum.ScreenShare: castTypeName = "画面共有"; break;
                 case CastTypeEnum.Gadget: castTypeName = "ガジェット配信"; break;
             }

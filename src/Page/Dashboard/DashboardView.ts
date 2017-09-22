@@ -308,11 +308,15 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 title = "ライブキャスト（モバイル）";
                 disp = DispEnum.HomeVisitor;
                 this._naviView = new NotImplementView(mainElement);
-                
+
+                //  ダイアログ表示
                 let peerid = this.GetHomeVisitorPeeId();
                 let dialog = new MobileDialog(this.Controller);
                 let url = LinkUtil.CreateLink("../CastInstanceMobile/", peerid);
-                dialog.Show(DialogMode.View, url, () => { });
+                dialog.Show(DialogMode.View, url, null, () => {
+                    this.DoNaviClick(NaviEnum.Visitor);
+                });
+
                 break;
             case NaviEnum.ScreenShare:
                 title = "スクリーンシェア";

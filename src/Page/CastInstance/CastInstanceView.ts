@@ -11,7 +11,6 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 import { DeviceView } from "./Device/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import { CastSettingSender, CastSpeechRecognitionSender } from "./CastInstanceContainer";
-import MobileDialog from "./Mobile/MobileDialog";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Base/Common/AbstractDialogController";
 import SettingDialogController from "./SettingDialog/SettingDialogController";
@@ -35,7 +34,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let settingButton = document.getElementById('sbj-cast-instance-settings');
-        let qrcodeButton = document.getElementById('sbj-cast-instance-qrcode');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
@@ -84,16 +82,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         if (settingButton) {
             settingButton.onclick = (e) => {
                 SettingDialogController.Show();
-            }
-        }
-
-        //  モバイル配信ボタン（※モバイル配信画面には無いボタン）
-        if (qrcodeButton) {
-            qrcodeButton.onclick = (e) => {
-                let peerid = LinkUtil.GetPeerID();
-                let dialog = new MobileDialog(this.Controller);
-                let url = LinkUtil.CreateLink("../CastInstanceMobile/", peerid);
-                dialog.Show(DialogMode.View, url, () => { });
             }
         }
 
@@ -153,7 +141,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let settingButton = document.getElementById('sbj-cast-instance-settings');
-        let qrcodeButton = document.getElementById('sbj-cast-instance-qrcode');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
@@ -168,10 +155,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         if (settingButton)
             settingButton.hidden = isLiveCasting;
-
-        if (qrcodeButton) {
-            qrcodeButton.hidden = isLiveCasting;
-        }
 
         //  配信設定ボタンが無い場合はモバイルと判断
         let isMoblie: boolean = (!settingButton);
