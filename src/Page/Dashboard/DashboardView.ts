@@ -16,6 +16,7 @@ import ProfileView from "./Profile/ProfileView";
 import SettingController from "./Setting/SettingController";
 import BootInstanceView from "./BootInstance/BootInstanceView";
 import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import MobileDialog from "./Mobile/MobileDialog";
 
 
 export enum NaviEnum {
@@ -24,8 +25,9 @@ export enum NaviEnum {
     Visitor = 8,
     Setting = 9,
     LiveCast = 10,
-    ScreenShare = 11,
-    Gadget = 12,
+    LiveCastMobile = 11,
+    ScreenShare = 12,
+    Gadget = 13,
 }
 
 enum DispEnum {
@@ -33,8 +35,9 @@ enum DispEnum {
     HomeInstance = 1,
     HomeVisitor = 2,
     LiveCast = 3,
-    ScreenShare = 4,
-    Gadget = 5,
+    LiveCastMobile = 4,
+    ScreenShare = 5,
+    Gadget = 6,
 }
 
 
@@ -81,6 +84,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         result.set(NaviEnum.Instance, document.getElementById('sbj-navi-home-instance'));
         result.set(NaviEnum.Visitor, document.getElementById('sbj-navi-home-visitor'));
         result.set(NaviEnum.LiveCast, document.getElementById('sbj-navi-home-livecast'));
+        result.set(NaviEnum.LiveCastMobile, document.getElementById('sbj-navi-home-livecast-mobile'));
         result.set(NaviEnum.ScreenShare, document.getElementById('sbj-navi-home-screenshare'));
         result.set(NaviEnum.Gadget, document.getElementById('sbj-navi-home-gadget'));
 
@@ -298,6 +302,17 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 disp = DispEnum.LiveCast;
                 this._naviView = new NotImplementView(mainElement);
                 this.ChangeLiveCast(this.GetHomeVisitorPeeId());
+                break;
+
+            case NaviEnum.LiveCastMobile:
+                title = "ライブキャスト（モバイル）";
+                disp = DispEnum.HomeVisitor;
+                this._naviView = new NotImplementView(mainElement);
+                
+                let peerid = this.GetHomeVisitorPeeId();
+                let dialog = new MobileDialog(this.Controller);
+                let url = LinkUtil.CreateLink("../CastInstanceMobile/", peerid);
+                dialog.Show(DialogMode.View, url, () => { });
                 break;
             case NaviEnum.ScreenShare:
                 title = "スクリーンシェア";

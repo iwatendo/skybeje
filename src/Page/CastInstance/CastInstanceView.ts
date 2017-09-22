@@ -173,8 +173,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             qrcodeButton.hidden = isLiveCasting;
         }
 
-        //  QrCodeボタンが無い場合はモバイルと判断
-        let isMoblie: boolean = (!qrcodeButton);
+        //  配信設定ボタンが無い場合はモバイルと判断
+        let isMoblie: boolean = (!settingButton);
 
         if (isMoblie) {
             videoElement.hidden = isLiveCasting;

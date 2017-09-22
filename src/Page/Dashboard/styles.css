@@ -301,3 +301,13 @@
 .sbj-dashbord-boot-instance-note{
 	margin: 0px;
 }
+
+.sbj-dashbord-mobile-label{
+    margin: 0px;
+}
+
+.sbj-dashbord-mobile-qrcode{
+    width: 340px;
+    height: 340px;
+}
+
