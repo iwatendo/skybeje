@@ -1,14 +1,15 @@
 import { IServiceController } from "../IServiceController";
 import WebRTCService from "../WebRTCService";
 import LogUtil from "../../Util/LogUtil";
+import SWPeer from "./SWPeer";
 
 
-export default class Connection {
+export default class SWConnection {
 
     public peerid: string;
 
-    private _service: IServiceController
-    private _isStreaming: boolean;
+    private _swpeer: SWPeer
+    private _service: IServiceController;
     private _conn: PeerJs.DataConnection;
     private _sendQueue = new Array<any>();
     private _isOpen = false;
@@ -16,13 +17,15 @@ export default class Connection {
 
 
     /**
-     * コンストラクタ
-     * @param peerid ピアID
-     * @param service サービスコントローラー
+     * 
+     * @param service 
+     * @param swpeer 
+     * @param peerid 
      */
-    constructor(peerid: string, service: IServiceController) {
+    constructor(swpeer: SWPeer, peerid: string) {
         this.peerid = peerid;
-        this._service = service;
+        this._swpeer = swpeer;
+        this._service = swpeer.Service;
         this._conn = null;
     }
 
@@ -56,7 +59,7 @@ export default class Connection {
         else {
             if (!this._isCreate) {
                 this._isCreate = true;
-                this.Set(WebRTCService._peer.connect(this.peerid));
+                this.Set(this._swpeer.Peer.connect(this.peerid));
             }
 
             this._sendQueue.push(data);
@@ -70,11 +73,10 @@ export default class Connection {
      */
     private OnConnectionOpen(conn: PeerJs.DataConnection) {
         this._isOpen = true;
-        LogUtil.Info(this._service, "data connection [" + WebRTCService.PeerId() + "] <-> [" + conn.peer + "]");
+        LogUtil.Info(this._service, "data connection [" + this._swpeer.PeerId + "] <-> [" + conn.peer + "]");
         this._sendQueue.forEach((data) => { conn.send(data); });
         this._sendQueue = new Array<any>();
         this._service.OnChildConnection(conn);
-        this.StartStreaming();
     }
 
 
@@ -115,19 +117,6 @@ export default class Connection {
         }
         else {
             return false;
-        }
-    }
-
-
-    /**
-     * 
-     */
-    public StartStreaming() {
-
-        if (!this._isStreaming) {
-            if (WebRTCService.StartStreamingPeer(this.peerid)) {
-                this._isStreaming = true;
-            }
         }
     }
 

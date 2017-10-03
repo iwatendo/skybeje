@@ -87,7 +87,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
         video.onplay = (ev) => {
             let voiceOnly = (video.videoHeight === 0 || video.videoWidth === 0);
-            document.getElementById('sbj-cact-visitor-voice-only').hidden = !voiceOnly;
+            //  document.getElementById('sbj-cact-visitor-voice-only').hidden = !voiceOnly;
             video.volume;
         };
 

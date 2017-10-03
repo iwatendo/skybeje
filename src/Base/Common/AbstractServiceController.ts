@@ -137,41 +137,6 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
 
 
     /**
-     * 動画配信処理開始・終了イベント
-     * @param isSucceed
-     * @param isStreaming
-     */
-    public OnStartStreaming() {
-
-    }
-
-
-    /**
-     * ストリーミングの再生開始時イベント
-     */
-    public OnStreamingPlay() {
-
-    }
-
-
-    /**
-     * ストリーミングエラー
-     * @param e 
-     */
-    public OnStreamingError(err: Error) {
-        this.LogError('streaming error', err);
-    }
-
-
-    /**
-     * ストリーミング終了時イベント
-     * @param e 
-     */
-    public OnStreamingClose() {
-    }
-
-
-    /**
      * データ取得時イベント
      * @param conn
      * @param recv

@@ -4,6 +4,6 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import CastVisitorController from "./CastVisitorController";
 
 if (StdUtil.IsExecute()) {
-    let videoElement = document.getElementById('sbj-video');
+    let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
     WebRTCService.Start(new CastVisitorController(), LinkUtil.GetPeerID(), "CastVisitor", videoElement);
 }

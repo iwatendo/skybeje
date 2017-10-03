@@ -33,18 +33,6 @@ export interface IServiceController {
     //  子Peerからの接続解除時のイベント
     OnChildClose(conn: PeerJs.DataConnection);
 
-    //  ストリーミング開始イベント
-    OnStartStreaming();
-
-    //  ストリーミング再生開始
-    OnStreamingPlay();
-
-    //  応答したストリーミングのエラー
-    OnStreamingError(err: Error);
-
-    //  応答したストリーミングの終了時イベント
-    OnStreamingClose();
-
     //  データ取得時イベント
     Recv(conn: PeerJs.DataConnection, recv);
 

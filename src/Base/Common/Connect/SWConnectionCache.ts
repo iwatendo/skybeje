@@ -1,38 +1,30 @@
 
 import WebRTCService from "../WebRTCService";
-import Connection from "./Connection";
+import SWConnection from "./SWConnection";
 import { IServiceController } from "../IServiceController";
 import Sender from "../../Container/Sender";
 import LogUtil from "../../Util/LogUtil";
+import SWPeer from "./SWPeer";
 
 
 /**
  * データコネクション管理クラス
  */
-export default class ConnectionCache {
+export default class SWConnectionCache {
+
+    private _owner: SWConnection;
+    private _swpeer: SWPeer;
+    private _service: IServiceController;
+    private _map = new Map<string, SWConnection>();
 
     /**
      * コンストラクタ
      * @param service サービスコントローラー
      */
-    constructor(service: IServiceController) {
-        this._service = service;
+    constructor(swpeer: SWPeer) {
+        this._swpeer = swpeer;
+        this._service = swpeer.Service;
     }
-
-
-    private _service: IServiceController
-
-
-    /**
-     * 
-     */
-    private _owner: Connection
-
-
-    /**
-     * コネクションMAP
-     */
-    private _map = new Map<string, Connection>();
 
 
     /**
@@ -40,7 +32,7 @@ export default class ConnectionCache {
      * @param conn 
      */
     public Set(conn: PeerJs.DataConnection) {
-        let pp = this.GetPeerPair(conn.peer);
+        let pp = this.GetConnection(conn.peer);
         pp.Set(conn);
     }
 
@@ -50,7 +42,7 @@ export default class ConnectionCache {
      * @param conn 
      */
     public SetOwner(conn: PeerJs.DataConnection) {
-        this._owner = new Connection(conn.peer, this._service);
+        this._owner = new SWConnection(this._swpeer, conn.peer);
     }
 
 
@@ -74,7 +66,7 @@ export default class ConnectionCache {
      */
     public Send(peerid: string, sender: Sender) {
         let data = JSON.stringify(sender);
-        let pp = this.GetPeerPair(peerid);
+        let pp = this.GetConnection(peerid);
         pp.Send(data);
 
         if (LogUtil.IsOutputSender(sender)) {
@@ -116,16 +108,6 @@ export default class ConnectionCache {
 
 
     /**
-     * 
-     */
-    public StartStreaming() {
-        this._map.forEach((peerPair, key) => {
-            peerPair.StartStreaming();
-        });
-    }
-
-
-    /**
      * 全接続クローズ
      */
     public Close() {
@@ -151,13 +133,13 @@ export default class ConnectionCache {
 
         return result;
     }
-
+    
 
     /**
-     * ピアペアを取得します
+     * 接続情報を取得
      * @param peerid 
      */
-    private GetPeerPair(peerid: string): Connection {
+    private GetConnection(peerid: string): SWConnection {
 
         let map = this._map;
 
@@ -171,7 +153,7 @@ export default class ConnectionCache {
                 }
             }
 
-            let pp = new Connection(peerid, this._service);
+            let pp = new SWConnection(this._swpeer, peerid);
             map.set(peerid, pp);
             return pp;
         }
