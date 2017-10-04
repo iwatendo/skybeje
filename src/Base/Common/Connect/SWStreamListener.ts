@@ -36,6 +36,23 @@ export default class SWStreamListener implements ISWRoom {
      * 
      */
     public OnRoomOpen() {
+
+        //  【削除予定】
+        //  受信モードでRoomに接続すると、SFUのストリーム通知が来ないケースがある。
+        //  PeerJoin / PeerLeave が発生すると stream通知が来るようなので、SkyWay側での対応されるまでの暫定対応
+        SWPeer.GetApiKey((apikey) => {
+
+            let peer = new Peer({ key: apikey, debug: 1 }) as any;
+
+            peer.on('open', () => {
+                let name = this._swRoom.RoomName;
+                let room = peer.joinRoom(name, { mode: "sfu" });
+                room.on('open', () => {
+                    peer.destroy();
+                });
+            });
+        });
+
     }
 
 

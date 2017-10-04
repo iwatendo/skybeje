@@ -48,6 +48,7 @@ export default class SWRoom {
     private _mode: SWRoomMode;
     private _stream: any;
     private _sender: ISWRoom;
+    private _roomName: string;
 
 
     public set Stream(stream) {
@@ -87,6 +88,16 @@ export default class SWRoom {
     }
 
 
+    public get RoomName(){
+        return this._roomName;
+    }
+
+
+    public set RoomName(name : string){
+        this._roomName = name;
+    }
+
+
     /**
      * 
      * @param sender 
@@ -119,7 +130,7 @@ export default class SWRoom {
      */
     private JoinRoom(name: string) {
 
-        let roomName = SWRoom.ToRoomName(name);
+        this.RoomName = SWRoom.ToRoomName(name);
         let opt = {};
 
         let modestr: string;
@@ -138,7 +149,7 @@ export default class SWRoom {
             opt = { mode: modestr };
         }
 
-        let room = this._peer.Peer.joinRoom(roomName, opt);
+        let room = this._peer.Peer.joinRoom(this.RoomName, opt);
 
         room.on('open', () => {
             LogUtil.Info(this._service, "SWRoom Open");

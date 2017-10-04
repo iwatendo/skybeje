@@ -215,7 +215,7 @@ export default class SWStream implements ISWRoom {
         //  ストリーミング開始 / 設定変更
         this._localStream = stream;
 
-        if( this._swRoom){
+        if (this._swRoom) {
             this._swRoom.Close();
         }
 
@@ -304,7 +304,6 @@ export default class SWStream implements ISWRoom {
      * @param peerid 
      */
     public OnRoomPeerJoin(peerid: string) {
-        //  this._swRoom.Refresh();
     }
 
 
