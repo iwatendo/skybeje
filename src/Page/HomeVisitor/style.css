@@ -412,6 +412,12 @@ p.sbj-timeline-message-ignore {
     left: 12px;
 }
 
+#sbj-home-visitor-livecast-layout-4{
+    position: absolute;
+    top: 200px;
+    left: 12px;
+}
+
 #sbj-home-visitor-castselect-pane{
     position: absolute;
     top:0px;

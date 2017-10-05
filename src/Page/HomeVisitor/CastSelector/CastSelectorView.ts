@@ -17,6 +17,7 @@ export default class CastSelectorView {
     private _layoutButtonIcon = document.getElementById('sbj-home-visitor-livecast-layout-icon');
     private _layoutButton1 = document.getElementById('sbj-home-visitor-livecast-layout-1');
     private _layoutButton2 = document.getElementById('sbj-home-visitor-livecast-layout-2');
+    private _layoutButton4 = document.getElementById('sbj-home-visitor-livecast-layout-4');
     private _livecastStatus = document.getElementById('sbj-home-visitor-livecast-display-status-label');
 
     private _selectServant: string;
@@ -54,6 +55,7 @@ export default class CastSelectorView {
         this._layoutButton.onclick = (ev) => { this.ChangeLayout() };
         this._layoutButton1.onclick = (ev) => { this.ChangeDisplayFrameCount(1); };
         this._layoutButton2.onclick = (ev) => { this.ChangeDisplayFrameCount(2); };
+        this._layoutButton4.onclick = (ev) => { this.ChangeDisplayFrameCount(4); };
     }
 
 
@@ -234,6 +236,7 @@ export default class CastSelectorView {
         this._castSelectorElement.hidden = isMenuHide;
         this._layoutButton1.hidden = isMenuHide;
         this._layoutButton2.hidden = isMenuHide;
+        this._layoutButton4.hidden = isMenuHide;
         let xpx = (this._isDispLayoutSetting ? 64 : 0).toString() + "px";
         let ypx = (this._isDispLayoutSetting ? 96 : 0).toString() + "px";
         this._castFrameElement.style.left = xpx;
@@ -270,7 +273,7 @@ export default class CastSelectorView {
      * @param servantCount 
      */
     private ToDispFrameCount(servantCount: number) {
-        //  if (servantCount >= 4) return 4;
+        if (servantCount >= 3) return 4;
         if (servantCount >= 2) return 2;
         return 1;
     }
@@ -335,22 +338,34 @@ export default class CastSelectorView {
      */
     private SetFrameStatus(dispPos: number, element: HTMLFrameElement) {
 
-        let persent = 100 / this._dispFrameArray.length;
         element.hidden = false;
         element.style.position = "absolute";
         element.style.zIndex = "2";
-        element.style.height = "calc(" + persent.toString() + "% - 8px)";
+        element.style.height = "calc(" + (this._dispFrameCount > 1 ? "50%" : "100%") + " - 8px)";
+        element.style.width = "calc(" + (this._dispFrameCount > 2 ? "50%" : "100%") + " - 8px)";
 
         let topPos = "0px";
+        let leftPos = "0px";
 
         switch (this._dispFrameCount) {
+            case 1:
             case 2:
                 switch (dispPos) {
                     case 1: topPos = "50%"; break;
                 }
+                break;
+            case 4:
+                switch (dispPos) {
+                    case 0: topPos = "0px"; leftPos = "0px"; break;
+                    case 1: topPos = "50%"; leftPos = "0px"; break;
+                    case 2: topPos = "0px"; leftPos = "50%"; break;
+                    case 3: topPos = "50%"; leftPos = "50%"; break;
+                }
+                break;
         }
 
         element.style.top = topPos;
+        element.style.left = leftPos;
     }
 
 
@@ -369,11 +384,18 @@ export default class CastSelectorView {
                 return "";
             case 2:
                 switch (dispPos) {
-                    case 0:
-                        return "（上段）";
-                    case 1:
-                        return "　（下段）";
+                    case 0: return "（上段）";
+                    case 1: return "　（下段）";
                 }
+                break;
+            case 4:
+                switch (dispPos) {
+                    case 0: return "（左上）";
+                    case 1: return "　（左下）";
+                    case 2: return "　（右上）";
+                    case 3: return "　（右下）";
+                }
+                break;
         }
     }
 
