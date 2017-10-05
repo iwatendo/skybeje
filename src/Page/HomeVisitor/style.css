@@ -76,8 +76,18 @@
 
 .sbj-split-pane-component-left{
     background-color: var(--sbj-color-timeline-panel);
-    width: 50%;
+    width: 600px;
     min-width: 450px;
+}
+
+#sbj-home-visitor-divider {
+    left: 600px;
+    width: 5px;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-home-visitor-gadget-component{
+    left: 600px;
 }
 
 .sbj-split-pane-component-right{
@@ -89,10 +99,6 @@
     margin: 20px;
 }
 
-#sbj-home-visitor-gadget-component{
-    left: 50%;
-}
-
 #sbj-home-visitor-title{
     margin: 0px 24px 0px 0px;
 }
@@ -102,12 +108,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
     height: calc(100% - 168px);    
-}
-
-#sbj-home-visitor-divider {
-    left: 50%;
-    width: 5px;
-    background-color: var(--sbj-color-edge-background);
 }
 
 .sbj-home-visitor-disconnect-action{
