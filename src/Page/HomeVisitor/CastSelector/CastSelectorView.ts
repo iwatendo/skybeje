@@ -1,47 +1,48 @@
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-
-import ServantCache from "../Cache/ServantCache";
 import HomeVisitorController from "../HomeVisitorController";
+import CastSelectorController from "./CastSelectorController";
 import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanceContainer";
 import ActorCache from "../Cache/ActorCache";
 import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 
 
-export default class CastSelectorController {
+export default class CastSelectorView {
 
-    private _FrameCount = 4;
+    private _homeController: HomeVisitorController;
+    private _castSelectorController: CastSelectorController;
 
     private _castSelectorElement = document.getElementById('sbj-home-visitor-castselect-pane');
     private _castFrameElement = document.getElementById('sbj-home-visitor-castfrmae-pane');
-
     private _layoutButton = document.getElementById('sbj-home-visitor-livecast-layout');
     private _layoutButtonIcon = document.getElementById('sbj-home-visitor-livecast-layout-icon');
     private _layoutButton1 = document.getElementById('sbj-home-visitor-livecast-layout-1');
     private _layoutButton2 = document.getElementById('sbj-home-visitor-livecast-layout-2');
     private _livecastStatus = document.getElementById('sbj-home-visitor-livecast-display-status-label');
 
-    private _ownerController: HomeVisitorController;
     private _selectServant: string;
-    private _servantMap = new Map<number, ServantSender>();
-
     private _isDispLayoutSetting = false;
     private _dispFrameCount = 1;
     private _dispFrameArray = new Array<number>();
 
+
     /**
-     * コンストラクタ
+     * コンスとタクタ
      * @param controller 
+     * @param castSelectorController 
      */
-    constructor(controller: HomeVisitorController) {
+    constructor(controller: HomeVisitorController, castSelectorController: CastSelectorController) {
 
-        this._ownerController = controller;
+        this._homeController = controller;
+        this._castSelectorController = castSelectorController;
 
-        for (let i = 0; i < this._FrameCount; i++) {
+        for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
+
             let button = this.GetSelectButtonElement(i);
             let element = this.GetFrmaeElement(i);
-            element.onload = (ev) => { this.NotifyServantToActor(element); }
+
+            element.onload = (ev) => {
+                this._castSelectorController.NotifyServantToActor(element);
+            }
 
             button.onclick = (ev) => {
                 let index = i;
@@ -51,127 +52,13 @@ export default class CastSelectorController {
         }
 
         this._layoutButton.onclick = (ev) => { this.ChangeLayout() };
-        this._layoutButton1.onclick = (ev) => { this.SetLiveCastLayout(1); };
-        this._layoutButton2.onclick = (ev) => { this.SetLiveCastLayout(2); };
-
+        this._layoutButton1.onclick = (ev) => { this.ChangeDisplayFrameCount(1); };
+        this._layoutButton2.onclick = (ev) => { this.ChangeDisplayFrameCount(2); };
     }
 
 
     /**
-     * 
-     * @param index 
-     */
-    private GetFrmaeElement(index: number): HTMLFrameElement {
-        return document.getElementById("sbj-home-visitor-livecast-" + index.toString()) as HTMLFrameElement;
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    private GetSelectButtonElement(index: number) {
-        return document.getElementById("sbj-home-visitor-livecast-select-" + index.toString());
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    private GetSelectButtonTitleElement(index: number) {
-        return document.getElementById("sbj-home-visitor-livecast-select-title-" + index.toString());
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    private GetSelectButtonIconElement(index: number) {
-        return document.getElementById("sbj-home-visitor-livecast-select-icon-" + index.toString());
-    }
-
-
-    /**
-     * 部屋変更に伴うサーバント一覧の変更
-     * @param hid 
-     */
-    public ChangeRoom(hid: string) {
-        this._ownerController.ServantCache.GetRoomServant(hid, (rs) => {
-            this.ChangeRoomServantList(rs);
-        });
-    }
-
-
-    /**
-     * サーバント一覧表示の切替
-     * @param url 
-     */
-    public ChangeRoomServantList(rs: RoomServantSender) {
-
-        let newServant = new Array<ServantSender>();
-        let preMap = new Map<number, ServantSender>();
-
-        if (rs.servants) {
-
-            //  設置済みのサーバント判定
-            rs.servants.forEach((servant) => {
-                let preIndex = this.GetServantPos(servant);
-                if (preIndex >= 0) {
-                    preMap.set(preIndex, servant);
-                }
-                else {
-                    newServant.push(servant);
-                }
-            });
-
-            //  削除されたサーバントの除去
-            for (let i = 0; i < this._FrameCount; i++) {
-                if (!preMap.has(i)) {
-                    this.SetServantFrame(i, null);
-                    this._servantMap.delete(i);
-                }
-            }
-
-            //  新規サーバントの追加
-            newServant.forEach((servant) => {
-                for (let i = 0; i < this._FrameCount; i++) {
-                    if (preMap.has(i))
-                        continue;
-
-                    this.SetServantFrame(i, servant);
-                    preMap.set(i, servant);
-                    this._servantMap.set(i, servant);
-                    i = this._FrameCount;
-                }
-            });
-
-            //  アクティブタブの確認
-            this.CheckChangeActiveFrame();
-        }
-    }
-
-
-    /**
-     * 指定されたサーバントが含まれているか？
-     * @param servant 
-     */
-    private GetServantPos(servant: ServantSender): number {
-
-        let result = -1;
-
-        this._servantMap.forEach((item, index) => {
-            if (servant.clientUrl === item.clientUrl) {
-                result = index;
-            }
-        });
-        return result;
-    }
-
-
-    /**
-     * 
+     * 指定したフレームにサーバントを設定します。
      * @param index 
      * @param servant 
      */
@@ -191,16 +78,91 @@ export default class CastSelectorController {
                 this._dispFrameArray.push(index);
                 this.SetCastFrame();
             }
+        }
+    }
 
+
+    /**
+     * 指定フレームのサーバントをクリア
+     * @param index 
+     */
+    public RemoveServantFrame(index: number) {
+
+        let frameElement = this.GetFrmaeElement(index);
+        let btnElement = this.GetSelectButtonElement(index);
+
+        btnElement.hidden = true;
+        frameElement.setAttribute('src', '');
+        if (this._dispFrameArray.length > 0) {
+            this._dispFrameArray = this._dispFrameArray.filter((i) => (i !== index));
         }
-        else {
-            btnElement.hidden = true;
-            frameElement.setAttribute('src', '');
-            if (this._dispFrameArray.length > 0) {
-                this._dispFrameArray = this._dispFrameArray.filter((i) => (i !== index));
+        this.SetCastFrame();
+    }
+
+
+    /**
+     * アクティブボタンが閉じられた場合、表示されている先頭タブをアクティブにする
+     */
+    public CheckChangeActiveFrame() {
+
+        let first: HTMLElement = null;
+
+        for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
+
+            let frame = this.GetFrmaeElement(i);
+            let button = this.GetSelectButtonElement(i);
+
+            if (button.hidden)
+                continue;
+
+            if (!frame.hidden) {
+                return;
             }
-            this.SetCastFrame();
+
+            if (!first)
+                first = button;
         }
+
+        if (first)
+            first.click();
+    }
+
+
+    /**
+     * サーバントの表示切替
+     * @param servant 
+     */
+    public SetServant(element: HTMLFrameElement, servant: ServantSender) {
+
+        if (servant.hid !== this._homeController.CurrentHid) {
+            return;
+        }
+
+        this._selectServant = servant.servantPeerId;
+
+        let url: string = servant.clientUrl;
+
+        if (servant.ownerPeerid === this._homeController.PeerId) {
+            //  自分が起動したキャストの場合、ミュート状態で起動する
+            url += "&mute=1";
+        }
+
+        //  URLの変更があった場合のみ設定する
+        let preUrl = element.getAttribute('src');
+
+        if (preUrl !== url) {
+            element.onload = (e) => {
+                //  エンターキー押下時に、テキストボックスにフォーカスが移るようにする
+                element.contentDocument.onkeyup = this._homeController.View.InputPane.OnOtherKeyPress;
+
+                element.contentDocument.onmouseover = (e) => {
+                    element.contentWindow.document.body.focus();
+                }
+                this._homeController.View.CastSelector.NotifyServantToActor(element);
+            }
+            element.setAttribute('src', url);
+        }
+
     }
 
 
@@ -211,8 +173,8 @@ export default class CastSelectorController {
      * @param toolTipElement 
      * @param servant 
      */
-    public SetButton(btnTitleElement: HTMLElement, btnIconElement: HTMLElement, servant: ServantSender) {
-        this._ownerController.ActorCache.GetActor(servant.ownerPeerid, servant.ownerAid, (actor) => {
+    private SetButton(btnTitleElement: HTMLElement, btnIconElement: HTMLElement, servant: ServantSender) {
+        this._homeController.ActorCache.GetActor(servant.ownerPeerid, servant.ownerAid, (actor) => {
             btnTitleElement.textContent = actor.name;
             btnIconElement.textContent = this.GetCastIconName(servant.castType);
         });
@@ -223,79 +185,11 @@ export default class CastSelectorController {
      * キャスト名称の取得
      * @param servant 
      */
-    public GetCastIconName(castType: CastTypeEnum) {
+    private GetCastIconName(castType: CastTypeEnum) {
         switch (castType) {
             case CastTypeEnum.LiveCast: return "videocam";
             case CastTypeEnum.ScreenShare: return "screen_share";
             case CastTypeEnum.Gadget: return "ondemand_video";
-        }
-    }
-
-
-    /**
-     * サーバントの表示切替
-     * @param servant 
-     */
-    public SetServant(element: HTMLFrameElement, servant: ServantSender) {
-
-        if (servant.hid !== this._ownerController.CurrentHid) {
-            return;
-        }
-
-        this._selectServant = servant.servantPeerId;
-
-        let url: string = servant.clientUrl;
-
-        if (servant.ownerPeerid === this._ownerController.PeerId) {
-            //  自分が起動したキャストの場合、ミュート状態で起動する
-            url += "&mute=1";
-        }
-
-        //  URLの変更があった場合、設定
-        let preUrl = element.getAttribute('src');
-
-        if (preUrl !== url) {
-            element.onload = (e) => {
-                //  エンターキー押下時に、テキストボックスにフォーカスが移るようにする
-                element.contentDocument.onkeyup = this._ownerController.View.InputPane.OnOtherKeyPress;
-
-                element.contentDocument.onmouseover = (e) => {
-                    element.contentWindow.document.body.focus();
-                }
-                this._ownerController.View.CastSelector.NotifyServantToActor(element);
-            }
-            element.setAttribute('src', url);
-        }
-
-    }
-
-
-    /**
-     * サーバント側に使用アクターを通知
-     */
-    public NotifyServantToActor(element: HTMLFrameElement) {
-
-        if (element) {
-            let childDocument = element.contentDocument;
-            let peerElement = childDocument.getElementById("peerid");
-            let aidElement = childDocument.getElementById("aid");
-            let iidElement = childDocument.getElementById("iid");
-
-            if (peerElement && aidElement && iidElement) {
-                peerElement.textContent = this._ownerController.PeerId;
-                aidElement.textContent = this._ownerController.CurrentAid;
-                iidElement.textContent = this._ownerController.CurrentActor.dispIid;
-            }
-        }
-    }
-
-
-    /**
-     * サーバント側に使用アクターを通知
-     */
-    public NotifyServantToActorAll() {
-        for (let i = 0; i < this._FrameCount; i++) {
-            this.NotifyServantToActor(this.GetFrmaeElement(i));
         }
     }
 
@@ -350,12 +244,12 @@ export default class CastSelectorController {
 
 
     /**
-     * 
-     * @param count 
+     * 表示するサーバント件数を変更します
+     * @param servantCount 
      */
-    private SetLiveCastLayout(count: number) {
-        this._dispFrameCount = count;
-        this._dispFrameArray = this._dispFrameArray.slice(0, count);
+    public ChangeDisplayFrameCount(servantCount: number) {
+        this._dispFrameCount = this.ToDispFrameCount(servantCount);
+        this._dispFrameArray = this._dispFrameArray.slice(0, this._dispFrameCount);
 
         while (this._dispFrameArray.length < this._dispFrameCount) {
             let index = this.GetNoDispFrameIndex();
@@ -372,11 +266,22 @@ export default class CastSelectorController {
 
 
     /**
+     * 
+     * @param servantCount 
+     */
+    private ToDispFrameCount(servantCount: number) {
+        //  if (servantCount >= 4) return 4;
+        if (servantCount >= 2) return 2;
+        return 1;
+    }
+
+
+    /**
      * キャスト中かつ非表示のフレーム番号を取得
      */
     private GetNoDispFrameIndex(): number {
 
-        for (let i = 0; i < this._FrameCount; i++) {
+        for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
             let frameElement = this.GetFrmaeElement(i);
             let isCast = (frameElement.src.length > 0);
 
@@ -398,7 +303,7 @@ export default class CastSelectorController {
      */
     private SetCastFrame() {
 
-        for (let i = 0; i < this._FrameCount; i++) {
+        for (let i = 0; i < this._homeController.View.CastSelector.FrameCount; i++) {
             let frameElement = this.GetFrmaeElement(i);
             let button = this.GetSelectButtonElement(i);
             frameElement.hidden = true;
@@ -407,15 +312,16 @@ export default class CastSelectorController {
 
         let displayLabel = "";
 
-        for (let i = 0; i < this._dispFrameArray.length; i++) {
-            let index = this._dispFrameArray[i];
-            let frameElement = this.GetFrmaeElement(index);
-            let button = this.GetSelectButtonElement(index);
-            this.SetFrameStatus(i, frameElement);
+        for (let dispIndex = 0; dispIndex < this._dispFrameArray.length; dispIndex++) {
+            let frameIndex = this._dispFrameArray[dispIndex];
+            let frameElement = this.GetFrmaeElement(frameIndex);
+            let button = this.GetSelectButtonElement(frameIndex);
+
+            this.SetFrameStatus(dispIndex, frameElement);
             button.setAttribute('disabled', "1");
 
-            displayLabel += this.GetStatusText(i);
-            displayLabel += this.GetDisplayNameStatus(index);
+            displayLabel += this.GetStatusText(dispIndex);
+            displayLabel += this.GetDisplayNameStatus(frameIndex);
         }
 
         this._livecastStatus.textContent = displayLabel;
@@ -427,7 +333,7 @@ export default class CastSelectorController {
      * @param dispPos 
      * @param element 
      */
-    public SetFrameStatus(dispPos: number, element: HTMLFrameElement) {
+    private SetFrameStatus(dispPos: number, element: HTMLFrameElement) {
 
         let persent = 100 / this._dispFrameArray.length;
         element.hidden = false;
@@ -452,7 +358,7 @@ export default class CastSelectorController {
      * 
      * @param dispPos 
      */
-    public GetStatusText(dispPos: number): string {
+    private GetStatusText(dispPos: number): string {
 
         if (dispPos < 0) {
             return "";
@@ -476,12 +382,14 @@ export default class CastSelectorController {
      * キャスト名称の取得
      * @param servant 
      */
-    public GetDisplayNameStatus(index: number): string {
+    private GetDisplayNameStatus(index: number): string {
 
-        if (this._servantMap.has(index)) {
+        let servants = this._castSelectorController.Servants;
+
+        if (servants.Has(index)) {
 
             let name = this.GetSelectButtonTitleElement(index).textContent;
-            let servant = this._servantMap.get(index);
+            let servant = servants.Get(index);
             let castTypeName = "";
             switch (servant.castType) {
                 case CastTypeEnum.LiveCast:
@@ -505,30 +413,38 @@ export default class CastSelectorController {
 
 
     /**
-     * アクティブボタンが閉じられた場合、表示されている先頭タブをアクティブにする
+     * 
+     * @param index 
      */
-    public CheckChangeActiveFrame() {
+    public GetFrmaeElement(index: number): HTMLFrameElement {
+        return document.getElementById("sbj-home-visitor-livecast-" + index.toString()) as HTMLFrameElement;
+    }
 
-        let first: HTMLElement = null;
 
-        for (let i = 0; i < this._FrameCount; i++) {
+    /**
+     * 
+     * @param index 
+     */
+    private GetSelectButtonElement(index: number) {
+        return document.getElementById("sbj-home-visitor-livecast-select-" + index.toString());
+    }
 
-            let frame = this.GetFrmaeElement(i);
-            let button = this.GetSelectButtonElement(i);
 
-            if (button.hidden)
-                continue;
+    /**
+     * 
+     * @param index 
+     */
+    private GetSelectButtonTitleElement(index: number) {
+        return document.getElementById("sbj-home-visitor-livecast-select-title-" + index.toString());
+    }
 
-            if (!frame.hidden) {
-                return;
-            }
 
-            if (!first)
-                first = button;
-        }
-
-        if (first)
-            first.click();
+    /**
+     * 
+     * @param index 
+     */
+    private GetSelectButtonIconElement(index: number) {
+        return document.getElementById("sbj-home-visitor-livecast-select-icon-" + index.toString());
     }
 
 }
