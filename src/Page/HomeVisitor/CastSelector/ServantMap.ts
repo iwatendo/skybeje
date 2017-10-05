@@ -65,9 +65,11 @@ export default class ServantMap {
         //  削除されたサーバントの除去
         for (let i = 0; i < this._controller.FrameCount; i++) {
             if (!preMap.has(i)) {
-                this._controller.RemoveServantFrame(i);
-                this._map.delete(i);
-                isDelete = true;
+                if (this._map.has(i)) {
+                    this._controller.RemoveServantFrame(i);
+                    this._map.delete(i);
+                    isDelete = true;
+                }
             }
         }
 

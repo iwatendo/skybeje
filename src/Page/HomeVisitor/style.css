@@ -377,20 +377,13 @@ p.sbj-timeline-message-ignore {
     background-color: var(--sbj-color-livecast-background);
 }
 
-.sbj-home-visitor-livecast-display-status{
+.sbj-home-visitor-livecast-status{
     background-color: var(--sbj-color-default-background);
-    padding-left: 6px;
+    padding: 4px 10px;
     border-radius: 6px;
-    width: calc(100% - 36px);
     overflow: hidden;
-    margin: 10px 4px 0px;
-}
-
-#sbj-home-visitor-livecast-display-status-label{
-    margin: 8px;
-    overflow: hidden;
-    min-width: 1000px;
-    min-height: 24px;    
+    margin: 12px;
+    min-height: 24px;
 }
 
 #sbj-home-visitor-livecast-layout{

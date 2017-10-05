@@ -21,7 +21,7 @@ export default class CastSelectorView {
     private _livecastStatus = document.getElementById('sbj-home-visitor-livecast-display-status-label');
 
     private _selectServant: string;
-    private _isDispLayoutSetting = false;
+    private _isLayoutMode = false;
     private _dispFrameCount = 1;
     private _dispFrameArray = new Array<number>();
 
@@ -61,23 +61,25 @@ export default class CastSelectorView {
 
     /**
      * 指定したフレームにサーバントを設定します。
-     * @param index 
+     * @param dispIndex 
      * @param servant 
      */
-    public SetServantFrame(index: number, servant: ServantSender) {
+    public SetServantFrame(dispIndex: number, servant: ServantSender) {
 
-        let frameElement = this.GetFrmaeElement(index);
-        let btnElement = this.GetSelectButtonElement(index);
-        let btnTitleElement = this.GetSelectButtonTitleElement(index);
-        let btnIconElement = this.GetSelectButtonIconElement(index);
+        let frameElement = this.GetFrmaeElement(dispIndex);
+        let frameStatusElement = this.GetFrameStatusElement(dispIndex);
+        let btnElement = this.GetSelectButtonElement(dispIndex);
+        let btnTitleElement = this.GetSelectButtonTitleElement(dispIndex);
+        let btnIconElement = this.GetSelectButtonIconElement(dispIndex);
 
         if (servant) {
             this.SetButton(btnTitleElement, btnIconElement, servant);
             btnElement.hidden = false;
+            frameStatusElement.textContent = this.GetDisplayNameStatus(dispIndex, servant);
             this.SetServant(frameElement, servant);
 
             if (this._dispFrameCount < this._dispFrameArray.length) {
-                this._dispFrameArray.push(index);
+                this._dispFrameArray.push(dispIndex);
                 this.SetCastFrame();
             }
         }
@@ -91,10 +93,12 @@ export default class CastSelectorView {
     public RemoveServantFrame(index: number) {
 
         let frameElement = this.GetFrmaeElement(index);
+        let frameStatusElement = this.GetFrameStatusElement(index);
         let btnElement = this.GetSelectButtonElement(index);
 
         btnElement.hidden = true;
         frameElement.setAttribute('src', '');
+        frameStatusElement.textContent = "";
         if (this._dispFrameArray.length > 0) {
             this._dispFrameArray = this._dispFrameArray.filter((i) => (i !== index));
         }
@@ -229,20 +233,25 @@ export default class CastSelectorView {
      * レイアウト変更
      */
     private ChangeLayout() {
-        this._isDispLayoutSetting = !this._isDispLayoutSetting;
-        let isMenuHide = !this._isDispLayoutSetting;
-        this._layoutButtonIcon.textContent = (this._isDispLayoutSetting ? "fullscreen" : "settings");
+        this._isLayoutMode = !this._isLayoutMode;
+        let isMenuHide = !this._isLayoutMode;
+        this._layoutButtonIcon.textContent = (this._isLayoutMode ? "fullscreen" : "settings");
 
         this._castSelectorElement.hidden = isMenuHide;
         this._layoutButton1.hidden = isMenuHide;
         this._layoutButton2.hidden = isMenuHide;
         this._layoutButton4.hidden = isMenuHide;
-        let xpx = (this._isDispLayoutSetting ? 64 : 0).toString() + "px";
-        let ypx = (this._isDispLayoutSetting ? 96 : 0).toString() + "px";
+        let xpx = (this._isLayoutMode ? 64 : 0).toString() + "px";
+        let ypx = (this._isLayoutMode ? 48 : 0).toString() + "px";
         this._castFrameElement.style.left = xpx;
         this._castFrameElement.style.top = ypx;
         this._castFrameElement.style.width = "calc(100% - " + xpx + ")"
         this._castFrameElement.style.height = "calc(100% - " + ypx + ")"
+
+        for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
+            let frameStatusElement = this.GetFrameStatusElement(i);
+            frameStatusElement.hidden = !this.IsDispFrameStatus(i);
+        }
     }
 
 
@@ -275,7 +284,8 @@ export default class CastSelectorView {
     private ToDispFrameCount(servantCount: number) {
         if (servantCount >= 3) return 4;
         if (servantCount >= 2) return 2;
-        return 1;
+        if (servantCount >= 1) return 1;
+        return 0;
     }
 
 
@@ -308,8 +318,10 @@ export default class CastSelectorView {
 
         for (let i = 0; i < this._homeController.View.CastSelector.FrameCount; i++) {
             let frameElement = this.GetFrmaeElement(i);
+            let frameStatusElement = this.GetFrameStatusElement(i);
             let button = this.GetSelectButtonElement(i);
             frameElement.hidden = true;
+            frameStatusElement.hidden = true;
             button.removeAttribute('disabled');
         }
 
@@ -318,16 +330,38 @@ export default class CastSelectorView {
         for (let dispIndex = 0; dispIndex < this._dispFrameArray.length; dispIndex++) {
             let frameIndex = this._dispFrameArray[dispIndex];
             let frameElement = this.GetFrmaeElement(frameIndex);
+            let frameStatusElement = this.GetFrameStatusElement(frameIndex);
             let button = this.GetSelectButtonElement(frameIndex);
 
-            this.SetFrameStatus(dispIndex, frameElement);
+            this.SetFrameStatus(dispIndex, frameElement, frameStatusElement);
             button.setAttribute('disabled', "1");
+        }
+    }
 
-            displayLabel += this.GetStatusText(dispIndex);
-            displayLabel += this.GetDisplayNameStatus(frameIndex);
+
+    /**
+     * 
+     * @param dispIndex 
+     */
+    private IsDispFrameStatus(dispIndex: number): boolean {
+
+        //  レイアウトモードの場合のみ表示
+        if (this._isLayoutMode) {
+            let element = this.GetFrameStatusElement(dispIndex);
+            //  文言が設定されている場合のみ表示
+            if (element && element.textContent.length > 0) {
+                //  対応するフレームが表示されている場合のみ表示
+                let frameIndex = this._dispFrameArray[dispIndex];
+                if( frameIndex >= 0){
+                    let frame = this.GetFrmaeElement(frameIndex);
+                    if (!frame.hidden) {
+                        return true;
+                    }
+                }
+            }
         }
 
-        this._livecastStatus.textContent = displayLabel;
+        return false;
     }
 
 
@@ -336,13 +370,17 @@ export default class CastSelectorView {
      * @param dispPos 
      * @param element 
      */
-    private SetFrameStatus(dispPos: number, element: HTMLFrameElement) {
+    private SetFrameStatus(dispPos: number, element: HTMLFrameElement, statusElement: HTMLElement) {
 
         element.hidden = false;
         element.style.position = "absolute";
         element.style.zIndex = "2";
         element.style.height = "calc(" + (this._dispFrameCount > 1 ? "50%" : "100%") + " - 8px)";
         element.style.width = "calc(" + (this._dispFrameCount > 2 ? "50%" : "100%") + " - 8px)";
+
+        statusElement.hidden = !this.IsDispFrameStatus(dispPos);
+        statusElement.style.position = "absolute";
+        statusElement.style.zIndex = "3";
 
         let topPos = "0px";
         let leftPos = "0px";
@@ -366,71 +404,34 @@ export default class CastSelectorView {
 
         element.style.top = topPos;
         element.style.left = leftPos;
+        statusElement.style.top = topPos;
+        statusElement.style.left = leftPos;
     }
 
 
     /**
-     * 
-     * @param dispPos 
-     */
-    private GetStatusText(dispPos: number): string {
-
-        if (dispPos < 0) {
-            return "";
-        }
-
-        switch (this._dispFrameCount) {
-            case 1:
-                return "";
-            case 2:
-                switch (dispPos) {
-                    case 0: return "（上段）";
-                    case 1: return "　（下段）";
-                }
-                break;
-            case 4:
-                switch (dispPos) {
-                    case 0: return "（左上）";
-                    case 1: return "　（左下）";
-                    case 2: return "　（右上）";
-                    case 3: return "　（右下）";
-                }
-                break;
-        }
-    }
-
-
-    /**
-     * キャスト名称の取得
+     * 配信ステータスの表示
+     * @param dispIndex 
      * @param servant 
      */
-    private GetDisplayNameStatus(index: number): string {
+    private GetDisplayNameStatus(dispIndex: number, servant: ServantSender): string {
 
-        let servants = this._castSelectorController.Servants;
-
-        if (servants.Has(index)) {
-
-            let name = this.GetSelectButtonTitleElement(index).textContent;
-            let servant = servants.Get(index);
-            let castTypeName = "";
-            switch (servant.castType) {
-                case CastTypeEnum.LiveCast:
-                    if (servant.instanceUrl.indexOf('mobile') >= 0) {
-                        castTypeName = "モバイル配信";
-                    }
-                    else {
-                        castTypeName = "ライブ配信";
-                    }
-                    break;
-                case CastTypeEnum.ScreenShare: castTypeName = "画面共有"; break;
-                case CastTypeEnum.Gadget: castTypeName = "ガジェット配信"; break;
-            }
-
-            return castTypeName + "[" + name + "]";
+        let name = this.GetSelectButtonTitleElement(dispIndex).textContent;
+        let castTypeName = "";
+        switch (servant.castType) {
+            case CastTypeEnum.LiveCast:
+                if (servant.instanceUrl.indexOf('mobile') >= 0) {
+                    castTypeName = "モバイル配信";
+                }
+                else {
+                    castTypeName = "ライブ配信";
+                }
+                break;
+            case CastTypeEnum.ScreenShare: castTypeName = "画面共有"; break;
+            case CastTypeEnum.Gadget: castTypeName = "ガジェット配信"; break;
         }
-        else {
-            return "";
-        }
+
+        return name + "：" + castTypeName;
     }
 
 
@@ -440,6 +441,15 @@ export default class CastSelectorView {
      */
     public GetFrmaeElement(index: number): HTMLFrameElement {
         return document.getElementById("sbj-home-visitor-livecast-" + index.toString()) as HTMLFrameElement;
+    }
+
+
+    /**
+     * 
+     * @param index 
+     */
+    public GetFrameStatusElement(index: number): HTMLElement {
+        return document.getElementById("sbj-home-visitor-livecast-status-" + index.toString()) as HTMLElement;
     }
 
 
