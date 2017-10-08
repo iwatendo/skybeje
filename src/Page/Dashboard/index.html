@@ -15,20 +15,13 @@
 </head>
 
 <body>
-	<div class="sbj-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+
+	<div class="sbj-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
 		<header id="sbj-header" class="sbj-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
 			<div class="mdl-layout__header-row">
 				<span id="sbj-home-title" class="mdl-layout-title"></span>
 				<div class="mdl-layout-spacer"></div>
-				<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable" hidden>
-					<label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-						<i class="material-icons">search</i>
-					</label>
-					<div class="mdl-textfield__expandable-holder">
-						<input class="mdl-textfield__input" type="text" id="search">
-					</div>
-				</div>
-				<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="sbj-head-menu">
+				<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="sbj-head-menu" hidden>
 					<i class="material-icons">more_vert</i>
 				</button>
 				<ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="sbj-head-menu">
@@ -37,6 +30,7 @@
 				</ul>
 			</div>
 		</header>
+
 		<div class="sbj-drawer mdl-layout__drawer mdl-color--blue-grey-800 mdl-color-text--blue-grey-50">
 			<header class="sbj-drawer-header">
 				<div class="sbj-header-title">

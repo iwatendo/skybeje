@@ -281,7 +281,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 this._naviView = new SettingController(this.Controller, mainElement);
                 break;
             case NaviEnum.Instance:
-                title = "ホーム";
+                title = "ホームインスタンス";
                 if (this.GetHomeInstancePeerId().length > 0) {
                     disp = DispEnum.HomeInstance;
                     this._naviView = new NotImplementView(mainElement);
@@ -333,12 +333,26 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
 
         document.getElementById('sbj-main').hidden = (disp !== DispEnum.Local);
-        document.getElementById('sbj-header').hidden = (disp !== DispEnum.Local || navi === NaviEnum.Profile);
+        //  document.getElementById('sbj-header').hidden = (disp !== DispEnum.Local);
         document.getElementById('sbj-main-home-instance-frame').hidden = !(disp === DispEnum.HomeInstance);
         document.getElementById('sbj-main-home-visitor-frame').hidden = !(disp === DispEnum.HomeVisitor || disp === DispEnum.LiveCast || disp === DispEnum.ScreenShare || navi === NaviEnum.Gadget || navi === NaviEnum.Profile);
         document.getElementById('sbj-main-home-livecast-frame').hidden = !(disp === DispEnum.LiveCast);
         document.getElementById('sbj-main-home-screenshare-frame').hidden = !(disp === DispEnum.ScreenShare);
         document.getElementById('sbj-main-home-gadget-frame').hidden = !(disp === DispEnum.Gadget);
+
+        let header = document.getElementById('sbj-header');
+
+        if (disp === DispEnum.Local || disp === DispEnum.HomeInstance) {
+            header.style.position = "static";
+            header.style.maxWidth = "none";
+        }
+        else {
+            title = "";
+            header.style.maxWidth = "72px";
+            header.style.position = "absolute";
+            header.style.top = "0";
+            header.style.left = "0";
+        }
 
         this.DoNaviChange(navi, title);
     }
