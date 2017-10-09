@@ -33,6 +33,14 @@ export default class SWStreamListener implements ISWRoom {
 
 
     /**
+     * スリープ関数
+     * @param milliseconds 
+     */
+    private Sleep(milliseconds: number) {
+        return new Promise<void>(resolve => { setTimeout(() => resolve(), milliseconds); });
+    }
+
+    /**
      * 
      */
     public OnRoomOpen() {
@@ -41,13 +49,13 @@ export default class SWStreamListener implements ISWRoom {
         //  受信モードでRoomに接続すると、SFUのストリーム通知が来ないケースがある。
         //  PeerJoin / PeerLeave が発生すると stream通知が来るようなので、SkyWay側での対応されるまでの暫定対応
         SWPeer.GetApiKey((apikey) => {
-
             let peer = new Peer({ key: apikey, debug: 1 }) as any;
-
-            peer.on('open', () => {
+            peer.on('open', 　async () => {
+                await this.Sleep(1000);
                 let name = this._swRoom.RoomName;
                 let room = peer.joinRoom(name, { mode: "sfu" });
-                room.on('open', () => {
+                room.on('open', async () => {
+                    await this.Sleep(2000);
                     peer.destroy();
                 });
             });

@@ -6,7 +6,7 @@ import CastSelectorView from "./CastSelectorView";
 
 export default class CastSelectorController {
 
-    public FrameCount = 4;
+    public FrameCount = 6;
     public Servants: ServantMap;
 
     private _ownerController: HomeVisitorController;
