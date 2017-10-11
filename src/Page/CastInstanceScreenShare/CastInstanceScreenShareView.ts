@@ -35,7 +35,8 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let option1 = document.getElementById('sbj-screenshare-option-1') as HTMLInputElement;
         let option2 = document.getElementById('sbj-screenshare-option-2') as HTMLInputElement;
         let option3 = document.getElementById('sbj-screenshare-option-3') as HTMLInputElement;
-
+        let option4 = document.getElementById('sbj-screenshare-option-4') as HTMLInputElement;
+        
         let mainElement = document.getElementById('sbj-cast-instance-main');
         let noExtElement = document.getElementById('sbj-cast-instance-main-no-extension');
 
@@ -73,9 +74,10 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             let width = 0;
             let height = 0;
             if (option0.checked) { option = 0; }
-            if (option1.checked) { option = 1; width = 640; height = 480; }
-            if (option2.checked) { option = 2; width = 800; height = 600; }
-            if (option3.checked) { option = 3; width = 1024; height = 768; }
+            if (option1.checked) { option = 1; width = 512; height = 384; }
+            if (option2.checked) { option = 2; width = 640; height = 360; }
+            if (option3.checked) { option = 3; width = 800; height = 600; }
+            if (option4.checked) { option = 4; width = 960; height = 540; }
             let fr = Number.parseInt(framerateRange.value);
 
             LocalCache.SetScreenShareOptions((opt) => {

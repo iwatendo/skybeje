@@ -38,11 +38,11 @@
 
                 <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
                     <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                    <i class="material-icons">play_arrow</i>
-                        &nbsp;開始&nbsp;
+                        <i class="material-icons">screen_share</i>
+                        &nbsp;共有する画面の選択&nbsp;
                     </button>
                     <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
-                    <i class="material-icons">stop</i>
+                        <i class="material-icons">stop</i>
                         &nbsp;停止&nbsp;
                     </button>
                     <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
@@ -53,20 +53,24 @@
                         <h6 class="sbj-screenshare-label mdl-color-text--grey-600">配信解像度</h6>
                         <div class="sbj-screenshare-resolution">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-1">
-                                <input type="radio" id="sbj-screenshare-option-1" class="mdl-radio__button" name="sbj-screenshare-option" value="1" checked>
-                                <span class="mdl-radio__label">640 ✕ 480</span>
+                                <input type="radio" id="sbj-screenshare-option-1" class="mdl-radio__button" name="sbj-screenshare-option" value="1" checked/>
+                                <span class="mdl-radio__label">低：縦横比 4:3</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-2">
-                                <input type="radio" id="sbj-screenshare-option-2" class="mdl-radio__button" name="sbj-screenshare-option" value="2">
-                                <span class="mdl-radio__label">800 ✕ 600</span>
+                                <input type="radio" id="sbj-screenshare-option-2" class="mdl-radio__button" name="sbj-screenshare-option" value="2" />
+                                <span class="mdl-radio__label">低：縦横比 16:9</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-3">
-                                <input type="radio" id="sbj-screenshare-option-3" class="mdl-radio__button" name="sbj-screenshare-option" value="3">
-                                <span class="mdl-radio__label">1024 ✕ 768</span>
+                                <input type="radio" id="sbj-screenshare-option-3" class="mdl-radio__button" name="sbj-screenshare-option" value="3" />
+                                <span class="mdl-radio__label">中：縦横比 4:3</span>
+                            </label>
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-4">
+                                <input type="radio" id="sbj-screenshare-option-4" class="mdl-radio__button" name="sbj-screenshare-option" value="4" />
+                                <span class="mdl-radio__label">中：縦横比 16:9</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-0">
-                                <input type="radio" id="sbj-screenshare-option-0" class="mdl-radio__button" name="sbj-screenshare-option" value="0">
-                                <span class="mdl-radio__label">選択画面の解像度</span>
+                                <input type="radio" id="sbj-screenshare-option-0" class="mdl-radio__button" name="sbj-screenshare-option" value="0" />
+                                <span class="mdl-radio__label">高：選択画面の解像度</span>
                             </label>
                         </div>
                         <div>
@@ -85,8 +89,10 @@
                 </div>
                 <div class="sbj-split-right">
                     <h6 class="sbj-screenshare-note mdl-color-text--grey-600" id="sbj-screenshare-note">
-                        注意事項<br/>
-                        <br/> 高解像度／高フレームレートでの利用は CPU に高い負荷が掛かります。接続人数に応じて負荷が増加する事にも注意してください。<br/>
+                        注意事項
+                        <br/>
+                        <br/> 高解像度／高フレームレートでの利用は CPU に高い負荷が掛かります。接続人数に応じて負荷が増加する事にも注意してください。
+                        <br/>
                         <br/> 受信側の方にも負荷が掛かるため、低解像度／低フレームレートから試すことをお勧めします。
                         <br/>
                     </h6>
@@ -94,23 +100,27 @@
             </main>
 
             <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
-                    
-            <main id="sbj-cast-instance-main-no-extension" hidden class="mdl-layout__content">
-                <h6 class="sbj-screenshare-note">
-                    スクリーンシェア機能を利用するには、<br/> 以下の Chrome Extension の追加が必要です。<br/>
-                    <br/>
-                    <a href="https://chrome.google.com/webstore/detail/skybeje-screen-share/ofehfbpdidnjcafogdedlnghhcijgpdd?hl=ja" target="_blank">SyBeje Screen Share Extension</a><br/>
-                    <br/>※Extensionの追加後、このダイアログを再読込してください。<br/>
-                    <a href="" onclick="location.reload()">ダイアログの再読込</a>
-                </h6>
-            </main>
 
+                <main id="sbj-cast-instance-main-no-extension" hidden class="mdl-layout__content">
+                    <h6 class="sbj-screenshare-note">
+                        スクリーンシェア機能を利用するには、
+                        <br/> 以下の Chrome Extension の追加が必要です。
+                        <br/>
+                        <br/>
+                        <a href="https://chrome.google.com/webstore/detail/skybeje-screen-share/ofehfbpdidnjcafogdedlnghhcijgpdd?hl=ja" target="_blank">SyBeje Screen Share Extension</a>
+                        <br/>
+                        <br/>※Extensionの追加後、このダイアログを再読込してください。
+                        <br/>
+                        <a href="" onclick="location.reload()">ダイアログの再読込</a>
+                    </h6>
+                </main>
+
+            </div>
         </div>
-    </div>
 
-    <script src="/lib/react.min.js"></script>
-    <script src="/lib/react-dom.min.js"></script>
-    <script src="bundle.js?v={version}"></script>
+        <script src="/lib/react.min.js"></script>
+        <script src="/lib/react-dom.min.js"></script>
+        <script src="bundle.js?v={version}"></script>
 
 </body>
 
