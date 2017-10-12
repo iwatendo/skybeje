@@ -116,8 +116,8 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public SetStreaming() {
 
-        StreamUtil.SetStreaming(this.AudioSource, this.VideoSource, (stream) => {
-            WebRTCService.SetStreaming(stream);
+        StreamUtil.GetStreaming(this.AudioSource, this.VideoSource, (stream) => {
+            WebRTCService.StartStreaming(stream);
         });
 
         //  オーナー 及び 接続クライアントに通知

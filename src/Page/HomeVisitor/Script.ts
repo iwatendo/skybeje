@@ -15,7 +15,9 @@ if (StdUtil.IsExecute()) {
     db.Connect(() => {
         let server = new HomeVisitorController();
         let instanceId = LinkUtil.GetPeerID();
-        WebRTCService.Start(server, instanceId);
+        WebRTCService.Start(server, instanceId, () => {
+            WebRTCService.OwnerRoomJoin(instanceId);
+        });
     });
 
 }

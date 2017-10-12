@@ -4,38 +4,61 @@ import LocalCache from "./LocalCache";
 import SWPeer from "./Connect/SWPeer";
 import SWRoomController from "./Connect/SWRoomController";
 
+
 export default class WebRTCService {
 
     private static _swPeer: SWPeer;
     private static _swRoomController: SWRoomController;
 
     /**
-     * WebRTCServiceの起動
-     * @param service
-     * @param ownerid
-     * @param name
+     * サービス開始
+     * @param service 
+     * @param ownerid 
      */
-    public static Start(service: IServiceController, ownerid: string, videoElement: HTMLVideoElement = null) {
+    public static Start(service: IServiceController, ownerid: string, callback = null) {
 
         Sender.Uid = LocalCache.UserID;
 
-        this._swPeer = new SWPeer(service, ownerid, (swp) => {
-            if (videoElement) {
-                //  受信用
-                this._swRoomController = new SWRoomController(this._swPeer, ownerid);
-                this._swRoomController.SetVideoElement(ownerid, videoElement);
+        this._swPeer = new SWPeer(service, ownerid, () => {
+            if (callback) {
+                callback();
             }
         });
     }
 
 
     /**
+     * ※オーナーPeerIDのRoomに接続します
+     * @param ownerid 
+     * @param videoElement 
+     */
+    public static OwnerRoomJoin(ownerid: string, videoElement: HTMLVideoElement = null) {
+
+        this._swRoomController = new SWRoomController(this._swPeer, ownerid);
+
+        if (videoElement) {
+            this._swRoomController.SetVideoElement(ownerid, videoElement);
+        }
+    }
+
+
+    /**
      * ストリーミング開始
+     * CastInstance等の、配信オーナーが呼ぶ処理
      * @param stream 
      */
-    public static SetStreaming(stream) {
-        //  送信用
+    public static StartStreaming(stream) {
+        //  自身のPeerIDでRoom生成します
         this._swRoomController = new SWRoomController(this._swPeer, this._swPeer.PeerId);
+        this._swRoomController.SetStream(stream);
+    }
+
+
+    /**
+     * ストリーミングの追加
+     * @param stream 
+     */
+    public static AddStreaming(stream) {
         this._swRoomController.SetStream(stream);
     }
 

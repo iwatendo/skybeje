@@ -154,12 +154,34 @@ export default class StreamUtil {
 
 
     /**
+     * デフォルトのマイクを取得します
+     * @param callback 
+     */
+    public static GetDefaultMic(callback: OnGetMediaStream) {
+
+        if (!StdUtil.IsSafari()) {
+            this.VideoMute();
+            this.AudioMute();
+        }
+
+
+        navigator.getUserMedia({ audio: true, video: false }, (stream) => {
+            this.LocalStream = stream;
+            callback(stream);
+        }, (err: MediaStreamError) => {
+            LogUtil.Error(this.Service, err.name);
+            LogUtil.Error(this.Service, err.message);
+        });
+    }
+
+
+    /**
      * 
      * @param audioSource 
      * @param videoSource 
      * @param callback 
      */
-    public static SetStreaming(audioSource: string, videoSource: string, callback: OnGetMediaStream) {
+    public static GetStreaming(audioSource: string, videoSource: string, callback: OnGetMediaStream) {
 
         if (!StdUtil.IsSafari()) {
             this.VideoMute();
@@ -185,7 +207,7 @@ export default class StreamUtil {
      * @param fr 
      * @param callback 
      */
-    public static SetScreenSheare(width: number, height: number, fr: number, callback: OnGetMediaStream) {
+    public static GetScreenSheare(width: number, height: number, fr: number, callback: OnGetMediaStream) {
         this.GetScreenShareMediaStream(width, height, fr, (stream) => {
             this.LocalStream = stream;
             callback(stream);

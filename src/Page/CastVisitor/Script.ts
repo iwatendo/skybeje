@@ -5,5 +5,8 @@ import CastVisitorController from "./CastVisitorController";
 
 if (StdUtil.IsExecute()) {
     let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
-    WebRTCService.Start(new CastVisitorController(), LinkUtil.GetPeerID(), videoElement);
+    let ownerId = LinkUtil.GetPeerID();
+    WebRTCService.Start(new CastVisitorController(), ownerId, () => {
+        WebRTCService.OwnerRoomJoin(ownerId, videoElement);
+    });
 }

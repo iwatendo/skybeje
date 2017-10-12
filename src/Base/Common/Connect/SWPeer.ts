@@ -4,7 +4,7 @@ import SWConnectionCache from "./SWConnectionCache";
 import { IServiceController } from "../IServiceController";
 
 
-interface OnSWPeerOpen { (swPeer: SWPeer): void }
+interface OnSWPeerOpen { (): void }
 
 export default class SWPeer {
 
@@ -128,7 +128,7 @@ export default class SWPeer {
             }
 
             if (this._opencb) {
-                this._opencb(this);
+                this._opencb();
             }
         });
 

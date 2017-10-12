@@ -140,8 +140,8 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
      */
     public SetStreaming(width: number, height: number, fr: number, callback) {
 
-        StreamUtil.SetScreenSheare(width, height, fr, (stream) => {
-            WebRTCService.SetStreaming(stream);
+        StreamUtil.GetScreenSheare(width, height, fr, (stream) => {
+            WebRTCService.StartStreaming(stream);
             this.ServerSend(true, false);
             callback();
         });

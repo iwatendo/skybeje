@@ -57,8 +57,18 @@ export default class SWRoomController implements ISWRoom {
      * 
      * @param peerid 
      */
-    public GetVideoElement(peerid) {
-        return this._elementMap.get(peerid);
+    public GetVideoElement(peerid): HTMLVideoElement {
+
+        if (this._elementMap.has(peerid)) {
+            return this._elementMap.get(peerid);
+        }
+        else {
+            let newElement: HTMLVideoElement = document.createElement('video');
+            newElement.id = peerid;
+            this._elementMap.set(peerid, newElement);
+            return newElement;
+        }
+
     }
 
 
@@ -92,7 +102,7 @@ export default class SWRoomController implements ISWRoom {
         });
     }
 
-    
+
     /**
      * 
      */
