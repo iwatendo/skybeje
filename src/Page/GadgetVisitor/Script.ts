@@ -4,5 +4,5 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import GadgetVisitorController from "./GadgetVisitorController";
 
 if (StdUtil.IsExecute()) {
-    WebRTCService.Start(new GadgetVisitorController(), LinkUtil.GetPeerID(), "GadgetVisitor");
+    WebRTCService.Start(new GadgetVisitorController(), LinkUtil.GetPeerID());
 }

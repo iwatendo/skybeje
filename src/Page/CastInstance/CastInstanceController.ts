@@ -13,6 +13,7 @@ import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
 import { CastSettingSender } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
+import StreamUtil from "../../Base/Util/StreamUtil";
 
 
 export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
@@ -115,8 +116,9 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public SetStreaming() {
 
-        //
-        WebRTCService.SetStreaming(this.AudioSource, this.VideoSource);
+        StreamUtil.SetStreaming(this.AudioSource, this.VideoSource, (stream) => {
+            WebRTCService.SetStreaming(stream);
+        });
 
         //  オーナー 及び 接続クライアントに通知
         this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);

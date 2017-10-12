@@ -15,5 +15,5 @@ if (StdUtil.IsExecute(true)) {
         navigator.getUserMedia({ video: true, audio: true }, (stream) => { reload(); }, (err) => { reload(); });
     }
 
-    WebRTCService.Start(new CastInstanceController(), LinkUtil.GetPeerID(), "CastInstance");
+    WebRTCService.Start(new CastInstanceController(), LinkUtil.GetPeerID());
 }

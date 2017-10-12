@@ -21,7 +21,7 @@ if (StdUtil.IsExecute()) {
         //  オーナー接続できた場合、多重起動された状態なので強制終了の通知を出す
         let ownerID = LocalCache.BootHomeInstancePeerID;
 
-        WebRTCService.Start(server, ownerID, "HomeInstance");
+        WebRTCService.Start(server, ownerID);
     });
 
 }

@@ -5,5 +5,5 @@ import LocalCache from "../../Base/Common/LocalCache";
 import GadgetInstanceController from "./GadgetInstanceController";
 
 if (StdUtil.IsExecute()) {
-    WebRTCService.Start(new GadgetInstanceController(), LinkUtil.GetPeerID(), "GadgetInstance");
+    WebRTCService.Start(new GadgetInstanceController(), LinkUtil.GetPeerID());
 }

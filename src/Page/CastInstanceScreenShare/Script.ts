@@ -4,5 +4,5 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
 
 if (StdUtil.IsExecute()) {
-    WebRTCService.Start(new CastInstanceScreenShareController(), LinkUtil.GetPeerID(), "CastInstanceScreenShare");
+    WebRTCService.Start(new CastInstanceScreenShareController(), LinkUtil.GetPeerID());
 }

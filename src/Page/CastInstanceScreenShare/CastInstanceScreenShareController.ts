@@ -13,6 +13,7 @@ import CastInstanceScreenShareModel from "./CastInstanceScreenShareModel";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
 import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastInstanceScreenShareReceiver } from "./CastInstanceScreenShareReceiver";
+import StreamUtil from "../../Base/Util/StreamUtil";
 
 
 export default class CastInstanceScreenShareController extends AbstractServiceController<CastInstanceScreenShareView, CastInstanceScreenShareModel> {
@@ -139,12 +140,12 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
      */
     public SetStreaming(width: number, height: number, fr: number, callback) {
 
-        //
-        WebRTCService.SetScreenSheare(width, height, fr, () => {
-            //  オーナー 及び 接続クライアントに通知
+        StreamUtil.SetScreenSheare(width, height, fr, (stream) => {
+            WebRTCService.SetStreaming(stream);
             this.ServerSend(true, false);
             callback();
         });
+
     }
 
 
