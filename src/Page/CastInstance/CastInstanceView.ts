@@ -7,6 +7,8 @@ import LocalCache from "../../Base/Common/LocalCache";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
+import LogUtil from "../../Base/Util/LogUtil";
+import StreamUtil from "../../Base/Util/StreamUtil";
 
 import { DeviceView } from "./Device/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
@@ -14,7 +16,6 @@ import { CastSettingSender, CastSpeechRecognitionSender } from "./CastInstanceCo
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Base/Common/AbstractDialogController";
 import SettingDialogController from "./SettingDialog/SettingDialogController";
-import LogUtil from "../../Base/Util/LogUtil";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -231,10 +232,10 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 this.ChnageDevice();
 
                 if (deviceId) {
-                    WebRTCService.SetPreview(previewElement, deviceId);
+                    StreamUtil.SetPreview(previewElement, deviceId);
                 }
                 else {
-                    WebRTCService.StopPreview(previewElement);
+                    StreamUtil.StopPreview(previewElement);
                 }
             });
 

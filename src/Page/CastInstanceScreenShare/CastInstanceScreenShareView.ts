@@ -10,6 +10,7 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
 import { CastSettingSender, CastSpeechRecognitionSender } from "../CastInstance/CastInstanceContainer";
+import StreamUtil from "../../Base/Util/StreamUtil";
 
 export default class CastInstanceScreenShareView extends AbstractServiceView<CastInstanceScreenShareController> {
 
@@ -36,12 +37,12 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let option2 = document.getElementById('sbj-screenshare-option-2') as HTMLInputElement;
         let option3 = document.getElementById('sbj-screenshare-option-3') as HTMLInputElement;
         let option4 = document.getElementById('sbj-screenshare-option-4') as HTMLInputElement;
-        
+
         let mainElement = document.getElementById('sbj-cast-instance-main');
         let noExtElement = document.getElementById('sbj-cast-instance-main-no-extension');
 
         window.onload = () => {
-            if (!WebRTCService.IsEnabledExtension()) {
+            if (!StreamUtil.IsEnabledExtension()) {
                 mainElement.hidden = true;
                 noExtElement.hidden = false;
             }

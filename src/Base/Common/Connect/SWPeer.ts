@@ -2,7 +2,6 @@ import Sender from "../../Container/Sender";
 import LogUtil from "../../Util/LogUtil";
 import SWConnectionCache from "./SWConnectionCache";
 import { IServiceController } from "../IServiceController";
-import SWStream from "./SWStream";
 
 
 interface OnSWPeerOpen { (swPeer: SWPeer): void }
@@ -10,7 +9,6 @@ interface OnSWPeerOpen { (swPeer: SWPeer): void }
 export default class SWPeer {
 
     private _peer: any;
-    private _swStream: SWStream;
     private _owner: PeerJs.DataConnection;
     private _connCache: SWConnectionCache;
     private _service: IServiceController;
@@ -32,24 +30,16 @@ export default class SWPeer {
     /**
      * 
      */
+    public get OwnerPeerId(): string {
+        return (this._owner ? this._owner.peer : "");
+    }
+
+
+    /**
+     * 
+     */
     public get Service(): IServiceController {
         return this._service;
-    }
-
-
-    /**
-     * 
-     */
-    public set SWStream(stream: SWStream) {
-        this._swStream = stream;
-    }
-
-
-    /**
-     * 
-     */
-    public get SWStream(): SWStream {
-        return this._swStream;
     }
 
 

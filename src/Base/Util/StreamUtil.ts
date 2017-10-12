@@ -1,33 +1,18 @@
-import StdUtil from "../../Util/StdUtil";
-import LogUtil from "../../Util/LogUtil";
-import { IServiceController } from "../IServiceController";
-import SWPeer from "./SWPeer";
-import SWRoom, { ISWRoom, SWRoomMode } from "./SWRoom";
-
+import StdUtil from "./StdUtil";
+import LogUtil from "./LogUtil";
+import { IServiceController } from "../Common/IServiceController";
 
 interface OnGetMediaStream { (stream: MediaStream): void }
 declare var SkyWay: any;
 
-export default class SWStream implements ISWRoom {
+export default class StreamUtil {
 
-    public _service: IServiceController;
-    public _swPeer: SWPeer;
-    public _swRoom: SWRoom;
-    public _localStream: MediaStream;
-    public _previewStream: MediaStream;
-    public _screenShare = null;
-    public _existingCallList: Array<PeerJs.MediaConnection>;
+    public static Service: IServiceController;
+    public static LocalStream: MediaStream;
 
-
-    /**
-     * コンストラクタ
-     * @param service 
-     * @param peer 
-     */
-    constructor(service: IServiceController, peer: SWPeer) {
-        this._service = service;
-        this._swPeer = peer;
-    }
+    private static _previewStream: MediaStream;
+    private static _screenShare = null;
+    private static _existingCallList: Array<PeerJs.MediaConnection>;
 
 
     /**
@@ -35,7 +20,7 @@ export default class SWStream implements ISWRoom {
      * @param element 
      * @param videoSource 
      */
-    public SetPreview(element: HTMLVideoElement, videoSource: string) {
+    public static SetPreview(element: HTMLVideoElement, videoSource: string) {
         if (element) {
             this.GetMediaStream(videoSource, "", (stream) => {
                 this.StartPreview(element, stream);
@@ -49,7 +34,7 @@ export default class SWStream implements ISWRoom {
      * @param element 
      * @param stream メディアストリーム
      */
-    public StartPreview(element: HTMLVideoElement, stream: MediaStream) {
+    public static StartPreview(element: HTMLVideoElement, stream: MediaStream) {
         this._previewStream = stream;
         element.src = null;
 
@@ -66,7 +51,7 @@ export default class SWStream implements ISWRoom {
      * プレビュー停止
      * @param element 
      */
-    public StopPreview(element: HTMLVideoElement) {
+    public static StopPreview(element: HTMLVideoElement) {
         if (this._previewStream) {
             if (this._previewStream.getVideoTracks().length > 0) {
                 this._previewStream.getVideoTracks()[0].stop();
@@ -82,7 +67,7 @@ export default class SWStream implements ISWRoom {
      * @param audioSource 
      * @param callback 
      */
-    public GetMediaStream(videoSource: string, audioSource: string, callback: OnGetMediaStream) {
+    private static GetMediaStream(videoSource: string, audioSource: string, callback: OnGetMediaStream) {
 
         let constraints = this.GetMediaTrackConstraints(videoSource, audioSource);
 
@@ -90,8 +75,8 @@ export default class SWStream implements ISWRoom {
             (stream) => {
                 callback(stream);
             }, (err: MediaStreamError) => {
-                LogUtil.Error(this._service, err.name);
-                LogUtil.Error(this._service, err.message);
+                LogUtil.Error(this.Service, err.name);
+                LogUtil.Error(this.Service, err.message);
             }
         );
     }
@@ -102,7 +87,7 @@ export default class SWStream implements ISWRoom {
      * @param videoSource 
      * @param audioSource 
      */
-    private GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
+    private static GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
 
         let result: MediaStreamConstraints = {
             video: (videoSource ? { advanced: ([{ deviceId: videoSource }]) } : false),
@@ -116,7 +101,7 @@ export default class SWStream implements ISWRoom {
     /**
      * Skybeje Screen Share Extensionのインストール有無確認
      */
-    public IsEnabledExtension(): boolean {
+    public static IsEnabledExtension(): boolean {
         if (!this._screenShare) {
             this._screenShare = new SkyWay.ScreenShare({ debug: true });
         }
@@ -132,7 +117,7 @@ export default class SWStream implements ISWRoom {
      * @param fr 
      * @param callback 
      */
-    public GetScreenShareMediaStream(width: number, height: number, fr: number, callback: OnGetMediaStream) {
+    private static GetScreenShareMediaStream(width: number, height: number, fr: number, callback: OnGetMediaStream) {
 
         if (!this._screenShare) {
             this._screenShare = new SkyWay.ScreenShare({ debug: true });
@@ -157,8 +142,8 @@ export default class SWStream implements ISWRoom {
                 (stream) => {
                     callback(stream);
                 }, (err: MediaStreamError) => {
-                    LogUtil.Error(this._service, err.name);
-                    LogUtil.Error(this._service, err.message);
+                    LogUtil.Error(this.Service, err.name);
+                    LogUtil.Error(this.Service, err.message);
                 }, () => {
                 });
         } else {
@@ -169,11 +154,12 @@ export default class SWStream implements ISWRoom {
 
 
     /**
-     * ストリーミング設定
-     * @param audioSource
-     * @param videoSource
+     * 
+     * @param audioSource 
+     * @param videoSource 
+     * @param callback 
      */
-    public SetStreaming(audioSource: string, videoSource: string) {
+    public static SetStreaming(audioSource: string, videoSource: string, callback: OnGetMediaStream) {
 
         if (!StdUtil.IsSafari()) {
             this.VideoMute();
@@ -182,7 +168,8 @@ export default class SWStream implements ISWRoom {
 
         if (videoSource || audioSource) {
             this.GetMediaStream(videoSource, audioSource, (stream) => {
-                this.StartStreaming(stream);
+                this.LocalStream = stream;
+                callback(stream);
             });
         }
         else {
@@ -198,38 +185,19 @@ export default class SWStream implements ISWRoom {
      * @param fr 
      * @param callback 
      */
-    public SetScreenSheare(width: number, height: number, fr: number, callback) {
+    public static SetScreenSheare(width: number, height: number, fr: number, callback: OnGetMediaStream) {
         this.GetScreenShareMediaStream(width, height, fr, (stream) => {
-            this.StartStreaming(stream);
-            callback();
+            this.LocalStream = stream;
+            callback(stream);
         });
-    }
-
-
-    /**
-     * ストリーミングを開始します
-     * @param stream 
-     */
-    private StartStreaming(stream) {
-
-        //  ストリーミング開始 / 設定変更
-        this._localStream = stream;
-
-        if (this._swRoom) {
-            this._swRoom.Close();
-        }
-
-        let mode = SWRoomMode.Default;
-        let name = this._swPeer.PeerId;
-        this._swRoom = new SWRoom(this, this._swPeer, name, mode, stream);
     }
 
 
     /**
      * 
      */
-    private ClearStreaming() {
-        this._localStream = null;
+    private static ClearStreaming() {
+        this.LocalStream = null;
 
         if (this._existingCallList) {
             this._existingCallList.forEach(exc => {
@@ -243,103 +211,35 @@ export default class SWStream implements ISWRoom {
     /**
      * 動画配信のミュート
      */
-    public VideoMute() {
-        if (this._localStream)
-            if (this._localStream.getVideoTracks().length > 0)
-                this._localStream.getVideoTracks()[0].stop();
+    public static VideoMute() {
+        if (this.LocalStream)
+            if (this.LocalStream.getVideoTracks().length > 0)
+                this.LocalStream.getVideoTracks()[0].stop();
     }
 
 
     /**
      *  音声配信のミュート
      */
-    public AudioMute() {
-        if (this._localStream)
-            if (this._localStream.getAudioTracks().length > 0)
-                this._localStream.getAudioTracks()[0].stop();
+    public static AudioMute() {
+        if (this.LocalStream)
+            if (this.LocalStream.getAudioTracks().length > 0)
+                this.LocalStream.getAudioTracks()[0].stop();
     }
 
 
     /**
      * 一時停止 / 再開
      */
-    public set Puase(value: boolean) {
-        if (this._localStream) {
-            if (this._localStream.getVideoTracks().length > 0) {
-                this._localStream.getVideoTracks()[0].enabled = !value;
+    public static set Puase(value: boolean) {
+        if (this.LocalStream) {
+            if (this.LocalStream.getVideoTracks().length > 0) {
+                this.LocalStream.getVideoTracks()[0].enabled = !value;
             }
-            if (this._localStream.getAudioTracks().length > 0) {
-                this._localStream.getAudioTracks()[0].enabled = !value;
+            if (this.LocalStream.getAudioTracks().length > 0) {
+                this.LocalStream.getAudioTracks()[0].enabled = !value;
             }
         }
     }
-
-
-    /**
-     * 
-     */
-    public OnRoomOpen() {
-    }
-
-
-    /**
-     * 
-     * @param err 
-     */
-    public OnRoomError(err: any) {
-        LogUtil.Error(this._service, err.toString());
-    }
-
-
-    /**
-     * 
-     */
-    public OnRoomClose() {
-        this._swRoom = null;
-    }
-
-
-    /**
-     * 
-     * @param peerid 
-     */
-    public OnRoomPeerJoin(peerid: string) {
-    }
-
-
-    /**
-     * 
-     * @param peerid 
-     */
-    public OnRoomPeerLeave(peerid: string) {
-    }
-
-
-    /**
-     * 
-     * @param peerid 
-     * @param recv 
-     */
-    public OnRoomRecv(peerid: string, recv: any) {
-    }
-
-
-    /**
-     * 
-     * @param peerid 
-     * @param stream 
-     */
-    public OnRoomStream(peerid: string, stream: any) {
-    }
-
-
-    /**
-     * 
-     * @param peerid 
-     * @param stream 
-     */
-    public OnRoomRemoveStream(peerid: string, stream: any) {
-    }
-
 
 }

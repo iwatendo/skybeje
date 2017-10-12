@@ -8,27 +8,57 @@ import SWRoom, { ISWRoom, SWRoomMode } from "./SWRoom";
 interface OnGetMediaStream { (stream: MediaStream): void }
 declare var SkyWay: any;
 
-export default class SWStreamListener implements ISWRoom {
+export default class SWRoomController implements ISWRoom {
 
     private _service: IServiceController;
-    private _swPeer: SWPeer;
-    private _swRoom: SWRoom;
-    private _videoElement: HTMLVideoElement;
+    private _peer: PeerJs.Peer;
+    private _elementMap = new Map<string, HTMLVideoElement>();
 
+    public Room: SWRoom;
 
     /**
      * 
-     * @param service 
      * @param swPeer 
      * @param roomName 
      * @param videoElement 
      */
-    constructor(service: IServiceController, swPeer: SWPeer, roomName: string, videoElement: HTMLVideoElement) {
-        this._service = service;
-        this._swPeer = swPeer;
-        this._videoElement = videoElement;
+    constructor(swPeer: SWPeer, roomName: string) {
+        this._service = swPeer.Service;
+        this._peer = swPeer.Peer;
+        this.Room = new SWRoom(this, this._service, this._peer, roomName, SWRoomMode.Default);
+    }
 
-        this._swRoom = new SWRoom(this, swPeer, roomName, SWRoomMode.Default);
+
+    /**
+     * 
+     * @param peerid 
+     * @param videoElement 
+     */
+    public SetVideoElement(peerid: string, videoElement: HTMLVideoElement) {
+        if (this._elementMap.has(peerid)) {
+            let preElement = this._elementMap.get(peerid);
+        }
+        else {
+            this._elementMap.set(peerid, videoElement);
+        }
+    }
+
+
+    /**
+     * 
+     * @param stream 
+     */
+    public SetStream(stream: any) {
+        this.Room.SetStream(stream);
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     */
+    public GetVideoElement(peerid) {
+        return this._elementMap.get(peerid);
     }
 
 
@@ -40,19 +70,19 @@ export default class SWStreamListener implements ISWRoom {
         return new Promise<void>(resolve => { setTimeout(() => resolve(), milliseconds); });
     }
 
-    /**
-     * 
-     */
-    public OnRoomOpen() {
 
-        //  【削除予定】
-        //  受信モードでRoomに接続すると、SFUのストリーム通知が来ないケースがある。
-        //  PeerJoin / PeerLeave が発生すると stream通知が来るようなので、SkyWay側での対応されるまでの暫定対応
+    /**
+     *【削除予定】
+     * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
+     * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
+     */
+    private DummyJoin() {
+
         SWPeer.GetApiKey((apikey) => {
             let peer = new Peer({ key: apikey, debug: 1 }) as any;
-            peer.on('open', 　async () => {
+            peer.on('open', async () => {
                 await this.Sleep(1000);
-                let name = this._swRoom.RoomName;
+                let name = this.Room.RoomName;
                 let room = peer.joinRoom(name, { mode: "sfu" });
                 room.on('open', async () => {
                     await this.Sleep(2000);
@@ -60,7 +90,14 @@ export default class SWStreamListener implements ISWRoom {
                 });
             });
         });
+    }
 
+    
+    /**
+     * 
+     */
+    public OnRoomOpen() {
+        this.DummyJoin();
     }
 
 
@@ -110,9 +147,12 @@ export default class SWStreamListener implements ISWRoom {
      * @param stream 
      */
     public OnRoomStream(peerid: string, stream: any) {
-        if (this._videoElement) {
-            this._videoElement.srcObject = stream;
-            this._videoElement.play();
+
+        let element = this.GetVideoElement(peerid);
+
+        if (element) {
+            element.srcObject = stream;
+            element.play();
         }
     }
 
@@ -123,7 +163,10 @@ export default class SWStreamListener implements ISWRoom {
      * @param stream 
      */
     public OnRoomRemoveStream(peerid: string, stream: any) {
+        let element = this.GetVideoElement(peerid);
+        if (element) {
+            element.srcObject = null;
+        }
     }
-
 
 }

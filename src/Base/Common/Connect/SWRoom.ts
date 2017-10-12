@@ -3,7 +3,6 @@ import { IServiceController } from "../IServiceController";
 import SWPeer from "./SWPeer";
 
 
-
 export enum SWRoomMode {
     Default = 0,
     Mesh = 1,
@@ -42,18 +41,19 @@ export interface ISWRoom {
 
 export default class SWRoom {
 
-    private _peer: SWPeer;
+    private _peer: PeerJs.Peer;
     private _service: IServiceController;
+    private _stream: any;
     private _room: any;
     private _mode: SWRoomMode;
-    private _stream: any;
     private _sender: ISWRoom;
     private _roomName: string;
 
 
-    public set Stream(stream) {
+    public SetStream(stream) {
+
         this._stream = stream;
-        this._room.replaceStream(stream);
+        this._room.replaceStream(this._stream);
     }
 
 
@@ -88,30 +88,29 @@ export default class SWRoom {
     }
 
 
-    public get RoomName(){
+    public get RoomName() {
         return this._roomName;
     }
 
 
-    public set RoomName(name : string){
+    public set RoomName(name: string) {
         this._roomName = name;
     }
 
 
     /**
-     * 
+     * コンストラクタ
      * @param sender 
+     * @param service 
      * @param peer 
      * @param name 
      * @param mode 
-     * @param any
      */
-    constructor(sender: ISWRoom, peer: SWPeer, name: string, mode: SWRoomMode = SWRoomMode.Mesh, stream: any = null) {
+    constructor(sender: ISWRoom, service: IServiceController, peer: PeerJs.Peer, name: string, mode: SWRoomMode = SWRoomMode.Mesh) {
         this._sender = sender;
         this._peer = peer;
-        this._service = peer.Service;
+        this._service = service;
         this._mode = mode;
-        this._stream = stream;
         this._room = this.JoinRoom(name);
     }
 
@@ -120,7 +119,7 @@ export default class SWRoom {
      * ルーム名称
      * @param name 
      */
-    public static ToRoomName(name) {
+    public static ToRoomName(name: string) {
         return "skybeje_" + name;
     }
 
@@ -149,7 +148,7 @@ export default class SWRoom {
             opt = { mode: modestr };
         }
 
-        let room = this._peer.Peer.joinRoom(this.RoomName, opt);
+        let room = (this._peer as any).joinRoom(this.RoomName, opt);
 
         room.on('open', () => {
             LogUtil.Info(this._service, "SWRoom Open");
