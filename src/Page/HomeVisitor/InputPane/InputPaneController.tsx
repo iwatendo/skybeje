@@ -36,7 +36,11 @@ export default class InputPaneController {
     private _voiceRecognitionOn = document.getElementById('sbj-inputpanel-send-message-recognition-on');
     private _voiceRecognitionOff = document.getElementById('sbj-inputpanel-send-message-recognition-off');
 
-    private _voiceMic = document.getElementById('sbj-inputpanel-voicechatmic');
+    private _voiceChat = document.getElementById('sbj-inputpanel-voicechat');
+    private _voiceChatOn = document.getElementById('sbj-inputpanel-voicechat-on');
+    private _voiceChatOff = document.getElementById('sbj-inputpanel-voicechat-off');
+
+    private _voiceMic = document.getElementById('sbj-inputpanel-voicechatmic') as HTMLInputElement;
     private _voiceMicOn = document.getElementById('sbj-inputpanel-voicechatmic-on');
     private _voiceMicOff = document.getElementById('sbj-inputpanel-voicechatmic-off');
 
@@ -56,9 +60,11 @@ export default class InputPaneController {
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _lastTlmCtime: number;
+
     private _isVoiceSpeech: boolean;
     private _isVoiceRecognition: boolean;
-    private _isVoiceChatMic: boolean;
+    private _isVoiceChat: boolean;
+    private _isMicMute: boolean;
 
 
     /**
@@ -98,8 +104,12 @@ export default class InputPaneController {
             this.ChangeVoiceRecognition();
         }
 
+        this._voiceChat.onclick = (e) => {
+            this.ChangeVoiceChat();
+        }
+
         this._voiceMic.onclick = (e) => {
-            this.ChangeVoiceChatMic();
+            this.IsMicMute = !this.IsMicMute;
         }
 
         //  プロフィール画面からのダイアログクローズ通知
@@ -496,31 +506,48 @@ export default class InputPaneController {
     }
 
 
-    private _micStream = false;
-
     /**
-     * ボイスチャットの設定
+     * ボイスチャットの開始
      */
-    private ChangeVoiceChatMic() {
-        this._isVoiceChatMic = !this._isVoiceChatMic;
-        this._voiceMicOn.hidden = !this._isVoiceChatMic;
-        this._voiceMicOff.hidden = this._isVoiceChatMic;
-
-        if (this._isVoiceChatMic) {
-
-            if (!this._micStream) {
-                StreamUtil.GetDefaultMic((stream) => {
-                    WebRTCService.AddStreaming(stream);
-                    this._micStream = true;
-                });
-            }
-            else {
-                StreamUtil.Mute = false;
-            }
+    private ChangeVoiceChat() {
+        this._isVoiceChat = !this._isVoiceChat;
+        this._voiceChatOn.hidden = !this._isVoiceChat;
+        this._voiceChatOff.hidden = this._isVoiceChat;
+        this._voiceMic.disabled = !this._isVoiceChat;
+        
+        if (this._isVoiceChat) {
+            this._voiceChat.classList.remove("mdl-button--colored");
+            this._voiceChat.classList.add("mdl-button--accent");
+            StreamUtil.GetDefaultMic((stream) => {
+                this.IsMicMute = true;
+                WebRTCService.VoiceChatRoomJoin(WebRTCService.OwnerPeerId(), stream);
+            });
         }
         else {
-            StreamUtil.Mute = true;
+            this._voiceChat.classList.remove("mdl-button--accent");
+            this._voiceChat.classList.add("mdl-button--colored");
+            WebRTCService.LeaveRoom();
+            this.IsMicMute = true;
         }
+    }
+
+
+    /**
+     * マイクのミュート設定
+     */
+    private get IsMicMute(): boolean {
+        return this._isMicMute;
+    }
+
+
+    /**
+     * マイクのミュート設定
+     */
+    private set IsMicMute(value) {
+        this._isMicMute = value;
+        this._voiceMicOn.hidden = value;
+        this._voiceMicOff.hidden = !value;
+        StreamUtil.Mute = value;
     }
 
 }

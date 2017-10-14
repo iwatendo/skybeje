@@ -16,7 +16,6 @@ if (StdUtil.IsExecute()) {
         let server = new HomeVisitorController();
         let instanceId = LinkUtil.GetPeerID();
         WebRTCService.Start(server, instanceId, () => {
-            WebRTCService.CastRoomJoin(instanceId);
         });
     });
 

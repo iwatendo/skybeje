@@ -232,11 +232,11 @@ export default class StreamUtil {
      * 動画配信処理の停止
      */
     public static Stop() {
-        if (this.LocalStream){
-            if (this.LocalStream.getVideoTracks().length > 0){
+        if (this.LocalStream) {
+            if (this.LocalStream.getVideoTracks().length > 0) {
                 this.LocalStream.getVideoTracks()[0].stop();
             }
-            if (this.LocalStream.getAudioTracks().length > 0){
+            if (this.LocalStream.getAudioTracks().length > 0) {
                 this.LocalStream.getAudioTracks()[0].stop();
             }
         }
@@ -248,11 +248,20 @@ export default class StreamUtil {
      */
     public static set Mute(value) {
         if (this.LocalStream) {
-            let tracks = this.LocalStream.getAudioTracks();
-            if (tracks.length > 0) {
-                let track = tracks[0];
-                track.enabled = !value;
-            }
+            this.SetMute(this.LocalStream, value);
+        }
+    }
+
+
+    /**
+     * 指定ストリームをミュート状態にします
+     * @param stream 
+     */
+    private static SetMute(stream: any, value) {
+        let tracks = stream.getAudioTracks();
+        if (tracks.length > 0) {
+            let track = tracks[0];
+            track.enabled = !value;
         }
     }
 

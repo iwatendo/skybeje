@@ -17,15 +17,16 @@ export default class SWRoomController implements ISWRoom {
     public Room: SWRoom;
 
     /**
-     * 
+     * コンストラクタ
      * @param swPeer 
      * @param roomName 
-     * @param videoElement 
+     * @param mode 
+     * @param stream 
      */
-    constructor(swPeer: SWPeer, roomName: string, mode: SWRoomMode = SWRoomMode.Default) {
+    constructor(swPeer: SWPeer, roomName: string, mode: SWRoomMode, stream: any = null) {
         this._service = swPeer.Service;
         this._peer = swPeer.Peer;
-        this.Room = new SWRoom(this, this._service, this._peer, roomName, SWRoomMode.Default);
+        this.Room = new SWRoom(this, this._service, this._peer, roomName, mode, stream);
     }
 
 
