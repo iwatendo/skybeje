@@ -14,6 +14,8 @@ import HomeVisitorController from "../HomeVisitorController";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
 import SpeechUtil from "../../../Base/Util/SpeechUtil";
+import WebRTCService from '../../../Base/Common/WebRTCService';
+import StreamUtil from '../../../Base/Util/StreamUtil';
 
 
 export default class InputPaneController {
@@ -25,9 +27,18 @@ export default class InputPaneController {
     private _actorEditButton = document.getElementById('sbj-inputpanel-actor-edit-button');
     private _selectActorButton = document.getElementById('sbj-inputpanel-select-actor-button');
     private _sendMessageButton = document.getElementById('sbj-inputpanel-send-message-button');
+
+    private _voiceSpeech = document.getElementById('sbj-inputpanel-speech');
+    private _voiceSpeechOn = document.getElementById('sbj-inputpanel-speech-on');
+    private _voiceSpeechOff = document.getElementById('sbj-inputpanel-speech-off');
+
     private _voiceRecognition = document.getElementById('sbj-inputpanel-send-message-recognition');
     private _voiceRecognitionOn = document.getElementById('sbj-inputpanel-send-message-recognition-on');
     private _voiceRecognitionOff = document.getElementById('sbj-inputpanel-send-message-recognition-off');
+
+    private _voiceMic = document.getElementById('sbj-inputpanel-voicechatmic');
+    private _voiceMicOn = document.getElementById('sbj-inputpanel-voicechatmic-on');
+    private _voiceMicOff = document.getElementById('sbj-inputpanel-voicechatmic-off');
 
     private _unreadElement = document.getElementById('sbj-unread-count');
     private _otherRoomList = document.getElementById('sbj-inputpanel-other-room-list');
@@ -45,7 +56,9 @@ export default class InputPaneController {
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _lastTlmCtime: number;
+    private _isVoiceSpeech: boolean;
     private _isVoiceRecognition: boolean;
+    private _isVoiceChatMic: boolean;
 
 
     /**
@@ -77,8 +90,16 @@ export default class InputPaneController {
             this._controller.ChangeCurrentActor(aid);
         }
 
+        this._voiceSpeech.onclick = (e) => {
+            this.ChangeVoiceSpeech();
+        }
+
         this._voiceRecognition.onclick = (e) => {
-            this.ChnageVoiceRecognition();
+            this.ChangeVoiceRecognition();
+        }
+
+        this._voiceMic.onclick = (e) => {
+            this.ChangeVoiceChatMic();
         }
 
         //  プロフィール画面からのダイアログクローズ通知
@@ -434,9 +455,19 @@ export default class InputPaneController {
 
 
     /**
+     * チャットのテキスト読上げ有無
+     */
+    private ChangeVoiceSpeech() {
+        this._isVoiceSpeech = !this._isVoiceSpeech;
+        this._voiceSpeechOn.hidden = !this._isVoiceSpeech;
+        this._voiceSpeechOff.hidden = this._isVoiceSpeech;
+    }
+
+
+    /**
      * 音声認識によるチャットメッセージ入力
      */
-    private ChnageVoiceRecognition() {
+    private ChangeVoiceRecognition() {
         this._isVoiceRecognition = !this._isVoiceRecognition;
 
         this._voiceRecognitionOn.hidden = !this._isVoiceRecognition;
@@ -461,6 +492,34 @@ export default class InputPaneController {
         else {
             SpeechUtil.StopSpeechRecognition();
             this._textareaElement.disabled = false;
+        }
+    }
+
+
+    private _micStream = false;
+
+    /**
+     * ボイスチャットの設定
+     */
+    private ChangeVoiceChatMic() {
+        this._isVoiceChatMic = !this._isVoiceChatMic;
+        this._voiceMicOn.hidden = !this._isVoiceChatMic;
+        this._voiceMicOff.hidden = this._isVoiceChatMic;
+
+        if (this._isVoiceChatMic) {
+
+            if (!this._micStream) {
+                StreamUtil.GetDefaultMic((stream) => {
+                    WebRTCService.AddStreaming(stream);
+                    this._micStream = true;
+                });
+            }
+            else {
+                StreamUtil.Mute = false;
+            }
+        }
+        else {
+            StreamUtil.Mute = true;
         }
     }
 

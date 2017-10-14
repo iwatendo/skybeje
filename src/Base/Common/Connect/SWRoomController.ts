@@ -22,7 +22,7 @@ export default class SWRoomController implements ISWRoom {
      * @param roomName 
      * @param videoElement 
      */
-    constructor(swPeer: SWPeer, roomName: string) {
+    constructor(swPeer: SWPeer, roomName: string, mode: SWRoomMode = SWRoomMode.Default) {
         this._service = swPeer.Service;
         this._peer = swPeer.Peer;
         this.Room = new SWRoom(this, this._service, this._peer, roomName, SWRoomMode.Default);
@@ -86,7 +86,7 @@ export default class SWRoomController implements ISWRoom {
      * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
      * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
      */
-    private DummyJoin() {
+    public DummyJoin() {
 
         SWPeer.GetApiKey((apikey) => {
             let peer = new Peer({ key: apikey, debug: 1 }) as any;
@@ -174,8 +174,9 @@ export default class SWRoomController implements ISWRoom {
      */
     public OnRoomRemoveStream(peerid: string, stream: any) {
         let element = this.GetVideoElement(peerid);
+
         if (element) {
-            element.srcObject = null;
+            element.pause();
         }
     }
 

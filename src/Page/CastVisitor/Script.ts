@@ -7,6 +7,6 @@ if (StdUtil.IsExecute()) {
     let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
     let ownerId = LinkUtil.GetPeerID();
     WebRTCService.Start(new CastVisitorController(), ownerId, () => {
-        WebRTCService.OwnerRoomJoin(ownerId, videoElement);
+        WebRTCService.CastRoomJoin(ownerId, videoElement);
     });
 }

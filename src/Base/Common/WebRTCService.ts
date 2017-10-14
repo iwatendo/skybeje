@@ -3,6 +3,7 @@ import Sender from "../Container/Sender";
 import LocalCache from "./LocalCache";
 import SWPeer from "./Connect/SWPeer";
 import SWRoomController from "./Connect/SWRoomController";
+import { SWRoomMode } from "./Connect/SWRoom";
 
 
 export default class WebRTCService {
@@ -32,10 +33,9 @@ export default class WebRTCService {
      * @param ownerid 
      * @param videoElement 
      */
-    public static OwnerRoomJoin(ownerid: string, videoElement: HTMLVideoElement = null) {
+    public static CastRoomJoin(ownerid: string, videoElement: HTMLVideoElement = null) {
 
-        this._swRoomController = new SWRoomController(this._swPeer, ownerid);
-
+        this._swRoomController = new SWRoomController(this._swPeer, ownerid, SWRoomMode.SFU);
         if (videoElement) {
             this._swRoomController.SetVideoElement(ownerid, videoElement);
         }

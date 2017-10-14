@@ -107,7 +107,7 @@
     width: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    height: calc(100% - 168px);    
+    height: calc(100% - 202px);
 }
 
 .sbj-home-visitor-disconnect-action{
@@ -162,13 +162,23 @@
 
 .sbj-inputpanel{
     position: absolute;
-    bottom: 8px;
+    bottom: 48px;
     left: 8px;
     right: 8px;
     background-color: var(--sbj-color-default-background);
     padding-left: 12px;
     border-radius: 6px;    
 }
+
+.sbj-speechpanel{
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    background-color: var(--sbj-color-default-background);
+    padding-left: 12px;
+    border-radius: 6px;    
+ }
 
 .sbj-inputpanel-icontext{
     padding:0px;
@@ -184,6 +194,11 @@
 .sbj-inputpanel-button{
     padding: 0px 8px;
 }
+
+.sbj-inputpanel-button-right{
+    float: right;
+}
+
 
 .sbj-inputpanel-actor-name{
     padding: 6px 8px 2px 12px;
@@ -230,10 +245,6 @@ textarea.sbj-inputpanel-text {
     padding: .5em 1em;
     resize: none;
     float:left;
-}
-
-#sbj-inputpanel-send-message-button{
-    float: right;
 }
 
 .sbj-icon{

@@ -160,8 +160,7 @@ export default class StreamUtil {
     public static GetDefaultMic(callback: OnGetMediaStream) {
 
         if (!StdUtil.IsSafari()) {
-            this.VideoMute();
-            this.AudioMute();
+            this.Stop();
         }
 
 
@@ -184,8 +183,7 @@ export default class StreamUtil {
     public static GetStreaming(audioSource: string, videoSource: string, callback: OnGetMediaStream) {
 
         if (!StdUtil.IsSafari()) {
-            this.VideoMute();
-            this.AudioMute();
+            this.Stop();
         }
 
         if (videoSource || audioSource) {
@@ -231,22 +229,31 @@ export default class StreamUtil {
 
 
     /**
-     * 動画配信のミュート
+     * 動画配信処理の停止
      */
-    public static VideoMute() {
-        if (this.LocalStream)
-            if (this.LocalStream.getVideoTracks().length > 0)
+    public static Stop() {
+        if (this.LocalStream){
+            if (this.LocalStream.getVideoTracks().length > 0){
                 this.LocalStream.getVideoTracks()[0].stop();
+            }
+            if (this.LocalStream.getAudioTracks().length > 0){
+                this.LocalStream.getAudioTracks()[0].stop();
+            }
+        }
     }
 
 
     /**
      *  音声配信のミュート
      */
-    public static AudioMute() {
-        if (this.LocalStream)
-            if (this.LocalStream.getAudioTracks().length > 0)
-                this.LocalStream.getAudioTracks()[0].stop();
+    public static set Mute(value) {
+        if (this.LocalStream) {
+            let tracks = this.LocalStream.getAudioTracks();
+            if (tracks.length > 0) {
+                let track = tracks[0];
+                track.enabled = !value;
+            }
+        }
     }
 
 
