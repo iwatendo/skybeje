@@ -250,18 +250,42 @@ export default class InputPaneController {
         let text = this._textareaElement.value;
 
         if (text && text.length > 0) {
-
-            let chatMessage = new ChatMessageSender();
-            let actor = this._controller.CurrentActor;
-            chatMessage.peerid = this._controller.PeerId;
-            chatMessage.aid = actor.aid;
-            chatMessage.name = actor.name;
-            chatMessage.iid = actor.dispIid;
-            chatMessage.text = text;
-            this._controller.SendChatMessage(chatMessage);
-
+            this.SendChatMessage(text);
             this._textareaElement.value = "";
         }
+    }
+
+
+    /**
+     * 音声認識のテキスト処理
+     * @param text 
+     */
+    private SendVoiceText(text) {
+
+        if (this._isVoiceChat) {
+            //  ボイスチャット中は直接メッセージ送信する
+            this.SendChatMessage(text);
+        }
+        else {
+            //  ボイスチャット中ではない場合は、テキストエリアにセットする
+            this._textareaElement.value = this._textareaElement.value + text;
+        }
+    }
+
+
+    /**
+     * メッセージ送信
+     * @param text 
+     */
+    private SendChatMessage(text: string) {
+        let chatMessage = new ChatMessageSender();
+        let actor = this._controller.CurrentActor;
+        chatMessage.peerid = this._controller.PeerId;
+        chatMessage.aid = actor.aid;
+        chatMessage.name = actor.name;
+        chatMessage.iid = actor.dispIid;
+        chatMessage.text = text;
+        this._controller.SendChatMessage(chatMessage);
     }
 
 
@@ -484,7 +508,9 @@ export default class InputPaneController {
         this._voiceRecognitionOff.hidden = this._isVoiceRecognition;
         if (this._isVoiceRecognition) {
             SpeechUtil.InitSpeechRecognition(
-                (text) => { if (text) this._textareaElement.value = this._textareaElement.value + text; }
+                (text) => {
+                    if (text) this.SendVoiceText(text);
+                }
                 , () => {
                     this._voiceRecognitionOn.classList.remove("mdl-button--colored");
                     this._voiceRecognitionOn.classList.add("mdl-button--accent");
@@ -514,7 +540,7 @@ export default class InputPaneController {
         this._voiceChatOn.hidden = !this._isVoiceChat;
         this._voiceChatOff.hidden = this._isVoiceChat;
         this._voiceMic.disabled = !this._isVoiceChat;
-        
+
         if (this._isVoiceChat) {
             this._voiceChat.classList.remove("mdl-button--colored");
             this._voiceChat.classList.add("mdl-button--accent");
