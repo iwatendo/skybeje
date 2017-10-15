@@ -64,7 +64,7 @@ export default class InputPaneController {
     private _isVoiceSpeech: boolean;
     private _isVoiceRecognition: boolean;
     private _isVoiceChat: boolean;
-    private _isMicMute: boolean;
+    private _isMicMute: boolean = true;
 
 
     /**
@@ -119,6 +119,8 @@ export default class InputPaneController {
             this._textareaElement.focus();
         }
 
+        this._isMicMute = true;
+        this._voiceMic.disabled = true;
         this._textareaElement.value = "";
         this.DisplayActor();
     }
@@ -250,7 +252,7 @@ export default class InputPaneController {
         let text = this._textareaElement.value;
 
         if (text && text.length > 0) {
-            this.SendChatMessage(text);
+            this.SendChatMessage(text, false);
             this._textareaElement.value = "";
         }
     }
@@ -264,7 +266,7 @@ export default class InputPaneController {
 
         if (this._isVoiceChat) {
             //  ボイスチャット中は直接メッセージ送信する
-            this.SendChatMessage(text);
+            this.SendChatMessage(text, true);
         }
         else {
             //  ボイスチャット中ではない場合は、テキストエリアにセットする
@@ -277,7 +279,7 @@ export default class InputPaneController {
      * メッセージ送信
      * @param text 
      */
-    private SendChatMessage(text: string) {
+    private SendChatMessage(text: string, isVoiceRecognition: boolean) {
         let chatMessage = new ChatMessageSender();
         let actor = this._controller.CurrentActor;
         chatMessage.peerid = this._controller.PeerId;
@@ -285,6 +287,8 @@ export default class InputPaneController {
         chatMessage.name = actor.name;
         chatMessage.iid = actor.dispIid;
         chatMessage.text = text;
+        chatMessage.isVoiceRecog = isVoiceRecognition;
+        chatMessage.isSpeech = this._isVoiceSpeech;
         this._controller.SendChatMessage(chatMessage);
     }
 

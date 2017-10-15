@@ -13,15 +13,44 @@ export default class SpeechUtil {
      * 音声出力処理
      * @param msg メッセージ
      */
-    private static Speech(msg: Message) {
-        let syaberi = new SpeechSynthesisUtterance();
-        syaberi.volume = 0.8;
-        syaberi.rate = 1.24;
-        syaberi.pitch = 1.00;
-        syaberi.text = msg.text;
-        syaberi.lang = "ja-JP";
-        syaberi.onend = function (event) { }
-        speechSynthesis.speak(syaberi);
+    public static Speech(text: string) {
+        let ssu = new SpeechSynthesisUtterance();
+        ssu.volume = 0.8;
+        ssu.rate = 1.00;
+        ssu.pitch = 1.00;
+        ssu.text = text;
+        ssu.lang = "ja-JP";
+        ssu.onend = function (event) { }
+        speechSynthesis.speak(ssu);
+    }
+
+
+    private static _lastCTime: number;
+
+    /**
+     * 
+     * @param startTime 
+     */
+    public static SetStartTime(startTime: number) {
+        this._lastCTime = startTime
+    }
+
+
+    /**
+     * タイムラインメッセージの読上げ
+     * @param tlmsg 
+     */
+    public static TimelineSpeech(tlmsg: Message) {
+
+        if (tlmsg.ctime > this._lastCTime) {
+
+            this._lastCTime = tlmsg.ctime;
+
+            if (tlmsg.speech) {
+                this.Speech(tlmsg.text);
+            }
+
+        }
     }
 
 
@@ -30,7 +59,7 @@ export default class SpeechUtil {
      */
 
     private static _recognition;
-    private static _isStart : boolean;
+    private static _isStart: boolean;
 
     /**
      * 音声認識処理

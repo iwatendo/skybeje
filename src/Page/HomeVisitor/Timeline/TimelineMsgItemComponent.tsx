@@ -10,6 +10,7 @@ import { UpdateTimelineSender } from "../../HomeInstance/HomeInstanceContainer";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";
 import { TimelineMsgGroup } from "./TimelineComponent";
+import SpeechUtil from '../../../Base/Util/SpeechUtil';
 
 
 /**
@@ -34,6 +35,8 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
         let isMine = this.IsMyChatMessage();
 
         let msgtext = this.props.MsgGroup.map((tlmsg) => {
+
+            SpeechUtil.TimelineSpeech(tlmsg);
 
             let mid = 'sbj-timeline-message-' + tlmsg.mid;
             let tmclass = "sbj-timeline-message" + (tlmsg.visible ? "" : " sbj-timeline-message-ignore");

@@ -14,6 +14,7 @@ export class Message {
     ctime: number;
     utime: number;
     visible: boolean;
+    speech: boolean;
 }
 
 export class Data {

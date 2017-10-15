@@ -53,6 +53,8 @@ export class ChatMessageSender extends Sender {
         this.gid = "";
         this.name = "";
         this.text = "";
+        this.isSpeech = false;
+        this.isVoiceRecog = false;
     }
 
     public aid: string;
@@ -67,6 +69,10 @@ export class ChatMessageSender extends Sender {
 
     public text: string;
 
+    public isSpeech: boolean;
+
+    public isVoiceRecog: boolean;
+    
 }
 
 

@@ -12,6 +12,7 @@ import * as CIContainer from "../CastInstance/CastInstanceContainer";
 import HomeVisitorController from "./HomeVisitorController";
 import LogUtil from "../../Base/Util/LogUtil";
 import ActorInfo from "../../Base/Container/ActorInfo";
+import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -33,6 +34,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
                 this.Controller.GetUseActors((ua) => { this.Controller.InitializeUseActors(ua); });
                 LogUtil.RemoveListener();
+                SpeechUtil.SetStartTime(ci.starttime);
             }
             else if (ci.isMultiBoot) {
                 //  多重起動が検出された場合はエラー表示して終了
@@ -179,7 +181,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         });
     }
 
-    
+
     /**
      * ガイド情報の取得
      * @param conn 
