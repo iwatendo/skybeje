@@ -21,8 +21,8 @@ export class ConnInfoSender extends Sender {
     }
 
     starttime: number;
-    isBootCheck : boolean;
-    isMultiBoot : boolean;
+    isBootCheck: boolean;
+    isMultiBoot: boolean;
 }
 
 
@@ -254,4 +254,40 @@ export class RoomServantSender extends Sender {
 
     public servants: Array<ServantSender>;
 
+}
+
+/**
+ * 
+ */
+export class VoiceChatMemberSender extends Sender {
+
+    public static ID = "VoiceChatMember";
+
+    constructor() {
+        super(VoiceChatMemberSender.ID);
+        this.peerid = "";
+        this.aid = "";
+        this.iid = "";
+        this.isMember = false;
+    }
+
+    public peerid: string;
+    public aid: string;
+    public iid: string;
+    public isMember: boolean;
+}
+
+
+/**
+ * 
+ */
+export class VoiceChatMemberListSender extends Sender {
+    public static ID = "VoiceChatMemberList";
+
+    constructor() {
+        super(VoiceChatMemberListSender.ID);
+        this.Members = null;
+    }
+
+    public Members: Array<VoiceChatMemberSender>;
 }

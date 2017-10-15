@@ -55,6 +55,16 @@ export default class SWRoomController implements ISWRoom {
 
 
     /**
+     * 接続している部屋から離脱します
+     */
+    public LeaveRoom() {
+        if (this.Room) {
+            this.Room.Close();
+        }
+    }
+
+
+    /**
      * 
      * @param peerid 
      */

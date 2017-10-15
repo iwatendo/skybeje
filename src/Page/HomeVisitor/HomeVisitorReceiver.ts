@@ -129,6 +129,11 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             }
         }
 
+        //  ボイスチャットルームメンバーの変更通知
+        if (sender.type === HIContainer.VoiceChatMemberListSender.ID) {
+            this.Controller.View.InputPane.ChangeVoiceChatMember(sender as HIContainer.VoiceChatMemberListSender);
+        }
+
     }
 
 

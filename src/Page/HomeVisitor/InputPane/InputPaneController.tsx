@@ -16,7 +16,11 @@ import RoomComponent, { RoomUnread } from "./RoomComponent";
 import SpeechUtil from "../../../Base/Util/SpeechUtil";
 import WebRTCService from '../../../Base/Common/WebRTCService';
 import StreamUtil from '../../../Base/Util/StreamUtil';
-
+import VoiceSfuRoomController from './VoiceSFURoomController';
+import { SWRoomMode } from '../../../Base/Common/Connect/SWRoom';
+import { VoiceChatMemberSender, VoiceChatMemberListSender } from '../../HomeInstance/HomeInstanceContainer';
+import { VoiceSfuRoomMemberComponent } from './VoiceSfuRoomMemberComponent';
+import IconCache from '../Cache/IconCache';
 
 export default class InputPaneController {
 
@@ -45,6 +49,7 @@ export default class InputPaneController {
     private _voiceMicOff = document.getElementById('sbj-inputpanel-voicechatmic-off');
 
     private _unreadElement = document.getElementById('sbj-unread-count');
+    private _voiceChatMenber = document.getElementById('sbj-inpupanel-voicechat-member');
     private _otherRoomList = document.getElementById('sbj-inputpanel-other-room-list');
     private _otherRoomButton = document.getElementById('sbj-inputpanel-other-room-button');
     private _otherRoomCount = document.getElementById('sbj-inputpanel-noread-other-room-count');
@@ -57,6 +62,7 @@ export default class InputPaneController {
     private _profileFrame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
 
 
+    private _sfuRoom: VoiceSfuRoomController;
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _lastTlmCtime: number;
@@ -550,15 +556,27 @@ export default class InputPaneController {
             this._voiceChat.classList.add("mdl-button--accent");
             StreamUtil.GetDefaultMic((stream) => {
                 this.IsMicMute = true;
-                WebRTCService.VoiceChatRoomJoin(WebRTCService.OwnerPeerId(), stream);
+                let peer = WebRTCService.SwPeer;
+                let ownerid = WebRTCService.OwnerPeerId();
+                this._sfuRoom = new VoiceSfuRoomController(peer, ownerid, SWRoomMode.SFU, stream, (pl) => {
+                    this.ChangeVoiceChatStreamMember(pl);
+                });
             });
         }
         else {
             this._voiceChat.classList.remove("mdl-button--accent");
             this._voiceChat.classList.add("mdl-button--colored");
-            WebRTCService.LeaveRoom();
+            this._sfuRoom.LeaveRoom();
             this.IsMicMute = true;
         }
+
+        let sender = new VoiceChatMemberSender();
+        sender.peerid = WebRTCService.PeerId();
+        sender.aid = this._controller.CurrentActor.aid;
+        sender.iid = this._controller.CurrentActor.dispIid;
+        sender.isMember = this._isVoiceChat;
+
+        WebRTCService.SendToOwner(sender);
     }
 
 
@@ -578,6 +596,33 @@ export default class InputPaneController {
         this._voiceMicOn.hidden = value;
         this._voiceMicOff.hidden = !value;
         StreamUtil.Mute = value;
+    }
+
+
+    /**
+     * 通話メンバーの変更通知（Streamの通知メンバー)
+     * @param memberPeerList 
+     */
+    public ChangeVoiceChatStreamMember(memberPeerList: Array<string>) {
+        //  こちら側はSFURoomにJoinしないと通知が来ない（通話状態じゃないと通知が来ない）為、現状未使用
+        //  表示の不整合等が発生した場合の調査用として残します。
+    }
+
+
+    /**
+     * 通話メンバーが変更された場合の処理
+     * @param meberList 
+     */
+    public ChangeVoiceChatMember(meberList: VoiceChatMemberListSender) {
+
+        let key = StdUtil.CreateUuid();
+
+        ReactDOM.render(<VoiceSfuRoomMemberComponent key={key} controller={this._controller} memberList={meberList} />, this._voiceChatMenber, () => {
+            meberList.Members.forEach((vcm) => {
+                this._controller.IconCache.GetIcon(vcm.peerid, vcm.iid);
+            });
+        });
+        
     }
 
 }

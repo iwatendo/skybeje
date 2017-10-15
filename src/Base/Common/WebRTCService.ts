@@ -11,6 +11,15 @@ export default class WebRTCService {
     private static _swPeer: SWPeer;
     private static _swRoomController: SWRoomController;
 
+
+    /**
+     * 
+     */
+    public static get SwPeer(): SWPeer {
+        return this._swPeer;
+    }
+
+
     /**
      * サービス開始
      * @param service 
@@ -43,26 +52,6 @@ export default class WebRTCService {
 
 
     /**
-     * ボイスチャットルームに接続
-     * @param ownerid 
-     * @param stream 
-     */
-    public static VoiceChatRoomJoin(ownerid: string, stream: any) {
-        this._swRoomController = new SWRoomController(this._swPeer, ownerid, SWRoomMode.SFU, stream);
-    }
-
-
-    /**
-     * SFURoomに接続している場合に部屋から抜ける
-     */
-    public static LeaveRoom() {
-        if (this._swRoomController && this._swRoomController.Room) {
-            this._swRoomController.Room.Close();
-        }
-    }
-
-
-    /**
      * ストリーミング開始
      * CastInstance等の、配信オーナーが呼ぶ処理
      * @param stream 
@@ -72,16 +61,7 @@ export default class WebRTCService {
         this._swRoomController = new SWRoomController(this._swPeer, this._swPeer.PeerId, SWRoomMode.SFU);
         this._swRoomController.SetStream(stream);
     }
-
-
-    /**
-     * ストリーミングの追加
-     * @param stream 
-     */
-    public static AddStreaming(stream) {
-        this._swRoomController.SetStream(stream);
-    }
-
+    
 
     //  SWPeer Wrapper
     public static PeerId(): string { return (this._swPeer ? this._swPeer.PeerId : ""); }

@@ -75,6 +75,11 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             WebRTCService.Close();
         }
 
+        //  ボイスチャットルームのメンバー通知
+        if (sender.type === HIContainer.VoiceChatMemberSender.ID) {
+            this.Controller.Manager.VoiceChat.SetMember(sender as HIContainer.VoiceChatMemberSender);
+        }
+
     }
 
 
@@ -114,6 +119,5 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             return false;
         }
     }
-
 
 }
