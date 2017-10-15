@@ -1,15 +1,15 @@
 
-import { ServantSender, RoomServantSender } from "../../HomeInstance/HomeInstanceContainer";
+import { ServentSender, RoomServentSender } from "../../HomeInstance/HomeInstanceContainer";
 import CastSelectorController from "./CastSelectorController";
 
 
 /**
  * 表示しているサーバントの管理クラス
  */
-export default class ServantMap {
+export default class ServentMap {
 
     private _controller: CastSelectorController;
-    private _map = new Map<number, ServantSender>();
+    private _map = new Map<number, ServentSender>();
 
 
     /**
@@ -34,31 +34,31 @@ export default class ServantMap {
      * 
      * @param index 
      */
-    public Get(index: number): ServantSender {
+    public Get(index: number): ServentSender {
         return this._map.get(index);
     }
 
 
     /**
      * サーバントの設定
-     * @param servants 
+     * @param servents 
      * @param changecallbak 
      */
-    public SetServants(servants: ServantSender[], changecallbak) {
+    public SetServents(servents: ServentSender[], changecallbak) {
 
-        let newServant = new Array<ServantSender>();
-        let preMap = new Map<number, ServantSender>();
+        let newServent = new Array<ServentSender>();
+        let preMap = new Map<number, ServentSender>();
         let isDelete = false;
         let isAppend = false;
 
         //  設置済みのサーバント判定
-        servants.forEach((servant) => {
-            let preIndex = this.GetServantPos(servant);
+        servents.forEach((servent) => {
+            let preIndex = this.GetServentPos(servent);
             if (preIndex >= 0) {
-                preMap.set(preIndex, servant);
+                preMap.set(preIndex, servent);
             }
             else {
-                newServant.push(servant);
+                newServent.push(servent);
             }
         });
 
@@ -66,7 +66,7 @@ export default class ServantMap {
         for (let i = 0; i < this._controller.FrameCount; i++) {
             if (!preMap.has(i)) {
                 if (this._map.has(i)) {
-                    this._controller.RemoveServantFrame(i);
+                    this._controller.RemoveServentFrame(i);
                     this._map.delete(i);
                     isDelete = true;
                 }
@@ -74,14 +74,14 @@ export default class ServantMap {
         }
 
         //  新規サーバントの追加
-        newServant.forEach((servant) => {
+        newServent.forEach((servent) => {
             for (let i = 0; i < this._controller.FrameCount; i++) {
                 if (preMap.has(i))
                     continue;
 
-                this._controller.SetServantFrame(i, servant);
-                preMap.set(i, servant);
-                this._map.set(i, servant);
+                this._controller.SetServentFrame(i, servent);
+                preMap.set(i, servent);
+                this._map.set(i, servent);
                 i = this._controller.FrameCount;
 
                 isAppend = true;
@@ -97,14 +97,14 @@ export default class ServantMap {
 
     /**
      * 指定されたサーバントが含まれているか？
-     * @param servant 
+     * @param servent 
      */
-    private GetServantPos(servant: ServantSender): number {
+    private GetServentPos(servent: ServentSender): number {
 
         let result = -1;
 
         this._map.forEach((item, index) => {
-            if (servant.clientUrl === item.clientUrl) {
+            if (servent.clientUrl === item.clientUrl) {
                 result = index;
             }
         });

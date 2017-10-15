@@ -127,7 +127,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
         super.OnChildClose(conn);
         this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
         this.Manager.Room.RemoveConnection(conn.peer);
-        this.Manager.Servant.CloseServantOwner(conn.peer);
+        this.Manager.Servent.CloseServentOwner(conn.peer);
         this.Manager.VoiceChat.RemoveConnection(conn.peer);
     }
 
@@ -148,7 +148,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
             WebRTCService.SendTo(conn, sender);
 
             //  ルーム内のサーバント情報の通知
-            let sssender = this.Manager.Servant.GetServant(req.hid);
+            let sssender = this.Manager.Servent.GetServent(req.hid);
             WebRTCService.SendTo(conn, sssender);
 
             //  ボイスチャットのメンバー通知

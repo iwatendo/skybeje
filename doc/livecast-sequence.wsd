@@ -18,13 +18,13 @@ create CastInstance
 Dashboard     -> CastInstance   : BOOT
 note right #aqua : 配信画面起動
 CastInstance  -> HomeVisitor    : Send : [CastInstance]（ライブ配信起動通知）
-HomeVisitor   -> HomeInstance   : Send : [Servant]（ライブ配信起動通知）
-HomeInstance  -> HomeVisitor    : Send : [RoomServant]（ルーム内の配信一覧）
+HomeVisitor   -> HomeInstance   : Send : [Servent]（ライブ配信起動通知）
+HomeInstance  -> HomeVisitor    : Send : [RoomServent]（ルーム内の配信一覧）
 
 CastInstance  -> CastInstance   : ストリーム生成
 CastInstance  -> HomeVisitor    : Send : [CastInstance] (配信開始)
-HomeVisitor   -> HomeInstance   : Send : [Servant] (配信開始)
-HomeInstance  -> HomeVisitor    : Send : [RoomServant] (配信開始)
+HomeVisitor   -> HomeInstance   : Send : [Servent] (配信開始)
+HomeInstance  -> HomeVisitor    : Send : [RoomServent] (配信開始)
 
 create CastVisitor
 HomeVisitor   -> CastVisitor    : BOOT
@@ -37,8 +37,8 @@ CastVisitor   -> CastVisitor    : ストリーミング再生
 
 CastInstance  -> HomeVisitor    : Send : [CastInstance]（ライブ配信停止通知）
 note right #aqua : 配信停止
-HomeVisitor   -> HomeInstance   : Send : [Servant]（ライブ配信起動通知）
-HomeInstance  -> HomeVisitor    : Send : [RoomServant]（ルーム内の配信一覧）
+HomeVisitor   -> HomeInstance   : Send : [Servent]（ライブ配信起動通知）
+HomeInstance  -> HomeVisitor    : Send : [RoomServent]（ルーム内の配信一覧）
 HomeVisitor   -> CastVisitor    : Close( iFrameのリンクを削除 )
 
 @enduml

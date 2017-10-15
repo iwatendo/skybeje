@@ -120,12 +120,12 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  サーバント（ライブキャストを含む）の変更通知
-        if (sender.type === HIContainer.RoomServantSender.ID) {
-            let rs = sender as HIContainer.RoomServantSender;
-            this.Controller.ServantCache.SetRoomServant(rs);
+        if (sender.type === HIContainer.RoomServentSender.ID) {
+            let rs = sender as HIContainer.RoomServentSender;
+            this.Controller.ServentCache.SetRoomServent(rs);
 
             if (rs.hid === this.Controller.CurrentHid) {
-                this.Controller.View.CastSelector.ChangeRoomServantList(rs);
+                this.Controller.View.CastSelector.ChangeRoomServentList(rs);
             }
         }
 
@@ -200,12 +200,12 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
     /**
      * ライブキャストからの起動（設定変更）通知
-     * @param servantPid 
+     * @param serventPid 
      * @param cib 
      */
     private SendCastInstance(conn: PeerJs.DataConnection, cib: CastInstanceSender) {
 
-        let servantPid = conn.peer;
+        let serventPid = conn.peer;
 
         //  自身のダッシュボードへの通知
         if (cib.isClose) {
@@ -218,9 +218,9 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //
-        this.Controller.ServantCache.GetMyServant(servantPid, cib, (servantSender) => {
+        this.Controller.ServentCache.GetMyServent(serventPid, cib, (serventSender) => {
 
-            let hid = servantSender.hid;
+            let hid = serventSender.hid;
 
             let castroom = this.Controller.RoomCache.Get(hid, (room) => {
                 let castSender = new HIContainer.RoomSender();
@@ -228,7 +228,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 WebRTCService.SendTo(conn, castSender);
             })
 
-            WebRTCService.SendToOwner(servantSender);
+            WebRTCService.SendToOwner(serventSender);
         });
 
     }

@@ -58,7 +58,7 @@ export default class ImportComponent extends React.Component<ImportProp, ImportS
             return <h5 key={key}>{ir.message}</h5>
         });
 
-        let isBootServant = this.props.controller.View.IsBootServant();
+        let isBootServent = this.props.controller.View.IsBootServent();
 
         return (
             <div className="mdl-grid">
@@ -70,12 +70,12 @@ export default class ImportComponent extends React.Component<ImportProp, ImportS
                         </h5>
                     </div>
                     <div className="mdl-card__supporting-text">
-                        <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" disabled={isBootServant} onClick={this.OnClick.bind(this)}>
+                        <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" disabled={isBootServent} onClick={this.OnClick.bind(this)}>
                             <i className='material-icons'>unarchive</i>
                             &nbsp;ファイルを選択&nbsp;
                         </button>
                         {reslutMessage}
-                        <h6 hidden={!isBootServant}>
+                        <h6 hidden={!isBootServent}>
                             ※ホームインスタンスまたはクライアントの起動中はインポート処理できません。
                         </h6>
                     </div>

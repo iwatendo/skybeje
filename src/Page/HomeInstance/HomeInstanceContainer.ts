@@ -173,14 +173,14 @@ export class ClearTimelineSender extends Sender {
 /**
  * サーバントの起動通知
  */
-export class ServantSender extends Sender {
+export class ServentSender extends Sender {
 
-    public static ID = "Servant";
+    public static ID = "Servent";
 
     constructor() {
-        super(ServantSender.ID);
+        super(ServentSender.ID);
 
-        this.servantPeerId = "";
+        this.serventPeerId = "";
         this.ownerPeerid = "";
         this.ownerAid = "";
         this.ownerIid = "";
@@ -191,7 +191,7 @@ export class ServantSender extends Sender {
         this.isCasting = false;
     }
 
-    public servantPeerId: string;
+    public serventPeerId: string;
 
     public ownerPeerid: string;
 
@@ -218,18 +218,18 @@ export class ServantSender extends Sender {
 /**
  * サーバントの終了通知
  */
-export class ServantCloseSender extends Sender {
+export class ServentCloseSender extends Sender {
 
-    public static ID = "ServantClose";
+    public static ID = "ServentClose";
 
     constructor() {
-        super(ServantCloseSender.ID);
+        super(ServentCloseSender.ID);
 
-        this.servantPeerId = "";
+        this.serventPeerId = "";
         this.ownerPeerid = "";
     }
 
-    public servantPeerId: string;
+    public serventPeerId: string;
 
     public ownerPeerid: string;
 }
@@ -239,20 +239,20 @@ export class ServantCloseSender extends Sender {
 /**
  * ルーム内のサーバント一覧の通知
  */
-export class RoomServantSender extends Sender {
+export class RoomServentSender extends Sender {
 
-    public static ID = "RoomServant";
+    public static ID = "RoomServent";
 
     constructor() {
-        super(RoomServantSender.ID);
+        super(RoomServentSender.ID);
 
         this.hid = "";
-        this.servants = new Array<ServantSender>();
+        this.servents = new Array<ServentSender>();
     }
 
     public hid: string;
 
-    public servants: Array<ServantSender>;
+    public servents: Array<ServentSender>;
 
 }
 

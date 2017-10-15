@@ -1,13 +1,13 @@
 import HomeVisitorController from "../HomeVisitorController";
-import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanceContainer";
-import ServantMap from "./ServantMap";
+import { RoomServentSender, ServentSender } from "../../HomeInstance/HomeInstanceContainer";
+import ServentMap from "./ServentMap";
 import CastSelectorView from "./CastSelectorView";
 
 
 export default class CastSelectorController {
 
     public FrameCount = 6;
-    public Servants: ServantMap;
+    public Servents: ServentMap;
 
     private _ownerController: HomeVisitorController;
     private _view: CastSelectorView;
@@ -20,7 +20,7 @@ export default class CastSelectorController {
 
         this._ownerController = controller;
         this._view = new CastSelectorView(controller, this);
-        this.Servants = new ServantMap(this);
+        this.Servents = new ServentMap(this);
     }
 
 
@@ -29,8 +29,8 @@ export default class CastSelectorController {
      * @param hid 
      */
     public ChangeRoom(hid: string) {
-        this._ownerController.ServantCache.GetRoomServant(hid, (rs) => {
-            this.ChangeRoomServantList(rs);
+        this._ownerController.ServentCache.GetRoomServent(hid, (rs) => {
+            this.ChangeRoomServentList(rs);
         });
     }
 
@@ -39,14 +39,14 @@ export default class CastSelectorController {
      * サーバント一覧表示切替
      * @param url 
      */
-    public ChangeRoomServantList(rs: RoomServantSender) {
+    public ChangeRoomServentList(rs: RoomServentSender) {
 
-        let servants = rs.servants;
+        let servents = rs.servents;
 
-        if (servants) {
-            this.Servants.SetServants(servants, () => {
+        if (servents) {
+            this.Servents.SetServents(servents, () => {
                 //  変更があった場合
-                this._view.ChangeDisplayFrameCount(servants.length);
+                this._view.ChangeDisplayFrameCount(servents.length);
             });
         }
 
@@ -58,10 +58,10 @@ export default class CastSelectorController {
     /**
      * 
      * @param index 
-     * @param servant 
+     * @param servent 
      */
-    public SetServantFrame(index: number, servant: ServantSender) {
-        this._view.SetServantFrame(index, servant);
+    public SetServentFrame(index: number, servent: ServentSender) {
+        this._view.SetServentFrame(index, servent);
     }
 
 
@@ -69,15 +69,15 @@ export default class CastSelectorController {
      * 
      * @param index 
      */
-    public RemoveServantFrame(index: number) {
-        this._view.RemoveServantFrame(index);
+    public RemoveServentFrame(index: number) {
+        this._view.RemoveServentFrame(index);
     }
 
 
     /**
      * サーバント側に使用アクターを通知
      */
-    public NotifyServantToActor(element: HTMLFrameElement) {
+    public NotifyServentToActor(element: HTMLFrameElement) {
 
         if (element) {
             let childDocument = element.contentDocument;
@@ -97,9 +97,9 @@ export default class CastSelectorController {
     /**
      * サーバント側に使用アクターを通知
      */
-    public NotifyServantToActorAll() {
+    public NotifyServentToActorAll() {
         for (let i = 0; i < this.FrameCount; i++) {
-            this.NotifyServantToActor(this._view.GetFrmaeElement(i));
+            this.NotifyServentToActor(this._view.GetFrmaeElement(i));
         }
     }
 

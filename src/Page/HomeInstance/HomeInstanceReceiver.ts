@@ -61,13 +61,13 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
         }
 
         //  サーバントの起動/更新通知
-        if (sender.type === HIContainer.ServantSender.ID) {
-            this.Controller.Manager.Servant.SetServant(sender as HIContainer.ServantSender);
+        if (sender.type === HIContainer.ServentSender.ID) {
+            this.Controller.Manager.Servent.SetServent(sender as HIContainer.ServentSender);
         }
 
         //  サーバントの終了通知
-        if (sender.type === HIContainer.ServantCloseSender.ID) {
-            this.Controller.Manager.Servant.CloseServant(sender as HIContainer.ServantCloseSender);
+        if (sender.type === HIContainer.ServentCloseSender.ID) {
+            this.Controller.Manager.Servent.CloseServent(sender as HIContainer.ServentCloseSender);
         }
 
         //  強制終了処理

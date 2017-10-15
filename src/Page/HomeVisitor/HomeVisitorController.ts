@@ -14,12 +14,12 @@ import { OnRead } from "../../Base/Common/AbstractServiceModel";
 import { Order } from "../../Base/Container/Order";
 import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
-import { GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServantCloseSender } from "../HomeInstance/HomeInstanceContainer";
+import { GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServentCloseSender } from "../HomeInstance/HomeInstanceContainer";
 import TimelineCache from "./Cache/TimelineCache";
 import ActorCache from "./Cache/ActorCache";
 import RoomCache from "./Cache/RoomCache";
 import IconCache from "./Cache/IconCache";
-import ServantCache from "./Cache/ServantCache";
+import ServentCache from "./Cache/ServentCache";
 import HomeVisitorReceiver from "./HomeVisitorReceiver";
 import HomeVisitorView from "./HomeVisitorView";
 import HomeVisitorModel from "./HomeVisitorModel";
@@ -41,7 +41,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public RoomCache: RoomCache;
     public IconCache: IconCache;
     public TimelineCache: TimelineCache;
-    public ServantCache: ServantCache;
+    public ServentCache: ServentCache;
     public Bot: BotController;
     public Log: LogController;
 
@@ -68,7 +68,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.RoomCache = new RoomCache(this);
         this.IconCache = new IconCache(this);
         this.TimelineCache = new TimelineCache(this);
-        this.ServantCache = new ServantCache(this);
+        this.ServentCache = new ServentCache(this);
         this.Bot = new BotController(this);
     };
 
@@ -146,8 +146,8 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
 
-        let sender = new ServantCloseSender();
-        sender.servantPeerId = conn.peer;
+        let sender = new ServentCloseSender();
+        sender.serventPeerId = conn.peer;
         sender.ownerPeerid = this.PeerId;
         WebRTCService.SendToOwner(sender);
 
@@ -293,7 +293,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             //  変更したアクターの部屋へ変更
             this.RoomCache.GetRoomByActorId(aid, (room) => {
                 this.View.SetRoomInfo(room);
-                this.View.CastSelector.NotifyServantToActorAll();
+                this.View.CastSelector.NotifyServentToActorAll();
             });
         });
     }

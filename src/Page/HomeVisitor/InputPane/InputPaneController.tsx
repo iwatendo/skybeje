@@ -385,7 +385,7 @@ export default class InputPaneController {
     public ChangeSelectionIcon(iid: string) {
         let controller = this._controller;
         let aid = controller.CurrentAid;
-        controller.View.CastSelector.NotifyServantToActorAll();
+        controller.View.CastSelector.NotifyServentToActorAll();
         this.DisplayActor();
     }
 

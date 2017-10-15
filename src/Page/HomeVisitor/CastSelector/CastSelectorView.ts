@@ -1,7 +1,7 @@
 
 import HomeVisitorController from "../HomeVisitorController";
 import CastSelectorController from "./CastSelectorController";
-import { RoomServantSender, ServantSender } from "../../HomeInstance/HomeInstanceContainer";
+import { RoomServentSender, ServentSender } from "../../HomeInstance/HomeInstanceContainer";
 import ActorCache from "../Cache/ActorCache";
 import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 
@@ -20,7 +20,7 @@ export default class CastSelectorView {
     private _layoutButton4 = document.getElementById('sbj-home-visitor-livecast-layout-4');
     private _livecastStatus = document.getElementById('sbj-home-visitor-livecast-display-status-label');
 
-    private _selectServant: string;
+    private _selectServent: string;
     private _isLayoutMode = false;
     private _dispFrameCount = 1;
     private _dispFrameArray = new Array<number>();
@@ -42,7 +42,7 @@ export default class CastSelectorView {
             let element = this.GetFrmaeElement(i);
 
             element.onload = (ev) => {
-                this._castSelectorController.NotifyServantToActor(element);
+                this._castSelectorController.NotifyServentToActor(element);
             }
 
             button.onclick = (ev) => {
@@ -62,9 +62,9 @@ export default class CastSelectorView {
     /**
      * 指定したフレームにサーバントを設定します。
      * @param dispIndex 
-     * @param servant 
+     * @param servent 
      */
-    public SetServantFrame(dispIndex: number, servant: ServantSender) {
+    public SetServentFrame(dispIndex: number, servent: ServentSender) {
 
         let frameElement = this.GetFrmaeElement(dispIndex);
         let frameStatusElement = this.GetFrameStatusElement(dispIndex);
@@ -72,11 +72,11 @@ export default class CastSelectorView {
         let btnTitleElement = this.GetSelectButtonTitleElement(dispIndex);
         let btnIconElement = this.GetSelectButtonIconElement(dispIndex);
 
-        if (servant) {
-            this.SetButton(btnTitleElement, btnIconElement, servant);
+        if (servent) {
+            this.SetButton(btnTitleElement, btnIconElement, servent);
             btnElement.hidden = false;
-            frameStatusElement.textContent = this.GetDisplayNameStatus(dispIndex, servant);
-            this.SetServant(frameElement, servant);
+            frameStatusElement.textContent = this.GetDisplayNameStatus(dispIndex, servent);
+            this.SetServent(frameElement, servent);
 
             if (this._dispFrameCount < this._dispFrameArray.length) {
                 this._dispFrameArray.push(dispIndex);
@@ -90,7 +90,7 @@ export default class CastSelectorView {
      * 指定フレームのサーバントをクリア
      * @param index 
      */
-    public RemoveServantFrame(index: number) {
+    public RemoveServentFrame(index: number) {
 
         let frameElement = this.GetFrmaeElement(index);
         let frameStatusElement = this.GetFrameStatusElement(index);
@@ -136,19 +136,19 @@ export default class CastSelectorView {
 
     /**
      * サーバントの表示切替
-     * @param servant 
+     * @param servent 
      */
-    public SetServant(element: HTMLFrameElement, servant: ServantSender) {
+    public SetServent(element: HTMLFrameElement, servent: ServentSender) {
 
-        if (servant.hid !== this._homeController.CurrentHid) {
+        if (servent.hid !== this._homeController.CurrentHid) {
             return;
         }
 
-        this._selectServant = servant.servantPeerId;
+        this._selectServent = servent.serventPeerId;
 
-        let url: string = servant.clientUrl;
+        let url: string = servent.clientUrl;
 
-        if (servant.ownerPeerid === this._homeController.PeerId) {
+        if (servent.ownerPeerid === this._homeController.PeerId) {
             //  自分が起動したキャストの場合、ミュート状態で起動する
             url += "&mute=1";
         }
@@ -164,7 +164,7 @@ export default class CastSelectorView {
                 element.contentDocument.onmouseover = (e) => {
                     element.contentWindow.document.body.focus();
                 }
-                this._homeController.View.CastSelector.NotifyServantToActor(element);
+                this._homeController.View.CastSelector.NotifyServentToActor(element);
             }
             element.setAttribute('src', url);
         }
@@ -177,19 +177,19 @@ export default class CastSelectorView {
      * @param btnTitleElement 
      * @param btnIconElement 
      * @param toolTipElement 
-     * @param servant 
+     * @param servent 
      */
-    private SetButton(btnTitleElement: HTMLElement, btnIconElement: HTMLElement, servant: ServantSender) {
-        this._homeController.ActorCache.GetActor(servant.ownerPeerid, servant.ownerAid, (actor) => {
+    private SetButton(btnTitleElement: HTMLElement, btnIconElement: HTMLElement, servent: ServentSender) {
+        this._homeController.ActorCache.GetActor(servent.ownerPeerid, servent.ownerAid, (actor) => {
             btnTitleElement.textContent = actor.name;
-            btnIconElement.textContent = this.GetCastIconName(servant.castType);
+            btnIconElement.textContent = this.GetCastIconName(servent.castType);
         });
     }
 
 
     /**
      * キャスト名称の取得
-     * @param servant 
+     * @param servent 
      */
     private GetCastIconName(castType: CastTypeEnum) {
         switch (castType) {
@@ -257,10 +257,10 @@ export default class CastSelectorView {
 
     /**
      * 表示するサーバント件数を変更します
-     * @param servantCount 
+     * @param serventCount 
      */
-    public ChangeDisplayFrameCount(servantCount: number) {
-        this._dispFrameCount = this.ToDispFrameCount(servantCount);
+    public ChangeDisplayFrameCount(serventCount: number) {
+        this._dispFrameCount = this.ToDispFrameCount(serventCount);
         this._dispFrameArray = this._dispFrameArray.slice(0, this._dispFrameCount);
 
         while (this._dispFrameArray.length < this._dispFrameCount) {
@@ -279,12 +279,12 @@ export default class CastSelectorView {
 
     /**
      * 
-     * @param servantCount 
+     * @param serventCount 
      */
-    private ToDispFrameCount(servantCount: number) {
-        if (servantCount >= 3) return 4;
-        if (servantCount >= 2) return 2;
-        if (servantCount >= 1) return 1;
+    private ToDispFrameCount(serventCount: number) {
+        if (serventCount >= 3) return 4;
+        if (serventCount >= 2) return 2;
+        if (serventCount >= 1) return 1;
         return 0;
     }
 
@@ -412,15 +412,15 @@ export default class CastSelectorView {
     /**
      * 配信ステータスの表示
      * @param dispIndex 
-     * @param servant 
+     * @param servent 
      */
-    private GetDisplayNameStatus(dispIndex: number, servant: ServantSender): string {
+    private GetDisplayNameStatus(dispIndex: number, servent: ServentSender): string {
 
         let name = this.GetSelectButtonTitleElement(dispIndex).textContent;
         let castTypeName = "";
-        switch (servant.castType) {
+        switch (servent.castType) {
             case CastTypeEnum.LiveCast:
-                if (servant.instanceUrl.indexOf('mobile') >= 0) {
+                if (servent.instanceUrl.indexOf('mobile') >= 0) {
                     castTypeName = "モバイル配信";
                 }
                 else {

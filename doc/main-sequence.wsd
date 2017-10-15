@@ -34,7 +34,7 @@ HomeInstance  -> HomeVisitor    : Send: [ConnInfo]（起動情報）
 HomeVisitor   -> HomeInstance   : Send: [UseActor]（使用アクター通知）
 HomeInstance  -> HomeVisitor    : Send: [RoomActorMember]（ルーム内のメンバー情報）
 HomeVisitor   -> HomeInstance   : Send: [GetRoom]（ルーム情報要求）
-HomeInstance  -> HomeVisitor    : Send: [RoomServant]（ライブキャスト情報）
+HomeInstance  -> HomeVisitor    : Send: [RoomServent]（ライブキャスト情報）
 HomeVisitor   -> HomeInstance   : Send: [GetTimeline]（タイムラインの要求）
 HomeInstance  -> HomeVisitor    : Send: [Timeline]（タイムライン）
 note right #aqua : 初期化処理完了
@@ -54,14 +54,14 @@ CastInstance  -> SkyWay         : DataConnection 要求 (PeerC <-> PeerB)
 SkyWay        -> CastInstance   : DataConnection Open通知 (PeerC <-> PeerB)
 SkyWay        -> HomeVisitor    : DataConnection Open通知 (PeerB <-> PeerC)
 CastInstance  -> HomeVisitor    : Send : [CastInstance]（ライブ配信起動通知）
-HomeVisitor   -> HomeInstance   : Send : [Servant]（ライブ配信起動通知）
-HomeInstance  -> HomeVisitor    : Send : [RoomServant]（ルーム内の配信一覧）
+HomeVisitor   -> HomeInstance   : Send : [Servent]（ライブ配信起動通知）
+HomeInstance  -> HomeVisitor    : Send : [RoomServent]（ルーム内の配信一覧）
 
 CastInstance  -> CastInstance   : ストリーム生成
 note right #aqua : 配信開始
 CastInstance  -> HomeVisitor    : Send : [CastInstance] (配信開始)
-HomeVisitor   -> HomeInstance   : Send : [Servant] (配信開始)
-HomeInstance  -> HomeVisitor    : Send : [RoomServant] (配信開始)
+HomeVisitor   -> HomeInstance   : Send : [Servent] (配信開始)
+HomeInstance  -> HomeVisitor    : Send : [RoomServent] (配信開始)
 
 create CastVisitor
 HomeVisitor   -> CastVisitor    : BOOT
