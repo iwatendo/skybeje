@@ -4,6 +4,7 @@ import CastSelectorController from "./CastSelectorController";
 import { RoomServentSender, ServentSender } from "../../HomeInstance/HomeInstanceContainer";
 import ActorCache from "../Cache/ActorCache";
 import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
+import ServentElementPack from "./ServentElementPack";
 
 
 export default class CastSelectorView {
@@ -20,10 +21,15 @@ export default class CastSelectorView {
     private _layoutButton4 = document.getElementById('sbj-home-visitor-livecast-layout-4');
     private _livecastStatus = document.getElementById('sbj-home-visitor-livecast-display-status-label');
 
-    private _selectServent: string;
     private _isLayoutMode = false;
     private _dispFrameCount = 1;
     private _dispFrameArray = new Array<number>();
+
+    private _servnetElementPacks = new Array<ServentElementPack>();
+
+    public GetFrame(frameIndex: number): HTMLFrameElement {
+        return this._servnetElementPacks[frameIndex].Frame;
+    }
 
 
     /**
@@ -38,14 +44,14 @@ export default class CastSelectorView {
 
         for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
 
-            let button = this.GetSelectButtonElement(i);
-            let element = this.GetFrmaeElement(i);
+            let slp = new ServentElementPack(controller, i);
+            this._servnetElementPacks.push(slp);
 
-            element.onload = (ev) => {
-                this._castSelectorController.NotifyServentToActor(element);
+            slp.Frame.onload = (ev) => {
+                this._castSelectorController.NotifyServentToActor(slp.Frame);
             }
 
-            button.onclick = (ev) => {
+            slp.Button.onclick = (ev) => {
                 let index = i;
                 this.LiveCastSelectClick(index);
             }
@@ -61,25 +67,18 @@ export default class CastSelectorView {
 
     /**
      * 指定したフレームにサーバントを設定します。
-     * @param dispIndex 
+     * @param frameIndex 
      * @param servent 
      */
-    public SetServentFrame(dispIndex: number, servent: ServentSender) {
+    public SetServentFrame(frameIndex: number, servent: ServentSender) {
 
-        let frameElement = this.GetFrmaeElement(dispIndex);
-        let frameStatusElement = this.GetFrameStatusElement(dispIndex);
-        let btnElement = this.GetSelectButtonElement(dispIndex);
-        let btnTitleElement = this.GetSelectButtonTitleElement(dispIndex);
-        let btnIconElement = this.GetSelectButtonIconElement(dispIndex);
+        let slp = this._servnetElementPacks[frameIndex];
 
         if (servent) {
-            this.SetButton(btnTitleElement, btnIconElement, servent);
-            btnElement.hidden = false;
-            frameStatusElement.textContent = this.GetDisplayNameStatus(dispIndex, servent);
-            this.SetServent(frameElement, servent);
+            slp.SetServent(servent);
 
             if (this._dispFrameCount < this._dispFrameArray.length) {
-                this._dispFrameArray.push(dispIndex);
+                this._dispFrameArray.push(frameIndex);
                 this.SetCastFrame();
             }
         }
@@ -88,19 +87,15 @@ export default class CastSelectorView {
 
     /**
      * 指定フレームのサーバントをクリア
-     * @param index 
+     * @param frameIndex 
      */
-    public RemoveServentFrame(index: number) {
+    public RemoveServentFrame(frameIndex: number) {
 
-        let frameElement = this.GetFrmaeElement(index);
-        let frameStatusElement = this.GetFrameStatusElement(index);
-        let btnElement = this.GetSelectButtonElement(index);
+        let slp = this._servnetElementPacks[frameIndex];
+        slp.RemoveServent();
 
-        btnElement.hidden = true;
-        frameElement.setAttribute('src', '');
-        frameStatusElement.textContent = "";
         if (this._dispFrameArray.length > 0) {
-            this._dispFrameArray = this._dispFrameArray.filter((i) => (i !== index));
+            this._dispFrameArray = this._dispFrameArray.filter((i) => (i !== frameIndex));
         }
         this.SetCastFrame();
     }
@@ -115,18 +110,17 @@ export default class CastSelectorView {
 
         for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
 
-            let frame = this.GetFrmaeElement(i);
-            let button = this.GetSelectButtonElement(i);
+            let slp = this._servnetElementPacks[i];
 
-            if (button.hidden)
+            if (slp.Button.hidden)
                 continue;
 
-            if (!frame.hidden) {
+            if (slp.Frame.hidden) {
                 return;
             }
 
             if (!first)
-                first = button;
+                first = slp.Button;
         }
 
         if (first)
@@ -134,70 +128,6 @@ export default class CastSelectorView {
     }
 
 
-    /**
-     * サーバントの表示切替
-     * @param servent 
-     */
-    public SetServent(element: HTMLFrameElement, servent: ServentSender) {
-
-        if (servent.hid !== this._homeController.CurrentHid) {
-            return;
-        }
-
-        this._selectServent = servent.serventPeerId;
-
-        let url: string = servent.clientUrl;
-
-        if (servent.ownerPeerid === this._homeController.PeerId) {
-            //  自分が起動したキャストの場合、ミュート状態で起動する
-            url += "&mute=1";
-        }
-
-        //  URLの変更があった場合のみ設定する
-        let preUrl = element.getAttribute('src');
-
-        if (preUrl !== url) {
-            element.onload = (e) => {
-                //  エンターキー押下時に、テキストボックスにフォーカスが移るようにする
-                element.contentDocument.onkeyup = this._homeController.View.InputPane.OnOtherKeyPress;
-
-                element.contentDocument.onmouseover = (e) => {
-                    element.contentWindow.document.body.focus();
-                }
-                this._homeController.View.CastSelector.NotifyServentToActor(element);
-            }
-            element.setAttribute('src', url);
-        }
-
-    }
-
-
-    /**
-     * 
-     * @param btnTitleElement 
-     * @param btnIconElement 
-     * @param toolTipElement 
-     * @param servent 
-     */
-    private SetButton(btnTitleElement: HTMLElement, btnIconElement: HTMLElement, servent: ServentSender) {
-        this._homeController.ActorCache.GetActor(servent.ownerPeerid, servent.ownerAid, (actor) => {
-            btnTitleElement.textContent = actor.name;
-            btnIconElement.textContent = this.GetCastIconName(servent.castType);
-        });
-    }
-
-
-    /**
-     * キャスト名称の取得
-     * @param servent 
-     */
-    private GetCastIconName(castType: CastTypeEnum) {
-        switch (castType) {
-            case CastTypeEnum.LiveCast: return "videocam";
-            case CastTypeEnum.ScreenShare: return "screen_share";
-            case CastTypeEnum.Gadget: return "ondemand_video";
-        }
-    }
 
 
     /**
@@ -249,8 +179,8 @@ export default class CastSelectorView {
         this._castFrameElement.style.height = "calc(100% - " + ypx + ")"
 
         for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
-            let frameStatusElement = this.GetFrameStatusElement(i);
-            frameStatusElement.hidden = !this.IsDispFrameStatus(i);
+            let slp = this._servnetElementPacks[i];
+            slp.Status.hidden = !(this._isLayoutMode && slp.IsDispStatus());
         }
     }
 
@@ -295,7 +225,7 @@ export default class CastSelectorView {
     private GetNoDispFrameIndex(): number {
 
         for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
-            let frameElement = this.GetFrmaeElement(i);
+            let frameElement = this._servnetElementPacks[i].Frame;
             let isCast = (frameElement.src.length > 0);
 
             if (isCast) {
@@ -316,71 +246,41 @@ export default class CastSelectorView {
      */
     private SetCastFrame() {
 
-        for (let i = 0; i < this._homeController.View.CastSelector.FrameCount; i++) {
-            let frameElement = this.GetFrmaeElement(i);
-            let frameStatusElement = this.GetFrameStatusElement(i);
-            let button = this.GetSelectButtonElement(i);
-            frameElement.hidden = true;
-            frameStatusElement.hidden = true;
-            button.removeAttribute('disabled');
+        for (let frameIndex = 0; frameIndex < this._homeController.View.CastSelector.FrameCount; frameIndex++) {
+            let slp = this._servnetElementPacks[frameIndex];
+            slp.Frame.hidden = true;
+            slp.Status.hidden = true;
+            slp.Button.removeAttribute('disabled');
         }
 
         let displayLabel = "";
 
         for (let dispIndex = 0; dispIndex < this._dispFrameArray.length; dispIndex++) {
             let frameIndex = this._dispFrameArray[dispIndex];
-            let frameElement = this.GetFrmaeElement(frameIndex);
-            let frameStatusElement = this.GetFrameStatusElement(frameIndex);
-            let button = this.GetSelectButtonElement(frameIndex);
-
-            this.SetFrameStatus(dispIndex, frameElement, frameStatusElement);
-            button.setAttribute('disabled', "1");
+            let slp = this._servnetElementPacks[frameIndex];
+            this.SetFrameStatus(dispIndex, frameIndex, slp);
+            slp.Button.setAttribute('disabled', "1");
         }
     }
 
 
     /**
-     * 
+     * キャストフレームとステータスの表示位置設定
      * @param dispIndex 
+     * @param frameIndex
+     * @param slp 
      */
-    private IsDispFrameStatus(dispIndex: number): boolean {
+    private SetFrameStatus(dispIndex: number, frameIndex: number, slp: ServentElementPack) {
 
-        //  レイアウトモードの場合のみ表示
-        if (this._isLayoutMode) {
-            let element = this.GetFrameStatusElement(dispIndex);
-            //  文言が設定されている場合のみ表示
-            if (element && element.textContent.length > 0) {
-                //  対応するフレームが表示されている場合のみ表示
-                let frameIndex = this._dispFrameArray[dispIndex];
-                if( frameIndex >= 0){
-                    let frame = this.GetFrmaeElement(frameIndex);
-                    if (!frame.hidden) {
-                        return true;
-                    }
-                }
-            }
-        }
+        slp.Frame.hidden = false;
+        slp.Frame.style.position = "absolute";
+        slp.Frame.style.zIndex = "2";
+        slp.Frame.style.height = "calc(" + (this._dispFrameCount > 1 ? "50%" : "100%") + " - 8px)";
+        slp.Frame.style.width = "calc(" + (this._dispFrameCount > 2 ? "50%" : "100%") + " - 8px)";
 
-        return false;
-    }
-
-
-    /**
-     * 
-     * @param dispPos 
-     * @param element 
-     */
-    private SetFrameStatus(dispPos: number, element: HTMLFrameElement, statusElement: HTMLElement) {
-
-        element.hidden = false;
-        element.style.position = "absolute";
-        element.style.zIndex = "2";
-        element.style.height = "calc(" + (this._dispFrameCount > 1 ? "50%" : "100%") + " - 8px)";
-        element.style.width = "calc(" + (this._dispFrameCount > 2 ? "50%" : "100%") + " - 8px)";
-
-        statusElement.hidden = !this.IsDispFrameStatus(dispPos);
-        statusElement.style.position = "absolute";
-        statusElement.style.zIndex = "3";
+        slp.Status.hidden = (!this._isLayoutMode);
+        slp.Status.style.position = "absolute";
+        slp.Status.style.zIndex = "3";
 
         let topPos = "0px";
         let leftPos = "0px";
@@ -388,12 +288,12 @@ export default class CastSelectorView {
         switch (this._dispFrameCount) {
             case 1:
             case 2:
-                switch (dispPos) {
+                switch (dispIndex) {
                     case 1: topPos = "50%"; break;
                 }
                 break;
             case 4:
-                switch (dispPos) {
+                switch (dispIndex) {
                     case 0: topPos = "0px"; leftPos = "0px"; break;
                     case 1: topPos = "50%"; leftPos = "0px"; break;
                     case 2: topPos = "0px"; leftPos = "50%"; break;
@@ -402,81 +302,10 @@ export default class CastSelectorView {
                 break;
         }
 
-        element.style.top = topPos;
-        element.style.left = leftPos;
-        statusElement.style.top = topPos;
-        statusElement.style.left = leftPos;
-    }
-
-
-    /**
-     * 配信ステータスの表示
-     * @param dispIndex 
-     * @param servent 
-     */
-    private GetDisplayNameStatus(dispIndex: number, servent: ServentSender): string {
-
-        let name = this.GetSelectButtonTitleElement(dispIndex).textContent;
-        let castTypeName = "";
-        switch (servent.castType) {
-            case CastTypeEnum.LiveCast:
-                if (servent.instanceUrl.indexOf('mobile') >= 0) {
-                    castTypeName = "モバイル配信";
-                }
-                else {
-                    castTypeName = "ライブ配信";
-                }
-                break;
-            case CastTypeEnum.ScreenShare: castTypeName = "画面共有"; break;
-            case CastTypeEnum.Gadget: castTypeName = "ガジェット配信"; break;
-        }
-
-        return name + "：" + castTypeName;
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    public GetFrmaeElement(index: number): HTMLFrameElement {
-        return document.getElementById("sbj-home-visitor-livecast-" + index.toString()) as HTMLFrameElement;
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    public GetFrameStatusElement(index: number): HTMLElement {
-        return document.getElementById("sbj-home-visitor-livecast-status-" + index.toString()) as HTMLElement;
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    private GetSelectButtonElement(index: number) {
-        return document.getElementById("sbj-home-visitor-livecast-select-" + index.toString());
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    private GetSelectButtonTitleElement(index: number) {
-        return document.getElementById("sbj-home-visitor-livecast-select-title-" + index.toString());
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    private GetSelectButtonIconElement(index: number) {
-        return document.getElementById("sbj-home-visitor-livecast-select-icon-" + index.toString());
+        slp.Frame.style.top = topPos;
+        slp.Frame.style.left = leftPos;
+        slp.Status.style.top = topPos;
+        slp.Status.style.left = leftPos;
     }
 
 }

@@ -99,7 +99,7 @@ export default class CastSelectorController {
      */
     public NotifyServentToActorAll() {
         for (let i = 0; i < this.FrameCount; i++) {
-            this.NotifyServentToActor(this._view.GetFrmaeElement(i));
+            this.NotifyServentToActor(this._view.GetFrame(i));
         }
     }
 
