@@ -10,7 +10,7 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
 
-import { DeviceView } from "./Device/DeviceVew";
+import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import { CastSettingSender, CastSpeechRecognitionSender } from "./CastInstanceContainer";
 import LinkUtil from "../../Base/Util/LinkUtil";
@@ -202,7 +202,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             let textElement = document.getElementById('mic-select') as HTMLInputElement;
             var listElement = document.getElementById('mic-list') as HTMLElement;
 
-            var view = new DeviceView(this.Controller, textElement, listElement, devices, (deviceId, deviceName) => {
+            var view = new DeviceView(textElement, listElement, devices, (deviceId, deviceName) => {
                 controller.AudioSource = deviceId;
                 LocalCache.SetLiveCastOptions((opt) => opt.SelectMic = deviceName);
                 this.ChnageDevice();
@@ -225,7 +225,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             let textElement = document.getElementById('webcam-select') as HTMLInputElement;
             var listElement = document.getElementById('webcam-list') as HTMLElement;
 
-            var view = new DeviceView(this.Controller, textElement, listElement, devices, (deviceId, deviceName) => {
+            var view = new DeviceView(textElement, listElement, devices, (deviceId, deviceName) => {
 
                 controller.VideoSource = deviceId;
                 LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceName);

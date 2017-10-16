@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import DeviceUtil from "../../../Base/Util/DeviceUtil";
+import DeviceUtil from "../../Base/Util/DeviceUtil";
 
-import CastInstanceController from "../CastInstanceController";
 import DeviceComponent from "./DeviceComponent";
 
 
@@ -12,7 +11,6 @@ export interface OnChangeDevice { (deviceId: string, deviceName: string): void }
 
 export class DeviceView {
 
-    private _controller: CastInstanceController;
     private _textElement: HTMLInputElement;
     private _listElement: HTMLElement;
     private _devices: Array<any>;
@@ -21,23 +19,13 @@ export class DeviceView {
 
 
     /**
-     * 
-     */
-    public get Controller(): CastInstanceController {
-        return this._controller;
-    }
-
-
-    /**
      * コンストラクタ
-     * @param controller 
      * @param textElement 
      * @param listElement 
      * @param devices 
      * @param deviceSelector 
      */
-    public constructor(controller: CastInstanceController, textElement: HTMLInputElement, listElement: HTMLElement, devices: Array<string>, deviceSelector: OnChangeDevice) {
-        this._controller = controller;
+    public constructor(textElement: HTMLInputElement, listElement: HTMLElement, devices: Array<string>, deviceSelector: OnChangeDevice) {
         this._textElement = textElement;
         this._listElement = listElement;
         this._devices = devices;
