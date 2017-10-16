@@ -95,7 +95,10 @@ export default class CastSelectorView {
         slp.RemoveServent();
 
         if (this._dispFrameArray.length > 0) {
-            this._dispFrameArray = this._dispFrameArray.filter((i) => (i !== frameIndex));
+            //  フレーム番号と表示番号の対応表の更新
+            let newArray = new Array<number>();
+            this._dispFrameArray.filter((i) => (i !== frameIndex)).forEach((i) => { newArray.push(i); });
+            this._dispFrameArray = newArray;
         }
         this.SetCastFrame();
     }
@@ -225,10 +228,9 @@ export default class CastSelectorView {
     private GetNoDispFrameIndex(): number {
 
         for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
-            let frameElement = this._servnetElementPacks[i].Frame;
-            let isCast = (frameElement.src.length > 0);
 
-            if (isCast) {
+            let sep = this._servnetElementPacks[i];
+            if (sep.IsCasting) {
                 let pre = this._dispFrameArray.filter(n => (n === i));
 
                 if (pre.length === 0) {

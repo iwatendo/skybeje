@@ -14,6 +14,15 @@ export default class ServentElementPack {
     public Title: HTMLElement;
     public Icon: HTMLElement;
 
+
+    /**
+     * 対象のフレームが配信中か？
+     */
+    public get IsCasting() {
+        //  ボタンの表示非表示状態で判定
+        return !this.Button.hidden;
+    }
+
     /**
      * 
      * @param controller 
