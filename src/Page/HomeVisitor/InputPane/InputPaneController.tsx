@@ -283,7 +283,11 @@ export default class InputPaneController {
         switch (LocalCache.VoiceRecognitionMode) {
             case 0:
                 //  チャットのテキストエリアにセット
+                let start = this._textareaElement.value.length;
+                let end = text.length;
                 this._textareaElement.value = this._textareaElement.value + text;
+                this._textareaElement.selectionStart = start;
+                this._textareaElement.selectionEnd = start + end;
                 break;
             case 1:
                 //  直接チャットメッセージとして送信
