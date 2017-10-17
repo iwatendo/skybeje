@@ -280,14 +280,15 @@ export default class InputPaneController {
      * @param text 
      */
     private SendVoiceText(text) {
-
-        if (this._isVoiceChat) {
-            //  ボイスチャット中は直接メッセージ送信する
-            this.SendChatMessage(text, true);
-        }
-        else {
-            //  ボイスチャット中ではない場合は、テキストエリアにセットする
-            this._textareaElement.value = this._textareaElement.value + text;
+        switch (LocalCache.VoiceRecognitionMode) {
+            case 0:
+                //  チャットのテキストエリアにセット
+                this._textareaElement.value = this._textareaElement.value + text;
+                break;
+            case 1:
+                //  直接チャットメッセージとして送信
+                this.SendChatMessage(text, true);
+                break;
         }
     }
 

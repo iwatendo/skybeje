@@ -19,6 +19,7 @@ export interface UserSettingProp {
 export interface UserSettingStat {
     enterMode: number,
     actorChangeMode: number,
+    voiceRecognitionMode: number,
 }
 
 
@@ -34,7 +35,8 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
 
         this.state = {
             enterMode: LocalCache.ChatEnterMode,
-            actorChangeMode: LocalCache.ActorChangeKeyMode
+            actorChangeMode: LocalCache.ActorChangeKeyMode,
+            voiceRecognitionMode: LocalCache.VoiceRecognitionMode
         };
 
     }
@@ -75,6 +77,19 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                             </div>
                         </h6>
                     </div>
+                    <div className="mdl-card__supporting-text">
+                        <h5>音声認識の動作</h5>
+                        <h6>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnVoiceRecognitionModeSelect(0) }}>
+                                <input type="radio" name="sbj-options-voiceRecognition-key" checked={this.state.voiceRecognitionMode === 0}></input>
+                                <span className={this.state.voiceRecognitionMode === 0 ? selectClass : noSelectClass}>チャットのテキストボックスに出力</span>
+                            </div>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnVoiceRecognitionModeSelect(1) }}>
+                                <input type="radio" name="sbj-options-voiceRecognition-key" checked={this.state.voiceRecognitionMode === 1}></input>
+                                <span className={this.state.voiceRecognitionMode === 1 ? selectClass : noSelectClass}>直接チャットメッセージとして送信</span>
+                            </div>
+                        </h6>
+                    </div>
                 </div>
             </div>
         );
@@ -104,6 +119,19 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
 
         this.setState({
             actorChangeMode: actorChangeMode,
+        });
+    }
+
+
+    /**
+     * 音声認識時の振舞いの設定
+     * @param actorChangeMode 
+     */
+    public OnVoiceRecognitionModeSelect(mode: number) {
+        LocalCache.VoiceRecognitionMode = mode;
+
+        this.setState({
+            voiceRecognitionMode: mode,
         });
     }
 

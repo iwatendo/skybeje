@@ -137,6 +137,15 @@ export default class LocalCache {
         return (value ? Number.parseInt(value) : 0);
     }
 
+    //  音声認識時の振舞い設定
+    public static set VoiceRecognitionMode(val: number) {
+        localStorage.setItem('voide-recognition-mode', val.toString());
+    }
+    public static get VoiceRecognitionMode(): number {
+        let value = localStorage.getItem('voide-recognition-mode');
+        return (value ? Number.parseInt(value) : 0);
+    }
+
 }
 
 
