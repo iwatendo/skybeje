@@ -21,6 +21,9 @@ import { SWRoomMode } from '../../../Base/Common/Connect/SWRoom';
 import { VoiceChatMemberSender, VoiceChatMemberListSender } from '../../HomeInstance/HomeInstanceContainer';
 import { VoiceSfuRoomMemberComponent } from './VoiceSfuRoomMemberComponent';
 import IconCache from '../Cache/IconCache';
+import VoiceChatSettingDialog from './VoiceChatSettingDialog/VoiceChatSettingDialog';
+import DeviceUtil from '../../../Base/Util/DeviceUtil';
+import { DeviceView } from '../../DeviceView/DeviceVew';
 
 export default class InputPaneController {
 
@@ -40,10 +43,11 @@ export default class InputPaneController {
     private _voiceRecognitionOn = document.getElementById('sbj-inputpanel-send-message-recognition-on');
     private _voiceRecognitionOff = document.getElementById('sbj-inputpanel-send-message-recognition-off');
 
-    private _voiceChat = document.getElementById('sbj-inputpanel-voicechat');
+    private _voiceChat = document.getElementById('sbj-inputpanel-voicechat') as HTMLInputElement;
     private _voiceChatOn = document.getElementById('sbj-inputpanel-voicechat-on');
     private _voiceChatOff = document.getElementById('sbj-inputpanel-voicechat-off');
 
+    private _voiceMicSettings = document.getElementById('sbj-inputpanel-voicechat-settings');
     private _voiceMic = document.getElementById('sbj-inputpanel-voicechatmic') as HTMLInputElement;
     private _voiceMicOn = document.getElementById('sbj-inputpanel-voicechatmic-on');
     private _voiceMicOff = document.getElementById('sbj-inputpanel-voicechatmic-off');
@@ -71,6 +75,8 @@ export default class InputPaneController {
     private _isVoiceRecognition: boolean;
     private _isVoiceChat: boolean;
     private _isMicMute: boolean = true;
+
+    private _audioDevice: string;
 
 
     /**
@@ -114,6 +120,10 @@ export default class InputPaneController {
             this.ChangeVoiceChat();
         }
 
+        this._voiceMicSettings.onclick = (e) => {
+            VoiceChatSettingDialog.Show();
+        }
+
         this._voiceMic.onclick = (e) => {
             this.IsMicMute = !this.IsMicMute;
         }
@@ -126,8 +136,9 @@ export default class InputPaneController {
         }
 
         this._isMicMute = true;
-        this._voiceMic.disabled = true;
+        this._voiceMic.hidden = true;
         this._textareaElement.value = "";
+        this.SetMediaDevice();
         this.DisplayActor();
     }
 
@@ -537,7 +548,8 @@ export default class InputPaneController {
         }
         else {
             SpeechUtil.StopSpeechRecognition();
-            this._textareaElement.disabled = false;
+            this._textareaElement.hidden = false;
+            this._voiceMicSettings.hidden = true;
         }
     }
 
@@ -549,12 +561,14 @@ export default class InputPaneController {
         this._isVoiceChat = !this._isVoiceChat;
         this._voiceChatOn.hidden = !this._isVoiceChat;
         this._voiceChatOff.hidden = this._isVoiceChat;
-        this._voiceMic.disabled = !this._isVoiceChat;
+        this._voiceMic.hidden = !this._isVoiceChat;
+        this._voiceMicSettings.hidden = this._isVoiceChat;
 
         if (this._isVoiceChat) {
             this._voiceChat.classList.remove("mdl-button--colored");
             this._voiceChat.classList.add("mdl-button--accent");
-            StreamUtil.GetDefaultMic((stream) => {
+
+            StreamUtil.GetStreaming(this._audioDevice, null, (stream) => {
                 this.IsMicMute = true;
                 let peer = WebRTCService.SwPeer;
                 let ownerid = WebRTCService.OwnerPeerId();
@@ -562,6 +576,7 @@ export default class InputPaneController {
                     this.ChangeVoiceChatStreamMember(pl);
                 });
             });
+
         }
         else {
             this._voiceChat.classList.remove("mdl-button--accent");
@@ -622,7 +637,48 @@ export default class InputPaneController {
                 this._controller.IconCache.GetIcon(vcm.peerid, vcm.iid);
             });
         });
-        
+
+    }
+
+
+    /**
+     * Audioソースの取得とリストへのセット
+     */
+    public SetMediaDevice() {
+
+        let preMic = LocalCache.VoiceChatOptions.SelectMic;
+        let isInit = (!preMic);
+
+        DeviceUtil.GetAudioDevice((devices) => {
+
+            let textElement = document.getElementById('mic-select') as HTMLInputElement;
+            var listElement = document.getElementById('mic-list') as HTMLElement;
+
+            var view = new DeviceView(textElement, listElement, devices, (deviceId, deviceName) => {
+                this._audioDevice = deviceId;
+                LocalCache.SetVoiceChatOptions((opt) => opt.SelectMic = deviceName);
+                this.ChnageDevice();
+            });
+
+            if (isInit) {
+                view.SelectFirstDevice();
+            } else {
+                view.SelectDeivce(preMic);
+            }
+
+            document.getElementById("mic-select-div").classList.add("is-dirty");
+            this.ChnageDevice();
+        });
+
+    }
+
+
+    /**
+     * デバイス変更時処理
+     */
+    public ChnageDevice() {
+        let options = LocalCache.VoiceChatOptions;
+        this._voiceChat.disabled = !(options.SelectMic ? true : false);
     }
 
 }

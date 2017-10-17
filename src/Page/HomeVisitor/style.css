@@ -290,6 +290,25 @@ textarea.sbj-inputpanel-text {
 }
 
 
+.sbj-voicechat-setting-card.mdl-card {
+    padding: 10px;
+    width: 440px;
+    height: 112px;
+    min-height: 112px;
+    position: absolute;
+    bottom: 48px;
+    left: 140px;
+    overflow: visible;
+}
+
+.sbj-voicechat-device-select{
+    width: 400px;
+}
+
+.sbj-voicechat-device{
+    padding: 16px;
+}
+
 /*-----------------------------
  *  timeline
  *---------------------------*/

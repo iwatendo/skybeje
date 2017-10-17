@@ -1,6 +1,7 @@
 ﻿
 import StdUtil from "../Util/StdUtil";
 
+export interface OnSetVoiceChatOptions { (option: VoiceChatOptions): void };
 export interface OnSetLiveCastOptions { (option: LiveCastOptions): void };
 export interface OnSetScreenShareOptions { (option: ScreenShareOptions): void };
 export interface OnSetGadgetCastOptions { (option: GadgetCastOptions): void };
@@ -56,6 +57,19 @@ export default class LocalCache {
     public static set IsCheckDevicePermision(val: boolean) { localStorage.setItem('checked-device-permision', (val ? "True" : "")); }
     public static get IsCheckDevicePermision(): boolean { return localStorage.getItem('checked-device-permision') === "True" }
 
+
+    /**
+     *  ボイスチャットのオプション設定
+     */
+    public static get VoiceChatOptions(): VoiceChatOptions {
+        let value = localStorage.getItem('live-cast-options');
+        return (value ? JSON.parse(value) as VoiceChatOptions : new VoiceChatOptions());
+    }
+    public static SetVoiceChatOptions(setoptions: OnSetVoiceChatOptions) {
+        let options = this.VoiceChatOptions;
+        setoptions(options);
+        localStorage.setItem('live-cast-options', JSON.stringify(options));
+    }
 
 
     /**
@@ -123,6 +137,14 @@ export default class LocalCache {
         return (value ? Number.parseInt(value) : 0);
     }
 
+}
+
+
+/**
+ * オプション設定の保持：ボイスチャット
+ */
+export class VoiceChatOptions{
+    SelectMic: string;
 }
 
 
