@@ -308,6 +308,12 @@ export default class InputPaneController {
         chatMessage.isVoiceRecog = isVoiceRecognition;
         chatMessage.isSpeech = this._isVoiceSpeech;
         this._controller.SendChatMessage(chatMessage);
+
+        if (LocalCache.ChatMessageCopyMode === 1) {
+            //  クリップボードにテキストをコピー
+            StdUtil.ClipboardCopy(text);
+        }
+
     }
 
 
@@ -549,8 +555,7 @@ export default class InputPaneController {
         }
         else {
             SpeechUtil.StopSpeechRecognition();
-            this._textareaElement.hidden = false;
-            this._voiceMicSettings.hidden = true;
+            this._textareaElement.disabled = false;
         }
     }
 

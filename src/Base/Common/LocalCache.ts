@@ -112,7 +112,7 @@ export default class LocalCache {
         setoptions(options);
         localStorage.setItem('gadget-cast-options', JSON.stringify(options));
     }
-    
+
 
     /**
      * チャット時のEnterの振舞い設定
@@ -139,10 +139,19 @@ export default class LocalCache {
 
     //  音声認識時の振舞い設定
     public static set VoiceRecognitionMode(val: number) {
-        localStorage.setItem('voide-recognition-mode', val.toString());
+        localStorage.setItem('voice-recognition-mode', val.toString());
     }
     public static get VoiceRecognitionMode(): number {
-        let value = localStorage.getItem('voide-recognition-mode');
+        let value = localStorage.getItem('voice-recognition-mode');
+        return (value ? Number.parseInt(value) : 0);
+    }
+
+    //  音声認識時の振舞い設定
+    public static set ChatMessageCopyMode(val: number) {
+        localStorage.setItem('chat-message-copy-mode', val.toString());
+    }
+    public static get ChatMessageCopyMode(): number {
+        let value = localStorage.getItem('chat-message-copy-mode');
         return (value ? Number.parseInt(value) : 0);
     }
 
@@ -152,7 +161,7 @@ export default class LocalCache {
 /**
  * オプション設定の保持：ボイスチャット
  */
-export class VoiceChatOptions{
+export class VoiceChatOptions {
     SelectMic: string;
 }
 

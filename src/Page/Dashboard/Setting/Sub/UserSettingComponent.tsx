@@ -20,6 +20,7 @@ export interface UserSettingStat {
     enterMode: number,
     actorChangeMode: number,
     voiceRecognitionMode: number,
+    cahtMessageCopyMode: number
 }
 
 
@@ -36,7 +37,8 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
         this.state = {
             enterMode: LocalCache.ChatEnterMode,
             actorChangeMode: LocalCache.ActorChangeKeyMode,
-            voiceRecognitionMode: LocalCache.VoiceRecognitionMode
+            voiceRecognitionMode: LocalCache.VoiceRecognitionMode,
+            cahtMessageCopyMode: LocalCache.ChatMessageCopyMode
         };
 
     }
@@ -90,6 +92,19 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                             </div>
                         </h6>
                     </div>
+                    <div className="mdl-card__supporting-text">
+                        <h5>メッセージ送信時の動作</h5>
+                        <h6>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnChatMessageCopyModeSelect(0) }}>
+                                <input type="radio" name="sbj-options-chatmessagecopy-key" checked={this.state.cahtMessageCopyMode === 0}></input>
+                                <span className={this.state.cahtMessageCopyMode === 0 ? selectClass : noSelectClass}>クリップボードにコピーしない</span>
+                            </div>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnChatMessageCopyModeSelect(1) }}>
+                                <input type="radio" name="sbj-options-chatmessagecopy-key" checked={this.state.cahtMessageCopyMode === 1}></input>
+                                <span className={this.state.cahtMessageCopyMode === 1 ? selectClass : noSelectClass}>クリップボードにコピーする（棒読みちゃん用）</span>
+                            </div>
+                        </h6>
+                    </div>
                 </div>
             </div>
         );
@@ -135,4 +150,17 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
         });
     }
 
+
+    /**
+     * チャットメッセージのクリップボードコピー有無設定
+     * @param actorChangeMode 
+     */
+    public OnChatMessageCopyModeSelect(mode: number) {
+        LocalCache.ChatMessageCopyMode = mode;
+
+        this.setState({
+            cahtMessageCopyMode: mode,
+        });
+    }
+    
 }
