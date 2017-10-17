@@ -1,6 +1,13 @@
 # [SkyBeje](https://skybeje.net/) #
 * SkyBejeは[SkyWay](https://nttcom.github.io/skyway/)を利用したリアルタイムコミュニケーションサービスです。
 * [IndexedDB](https://developer.mozilla.org/ja/docs/Web/API/IndexedDB_API)と組合せ、ブラウザを疑似的に小さなサーバーとするシステムの開発に取組んでいます。
+### SkyBejeで出来る事 (2017.10.16) ###
+* グループチャット機能（ 文字チャット / ボイスチャット / ビデオチャット）
+* 複数カメラからの配信機能。(通常のWebカメラの他に、画面共有やアンドロイド端末のカメラからの同時配信可能）
+* 複数のアクターやアイコンの登録機能
+* 簡易BOT機能
+* YouTubeの同期再生機能
+* 音声認識による、文字列入力補助機能
 ### 対応ブラウザ ###
 * **Google Chrome のみに対応しています。**
 * バージョン59 以降で動作します。
@@ -28,7 +35,6 @@
 * [GNU AFFERO GENERAL PUBLIC LICENSE Version 3 (AGPL)](https://github.com/iwatendo/skybeje/blob/master/LICENSE)
 * [AGPLライセンスとは？](https://www.gnu.org/licenses/agpl-3.0.html)
 ### アイコン及び画像ファイルを使わせて頂いたサイト ###
-* [The Twitter Logo Generator](http://www.twitlogo.com)
 * [Icon-rainbow](http://icon-rainbow.com/)
 * [Materialand](http://www.material-land.com/view__1310__0.html)
 * [PhotoAC](https://www.photo-ac.com)
