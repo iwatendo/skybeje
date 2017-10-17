@@ -299,4 +299,31 @@ export default class StdUtil {
 
     }
 
+
+    /**
+     * クリップボードに指定テキストをコピーします
+     * @param text 
+     */
+    public static ClipboardCopy(text: string): boolean {
+
+        var element : HTMLTextAreaElement = document.createElement('textarea');
+
+        element.value = text;
+        element.selectionStart = 0;
+        element.selectionEnd = element.value.length;
+        
+        var s = element.style;
+        s.position = 'fixed';
+        s.left = '-100%';
+
+        document.body.appendChild(element);
+        element.focus();
+
+        var result = document.execCommand('copy');
+        element.blur();
+        document.body.removeChild(element);
+
+        return result;
+    }
+
 }
