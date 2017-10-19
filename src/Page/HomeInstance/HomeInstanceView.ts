@@ -76,7 +76,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      * @param peerid ホームインスタンスのPeerID
      */
     public SetInviteUrl(peerid: string) {
-        let url: string = LinkUtil.CreateLink("../Dashboard/", peerid);
+        let url: string = LinkUtil.CreateLink("../", peerid);
         let element: HTMLInputElement = document.getElementById('sbj-invite-url') as HTMLInputElement;
         element.value = url;
     }
