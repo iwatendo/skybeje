@@ -21,6 +21,7 @@ import MobileDialog from "./Mobile/MobileDialog";
 
 export enum NaviEnum {
     Profile = 1,
+    Boot = 6,
     Instance = 7,
     Visitor = 8,
     Setting = 9,
@@ -68,6 +69,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             //  Autoモード、かつ多重起動が検出されなかった場合
             //  ホームインスタンスを直接起動する
             if (LinkUtil.GetArgs("auto") && !LocalCache.BootHomeInstancePeerID) {
+                this.DoNaviClick(NaviEnum.Boot);
                 this._autoboot = true;
                 this.StartHomeInstance();
             }
@@ -155,13 +157,15 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
             }
             else {
 
-                this.DoNaviClick(NaviEnum.Instance);
-                
                 if (this._autoboot) {
+                    this.DoNaviClick(NaviEnum.Boot);
                     //  AtuoBootの場合
                     //  ホームインスタンスの起動と同時にクライアントも起動
                     this._autoboot = false;
                     this.StartHomveVisitor();
+                }
+                else {
+                    this.DoNaviClick(NaviEnum.Instance);
                 }
             }
         };
@@ -295,6 +299,11 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                 disp = DispEnum.Local;
                 this._naviView = new SettingController(this.Controller, mainElement);
                 break;
+            case NaviEnum.Boot:
+                title = "起動しています";
+                disp = DispEnum.Local;
+                this._naviView = new NotImplementView(mainElement);
+                break;
             case NaviEnum.Instance:
                 title = "ホームインスタンス";
                 if (this.GetHomeInstancePeerId().length > 0) {
@@ -395,7 +404,10 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         //  選択行の変更
         let naviMap = this.CreateNaviMap();
         naviMap.forEach((value, key) => value.classList.remove('sbj-navi-selection'));
-        naviMap.get(navi).classList.add('sbj-navi-selection');
+
+        if (naviMap.has(navi)) {
+            naviMap.get(navi).classList.add('sbj-navi-selection');
+        }
 
         //  NavigationがExpandの場合
         //  Nav選択時にExpandが閉じるようにする
