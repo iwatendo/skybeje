@@ -16,15 +16,19 @@
 
 
 .sbj-home-instance-header-row{
-    padding: 0px 40px 0px 32px;
+    padding: 0px 40px 0px 104px;
 }
 
 #sbj-home-instance-account-count{
     margin-right: 40px;
 }
 
+#sbj-home-instance-rooms{
+    padding: 16px 0px 0px 0px;
+}
+
 .sbj-home-instance-actions{
-    padding: 32px 0px 16px 32px;
+    padding: 16px 0px 16px 32px;
 }
 
 .sbj-home-instance-info{

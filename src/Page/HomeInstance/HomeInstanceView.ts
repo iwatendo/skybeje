@@ -59,7 +59,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
 
         let peerid = LocalCache.BootHomeInstancePeerID;
 
-        this.SetInviteUrl(peerid);
+        //  this.SetInviteUrl(peerid);
         this.NotifyDashbord(peerid);
 
         this.Controller.Model.GetRooms((rooms) => {
@@ -111,7 +111,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     public StartVisitor(isNewTab: boolean) {
 
         if (isNewTab) {
-            let url = (document.getElementById('sbj-invite-url') as HTMLInputElement).value
+            let url = LinkUtil.CreateLink("../", LocalCache.BootHomeInstancePeerID);
             window.open(url, '_blank');
         } else {
             let element = window.parent.document.getElementById('sbj-main-home-visitor-start');

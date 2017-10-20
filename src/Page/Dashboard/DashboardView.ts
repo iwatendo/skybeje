@@ -366,7 +366,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
         let header = document.getElementById('sbj-header');
 
-        if (disp === DispEnum.Local || disp === DispEnum.HomeInstance) {
+        if (disp === DispEnum.Local) {
             header.style.position = "static";
             header.style.maxWidth = "none";
         }
