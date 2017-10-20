@@ -64,9 +64,7 @@ export default class BootInstanceView implements INaviContainer {
         if (!isForce && LocalCache.BootHomeInstancePeerID) {
             this.Refresh();
         } else {
-            //  キャッシュ対策(Cache Busting)の為に、バージョン番号が引数に設定されたURLを取得
-            let url = document.getElementById('sbj-home-instance-url') as HTMLLinkElement;
-            this._owner.View.StartHomeInstance(url.href);
+            this._owner.View.StartHomeInstance();
         }
     }
 

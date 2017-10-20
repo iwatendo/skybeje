@@ -304,7 +304,7 @@ export default class StdUtil {
      * クリップボードに指定テキストをコピーします
      * @param text 
      */
-    public static ClipboardCopy(text: string): boolean {
+    public static ClipBoardCopy(text: string): boolean {
 
         var element : HTMLTextAreaElement = document.createElement('textarea');
 

@@ -315,7 +315,7 @@ export default class InputPaneController {
 
         if (LocalCache.ChatMessageCopyMode === 1) {
             //  クリップボードにテキストをコピー
-            StdUtil.ClipboardCopy(text);
+            StdUtil.ClipBoardCopy(text);
         }
 
     }

@@ -44,6 +44,7 @@ enum DispEnum {
 export default class DashboardView extends AbstractServiceView<DashboardController> {
 
     private _naviView: INaviContainer = null;
+    private _autoboot: boolean;
 
     /**
      * 初期化処理
@@ -64,8 +65,16 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
         }
         else {
 
-            //  通常起動の場合はホームから開く
-            this.DoNaviClick(NaviEnum.Instance);
+            //  Autoモード、かつ多重起動が検出されなかった場合
+            //  ホームインスタンスを直接起動する
+            if (LinkUtil.GetArgs("auto") && !LocalCache.BootHomeInstancePeerID) {
+                this._autoboot = true;
+                this.StartHomeInstance();
+            }
+            else {
+                //  ホームインスタンス起動画面の表示
+                this.DoNaviClick(NaviEnum.Instance);
+            }
         }
 
         callback();
@@ -137,24 +146,30 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
             let peerid = this.GetHomeInstancePeerId();
 
-            //  PeerIDが消された場合、ホームインスタンスを停止する
+            //  ホームインスタンスのフレームから
+            //  インスタンスPeerIDの削除通知がされた場合、ホームインスタンスを停止する
             if (!peerid) {
-                this.RemoveHomeInstance(() => {
+                this.StopHomeInstance(() => {
                     this.DoNaviClick(NaviEnum.Instance);
                 });
             }
             else {
+
                 this.DoNaviClick(NaviEnum.Instance);
+                
+                if (this._autoboot) {
+                    //  AtuoBootの場合
+                    //  ホームインスタンスの起動と同時にクライアントも起動
+                    this._autoboot = false;
+                    this.StartHomveVisitor();
+                }
             }
         };
 
 
         //   ホームビジターの起動
         document.getElementById("sbj-main-home-visitor-start").onclick = (e) => {
-            let peerid = this.GetHomeInstancePeerId();
-            if (peerid.length > 0) {
-                this.ChangeHomeVisitor(peerid);
-            }
+            this.StartHomveVisitor();
         };
 
 
@@ -410,29 +425,33 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
 
 
     /**
-     * 
-     * @param url 
-     * @param callback 
+     * ホームインスタンスの起動
      */
-    public StartHomeInstance(url: string, callback = null) {
+    public StartHomeInstance() {
 
+        let element = document.getElementById('sbj-home-instance-url') as HTMLLinkElement;
+        let url = element.href;
+        let frame = document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement;
+
+        frame.onload = (e) => {
+            frame.onload = null;
+        };
+
+        frame.setAttribute('src', url);
+    }
+
+
+    /**
+     * ホームインスタンスの停止
+     */
+    public StopHomeInstance(callback) {
         let frame = document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement;
 
         frame.onload = (e) => {
             if (callback) callback();
             frame.onload = null;
         };
-
-        frame.setAttribute('src', url);
-
-    }
-
-
-    /**
-     * 
-     */
-    public RemoveHomeInstance(callback) {
-        this.StartHomeInstance("", callback);
+        frame.setAttribute('src', "");
     }
 
 
@@ -441,6 +460,17 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
      */
     public IsBootHomeVisitor(): boolean {
         return (!document.getElementById("sbj-navi-home-visitor-disp").hidden);
+    }
+
+
+    /**
+     * ホームビジターを起動
+     */
+    public StartHomveVisitor() {
+        let peerid = this.GetHomeInstancePeerId();
+        if (peerid.length > 0) {
+            this.ChangeHomeVisitor(peerid);
+        }
     }
 
 
@@ -465,6 +495,7 @@ export default class DashboardView extends AbstractServiceView<DashboardControll
                     return;
                 }
             }
+
             this.DoNaviClick(isRemove ? NaviEnum.Instance : NaviEnum.Visitor);
         }
 

@@ -22,6 +22,7 @@ import HomeVisitorController from "./HomeVisitorController";
 import RoomMemberComponent from "./RoomMember/RoomMemberComponent";
 import CastSelectorController from "./CastSelector/CastSelectorController";
 import InputPaneController from "./InputPane/InputPaneController";
+import LinkUtil from '../../Base/Util/LinkUtil';
 
 
 export default class HomeVisitorView extends AbstractServiceView<HomeVisitorController> {
@@ -49,7 +50,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         this.Controller.NotifyDashbord(this.Controller.PeerId);
         //  ライブキャストは前回分が残らないようにクリア通知
         this.Controller.NotifyClearLiveCast();
-        
+
         this.SetSplitPane();
         this.CastSelector = new CastSelectorController(this.Controller);
 
@@ -59,6 +60,23 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         document.getElementById('sbj-home-visitor-timeline-component').onscroll = (e) => {
             this.OnTimelineScroll();
+        };
+
+        //  「招待URLのコピー」
+        let clipcopybtn = document.getElementById('sbj-home-visitor-linkcopy') as HTMLInputElement;
+        clipcopybtn.onclick = (e) => {
+            let linkurl = LinkUtil.CreateLink("../", LinkUtil.GetPeerID());
+            StdUtil.ClipBoardCopy(linkurl);
+            clipcopybtn.textContent = " 招待URLをクリップボードにコピーしました ";
+            clipcopybtn.classList.remove('mdl-button--colored');
+            clipcopybtn.classList.add('mdl-button--raised');
+            clipcopybtn.disabled = true;
+            window.setTimeout(()=>{
+                clipcopybtn.textContent = " 招待URLのコピー ";
+                clipcopybtn.classList.add('mdl-button--colored');
+                clipcopybtn.classList.remove('mdl-button--raised');
+                clipcopybtn.disabled = false;
+            },3000);
         };
 
         //  「退室」処理
