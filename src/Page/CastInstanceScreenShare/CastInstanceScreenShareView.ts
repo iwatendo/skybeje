@@ -141,6 +141,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
                 case 1: option1.checked = true; break;
                 case 2: option2.checked = true; break;
                 case 3: option3.checked = true; break;
+                case 4: option4.checked = true; break;
             }
         }
 
