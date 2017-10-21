@@ -85,3 +85,7 @@ h1, h2, h3, h4, h5, h6,
 .mdl-tooltip{
     font-size: 14px;
 }
+
+.mdl-layout__container{
+    overflow-y: hidden;
+}

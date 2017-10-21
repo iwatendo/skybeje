@@ -118,10 +118,9 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
      */
     public Resize() {
 
-        let height = window.innerHeight - 228;
+        let height = window.innerHeight - 64;
 
         if (height < 540) height = 540;
-        if (height > 720) height = 720;
 
         let marginTop = (Math.round(height / 2)) * -1;
 
@@ -129,8 +128,6 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         let contentElement = document.getElementById('sbj-profile-layout_content') as HTMLElement;
 
         mainElement.style.height = height.toString() + "px";
-        mainElement.style.margin = marginTop.toString() + "px 0 0 -480px";
-
         contentElement.style.height = (height - 355).toString() + "px";
 
     }
@@ -140,9 +137,13 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
      * アイコンのダブルクリック時
      */
     public IconDoubleClick() {
-        //  アイコンダブルクリック時の動作については
-        //  設定で変更できるようにするか検討
-        this.UpdateActor(this.Controller);
+        let ics = document.getElementById('sbj-profile-icon-change-switch') as HTMLInputElement;
+        if (ics.checked) {
+            this.UpdateActor(this.Controller);
+        }
+        else {
+            this._iconListView.OnClickEditIcon(this._iconListView);
+        }
     }
 
 

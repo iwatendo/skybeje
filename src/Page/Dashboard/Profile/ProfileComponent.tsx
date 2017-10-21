@@ -63,6 +63,9 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
         let isMultipleActor = (this.state.actors.length > 1);
         let isUserProfileSelect = (this.state.selectedActor === userProfile.aid);
         let isConnected = (this.props.isConnected);
+
+        let isDispBackButton = false;   //  戻るボタンは非表示にしておく
+
         let userProfileItem = (<ProfileItemComponent key={Personal.Actor.HashCode(userProfile)} owner={this} actor={userProfile} isConnected={isConnected} isMultipleActor={isMultipleActor} isSelect={isUserProfileSelect} />)
 
         let canEdit = false;
@@ -79,7 +82,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
                 <div className="sbj-dashboard-profile-grid">
                     <div className="sbj-dashboard-profile-label-card">
                         <h5 className="sbj-dashboard-profile-label">ユーザープロフィール</h5>
-                        <button id="sbj-dashboard-profile-back" className="sbj-dashboard-profile-button mdl-button mdl-button--raised" onClick={this.OnClick_Back.bind(this)} hidden={!isConnected}>
+                        <button id="sbj-dashboard-profile-back" className="sbj-dashboard-profile-button mdl-button mdl-button--raised" onClick={this.OnClick_Back.bind(this)} hidden={!isDispBackButton}>
                             <i className='material-icons'>navigate_before</i>
                             &nbsp;戻る&nbsp;
                         </button>

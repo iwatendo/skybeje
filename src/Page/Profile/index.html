@@ -117,16 +117,24 @@
                 </main>
 
                 <footer class="sbj-profile-footer mdl-mini-footer">
-                    <div class="sbj-profile-footer-action">
-                        <button id='sbj-profile-append' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                            <i class="material-icons">add</i>&nbsp;追加&nbsp;
-                        </button>
-                        <button id='sbj-profile-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                            <i class="material-icons">done</i>&nbsp;更新&nbsp;
-                        </button>
-                        <button id='sbj-profile-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
-                            &nbsp;キャンセル&nbsp;
-                        </button>
+                    <div class="sbj-profile-footer-panel">
+                        <div class="sbj-profile-footer-left">
+                            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-profile-icon-change-switch">
+                                <input type="checkbox" id="sbj-profile-icon-change-switch" class="mdl-switch__input" checked>
+                                <span class="mdl-switch__label">アイコンのダブルクリックで、発言アイコンを変更</span>
+                            </label>                            
+                        </div>
+                        <div class="sbj-profile-footer-right">
+                            <button id='sbj-profile-append' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                <i class="material-icons">add</i>&nbsp;&nbsp;&nbsp;追加&nbsp;&nbsp;&nbsp;
+                            </button>
+                            <button id='sbj-profile-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                                <i class="material-icons">done</i>&nbsp;&nbsp;&nbsp;更新&nbsp;&nbsp;&nbsp;
+                            </button>
+                            <button id='sbj-profile-cancel' class="sbj-profile-footer-right mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                                &nbsp;キャンセル&nbsp;
+                            </button>
+                        </div>
                     </div>
                 </footer>
             </div>

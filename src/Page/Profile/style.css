@@ -9,12 +9,11 @@
 }
 
 .sbj-profile-layout{
-    width: 960px;
-    height: 720px;
+    width: calc(100% - 512px);
+    height: calc(100% - 64px);
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -360px 0 0 -480px;
+    top: 32px;
+    right: 96px;
 }
 
 .sbj-profile-layout_content{
@@ -90,8 +89,17 @@
     display: flex;
 }
 
-.sbj-profile-footer-action{
-    margin-left: auto;
+.sbj-profile-footer-panel{
+    width : 100%;
+}
+
+.sbj-profile-footer-left{
+    float: left;
+    padding: 6px;
+}
+
+.sbj-profile-footer-right{
+    float: right;
 }
 
 .sbj-profile-note{
