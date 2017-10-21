@@ -111,7 +111,6 @@
 .sbj-profile-sub-menu
 {
     float: left;
-    position: fixed;
     width: 96px;
     margin: 12px 0px;
 }
@@ -119,7 +118,7 @@
 .sbj-profile-sub-list
 {
     float: right;
-    width: calc(100% - 96px);
+    width: calc(100% - 104px);
     margin: 4px;
 }
 

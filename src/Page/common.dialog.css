@@ -5,7 +5,8 @@
 	margin: 0px;
 	border: 0px;
 	padding: 0px;
-    background-color: var(--sbj-dialog-background-color);
+	background-color: var(--sbj-dialog-background-color);
+	overflow: hidden;
 }
 
 .sbj-dialog-background {
