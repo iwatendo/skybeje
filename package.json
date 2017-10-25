@@ -2,7 +2,7 @@
   "name": "skybeje",
   "license": "AGPL-3.0",
   "scripts": {
-    "server": "node dev/Server.js",
+    "server": "http-server ./dist/ -p 8888",
     "setversion": "node dev/SetVersion.js",
     "clean": "rimraf dist/*",
     "webpack": "webpack --colors --config ./webpack.config.dev.js",
@@ -20,6 +20,7 @@
     "@types/react-dom": "^15.5.1",
     "co": "^4.6.0",
     "cpx": "^1.5.0",
+    "http-server": "^0.10.0",
     "npm-run-all": "^4.0.2",
     "peerjs": "^0.3.14",
     "react": "^15.6.1",
