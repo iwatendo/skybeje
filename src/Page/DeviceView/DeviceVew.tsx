@@ -27,6 +27,7 @@ export class DeviceView {
      */
     public constructor(textElement: HTMLInputElement, listElement: HTMLElement, devices: Array<string>, deviceSelector: OnChangeDevice) {
         this._textElement = textElement;
+        this._textElement.style.cursor = "pointer";
         this._listElement = listElement;
         this._devices = devices;
         this._onChangeDevice = deviceSelector;
