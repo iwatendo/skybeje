@@ -2,6 +2,11 @@
 interface OnReadDevice { (devices: Array<any>) }
 
 
+export enum DeviceKind {
+    Audio = 1,
+    Video = 2,
+}
+
 export default class DeviceUtil {
 
     /**
@@ -82,14 +87,50 @@ export default class DeviceUtil {
 
 
     /**
-     * デバイス名称を取得します
-     * ※デバイス名称が取得できなかった場合は連番を設定します
-     * @param device 
+     * デバイスIDからデバイス名称を取得します
+     * @param deviceId 
      */
-    public static GetDeviceName(device: any): string {
+    public static GetDeviceName(kind: DeviceKind, deviceId: string): string {
+
+        let kid = this.ToKindId(kind, deviceId);
+
+        if (this._deviceMap.has(kid)) {
+            return this._deviceMap.get(kid);
+        }
+        else {
+            return "";
+        }
+    }
+
+
+    /**
+     * 
+     * @param kind 
+     * @param deviceId 
+     */
+    private static ToKindId(kind: DeviceKind | string, deviceId: string) {
+
+        if (kind === "audioinput" || kind === DeviceKind.Audio) {
+            return "audio-" + deviceId;
+        }
+
+        if (kind === "videoinput" || kind === DeviceKind.Video) {
+            return "video-" + deviceId;
+        }
+
+        return "";
+    }
+
+
+    /**
+     * デバイス情報を保持します。同時にデバイス名称も取得しキャッシュ
+     * ※デバイス名称が取得できなかった場合は連番を設定します
+     * @param device  
+     */
+    public static Set(device: any): string {
 
         let id = device.deviceId;
-        let kid = device.kind + id;
+        let kid = this.ToKindId(device.kind, id);
 
         if (this._deviceMap.has(kid)) {
             return this._deviceMap.get(kid);

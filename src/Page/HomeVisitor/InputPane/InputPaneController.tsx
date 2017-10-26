@@ -22,7 +22,7 @@ import { VoiceChatMemberSender, VoiceChatMemberListSender } from '../../HomeInst
 import { VoiceSfuRoomMemberComponent } from './VoiceSfuRoomMemberComponent';
 import IconCache from '../Cache/IconCache';
 import VoiceChatSettingDialog from './VoiceChatSettingDialog/VoiceChatSettingDialog';
-import DeviceUtil from '../../../Base/Util/DeviceUtil';
+import DeviceUtil, { DeviceKind } from '../../../Base/Util/DeviceUtil';
 import { DeviceView } from '../../DeviceView/DeviceVew';
 
 export default class InputPaneController {
@@ -664,9 +664,9 @@ export default class InputPaneController {
             let textElement = document.getElementById('mic-select') as HTMLInputElement;
             var listElement = document.getElementById('mic-list') as HTMLElement;
 
-            var view = new DeviceView(textElement, listElement, devices, (deviceId, deviceName) => {
+            var view = new DeviceView(DeviceKind.Audio, textElement, listElement, devices, (deviceId, deviceName) => {
                 this._audioDevice = deviceId;
-                LocalCache.SetVoiceChatOptions((opt) => opt.SelectMic = deviceName);
+                LocalCache.SetVoiceChatOptions((opt) => opt.SelectMic = deviceId);
                 this.ChnageDevice();
             });
 

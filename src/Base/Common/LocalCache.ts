@@ -62,13 +62,13 @@ export default class LocalCache {
      *  ボイスチャットのオプション設定
      */
     public static get VoiceChatOptions(): VoiceChatOptions {
-        let value = localStorage.getItem('live-cast-options');
+        let value = localStorage.getItem('voice-chat-options');
         return (value ? JSON.parse(value) as VoiceChatOptions : new VoiceChatOptions());
     }
     public static SetVoiceChatOptions(setoptions: OnSetVoiceChatOptions) {
         let options = this.VoiceChatOptions;
         setoptions(options);
-        localStorage.setItem('live-cast-options', JSON.stringify(options));
+        localStorage.setItem('voice-chat-options', JSON.stringify(options));
     }
 
 

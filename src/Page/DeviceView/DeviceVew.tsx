@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import DeviceUtil from "../../Base/Util/DeviceUtil";
+import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 
 import DeviceComponent from "./DeviceComponent";
 
@@ -16,16 +16,18 @@ export class DeviceView {
     private _devices: Array<any>;
     private _onChangeDevice: OnChangeDevice;
     private _selectDeviceId: string;
-
+    private _deviceKind: DeviceKind;
 
     /**
      * コンストラクタ
+     * @param deviceKind
      * @param textElement 
      * @param listElement 
      * @param devices 
      * @param deviceSelector 
      */
-    public constructor(textElement: HTMLInputElement, listElement: HTMLElement, devices: Array<string>, deviceSelector: OnChangeDevice) {
+    public constructor(deviceKind: DeviceKind, textElement: HTMLInputElement, listElement: HTMLElement, devices: Array<string>, deviceSelector: OnChangeDevice) {
+        this._deviceKind = deviceKind;
         this._textElement = textElement;
         this._textElement.style.cursor = "pointer";
         this._listElement = listElement;
@@ -85,13 +87,14 @@ export class DeviceView {
 
     /**
      * 指定したデバイスを選択状態にする　
-     * @param deviceName 
+     * @param id 
      */
-    public SelectDeivce(deviceName: string) {
-        this._textElement.value = deviceName;
-        let id = DeviceUtil.GetDeviceId(deviceName);
+    public SelectDeivce(id: string) {
+
+        let name = DeviceUtil.GetDeviceName(this._deviceKind, id);
+        this._textElement.value = name;
         if (this._onChangeDevice) {
-            this._onChangeDevice(id, deviceName);
+            this._onChangeDevice(id, name);
         }
     }
 }

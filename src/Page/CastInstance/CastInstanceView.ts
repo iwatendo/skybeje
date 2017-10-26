@@ -5,7 +5,7 @@ import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServi
 import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
 import StdUtil from "../../Base/Util/StdUtil";
-import DeviceUtil from "../../Base/Util/DeviceUtil";
+import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
@@ -202,9 +202,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             let textElement = document.getElementById('mic-select') as HTMLInputElement;
             var listElement = document.getElementById('mic-list') as HTMLElement;
 
-            var view = new DeviceView(textElement, listElement, devices, (deviceId, deviceName) => {
+            var view = new DeviceView(DeviceKind.Audio, textElement, listElement, devices, (deviceId, deviceName) => {
                 controller.AudioSource = deviceId;
-                LocalCache.SetLiveCastOptions((opt) => opt.SelectMic = deviceName);
+                LocalCache.SetLiveCastOptions((opt) => opt.SelectMic = deviceId);
                 this.ChnageDevice();
             });
 
@@ -225,10 +225,10 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             let textElement = document.getElementById('webcam-select') as HTMLInputElement;
             var listElement = document.getElementById('webcam-list') as HTMLElement;
 
-            var view = new DeviceView(textElement, listElement, devices, (deviceId, deviceName) => {
+            var view = new DeviceView(DeviceKind.Video, textElement, listElement, devices, (deviceId, deviceName) => {
 
                 controller.VideoSource = deviceId;
-                LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceName);
+                LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceId);
                 this.ChnageDevice();
 
                 if (deviceId) {

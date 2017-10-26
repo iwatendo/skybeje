@@ -33,7 +33,7 @@ export default class DeviceComponent extends React.Component<DeviceProp, any> {
     public render() {
 
         let deviceTable = this.props.deviceList.map((device, index, array) => {
-            let name = DeviceUtil.GetDeviceName(device);
+            let name = DeviceUtil.Set(device);
             return (<DeviceItemComponent key={name} owner={this.props.owner} deviceId={device.deviceId} deviceName={name} />);
         });
 
