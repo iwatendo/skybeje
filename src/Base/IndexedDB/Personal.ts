@@ -54,12 +54,13 @@ export class Icon implements IOrder {
         this.iid = "";
         this.order = 0;
         this.img = new ImageInfo();
+        this.voicecode = "";
     }
 
     iid: string;
     order: number;
     img: ImageInfo;
-
+    voicecode:string;
 
     /**
      * データコピー(※Shallow Copy)
@@ -70,6 +71,7 @@ export class Icon implements IOrder {
         result.iid = icon.iid;
         result.order = icon.order;
         result.img = icon.img;
+        result.voicecode = icon.voicecode;
         return result;
     }
 }

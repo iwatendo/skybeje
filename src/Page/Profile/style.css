@@ -126,6 +126,10 @@
     display: flex;
 }
 
+#sbj-profile-voice-code{
+    margin: 32px 0px;
+}
+
 /*-------------------------------------------------------------
  *	ガイド用
  *-------------------------------------------------------------*/
@@ -202,4 +206,28 @@
 
 .sbj-guide-no-embed{
     text-align: center;
+}
+
+/*-------------------------------------------------------------
+ *	VoiceCode用
+ *-------------------------------------------------------------*/
+
+
+ .sbj-voice-code-main{
+     padding: 16px 24px 0px;
+ }
+
+ .sbj-voice-code-card.mdl-card {
+    padding: 10px;
+    width: 720px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -360px;
+}
+
+.sbj-voice-code-card > .mdl-card__title {
+    color: var(--sbj-color-guide-dialog-text);
+    background-color: var(--sbj-color-guide-dialog-append);
 }

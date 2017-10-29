@@ -11,6 +11,7 @@ import ImageUtil from "../../../Base/Util/ImageUtil";
 import ImageDialogController from "../../Dashboard/ImageDialogController";
 import IconListComponent from "./IconListComponent";
 import ProfileController from "../ProfileController";
+import VoiceCodeDialogController from '../VoiceCodeDialog/VoiceCodeDialogController';
 
 
 /**
@@ -34,10 +35,12 @@ export default class IconListView {
         let addIconElement = document.getElementById('sbj-profile-add-icon');
         let editIconElement = document.getElementById('sbj-profile-edit-icon');
         let deleteIconElement = document.getElementById('sbj-profile-delete-icon');
+        let voicecodeElement = document.getElementById('sbj-profile-voice-code');
 
         addIconElement.onclick = (e) => this.OnClickAddIcon(this);
         editIconElement.onclick = (e) => this.OnClickEditIcon(this);
         deleteIconElement.onclick = (e) => this.OnClickDeleteIcon(this);
+        voicecodeElement.onclick = (e)=>this.OnClickVoiceCode(this);
 
         this.Refresh();
     }
@@ -206,5 +209,21 @@ export default class IconListView {
 
         view.Refresh();
     }
+
+
+    /**
+     * アイコンに対応する音声合成の設定
+     */
+    public OnClickVoiceCode(view: IconListView) {
+        let owner = view._owner;
+        let icon = view.SelectionIcon();
+        if (icon) {
+            VoiceCodeDialogController.Edit(icon.voicecode ,(result)=>{
+                icon.voicecode = result;
+                owner.Model.UpdateIcon(icon);
+            });
+        }
+    }
+    
 
 }

@@ -80,6 +80,10 @@
                                     <i class='material-icons'>delete</i>
                                     削除
                                 </button>
+                                <button id='sbj-profile-voice-code' class="mdl-button mdl-js-button mdl-button--primary">
+                                    <i class='material-icons'>settings_voice</i>
+                                    音声
+                                </button>
                             </div>
                             <div class="sbj-profile-sub-list" id="sbj-profile-icons-list">
                                 <!-- React -->
@@ -319,6 +323,52 @@
             </div>
         </div>
     </dialog>
+
+
+    <!--VoiceCode Dialog-->
+    <dialog id='sbj-voice-code-dialog' class='sbj-dialog'>
+        <div id="sbj-voice-code-background" class="sbj-dialog-background">
+
+            <div class="sbj-voice-code-card mdl-card mdl-shadow--2dp flexiblebox">
+
+                <!-- 上部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
+                        <i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon">settings_voice</i>
+                        <h4 class="sbj-dialog-title">
+                            <span id="sbj-dialog-title-value">連動アプリによる音声合成の設定</span>
+                        </h4>
+                    </div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-voice-code-dialog-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </div>
+                <div id="sbj-voice-code-main" class="sbj-voice-code-main mdl-card--expand">
+                    <div id="sbj-voice-code-text-field" class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-voice-code-text" spellcheck=false maxlength="2048"></textarea>
+                        <label class="mdl-textfield__label" for="sbj-voice-code-text">Skybeje.Speaker の Voice Code</label>
+                    </div>
+                </div>
+
+                <!-- 下部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left">
+                    </div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-voice-code-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            <i class="material-icons">done</i>&nbsp;更新&nbsp;
+                        </button>
+                        <button id='sbj-voice-code-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                            &nbsp;キャンセル&nbsp;
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </dialog>    
 
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>
