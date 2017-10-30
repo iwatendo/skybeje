@@ -101,7 +101,11 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                             </div>
                             <div className="sbj-user-setting-option" onClick={(e) => { this.OnChatMessageCopyModeSelect(1) }}>
                                 <input type="radio" name="sbj-options-chatmessagecopy-key" checked={this.state.cahtMessageCopyMode === 1}></input>
-                                <span className={this.state.cahtMessageCopyMode === 1 ? selectClass : noSelectClass}>クリップボードにコピーする（棒読みちゃん用）</span>
+                                <span className={this.state.cahtMessageCopyMode === 1 ? selectClass : noSelectClass}>クリップボードにコピー（棒読みちゃん用）</span>
+                            </div>
+                            <div className="sbj-user-setting-option" onClick={(e) => { this.OnChatMessageCopyModeSelect(2) }}>
+                                <input type="radio" name="sbj-options-chatmessagecopy-key" checked={this.state.cahtMessageCopyMode === 2}></input>
+                                <span className={this.state.cahtMessageCopyMode === 2 ? selectClass : noSelectClass}>Json形式でクリップボードにコピー（Skybeje.Speaker用）</span>
                             </div>
                         </h6>
                     </div>

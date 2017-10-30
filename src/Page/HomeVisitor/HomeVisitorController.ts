@@ -53,6 +53,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         return (this._currentActor ? this._currentActor.aid : "");
     }
     public get CurrentActor(): Personal.Actor { return this._currentActor; }
+    public CurrentIcon: Personal.Icon;
     public CurrentHid: string;
     public HasError: boolean;
 

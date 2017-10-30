@@ -159,9 +159,13 @@ export default class InputPaneController {
         }
 
         if (actor.dispIid) {
-            this._controller.Model.GetIcon(actor.dispIid, (icon) => { doDispIcon(icon.img); });
+            this._controller.Model.GetIcon(actor.dispIid, (icon) => {
+                this._controller.CurrentIcon = icon;
+                 doDispIcon(icon.img); 
+            });
         }
         else {
+            this._controller.CurrentIcon = new Personal.Icon();
             doDispIcon(new ImageInfo())
         }
     }
@@ -313,11 +317,19 @@ export default class InputPaneController {
         chatMessage.isSpeech = this._isVoiceSpeech;
         this._controller.SendChatMessage(chatMessage);
 
-        if (LocalCache.ChatMessageCopyMode === 1) {
-            //  クリップボードにテキストをコピー
-            StdUtil.ClipBoardCopy(text);
-        }
+        switch(LocalCache.ChatMessageCopyMode){
+            case 1:
+                StdUtil.ClipBoardCopy(text);
+                break;
+            case 2:
 
+                let icon = this._controller.CurrentIcon;
+                if(icon && icon.voicecode){
+                    let voicecode = icon.voicecode.replace("{{Message}}",text);
+                    StdUtil.ClipBoardCopy(voicecode);
+                }
+                break;
+        }
     }
 
 
