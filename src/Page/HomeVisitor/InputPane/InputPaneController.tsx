@@ -325,8 +325,11 @@ export default class InputPaneController {
 
                 let icon = this._controller.CurrentIcon;
                 if(icon && icon.voicecode){
-                    let voicecode = icon.voicecode.replace("{{Message}}",text);
-                    StdUtil.ClipBoardCopy(voicecode);
+
+                    let json = JSON.parse(icon.voicecode);
+                    json.Message = text;
+                    JSON.stringify(json)
+                    StdUtil.ClipBoardCopy(JSON.stringify(json));
                 }
                 break;
         }
