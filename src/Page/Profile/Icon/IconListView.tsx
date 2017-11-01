@@ -12,6 +12,7 @@ import ImageDialogController from "../../Dashboard/ImageDialogController";
 import IconListComponent from "./IconListComponent";
 import ProfileController from "../ProfileController";
 import VoiceCodeDialogController from '../VoiceCodeDialog/VoiceCodeDialogController';
+import StandingImageDialogController from '../StandingImageDialog/StandingImageDialogController';
 
 
 /**
@@ -36,11 +37,13 @@ export default class IconListView {
         let editIconElement = document.getElementById('sbj-profile-edit-icon');
         let deleteIconElement = document.getElementById('sbj-profile-delete-icon');
         let voicecodeElement = document.getElementById('sbj-profile-voice-code');
+        let standingImageElement = document.getElementById('sbj-profile-standing-image');
 
         addIconElement.onclick = (e) => this.OnClickAddIcon(this);
         editIconElement.onclick = (e) => this.OnClickEditIcon(this);
         deleteIconElement.onclick = (e) => this.OnClickDeleteIcon(this);
-        voicecodeElement.onclick = (e)=>this.OnClickVoiceCode(this);
+        voicecodeElement.onclick = (e) => this.OnClickVoiceCode(this);
+        standingImageElement.onclick = (e) => this.OnClickStandingImage(this);
 
         this.Refresh();
     }
@@ -218,12 +221,26 @@ export default class IconListView {
         let owner = view._owner;
         let icon = view.SelectionIcon();
         if (icon) {
-            VoiceCodeDialogController.Edit(icon.voicecode ,(result)=>{
+            VoiceCodeDialogController.Edit(icon.voicecode, (result) => {
                 icon.voicecode = result;
-                owner.Model.UpdateIcon(icon);
+                this.UpdateIcon(view, icon, icon.img);
             });
         }
     }
-    
+
+
+    /**
+     * アイコンに対応する立ち絵設定
+     */
+    public OnClickStandingImage(view: IconListView) {
+        let owner = view._owner;
+        let icon = view.SelectionIcon();
+        if (icon) {
+            StandingImageDialogController.Edit(icon.dispratio, (result) => {
+                icon.dispratio = result;
+                this.UpdateIcon(view, icon, icon.img);
+            });
+        }
+    }
 
 }

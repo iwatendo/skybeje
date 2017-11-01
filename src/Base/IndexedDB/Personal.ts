@@ -54,12 +54,14 @@ export class Icon implements IOrder {
         this.iid = "";
         this.order = 0;
         this.img = new ImageInfo();
+        this.dispratio = 0;
         this.voicecode = "";
     }
 
     iid: string;
     order: number;
     img: ImageInfo;
+    dispratio: number;
     voicecode:string;
 
     /**
@@ -71,6 +73,7 @@ export class Icon implements IOrder {
         result.iid = icon.iid;
         result.order = icon.order;
         result.img = icon.img;
+        result.dispratio = icon.dispratio;
         result.voicecode = icon.voicecode;
         return result;
     }

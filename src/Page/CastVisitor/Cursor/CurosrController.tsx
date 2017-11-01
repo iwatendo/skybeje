@@ -2,7 +2,7 @@
 import * as ReactDOM from 'react-dom';
 import * as Personal from "../../../Base/IndexedDB/Personal";
 import { CursorComponent } from "./CursorComponent";
-import IconCursorSender  from "../../../Base/Container/IconCursorSender";
+import IconCursorSender from "../../../Base/Container/IconCursorSender";
 import WebRTCService from "../../../Base/Common/WebRTCService";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
@@ -60,15 +60,15 @@ export class CursorController {
     private _queue: IconCursorSender = null;
     private _baseCursorList = new Array<IconCursorSender>();   //  送られて来たカーソル情報の保持（相対座標）
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
-    private _cursorSize: number;
     private _iconCache = new Map<string, Map<string, Personal.Icon>>();
 
     private _ownerPeerIdElement = document.getElementById('peerid') as HTMLInputElement;
     private _ownerAidElement = document.getElementById('aid') as HTMLInputElement;
     private _ownerIidElement = document.getElementById('iid') as HTMLInputElement;
 
-    private _homePeerId : string;
+    private _homePeerId: string;
 
+    private static _videoHeight = 0;
 
     /**
      * 初期化処理
@@ -81,7 +81,6 @@ export class CursorController {
 
         this._video = video;
         this._cursorDispElement = cursorDivElement;
-        this._cursorSize = 48;
 
         itemDivElement.onmousedown = (ev: MouseEvent) => {
 
@@ -111,7 +110,7 @@ export class CursorController {
         }
 
         this._homePeerId = this._ownerPeerIdElement.textContent;
-        this._ownerPeerIdElement.onchange = (e)=>{
+        this._ownerPeerIdElement.onchange = (e) => {
             this._homePeerId = this._ownerPeerIdElement.textContent;
         }
     }
@@ -149,7 +148,7 @@ export class CursorController {
         this._cursorList = new Array<CastCursor>();
 
         //  カーソル表示があればクリア
-        ReactDOM.render(<CursorComponent CursorList={this._cursorList} Size={this._cursorSize} />, this._cursorDispElement, (el) => {
+        ReactDOM.render(<CursorComponent CursorList={this._cursorList} />, this._cursorDispElement, (el) => {
             this.SetCursorIcon(this._cursorList);
         });
     };
@@ -213,16 +212,6 @@ export class CursorController {
 
 
     /**
-     * カーソルのサイズを
-     * ライブキャスト表示部分のサイズに合わせて変動させる
-     * @param dispWidth 
-     */
-    public SetCursorSize(dispWidth: number) {
-        this._cursorSize = Math.round(dispWidth / 20);
-    }
-
-
-    /**
      * マウスカーソルの表示処理
      * @param cursor
      */
@@ -235,10 +224,11 @@ export class CursorController {
 
         let dispCursor = new CastCursor(cursor.homePeerId, cursor.aid, cursor.iid, "", cursorX, cursorY);
         this.SetDispCursor(dispCursor);
-        this.SetCursorSize(vdo.dispWidth);
+
+        CursorController._videoHeight = vdo.dispHeight;
 
         //  描画処理
-        ReactDOM.render(<CursorComponent CursorList={this._cursorList} Size={this._cursorSize} />, this._cursorDispElement, (el) => {
+        ReactDOM.render(<CursorComponent CursorList={this._cursorList} />, this._cursorDispElement, (el) => {
             //  描画後、カーソルのCSSを設定する
             this.SetCursorIcon(this._cursorList);
 
@@ -338,9 +328,9 @@ export class CursorController {
     }
 
 
-
     /**
-     *  アイコン表示用処理
+     * アイコン表示処理
+     * @param cursors 
      */
     public SetCursorIcon(cursors: Array<CastCursor>) {
 
@@ -433,6 +423,22 @@ export class CursorController {
             let element = elements[i] as HTMLElement;
             if (element.style) {
                 ImageInfo.SetElementCss(element, icon.img);
+
+                let size : number;
+
+                if(icon.dispratio && icon.dispratio > 0){
+                    size = Math.round(CursorController._videoHeight * icon.dispratio / 100);
+                }
+                else{
+
+                    size = Math.round(CursorController._videoHeight * 8 / 100);
+                }
+
+                let iconsize = size.toString() + "px";
+                let mergin = - Math.round(size / 2);
+                element.style.width = iconsize;
+                element.style.height = iconsize;
+                element.style.margin = mergin.toString() + "px";
             }
         }
     }

@@ -6,7 +6,6 @@ import { CastCursor } from "./CurosrController";
 
 interface CursorItemrProp {
     cursor: CastCursor;
-    size: number;
 }
 
 
@@ -31,8 +30,6 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
                 <div>
                     <div className='sbj-cact-visitor-cursor' style={this.PosStyle()}>
                         <div className={imgClassName} style={this.ImageStyle()}>
-                            <p className='sbj-cact-visitor-cursor-pointer' style={this.PointerStyle()}>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -50,13 +47,10 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
     private PosStyle() {
 
         let cursor = this.props.cursor;
-        let size = this.props.size.toString() + "px";
 
         return {
             left: cursor.posX,
             top: cursor.posY,
-            width: size,
-            height: size,
         };
     }
 
@@ -84,22 +78,6 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
                 borderRadius: "8px",
                 userselect: "none",
             };
-        }
-    }
-
-
-    /**
-     * アイコンの左上に白い三角を表示する為のスタイル情報
-     */
-    private PointerStyle() {
-
-        let size = Math.round(this.props.size / 6).toString() + "px";
-
-        return {
-            borderTop: size + " solid var(--sbj-color-cast-cursor)",
-            borderLeft: size + " solid var(--sbj-color-cast-cursor)",
-            borderRight: size + " solid transparent",
-            borderBottom: size + " solid transparent",
         }
     }
 

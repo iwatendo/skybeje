@@ -84,6 +84,10 @@
                                     <i class='material-icons'>settings_voice</i>
                                     音声
                                 </button>
+                                <button id='sbj-profile-standing-image' class="mdl-button mdl-js-button mdl-button--primary">
+                                    <i class='material-icons'>accessibility</i>
+                                    立絵
+                                </button>
                             </div>
                             <div class="sbj-profile-sub-list" id="sbj-profile-icons-list">
                                 <!-- React -->
@@ -162,7 +166,7 @@
                             <i class="material-icons">photo_camera</i>
                             &nbsp;カメラ&nbsp;
                         </button>
-                    </div>
+                   </div>
 
                     <div class="sbj-dialog-attach-action-right">
                         <button id='sbj-image-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
@@ -324,7 +328,7 @@
         </div>
     </dialog>
 
-
+    
     <!--VoiceCode Dialog-->
     <dialog id='sbj-voice-code-dialog' class='sbj-dialog'>
         <div id="sbj-voice-code-background" class="sbj-dialog-background">
@@ -369,6 +373,49 @@
             </div>
         </div>
     </dialog>    
+
+    <!--StandingImage Dialog-->
+    <dialog id='sbj-standing-image-dialog' class='sbj-dialog'>
+        <div id="sbj-standing-image-background" class="sbj-dialog-background">
+            <div class="sbj-standing-image-card mdl-card mdl-shadow--2dp flexiblebox">
+                <!-- 上部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
+                        <i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon">accessibility</i>
+                        <h4 class="sbj-dialog-title">
+                            <span id="sbj-dialog-title-value">ライブキャスト上の表示アイコン設定</span>
+                        </h4>
+                    </div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-standing-image-dialog-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </div>
+                <div id="sbj-standing-image-main" class="sbj-standing-image-main mdl-card--expand">
+                    <div id="sbj-standing-image-scale" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-standing-image-scale-value">
+                        <label class="mdl-textfield__label" for="sbj-standing-image-scale-value">アイコン表示比率（縦サイズに対する画像の％）</label>
+                        <span class="mdl-textfield__error">数字を入力してください。</span>
+                    </div>
+                </div>
+                <!-- 下部ボタン郡 -->
+                <div class="mdl-card__actions">
+                    <div class="sbj-dialog-attach-action-left">
+                    </div>
+                    <div class="sbj-dialog-attach-action-right">
+                        <button id='sbj-standing-image-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            <i class="material-icons">done</i>&nbsp;更新&nbsp;
+                        </button>
+                        <button id='sbj-standing-image-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                            &nbsp;キャンセル&nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>    
+            
 
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>

@@ -127,7 +127,7 @@
 }
 
 #sbj-profile-voice-code{
-    margin: 32px 0px;
+    margin: 32px 0px 0px 0px;
 }
 
 /*-------------------------------------------------------------
@@ -230,4 +230,28 @@
 .sbj-voice-code-card > .mdl-card__title {
     color: var(--sbj-color-guide-dialog-text);
     background-color: var(--sbj-color-guide-dialog-append);
+}
+
+
+/*-------------------------------------------------------------
+ *	立ち絵用
+ *-------------------------------------------------------------*/
+
+ .sbj-standing-image-main{
+    padding: 16px 24px 0px;
+}
+
+.sbj-standing-image-card.mdl-card {
+   padding: 10px;
+   width: 720px;
+   height: 300px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   margin: -150px 0 0 -360px;
+}
+
+.sbj-standing-image-card > .mdl-card__title {
+   color: var(--sbj-color-guide-dialog-text);
+   background-color: var(--sbj-color-guide-dialog-append);
 }
