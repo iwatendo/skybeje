@@ -22,7 +22,7 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
 
         let cursor = this.props.cursor;
 
-        if (cursor.posX >= 0 && cursor.posY >= 0) {
+        if (cursor.isDisp){
 
             let imgClassName = 'sbj-cact-visitor-cursor-image-' + cursor.iid.toString();
 

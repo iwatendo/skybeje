@@ -30,14 +30,16 @@ export class CastCursor {
      * @param name 
      * @param x 
      * @param y 
+     * @param isDisp
      */
-    constructor(peerid: string, aid: string, iid: string, name: string, x: number, y: number) {
+    constructor(peerid: string, aid: string, iid: string, name: string, x: number, y: number, isDisp: boolean) {
         this.peerid = peerid;
         this.aid = aid;
         this.iid = iid;
         this.name = name;
         this.posX = x;
         this.posY = y;
+        this.isDisp = isDisp;
     }
 
     peerid: string = "";
@@ -46,6 +48,7 @@ export class CastCursor {
     posX: number = 0;
     posY: number = 0;
     name: string = null;
+    isDisp: boolean = false;
 }
 
 
@@ -69,6 +72,8 @@ export class CursorController {
     private _homePeerId: string;
 
     private static _videoHeight = 0;
+    private static _cursorOffsetX = 0;
+    private static _cursorOffsetY = 0;
 
     /**
      * 初期化処理
@@ -85,19 +90,19 @@ export class CursorController {
         itemDivElement.onmousedown = (ev: MouseEvent) => {
 
             if (ev.buttons === 1 && this.IsCursorPort(ev)) {
-                this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY);
+                this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY, true);
             }
         };
 
         itemDivElement.onmousemove = (ev: MouseEvent) => {
             if (ev.buttons === 1 && this.IsCursorPort(ev)) {
-                this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY);
+                this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY, true);
             }
         };
 
         itemDivElement.oncontextmenu = (pv: PointerEvent) => {
             //  右クリック時カーソルを消す。
-            this.CastCursorSend(this._video, itemDivElement, -1, -1);
+            this.CastCursorSend(this._video, itemDivElement, 0, 0, false);
             //  コンテキストメニューのキャンセル
             return false;
         }
@@ -106,7 +111,7 @@ export class CursorController {
 
         window.onbeforeunload = (ev) => {
             //  接続が切れた場合、カーソルを非表示にする
-            this.CastCursorSend(this._video, itemDivElement, -1, -1);
+            this.CastCursorSend(this._video, itemDivElement, 0, 0, false);
         }
 
         this._homePeerId = this._ownerPeerIdElement.textContent;
@@ -222,7 +227,7 @@ export class CursorController {
         let cursorX = Math.round(cursor.posRx * vdo.dispWidth + vdo.offsetRight);
         let cursorY = Math.round(cursor.posRy * vdo.dispHeight + vdo.offsetTop);
 
-        let dispCursor = new CastCursor(cursor.homePeerId, cursor.aid, cursor.iid, "", cursorX, cursorY);
+        let dispCursor = new CastCursor(cursor.homePeerId, cursor.aid, cursor.iid, "", cursorX, cursorY, cursor.isDisp);
         this.SetDispCursor(dispCursor);
 
         CursorController._videoHeight = vdo.dispHeight;
@@ -253,8 +258,9 @@ export class CursorController {
      * @param cursorpost 
      * @param clientX 
      * @param clientY 
+     * @param isDisp
      */
-    private CastCursorSend(video: HTMLVideoElement, cursorpost: HTMLElement, clientX: number, clientY: number) {
+    private CastCursorSend(video: HTMLVideoElement, cursorpost: HTMLElement, clientX: number, clientY: number, isDisp: boolean) {
 
         if (!this._homePeerId) {
             return;
@@ -264,8 +270,8 @@ export class CursorController {
         let vdo = this.GetVideoDispOffset(video);
 
         //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
-        let posRx: number = (clientX - vdo.offsetRight) / vdo.dispWidth;
-        let posRy: number = (clientY - vdo.offsetTop) / vdo.dispHeight;
+        let posRx: number = (clientX - vdo.offsetRight - CursorController._cursorOffsetX) / vdo.dispWidth;
+        let posRy: number = (clientY - vdo.offsetTop - CursorController._cursorOffsetY) / vdo.dispHeight;
 
 
         let sender = new IconCursorSender();
@@ -274,14 +280,9 @@ export class CursorController {
         sender.aid = this._ownerAidElement.textContent;
         sender.iid = this._ownerIidElement.textContent;
 
-        if (posRx > 0.0 && posRx < 1.0 && posRy > 0.0 && posRy < 1.0) {
-            sender.posRx = posRx;
-            sender.posRy = posRy;
-        }
-        else {
-            sender.posRx = -1;
-            sender.posRy = -1;
-        }
+        sender.posRx = posRx;
+        sender.posRy = posRy;
+        sender.isDisp = isDisp;
 
         if (this._busy) {
             this._queue = sender;
@@ -415,30 +416,47 @@ export class CursorController {
         }
 
         let imgclassName = "sbj-cact-visitor-cursor-image-" + icon.iid.toString();
-        document.getElementsByClassName(imgclassName);
-
         let elements = document.getElementsByClassName(imgclassName);
 
-        for (let i in elements) {
+        for (var i = 0; i < elements.length; i++) {
             let element = elements[i] as HTMLElement;
             if (element.style) {
                 ImageInfo.SetElementCss(element, icon.img);
 
-                let size : number;
+                let size: number;
 
-                if(icon.dispratio && icon.dispratio > 0){
+                if (icon.dispratio && icon.dispratio > 0) {
                     size = Math.round(CursorController._videoHeight * icon.dispratio / 100);
                 }
-                else{
-
+                else {
+                    //  デフォルトは高さに対して 8% とする
                     size = Math.round(CursorController._videoHeight * 8 / 100);
                 }
 
                 let iconsize = size.toString() + "px";
-                let mergin = - Math.round(size / 2);
+                let mergin = Math.round(size / 2);
                 element.style.width = iconsize;
                 element.style.height = iconsize;
-                element.style.margin = mergin.toString() + "px";
+                element.style.margin = "-" + mergin.toString() + "px";
+
+                //  自分自身のアイコンの場合はクリックイベントを追加する
+                if (icon.iid === this._ownerIidElement.textContent) {
+
+                    element.onmousedown = (e) => {
+                        CursorController._cursorOffsetX = e.offsetX - mergin;
+                        CursorController._cursorOffsetY = e.offsetY - mergin;
+                        element.style.cursor = "-webkit-grabbing";
+                    }
+
+                    let clearOffsset = () => {
+                        CursorController._cursorOffsetX = 0;
+                        CursorController._cursorOffsetY = 0;
+                        element.style.cursor = "default";
+                    }
+
+                    element.onmouseout = (e) => clearOffsset();
+                    element.onmouseup = (e) => clearOffsset();
+                }
             }
         }
     }

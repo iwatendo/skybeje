@@ -14,7 +14,7 @@ export default class CursorCache {
     public Set(cursor: IconCursorSender) {
 
         let peerid = cursor.visitorPeerId;
-        if (cursor.posRx >= 0 && cursor.posRy >= 0) {
+        if (cursor.isDisp) {
             this._map.set(peerid, cursor);
         }
         else {

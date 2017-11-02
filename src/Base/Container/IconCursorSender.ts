@@ -16,6 +16,7 @@ export default class IconCursorSender extends Sender {
         this.iid = "";
         this.posRx = 0;
         this.posRy = 0;
+        this.isDisp = true;
     }
 
     /**
@@ -31,4 +32,5 @@ export default class IconCursorSender extends Sender {
     iid: string;
     posRx: number;
     posRy: number;
+    isDisp: boolean;
 }
