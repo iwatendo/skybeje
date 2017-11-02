@@ -94,7 +94,7 @@ export default class ServentElementPack {
                 frame.contentDocument.onmouseover = (e) => {
                     frame.contentWindow.document.body.focus();
                 }
-                this._homeController.View.CastSelector.NotifyServentToActor(frame);
+                this._homeController.View.CastSelector.NotifyActorToServent(frame);
             }
             frame.setAttribute('src', url);
         }

@@ -294,7 +294,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             //  変更したアクターの部屋へ変更
             this.RoomCache.GetRoomByActorId(aid, (room) => {
                 this.View.SetRoomInfo(room);
-                this.View.CastSelector.NotifyServentToActorAll();
+                this.View.CastSelector.NotifyActorToAllServent();
             });
         });
     }

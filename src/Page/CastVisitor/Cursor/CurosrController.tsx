@@ -74,6 +74,7 @@ export class CursorController {
     private static _videoHeight = 0;
     private static _cursorOffsetX = 0;
     private static _cursorOffsetY = 0;
+    private static _mineCursor: IconCursorSender = null;
 
     /**
      * 初期化処理
@@ -217,6 +218,36 @@ export class CursorController {
 
 
     /**
+     * 自身のカーソルをCastInstanceに送信する
+     * @param sender 
+     */
+    private SendCursorToOwner(sender: IconCursorSender) {
+        CursorController._mineCursor = sender;
+        WebRTCService.SendToOwner(sender);
+    }
+
+
+    /**
+     * 最終発言をしたアクター情報をセット
+     * @param aid 
+     * @param iid 
+     */
+    public SetLastChatActor(aid: string, iid: string) {
+        let sender = CursorController._mineCursor;
+
+        if (sender && sender.isDisp) {
+
+            //  発言アクターに変更があった場合、表示を差替える
+            if( sender.aid !== aid || sender.iid !== iid){
+                sender.aid = aid;
+                sender.iid = iid;
+                this.SendCursorToOwner(sender);
+            }
+        }
+    }
+    
+
+    /**
      * マウスカーソルの表示処理
      * @param cursor
      */
@@ -242,7 +273,7 @@ export class CursorController {
 
         //  ququeがある場合、最後に送信する
         if (this._queue !== null && this._queue.aid === cursor.aid) {
-            WebRTCService.SendToOwner(this._queue);
+            this.SendCursorToOwner(this._queue);
             this._queue = null;
         }
         else {
@@ -289,7 +320,7 @@ export class CursorController {
         }
         else {
             this._busy = true;
-            WebRTCService.SendToOwner(sender);
+            this.SendCursorToOwner(sender);
         }
     }
 

@@ -333,6 +333,9 @@ export default class InputPaneController {
                 }
                 break;
         }
+
+        //  最終発言アクターをライブキャスト側に通知
+        this._controller.View.CastSelector.NotifyLastChatActorToAllServent();
     }
 
 
@@ -422,7 +425,7 @@ export default class InputPaneController {
     public ChangeSelectionIcon(iid: string) {
         let controller = this._controller;
         let aid = controller.CurrentAid;
-        controller.View.CastSelector.NotifyServentToActorAll();
+        controller.View.CastSelector.NotifyActorToAllServent();
         this.DisplayActor();
     }
 

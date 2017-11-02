@@ -39,7 +39,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             submenuMain.style.opacity = "0.0";
         }
 
-
+        
         //  別タブで開かれたステージはサブメニューは表示しない
         if (LinkUtil.GetArgs("allout")) {
             document.getElementById('sbj-cast-visitor-allout').hidden = true;
@@ -115,6 +115,20 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         let curport = document.getElementById('sbj-cact-visitor-cursor-port') as HTMLElement;
         this.Cursor = new CursorController(video, itemport, curport);
         this.Cursor.DisplayAll();
+
+        //  クライアント側の発言アイコン通知
+        let lastChatAidElement = document.getElementById('lastChatAid') as HTMLInputElement;
+        let lastChatIidElement = document.getElementById('lastChatIid') as HTMLInputElement;
+
+        let chnageLastChatActor = (e)=>{
+            let aid = lastChatAidElement.textContent;
+            let iid = lastChatIidElement.textContent;
+
+            this.Cursor.SetLastChatActor(aid,iid);
+        }
+
+        lastChatAidElement.onclick = chnageLastChatActor;
+        lastChatIidElement.onclick = chnageLastChatActor;
     }
 
 

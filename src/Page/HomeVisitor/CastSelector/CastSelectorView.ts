@@ -48,7 +48,7 @@ export default class CastSelectorView {
             this._servnetElementPacks.push(slp);
 
             slp.Frame.onload = (ev) => {
-                this._castSelectorController.NotifyServentToActor(slp.Frame);
+                this._castSelectorController.NotifyActorToServent(slp.Frame);
             }
 
             slp.Button.onclick = (ev) => {
