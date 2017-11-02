@@ -14,7 +14,12 @@ export default class StandingImageDialogController {
     private _updateButton = document.getElementById('sbj-standing-image-update') as HTMLInputElement;
     private _dialogCloseButton = document.getElementById('sbj-standing-image-dialog-close') as HTMLInputElement;
     private _cancelButton = document.getElementById('sbj-standing-image-cancel') as HTMLInputElement;
-    private _scaleElement = document.getElementById("sbj-standing-image-scale-value") as HTMLInputElement;
+
+    private _scaleLabelElement = document.getElementById("sbj-standing-image-scale") as HTMLInputElement;
+
+    private _scaleElement = document.getElementById("sbj-standing-image-scale") as HTMLInputElement;
+    private _scaleValueElement = document.getElementById("sbj-standing-image-scale-value") as HTMLInputElement;
+    private _scaleSwitchElement = document.getElementById("sbj-standing-image-scale-switch") as HTMLInputElement;
 
     /**
      * 
@@ -78,9 +83,17 @@ export default class StandingImageDialogController {
     }
 
 
+    /**
+     * 
+     * @param scale 
+     */
     private SetStandingImage(scale: number) {
-        this._scaleElement.value = (scale ? scale.toString() : "");
-        document.getElementById("sbj-standing-image-scale").classList.add("is-dirty");
+
+        if( !scale )
+            scale = 8;
+
+        this._scaleElement.classList.add("is-dirty");
+        this._scaleValueElement.value = scale.toString();
     }
 
 
@@ -88,7 +101,7 @@ export default class StandingImageDialogController {
      * 
      */
     private GetStandingImage(): number {
-        return Number.parseInt(this._scaleElement.value);
+        return Number.parseInt(this._scaleValueElement.value);
     }
 
 }
