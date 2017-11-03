@@ -44,7 +44,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
         WebRTCService.SendToOwner(new GetCastSettingSedner());
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
-        this.View.initializeCursor();
+        this.View.InitializeCursor();
     }
 
 
@@ -64,16 +64,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.View.Cursor.Remove(conn.peer);
-    }
-
-
-    /**
-     * ストリーミングの再生開始後の処理
-     */
-    public OnStreamingPlay() {
-        if (this.View && this.View.Cursor) {
-            this.View.Cursor.DisplayAll();
-        }
     }
 
 };
