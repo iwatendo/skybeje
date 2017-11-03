@@ -39,7 +39,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             submenuMain.style.opacity = "0.0";
         }
 
-        
+
         //  別タブで開かれたステージはサブメニューは表示しない
         if (LinkUtil.GetArgs("allout")) {
             document.getElementById('sbj-cast-visitor-allout').hidden = true;
@@ -87,8 +87,10 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
         video.onplay = (ev) => {
             let voiceOnly = (video.videoHeight === 0 || video.videoWidth === 0);
-            //  document.getElementById('sbj-cact-visitor-voice-only').hidden = !voiceOnly;
-            video.volume;
+            let element = document.getElementById('sbj-cact-visitor-voice-only');
+            if (element) {
+                element.hidden = !voiceOnly;
+            }
         };
 
         callback();
@@ -106,9 +108,9 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
 
     /**
-     * ビデオ表示設定
+     * カーソル表示設定
      */
-    public initializeCursor() {
+    public InitializeCursor() {
 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cact-visitor-item-port') as HTMLElement;
@@ -120,11 +122,11 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         let lastChatAidElement = document.getElementById('lastChatAid') as HTMLInputElement;
         let lastChatIidElement = document.getElementById('lastChatIid') as HTMLInputElement;
 
-        let chnageLastChatActor = (e)=>{
+        let chnageLastChatActor = (e) => {
             let aid = lastChatAidElement.textContent;
             let iid = lastChatIidElement.textContent;
 
-            this.Cursor.SetLastChatActor(aid,iid);
+            this.Cursor.SetLastChatActor(aid, iid);
         }
 
         lastChatAidElement.onclick = chnageLastChatActor;
@@ -137,8 +139,6 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
      * @param sender
      */
     public SetCastSetting(sender: CastSettingSender) {
-
-        let video = document.getElementById('sbj-video') as HTMLVideoElement;
 
         if (this.Cursor) {
             if (sender.dispUserCursor) {
