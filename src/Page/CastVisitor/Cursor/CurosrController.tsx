@@ -487,6 +487,10 @@ export class CursorController {
 
                     element.onmouseout = (e) => clearOffsset();
                     element.onmouseup = (e) => clearOffsset();
+
+                    //  イメージ画像として掴んでしまい、うまく動かせないケースの対策
+                    element.onselectstart = (e) =>{ return false; }
+                    element.onmousemove = (e)=>{ return false; }
                 }
             }
         }
