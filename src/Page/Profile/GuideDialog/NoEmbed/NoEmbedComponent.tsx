@@ -21,8 +21,8 @@ export default class NoEmbedComponent extends React.Component<NoEmbedProp, any> 
         return (
             <h6 className="sbj-guide-no-embed mdl-color-text--grey-600">
                 <br/>
-                YouTube動画を再生させる事ができます。<br/>
-                URLをドロップすることで追加できます。<br/>
+                キーワードに反応してYouTube動画を再生させる事もできます。<br/>
+                YouTube動画のURLをここにドロップすることで追加できます。<br/>
             </h6>
         );
     }
