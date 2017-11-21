@@ -80,7 +80,7 @@ export class DeviceView {
      */
     public SelectFirstDevice() {
         if (this._devices && this._devices.length > 0) {
-            this.SelectDeivce(this._devices[0].label);
+            this.SelectDeivce(this._devices[0].deviceId);
         }
     }
 
