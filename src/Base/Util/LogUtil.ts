@@ -1,6 +1,5 @@
 ﻿import Sender from "../Container/Sender";
 import { IServiceController } from "../Common/IServiceController";
-import WebRTCService from "../Common/WebRTCService";
 
 export enum LogType {
     Message = 0,
@@ -96,7 +95,7 @@ export default class LogUtil {
         let result = this._APPNAME + " : ";
         if (service) result += service.ControllerName();
 
-        let peerid = WebRTCService.PeerId();
+        let peerid = service.SwPeer.PeerId;
         if (peerid) result += " [" + peerid + "]";
         result += " : ";
 

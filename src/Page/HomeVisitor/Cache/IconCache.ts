@@ -1,8 +1,5 @@
 
 import * as Personal from "../../../Base/IndexedDB/Personal";
-
-import WebRTCService from "../../../Base/Common/WebRTCService";
-
 import HomeVisitorController from "../HomeVisitorController";
 import { GetIconSender } from "../HomeVisitorContainer";
 
@@ -96,7 +93,8 @@ export default class IconCache {
         let sender = new GetIconSender();
         sender.iid = iid;
         //  他ユーザーへアイコン要求
-        WebRTCService.SendTo(peerid, sender);
+
+        this._controller.SwPeer.SendTo(peerid, sender);
     }
 
 

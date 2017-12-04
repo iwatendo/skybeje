@@ -4,17 +4,23 @@ import { IServiceController } from "./IServiceController";
 import { IServiceReceiver } from "./IServiceReceiver";
 import { IServiceView } from "./IServiceView";
 import { IServiceModel } from "./IServiceModel";
+import SWPeer from "../WebRTC/SWPeer";
+import SWRoom, { ISWRoom } from "../WebRTC/SWRoom";
+import LinkUtil from "../Util/LinkUtil";
 
 /**
  * Peerサービスコントローラーの抽象化クラス
  */
-export default abstract class AbstractServiceController<V extends IServiceView, M extends IServiceModel> implements IServiceController {
-
-    private _peer: PeerJs.Peer;
+export default abstract class AbstractServiceController<V extends IServiceView, M extends IServiceModel> implements IServiceController, ISWRoom {
 
     public View: V;
     public Model: M;
     public Receiver: IServiceReceiver;
+
+    public SwPeer: SWPeer;
+    public SwRoom: SWRoom;
+
+    private _peer: PeerJs.Peer;
 
     public abstract ControllerName(): string;
 
@@ -159,6 +165,94 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
 
         this.Receiver.Receive(conn, sender);
     }
+
+
+    //-------------------------------------------------------------------------
+    //  以下、Room(Mesh/SFU)関連のイベントラッパー
+    //-------------------------------------------------------------------------
+
+
+    /**
+     * 
+     */
+    public OnRoomOpen() {
+    }
+
+
+    /**
+     * 
+     * @param err 
+     */
+    public OnRoomError(err: any) {
+    }
+
+
+    /**
+     * 
+     */
+    public OnRoomClose() {
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     */
+    public OnRoomPeerJoin(peerid: string) {
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     */
+    public OnRoomPeerLeave(peerid: string) {
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param recv 
+     */
+    public OnRoomRecv(peerid: string, recv: any) {
+
+        if (recv === null)
+            return;
+
+        let sender: Sender = JSON.parse(recv) as Sender;
+
+        if (LogUtil.IsOutputSender(sender))
+            LogUtil.Info(this, "room recv : " + recv);
+
+        if (sender === null)
+            return;
+
+        if (sender.type === null)
+            return;
+
+        this.Receiver.RoomRecive(peerid, sender);
+
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param stream 
+     */
+    public OnRoomStream(peerid: string, stream: MediaStream) {
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param stream 
+     */
+    public OnRoomRemoveStream(peerid: string, stream: MediaStream) {
+    }
+
 
 }
 

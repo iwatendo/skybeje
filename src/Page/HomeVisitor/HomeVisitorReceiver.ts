@@ -1,6 +1,5 @@
 ﻿
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 
 import * as Personal from "../../Base/IndexedDB/Personal";
@@ -40,7 +39,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 //  多重起動が検出された場合はエラー表示して終了
                 this.Controller.HasError = true;
                 this.Controller.View.MutilBootError();
-                WebRTCService.Close();
+                this.Controller.SwPeer.Close();
             }
             return;
         }
@@ -145,7 +144,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         this.Controller.Model.GetUserProfile((profile) => {
             let result = new HVContainer.ProfileSender();
             result.profile = profile;
-            WebRTCService.SendTo(conn, result);
+            this.Controller.SwPeer.SendTo(conn, result);
         });
     }
 
@@ -159,7 +158,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         this.Controller.Model.GetActor(sender.aid, (actor) => {
             let result = new HVContainer.ActorInfoSender();
             result.actorInfo = new ActorInfo(this.Controller.PeerId, Sender.Uid, actor);
-            WebRTCService.SendTo(conn, result);
+            this.Controller.SwPeer.SendTo(conn, result);
         });
     }
 
@@ -182,7 +181,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 result.icon.iid = sender.iid;
             }
 
-            WebRTCService.SendTo(conn, result);
+            this.Controller.SwPeer.SendTo(conn, result);
         });
     }
 
@@ -194,7 +193,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
     public GetGuide(conn: PeerJs.DataConnection) {
         let result = new HVContainer.GuideSender();
         result.guide = this.Controller.Bot.GetGuideQueue();
-        WebRTCService.SendTo(conn, result);
+        this.Controller.SwPeer.SendTo(conn, result);
     }
 
 
@@ -225,10 +224,10 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let castroom = this.Controller.RoomCache.Get(hid, (room) => {
                 let castSender = new HIContainer.RoomSender();
                 castSender.room = room;
-                WebRTCService.SendTo(conn, castSender);
+                this.Controller.SwPeer.SendTo(conn, castSender);
             })
 
-            WebRTCService.SendToOwner(serventSender);
+            this.Controller.SwPeer.SendToOwner(serventSender);
         });
 
     }

@@ -1,7 +1,9 @@
+import LocalCache from "../Common/LocalCache";
+
 
 export default abstract class Sender {
 
-    public static Uid: string;
+    public static Uid: string = LocalCache.UserID;
 
     constructor(type: string) {
         this.type = type;

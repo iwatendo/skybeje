@@ -1,11 +1,11 @@
 
 import * as Home from "../../Base/IndexedDB/Home";
 
-import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 
 import HomeVisitorController from "./HomeVisitorController";
+import SWPeer from "../../Base/WebRTC/SWPeer";
 
 
 if (StdUtil.IsExecute()) {
@@ -14,9 +14,7 @@ if (StdUtil.IsExecute()) {
 
     db.Connect(() => {
         let server = new HomeVisitorController();
-        let instanceId = LinkUtil.GetPeerID();
-        WebRTCService.Start(server, instanceId, () => {
-        });
+        server.SwPeer = new SWPeer(server, LinkUtil.GetPeerID(), null);
     });
 
 }

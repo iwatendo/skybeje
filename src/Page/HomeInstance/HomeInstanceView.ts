@@ -3,7 +3,6 @@ import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServi
 
 import * as Home from "../../Base/IndexedDB/Home";
 
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
@@ -23,7 +22,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      * @param callback 
      */
     protected Initialize(callback: OnViewLoad) {
-
+        
         StdUtil.StopPropagation();
 
         document.getElementById('sbj-stop-instance').onclick = (e) => {
@@ -129,7 +128,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     public ClearTimeline() {
         this.Controller.Model.ClearTimeline(() => {
             this.Controller.Manager.Chat.AllClear();
-            WebRTCService.SendAll(new ClearTimelineSender());
+            this.Controller.SwPeer.SendAll(new ClearTimelineSender());
         });
     }
 

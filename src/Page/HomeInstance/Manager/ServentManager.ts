@@ -1,6 +1,4 @@
 
-import WebRTCService from "../../../Base/Common/WebRTCService";
-
 import * as HIContainer from "../HomeInstanceContainer";
 import HomeInstanceController from "../HomeInstanceController";
 import RoomManager from "./RoomManager";
@@ -118,7 +116,7 @@ export default class ServentManager {
         this._roomManager.GetRoomInPeers(hid).forEach((peerid) => {
 
             let sender = this.GetServent(hid);
-            WebRTCService.SendTo(peerid, sender);
+            this.Controller.SwPeer.SendTo(peerid, sender);
         });
     }
 

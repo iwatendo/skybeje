@@ -3,7 +3,6 @@ import { Actor } from "../../../Base/IndexedDB/Personal";
 
 import LogUtil from "../../../Base/Util/LogUtil";
 
-import WebRTCService from "../../../Base/Common/WebRTCService";
 import { OnRead } from "../../../Base/Common/AbstractServiceModel";
 import ActorInfo from "../../../Base/Container/ActorInfo";
 
@@ -224,7 +223,7 @@ export default class RoomManager {
         //  通知処理
         sendPeers.forEach((peerid) => {
             //  各ユーザーへ通知
-            WebRTCService.SendTo(peerid, rmi);
+            this._controller.SwPeer.SendTo(peerid, rmi);
         });
 
         //  RoomViewへの通知

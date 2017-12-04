@@ -1,7 +1,6 @@
-import SWRoomController from "../../../Base/Common/Connect/SWRoomController";
-import SWPeer from "../../../Base/Common/Connect/SWPeer";
-import { SWRoomMode } from "../../../Base/Common/Connect/SWRoom";
-
+import SWPeer from "../../../Base/WebRTC/SWPeer";
+import { SWRoomMode } from "../../../Base/WebRTC/SWRoom";
+import SWRoomController from "../../../Base/WebRTC/SWRoomController";
 
 
 interface OnChangePeerList { (peerList: Array<string>): void }

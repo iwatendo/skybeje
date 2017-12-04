@@ -1,6 +1,5 @@
 ﻿
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 
 import * as HVContainer from "../HomeVisitor/HomeVisitorContainer";
@@ -25,7 +24,7 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             let mbc = this.IsMultiBoot(sender.uid, conn);
             ci.isBootCheck = !mbc;
             ci.isMultiBoot = mbc;
-            WebRTCService.SendTo(conn, ci);
+            this.Controller.SwPeer.SendTo(conn, ci);
             return;
         }
 
@@ -51,7 +50,7 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             let gtl = sender as HVContainer.GetTimelineSender;
             let result = new HIContainer.TimelineSender();
             result.msgs = this.Controller.Manager.Chat.GetBeforeMessages(gtl.hid, gtl.count);
-            WebRTCService.SendTo(conn, result);
+            this.Controller.SwPeer.SendTo(conn, result);
         }
 
         //  タイムラインの更新
@@ -72,7 +71,7 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
 
         //  強制終了処理
         if (sender.type === HIContainer.ForcedTerminationSender.ID) {
-            WebRTCService.Close();
+            this.Controller.SwPeer.Close();
         }
 
         //  ボイスチャットルームのメンバー通知

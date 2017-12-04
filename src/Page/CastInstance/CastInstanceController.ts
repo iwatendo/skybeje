@@ -1,6 +1,5 @@
 ﻿
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
@@ -14,6 +13,7 @@ import CastInstanceView from "./CastInstanceView";
 import { CastSettingSender } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 import StreamUtil from "../../Base/Util/StreamUtil";
+import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 
 
 export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
@@ -70,7 +70,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         this.CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
         this.CastInstance.instanceUrl = location.href;
         this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
-        WebRTCService.SendToOwner(this.CastInstance);
+        this.SwPeer.SendToOwner(this.CastInstance);
     }
 
 
@@ -79,7 +79,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
-        WebRTCService.Close();
+        this.SwPeer.Close();
         this.View.SetControllHidden();
     }
 
@@ -93,10 +93,10 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
         //  配置済みカーソルの通知
         this.CursorCache.forEach((cursor) => {
-            WebRTCService.SendTo(conn, cursor);
+            this.SwPeer.SendTo(conn, cursor);
         });
 
-        this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
+        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
 
@@ -106,7 +106,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
+        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
         this.CursorCache.Remove(conn.peer);
     }
 
@@ -117,7 +117,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public SetStreaming() {
 
         StreamUtil.GetStreaming(this.AudioSource, this.VideoSource, (stream) => {
-            WebRTCService.StartStreaming(stream);
+            this.SwRoom.SetStream(stream);
         });
 
         //  オーナー 及び 接続クライアントに通知
@@ -148,11 +148,11 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public SendCastInfo() {
 
         //  クライアントへの通知
-        WebRTCService.SendAll(this.CastSetting);
+        this.SwPeer.SendAll(this.CastSetting);
 
         //  オーナー側への通知
         if (this.CastInstance) {
-            WebRTCService.SendToOwner(this.CastInstance);
+            this.SwPeer.SendToOwner(this.CastInstance);
         }
     }
 

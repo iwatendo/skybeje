@@ -3,7 +3,6 @@ import * as Home from "../../Base/IndexedDB/Home";
 import * as Personal from "../../Base/IndexedDB/Personal";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil from "../../Base/Util/DeviceUtil";
@@ -25,7 +24,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      * 初期化処理
      */
     public Initialize(callback: OnViewLoad) {
-
+        
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
         let backpanel = document.getElementById('sbj-gadget-instance');
@@ -84,7 +83,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             LocalCache.SetGadgetCastOptions((opt) => opt.IsIconCursor = isCheced);
 
             this.Controller.CastSetting.dispUserCursor = isCheced;
-            WebRTCService.SendAll(this.Controller.CastSetting);
+            this.Controller.SwPeer.SendAll(this.Controller.CastSetting);
         };
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
@@ -152,7 +151,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             (document.getElementById('sbj-gadget-instance-start') as HTMLInputElement).disabled = false;
 
             this._startFunc = () => {
-                WebRTCService.SendAll(this.Controller.CastSetting);
+                this.Controller.SwPeer.SendAll(this.Controller.CastSetting);
                 this.SetYouTubeListener(player);
                 YouTubeUtil.CueVideo(option);
                 this.Controller.SendToOwner_CastStart();
@@ -201,7 +200,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         let interval = 200;
         let timeout = 5000;
 
-        let clcount = WebRTCService.GetAliveConnectionCount();
+        let clcount = this.Controller.SwPeer.GetAliveConnectionCount();
 
         if ((clcount > 0 && clcount <= this._cueMap.size) || polingTime > timeout) {
             YouTubeUtil.Player.playVideo();
@@ -307,7 +306,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         //  接続クライアントに通知
         this._preSender = sender;
-        WebRTCService.SendAll(sender);
+        this.Controller.SwPeer.SendAll(sender);
     }
 
     private _preSender = null;
@@ -334,7 +333,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
                         this.SetCueMap(conn.peer);
                     }
                     else {
-                        WebRTCService.SendTo(conn, this.CreateYouTubeStatus());
+                        this.Controller.SwPeer.SendTo(conn, this.CreateYouTubeStatus());
                     }
                 }
                 break;

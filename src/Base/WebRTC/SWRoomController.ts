@@ -1,6 +1,6 @@
-import StdUtil from "../../Util/StdUtil";
-import LogUtil from "../../Util/LogUtil";
-import { IServiceController } from "../IServiceController";
+import StdUtil from "../Util/StdUtil";
+import LogUtil from "../Util/LogUtil";
+import { IServiceController } from "../Common/IServiceController";
 import SWPeer from "./SWPeer";
 import SWRoom, { ISWRoom, SWRoomMode } from "./SWRoom";
 

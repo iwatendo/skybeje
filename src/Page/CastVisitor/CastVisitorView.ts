@@ -1,7 +1,6 @@
 ﻿
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 import LogUtil from "../../Base/Util/LogUtil";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import CastVisitorController from "./CastVisitorController";
@@ -25,7 +24,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
     //
     public Initialize(callback: OnViewLoad) {
-
+        
         this.SubTitles = new SubTitlesController();
 
         StdUtil.StopPropagation();
@@ -116,7 +115,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cact-visitor-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cact-visitor-cursor-port') as HTMLElement;
-        this.Cursor = new CursorController(video, itemport, curport);
+        this.Cursor = new CursorController(this.Controller, video, itemport, curport);
         this.Cursor.DisplayAll();
 
         //  クライアント側の発言アイコン通知

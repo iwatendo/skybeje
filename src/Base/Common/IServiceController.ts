@@ -1,7 +1,16 @@
-﻿/**
+﻿import SWPeer from "../WebRTC/SWPeer";
+import SWRoom from "../WebRTC/SWRoom";
+
+/**
  * サービスコントローラー
  */
 export interface IServiceController {
+
+    //
+    SwPeer: SWPeer;
+
+    //
+    SwRoom: SWRoom;
 
     //  PeerIDの取得
     ControllerName(): string;

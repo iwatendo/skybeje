@@ -14,10 +14,9 @@ import HomeVisitorController from "../HomeVisitorController";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
 import SpeechUtil from "../../../Base/Util/SpeechUtil";
-import WebRTCService from '../../../Base/Common/WebRTCService';
 import StreamUtil from '../../../Base/Util/StreamUtil';
 import VoiceSfuRoomController from './VoiceSFURoomController';
-import { SWRoomMode } from '../../../Base/Common/Connect/SWRoom';
+import { SWRoomMode } from '../../../Base/WebRTC/SWRoom';
 import { VoiceChatMemberSender, VoiceChatMemberListSender } from '../../HomeInstance/HomeInstanceContainer';
 import { VoiceSfuRoomMemberComponent } from './VoiceSfuRoomMemberComponent';
 import IconCache from '../Cache/IconCache';
@@ -161,7 +160,7 @@ export default class InputPaneController {
         if (actor.dispIid) {
             this._controller.Model.GetIcon(actor.dispIid, (icon) => {
                 this._controller.CurrentIcon = icon;
-                 doDispIcon(icon.img); 
+                doDispIcon(icon.img);
             });
         }
         else {
@@ -317,14 +316,14 @@ export default class InputPaneController {
         chatMessage.isSpeech = this._isVoiceSpeech;
         this._controller.SendChatMessage(chatMessage);
 
-        switch(LocalCache.ChatMessageCopyMode){
+        switch (LocalCache.ChatMessageCopyMode) {
             case 1:
                 StdUtil.ClipBoardCopy(text);
                 break;
             case 2:
 
                 let icon = this._controller.CurrentIcon;
-                if(icon && icon.voicecode){
+                if (icon && icon.voicecode) {
 
                     let json = JSON.parse(icon.voicecode);
                     json.Message = text;
@@ -598,8 +597,8 @@ export default class InputPaneController {
 
             StreamUtil.GetStreaming(this._audioDevice, null, (stream) => {
                 this.IsMicMute = true;
-                let peer = WebRTCService.SwPeer;
-                let ownerid = WebRTCService.OwnerPeerId();
+                let peer = this._controller.SwPeer;
+                let ownerid = this._controller.SwPeer.OwnerPeerId;
                 this._sfuRoom = new VoiceSfuRoomController(peer, ownerid, SWRoomMode.SFU, stream, (pl) => {
                     this.ChangeVoiceChatStreamMember(pl);
                 });
@@ -614,12 +613,12 @@ export default class InputPaneController {
         }
 
         let sender = new VoiceChatMemberSender();
-        sender.peerid = WebRTCService.PeerId();
+        sender.peerid = this._controller.SwPeer.PeerId;
         sender.aid = this._controller.CurrentActor.aid;
         sender.iid = this._controller.CurrentActor.dispIid;
         sender.isMember = this._isVoiceChat;
 
-        WebRTCService.SendToOwner(sender);
+        this._controller.SwPeer.SendToOwner(sender);
     }
 
 

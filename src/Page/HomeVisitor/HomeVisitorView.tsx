@@ -6,7 +6,6 @@ import { Icon } from "../../Base/IndexedDB/Personal";
 import * as Timeline from "../../Base/IndexedDB/Timeline";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LocalCache from "../../Base/Common/LocalCache";
 import StdUtil from "../../Base/Util/StdUtil";
 import ImageUtil from "../../Base/Util/ImageUtil";
@@ -45,7 +44,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      * 
      */
     protected Initialize(callback: OnViewLoad) {
-
+        
         //  ダッシュボードに通知
         this.Controller.NotifyDashbord(this.Controller.PeerId);
         //  ライブキャストは前回分が残らないようにクリア通知
@@ -71,12 +70,12 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             clipcopybtn.classList.remove('mdl-button--colored');
             clipcopybtn.classList.add('mdl-button--raised');
             clipcopybtn.disabled = true;
-            window.setTimeout(()=>{
+            window.setTimeout(() => {
                 clipcopybtn.textContent = " 招待URLのコピー ";
                 clipcopybtn.classList.add('mdl-button--colored');
                 clipcopybtn.classList.remove('mdl-button--raised');
                 clipcopybtn.disabled = false;
-            },3000);
+            }, 3000);
         };
 
         //  「退室」処理

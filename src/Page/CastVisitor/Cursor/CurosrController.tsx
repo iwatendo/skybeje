@@ -3,11 +3,11 @@ import * as ReactDOM from 'react-dom';
 import * as Personal from "../../../Base/IndexedDB/Personal";
 import { CursorComponent } from "./CursorComponent";
 import IconCursorSender from "../../../Base/Container/IconCursorSender";
-import WebRTCService from "../../../Base/Common/WebRTCService";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import { GetIconSender } from "../../HomeVisitor/HomeVisitorContainer";
 import LogUtil from "../../../Base/Util/LogUtil";
+import { IServiceController } from '../../../Base/Common/IServiceController';
 
 
 export class VideoDispOffset {
@@ -57,6 +57,7 @@ export class CastCursor {
  */
 export class CursorController {
 
+    private _service : IServiceController;
     private _video: HTMLVideoElement;
     private _cursorDispElement: HTMLElement;
     private _busy: boolean = false;
@@ -78,13 +79,15 @@ export class CursorController {
 
     /**
      * 初期化処理
+     * @param service
      * @param connCache 
      * @param video 
      * @param itemDivElement 
      * @param cursorDivElement 
      */
-    public constructor(video: HTMLVideoElement, itemDivElement: HTMLElement, cursorDivElement: HTMLElement) {
+    public constructor(service:IServiceController, video: HTMLVideoElement, itemDivElement: HTMLElement, cursorDivElement: HTMLElement) {
 
+        this._service = service;
         this._video = video;
         this._cursorDispElement = cursorDivElement;
 
@@ -223,7 +226,7 @@ export class CursorController {
      */
     private SendCursorToOwner(sender: IconCursorSender) {
         CursorController._mineCursor = sender;
-        WebRTCService.SendToOwner(sender);
+        this._service.SwPeer.SendToOwner(sender);
     }
 
 
@@ -307,7 +310,7 @@ export class CursorController {
 
         let sender = new IconCursorSender();
         sender.homePeerId = this._homePeerId;
-        sender.visitorPeerId = WebRTCService.PeerId();
+        sender.visitorPeerId = this._service.SwPeer.PeerId;
         sender.aid = this._ownerAidElement.textContent;
         sender.iid = this._ownerIidElement.textContent;
 
@@ -407,7 +410,7 @@ export class CursorController {
         //  他ユーザーへ接続しアイコンの要求
         let sender = new GetIconSender();
         sender.iid = iid;
-        WebRTCService.SendTo(peerid, sender);
+        this._service.SwPeer.SendTo(peerid, sender);
 
         //  アイコンが取得できるまで、再要求しないように空アイコンをキャッシュ
         let emptyIcon = new Personal.Icon();

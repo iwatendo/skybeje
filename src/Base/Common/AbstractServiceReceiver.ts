@@ -32,4 +32,13 @@ export default abstract class AbstractServiceReceiver<T extends IServiceControll
      */
     public abstract Receive(conn: PeerJs.DataConnection, sender: Sender);
 
+
+    /**
+     * Room(Mesh/SFU)のデータ受信処理
+     * @param peerid 
+     * @param sender 
+     */
+    public RoomRecive(peerid: string, sender: Sender) {
+    }
+
 }

@@ -1,12 +1,14 @@
-﻿import WebRTCService from "../../Base/Common/WebRTCService";
-import StdUtil from "../../Base/Util/StdUtil";
+﻿import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import CastVisitorController from "./CastVisitorController";
+import SWPeer from "../../Base/WebRTC/SWPeer";
+import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 
 if (StdUtil.IsExecute()) {
-    let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
     let ownerId = LinkUtil.GetPeerID();
-    WebRTCService.Start(new CastVisitorController(), ownerId, () => {
-        WebRTCService.CastRoomJoin(ownerId, videoElement);
+
+    let controller = new CastVisitorController();
+    controller.SwPeer = new SWPeer(controller, ownerId, () => {
+        controller.SwRoom = new SWRoom(controller, controller, controller.SwPeer.Peer, ownerId, SWRoomMode.SFU);
     });
 }

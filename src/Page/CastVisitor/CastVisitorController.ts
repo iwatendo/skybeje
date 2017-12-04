@@ -1,5 +1,4 @@
 ﻿import AbstractServiceController from "../../Base/Common/AbstractServiceController";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import * as Personal from "../../Base/IndexedDB/Personal";
@@ -7,6 +6,7 @@ import { CastVisitorView } from "./CastVisitorView";
 import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
 import { GetCastSettingSedner } from "../CastInstance/CastInstanceContainer";
+import SWPeer from "../../Base/WebRTC/SWPeer";
 
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
@@ -41,7 +41,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnOwnerConnection() {
 
         //  キャスト情報の要求
-        WebRTCService.SendToOwner(new GetCastSettingSedner());
+        this.SwPeer.SendToOwner(new GetCastSettingSedner());
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.InitializeCursor();
@@ -65,5 +65,59 @@ export default class CastVisitorController extends AbstractServiceController<Cas
         super.OnChildClose(conn);
         this.View.Cursor.Remove(conn.peer);
     }
+
+
+    /**
+     * スリープ関数
+     * @param milliseconds 
+     */
+    private Sleep(milliseconds: number) {
+        return new Promise<void>(resolve => { setTimeout(() => resolve(), milliseconds); });
+    }
+
+
+    /**
+     *【削除予定】
+     * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
+     * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
+     */
+    public DummyJoin() {
+        SWPeer.GetApiKey((apikey) => {
+            let peer = new Peer({ key: apikey, debug: 1 }) as any;
+            peer.on('open', async () => {
+                await this.Sleep(1000);
+                let name = this.SwRoom.RoomName;
+                let room = peer.joinRoom(name, { mode: "sfu" });
+                room.on('open', async () => {
+                    await this.Sleep(2000);
+                    peer.destroy();
+                });
+            });
+        });
+    }
+        
+        
+    /**
+     * 
+     */
+    public OnRoomOpen() {
+        this.DummyJoin();
+    }
+    
+
+    /**
+     * 
+     * @param peerid 
+     * @param stream 
+     */
+    public OnRoomStream(peerid: string, stream: MediaStream) {
+
+        let element = document.getElementById('sbj-video') as HTMLVideoElement;
+
+        if (element) {
+            element.srcObject = stream;
+            element.play();
+        }
+    }    
 
 };

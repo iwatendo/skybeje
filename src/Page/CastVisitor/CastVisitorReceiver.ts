@@ -2,7 +2,6 @@
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import LogUtil from "../../Base/Util/LogUtil";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import IconCursorSender  from "../../Base/Container/IconCursorSender";
 import CastVisitorController from "./CastVisitorController";
 import { CastVisitorView } from "./CastVisitorView";

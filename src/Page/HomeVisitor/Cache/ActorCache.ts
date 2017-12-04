@@ -1,8 +1,6 @@
 import * as Home from "../../../Base/IndexedDB/Home";
 import * as Personal from "../../../Base/IndexedDB/Personal";
 
-import WebRTCService from "../../../Base/Common/WebRTCService";
-
 import HomeVisitorController from "../HomeVisitorController";
 import { GetProfileSender, GetActorSender } from "../HomeVisitorContainer";
 import ActorInfo from "../../../Base/Container/ActorInfo";
@@ -89,10 +87,10 @@ export default class ActorCache {
         else {
             let key = peerid + aid;
             this.PushQueue(key, callback);
-            
+
             let sender = new GetActorSender();
             sender.aid = aid;
-            WebRTCService.SendTo(peerid, sender);
+            this._controller.SwPeer.SendTo(peerid, sender);
         }
 
     }

@@ -1,8 +1,9 @@
-﻿import WebRTCService from "../../Base/Common/WebRTCService";
-import StdUtil from "../../Base/Util/StdUtil";
+﻿import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import GadgetVisitorController from "./GadgetVisitorController";
+import SWPeer from "../../Base/WebRTC/SWPeer";
 
 if (StdUtil.IsExecute()) {
-    WebRTCService.Start(new GadgetVisitorController(), LinkUtil.GetPeerID());
+    let controller = new GadgetVisitorController();
+    controller.SwPeer = new SWPeer(controller, LinkUtil.GetPeerID(), null);
 }

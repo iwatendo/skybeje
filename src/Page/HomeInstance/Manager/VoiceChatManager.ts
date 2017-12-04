@@ -1,6 +1,5 @@
 import HomeInstanceController from "../HomeInstanceController";
 import { VoiceChatMemberSender, VoiceChatMemberListSender } from "../HomeInstanceContainer";
-import WebRTCService from "../../../Base/Common/WebRTCService";
 
 
 export default class VoiceChatManager {
@@ -43,7 +42,7 @@ export default class VoiceChatManager {
     public SendMemberList(){
         let listSender = new VoiceChatMemberListSender();
         listSender.Members = this._voiceChatMemberList;
-        WebRTCService.SwPeer.SendAll(listSender);
+        this._controller.SwPeer.SendAll(listSender);
     }
 
 

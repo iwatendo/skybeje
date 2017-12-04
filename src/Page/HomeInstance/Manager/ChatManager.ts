@@ -2,7 +2,6 @@ import * as Timeline from "../../../Base/IndexedDB/Timeline";
 
 import StdUtil from "../../../Base/Util/StdUtil";
 
-import WebRTCService from "../../../Base/Common/WebRTCService";
 import { OnRead } from "../../../Base/Common/AbstractServiceModel";
 
 import HomeInstanceModel from "../HomeInstanceModel";
@@ -121,7 +120,7 @@ export default class ChatManager {
         sender.msgs.push(tlmsg);
 
         this._roomManager.GetRoomInPeers(tlmsg.hid).forEach((peerid) => {
-            WebRTCService.SendTo(peerid, sender);
+            this._controller.SwPeer.SendTo(peerid, sender);
         });
     }
 

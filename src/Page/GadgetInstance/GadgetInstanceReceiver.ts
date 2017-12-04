@@ -3,7 +3,6 @@ import * as Home from "../../Base/IndexedDB/Home";
 import * as Personal from "../../Base/IndexedDB/Personal";
 
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import Sender from "../../Base/Container/Sender";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 
@@ -26,7 +25,7 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
             if (this.Controller.CastSetting.dispUserCursor) {
                 let cursor = sender as IconCursorSender;
                 this.Controller.CursorCache.Set(cursor);
-                WebRTCService.SendAll(sender);
+                this.Controller.SwPeer.SendAll(sender);
             }
         }
 
@@ -44,12 +43,12 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
         //  キャスト情報の送信
         if (sender.type === GetGadgetCastSettingSedner.ID) {
             this.Controller.CastSetting.status = this.Controller.View.CreateYouTubeStatus();
-            WebRTCService.SendTo(conn, this.Controller.CastSetting);
+            this.Controller.SwPeer.SendTo(conn, this.Controller.CastSetting);
         }
 
         //  YouTubeの再生状況の送信
         if (sender.type == GetYouTubeStatusSender.ID) {
-            WebRTCService.SendTo(conn, this.Controller.View.CreateYouTubeStatus());
+            this.Controller.SwPeer.SendTo(conn, this.Controller.View.CreateYouTubeStatus());
         }
 
         //  YouTubeの再生状況の送信

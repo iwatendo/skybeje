@@ -1,8 +1,6 @@
 import * as Home from "../../../Base/IndexedDB/Home";
 import * as Personal from "../../../Base/IndexedDB/Personal";
 
-import WebRTCService from "../../../Base/Common/WebRTCService";
-
 import HomeVisitorController from "../HomeVisitorController";
 import { GetRoomSender, RoomActorMemberSender } from "../../HomeInstance/HomeInstanceContainer";
 import StdUtil from "../../../Base/Util/StdUtil";
@@ -93,7 +91,7 @@ export default class RoomCache {
         else {
             this.PushQueue(hid, callback);
             let sender = new GetRoomSender(hid);
-            WebRTCService.SendToOwner(sender);
+            this._controller.SwPeer.SendToOwner(sender);
         }
     }
 

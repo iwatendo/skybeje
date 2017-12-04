@@ -3,7 +3,6 @@ import * as Home from "../../Base/IndexedDB/Home";
 import * as Personal from "../../Base/IndexedDB/Personal";
 import * as Timeline from "../../Base/IndexedDB/Timeline";
 
-import WebRTCService from "../../Base/Common/WebRTCService";
 import BotUtil from "../../Base/Util/BotUtil";
 
 import RoomCache from "./Cache/RoomCache";
@@ -135,7 +134,7 @@ export default class BotController {
                 sender.peerid = this.Controller.PeerId;
 
                 if (sender.text.length > 0) {
-                    WebRTCService.SendToOwner(sender);
+                    this.Controller.SwPeer.SendToOwner(sender);
                 }
 
                 //  ガジェット登録されていた場合
@@ -143,7 +142,7 @@ export default class BotController {
 
                     let guideSender = new GuideSender();
                     guideSender.guide = guide;
-                    WebRTCService.SendAll(guideSender);
+                    this.Controller.SwPeer.SendAll(guideSender);
 
                     this._guideQuere = guide;
                     let peerid = this.Controller.PeerId;
@@ -183,7 +182,7 @@ export default class BotController {
                 sender.name = actor.name;
                 sender.text = result;
                 sender.peerid = this.Controller.PeerId;
-                WebRTCService.SendToOwner(sender);
+                this.Controller.SwPeer.SendToOwner(sender);
             }
         }
     }

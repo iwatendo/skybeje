@@ -7,4 +7,6 @@ export interface IServiceReceiver {
 
     Receive(conn: PeerJs.DataConnection, sender: Sender);
 
+    RoomRecive(peerid: string, sender: Sender);
+
 }

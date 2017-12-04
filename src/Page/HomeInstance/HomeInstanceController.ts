@@ -3,7 +3,6 @@ import { Room } from "../../Base/IndexedDB/Home";
 
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import LocalCache from "../../Base/Common/LocalCache";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LogUtil from "../../Base/Util/LogUtil";
 
 import * as HIContainer from "./HomeInstanceContainer";
@@ -42,7 +41,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
         //  通常は呼ばれない。
         //  多重起動が検出されたケースで呼ばれる為、終了通知を出す。
-        WebRTCService.SendToOwner(new HIContainer.ForcedTerminationSender());
+        this.SwPeer.SendToOwner(new HIContainer.ForcedTerminationSender());
 
     }
 
@@ -115,7 +114,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
         super.OnChildConnection(conn);
-        this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
+        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
 
@@ -125,7 +124,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
+        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
         this.Manager.Room.RemoveConnection(conn.peer);
         this.Manager.Servent.CloseServentOwner(conn.peer);
         this.Manager.VoiceChat.RemoveConnection(conn.peer);
@@ -145,11 +144,11 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
         this.Model.GetRoom(req.hid, (room) => {
             //  ルーム情報の通知
             sender.room = room;
-            WebRTCService.SendTo(conn, sender);
+            this.SwPeer.SendTo(conn, sender);
 
             //  ルーム内のサーバント情報の通知
             let sssender = this.Manager.Servent.GetServent(req.hid);
-            WebRTCService.SendTo(conn, sssender);
+            this.SwPeer.SendTo(conn, sssender);
 
             //  ボイスチャットのメンバー通知
             this.Manager.VoiceChat.SendMemberList();
@@ -164,7 +163,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     public SendChnageRoom(room: Room) {
         let sender = new HIContainer.RoomSender();
         sender.room = room;
-        WebRTCService.SendAll(sender);
+        this.SwPeer.SendAll(sender);
     }
 
 };

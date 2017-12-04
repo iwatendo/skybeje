@@ -1,7 +1,6 @@
 ﻿
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 import LogUtil from "../../Base/Util/LogUtil";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import YouTubeUtil, { YouTubeOption, OnCreateYouTubePlayer } from "../../Base/Util/YouTubeUtil";
@@ -24,7 +23,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
     //
     public Initialize(callback: OnViewLoad) {
-
+        
         StdUtil.StopPropagation();
 
         let submenuMain = document.getElementById('sbj-cast-visitor-submenu');
@@ -127,7 +126,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
         sender.current = curtime;
 
         //  オーナーに通知する
-        WebRTCService.SendToOwner(sender);
+        this.Controller.SwPeer.SendToOwner(sender);
     }
 
 

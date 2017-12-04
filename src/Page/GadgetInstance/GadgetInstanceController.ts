@@ -1,7 +1,6 @@
 ﻿import * as Personal from "../../Base/IndexedDB/Personal";
 
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
@@ -77,7 +76,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
      */
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
-        WebRTCService.Close();
+        this.SwPeer.Close();
         window.open('about:blank', '_self').close();
     }
 
@@ -95,8 +94,8 @@ export default class GadgetInstanceController extends AbstractServiceController<
             this.CastInstance.instanceUrl = location.href;
             this.CastInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this.PeerId);
 
-            WebRTCService.SendToOwner(this.CastInstance);
-            WebRTCService.SendToOwner(new GetGuideSender());
+            this.SwPeer.SendToOwner(this.CastInstance);
+            this.SwPeer.SendToOwner(new GetGuideSender());
         }
     }
 
@@ -110,10 +109,10 @@ export default class GadgetInstanceController extends AbstractServiceController<
 
         //  配置済みカーソルの通知
         this.CursorCache.forEach((cursor) => {
-            WebRTCService.SendTo(conn, cursor);
+            this.SwPeer.SendTo(conn, cursor);
         });
 
-        this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
+        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
 
@@ -123,7 +122,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.View.SetPeerCount(WebRTCService.GetAliveConnectionCount());
+        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
         this.CursorCache.Remove(conn.peer);
     }
 
@@ -138,7 +137,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
         }
         sender.isCasting = true;
         sender.isClose = false;
-        WebRTCService.SendToOwner(sender);
+        this.SwPeer.SendToOwner(sender);
     }
 
 
@@ -150,7 +149,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
         sender.isCasting = false;
         sender.isHide = false;
         sender.isClose = true;
-        WebRTCService.SendToOwner(sender);
+        this.SwPeer.SendToOwner(sender);
     }
 
 
@@ -161,7 +160,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
         let sender = this.CastInstance;
         sender.isHide = true;
         sender.isClose = false;
-        WebRTCService.SendToOwner(sender);
+        this.SwPeer.SendToOwner(sender);
     }
     
 

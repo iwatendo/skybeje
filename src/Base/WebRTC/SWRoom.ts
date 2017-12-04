@@ -1,6 +1,7 @@
-import LogUtil from "../../Util/LogUtil";
-import { IServiceController } from "../IServiceController";
+import LogUtil from "../Util/LogUtil";
+import { IServiceController } from "../Common/IServiceController";
 import SWPeer from "./SWPeer";
+import Sender from "../Container/Sender";
 
 
 export enum SWRoomMode {
@@ -43,14 +44,14 @@ export default class SWRoom {
 
     private _peer: PeerJs.Peer;
     private _service: IServiceController;
-    private _stream: any;
+    private _stream: MediaStream;
     private _room: any;
     private _mode: SWRoomMode;
     private _sender: ISWRoom;
     private _roomName: string;
 
 
-    public SetStream(stream) {
+    public SetStream(stream: MediaStream) {
 
         this._stream = stream;
         this._room.replaceStream(this._stream);
@@ -71,8 +72,9 @@ export default class SWRoom {
      * 
      * @param data 
      */
-    public Send(data) {
+    public Send(sender : Sender) {
         if (this._room) {
+            let data = JSON.stringify(sender);
             this._room.send(data);
         }
     }
@@ -106,7 +108,7 @@ export default class SWRoom {
      * @param name 
      * @param mode 
      */
-    constructor(sender: ISWRoom, service: IServiceController, peer: PeerJs.Peer, name: string, mode: SWRoomMode, stream: any = null) {
+    constructor(sender: ISWRoom, service: IServiceController, peer: PeerJs.Peer, name: string, mode: SWRoomMode, stream: MediaStream = null) {
         this._sender = sender;
         this._peer = peer;
         this._service = service;
@@ -121,7 +123,7 @@ export default class SWRoom {
      * @param name 
      */
     public static ToRoomName(name: string) {
-        return "skybeje_" + name;
+        return "skybeje-" + name;
     }
 
 
@@ -131,6 +133,9 @@ export default class SWRoom {
     private JoinRoom(name: string) {
 
         this.RoomName = SWRoom.ToRoomName(name);
+
+        LogUtil.Error(this._service,this.RoomName);
+
         let opt = {};
 
         let modestr: string;
