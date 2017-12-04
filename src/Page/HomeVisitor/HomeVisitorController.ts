@@ -25,6 +25,7 @@ import HomeVisitorModel from "./HomeVisitorModel";
 import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
 import LogController from "./Log/LogController";
+import SWPeer from "../../Base/WebRTC/SWPeer";
 
 
 /**
@@ -377,5 +378,124 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.NotifyBootLiveCast("", CastTypeEnum.ScreenShare);
         this.NotifyBootLiveCast("", CastTypeEnum.Gadget);
     }
+
+
+    /*-----------------------------------------------------------
+     * ボイスチャット用
+     *----------------------------------------------------------*/
+
+    private _elementMap = new Map<string, HTMLVideoElement>();
+    private _peerList = new Array<string>();
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param videoElement 
+     */
+    public SetVideoElement(peerid: string, videoElement: HTMLVideoElement) {
+        if (this._elementMap.has(peerid)) {
+            let preElement = this._elementMap.get(peerid);
+        }
+        else {
+            this._elementMap.set(peerid, videoElement);
+        }
+    }
+    
+
+    /**
+     * 
+     * @param peerid 
+     */
+    public GetVideoElement(peerid): HTMLVideoElement {
+
+        if (this._elementMap.has(peerid)) {
+            return this._elementMap.get(peerid);
+        }
+        else {
+            let newElement: HTMLVideoElement = document.createElement('video');
+            newElement.id = peerid;
+            this._elementMap.set(peerid, newElement);
+            return newElement;
+        }
+
+    }
+
+
+    /**
+     * スリープ関数
+     * @param milliseconds 
+     */
+    private Sleep(milliseconds: number) {
+        return new Promise<void>(resolve => { setTimeout(() => resolve(), milliseconds); });
+    }
+
+
+    /**
+     * 
+     */
+    public OnRoomOpen() {
+
+        /**
+         *【削除予定】
+        * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
+        * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
+        */
+        SWPeer.GetApiKey((apikey) => {
+            let peer = new Peer({ key: apikey, debug: 1 }) as any;
+            peer.on('open', async () => {
+                await this.Sleep(1000);
+                let name = this.SwRoom.RoomName;
+                let room = peer.joinRoom(name, { mode: "sfu" });
+                room.on('open', async () => {
+                    await this.Sleep(2000);
+                    peer.destroy();
+                });
+            });
+        });
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param stream 
+     */
+    public OnRoomStream(peerid: string, stream: any) {
+
+        let element = this.GetVideoElement(peerid);
+
+        if (element) {
+            element.srcObject = stream;
+            element.play();
+        }
+
+        if (this._peerList.filter((p) => p === peerid).length === 0) {
+            //  新しい通話Streamが追加された場合、通知する
+            this._peerList.push(peerid);
+            this.View.InputPane.ChangeVoiceChatStreamMember(this._peerList);
+        }
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param stream 
+     */
+    public OnRoomRemoveStream(peerid: string, stream: any) {
+        let element = this.GetVideoElement(peerid);
+
+        if (element) {
+            element.pause();
+        }
+
+        if (this._peerList.filter((p) => p === peerid).length === 0) {
+            //  通話Streamが除去された場合、通知する
+            this._peerList = this._peerList.filter((p) => p !== peerid);
+            this.View.InputPane.ChangeVoiceChatStreamMember(this._peerList);
+        }
+    }
+    
 
 };

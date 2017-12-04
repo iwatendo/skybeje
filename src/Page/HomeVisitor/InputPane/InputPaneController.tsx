@@ -15,8 +15,7 @@ import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
 import SpeechUtil from "../../../Base/Util/SpeechUtil";
 import StreamUtil from '../../../Base/Util/StreamUtil';
-import VoiceSfuRoomController from './VoiceSFURoomController';
-import { SWRoomMode } from '../../../Base/WebRTC/SWRoom';
+import SWRoom, { SWRoomMode } from '../../../Base/WebRTC/SWRoom';
 import { VoiceChatMemberSender, VoiceChatMemberListSender } from '../../HomeInstance/HomeInstanceContainer';
 import { VoiceSfuRoomMemberComponent } from './VoiceSfuRoomMemberComponent';
 import IconCache from '../Cache/IconCache';
@@ -65,7 +64,6 @@ export default class InputPaneController {
     private _profileFrame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
 
 
-    private _sfuRoom: VoiceSfuRoomController;
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _lastTlmCtime: number;
@@ -599,16 +597,15 @@ export default class InputPaneController {
                 this.IsMicMute = true;
                 let peer = this._controller.SwPeer;
                 let ownerid = this._controller.SwPeer.OwnerPeerId;
-                this._sfuRoom = new VoiceSfuRoomController(peer, ownerid, SWRoomMode.SFU, stream, (pl) => {
-                    this.ChangeVoiceChatStreamMember(pl);
-                });
+
+                this._controller.SwRoom = new SWRoom(this._controller, this._controller, this._controller.SwPeer.Peer, ownerid, SWRoomMode.SFU, stream);
             });
 
         }
         else {
             this._voiceChat.classList.remove("mdl-button--accent");
             this._voiceChat.classList.add("mdl-button--colored");
-            this._sfuRoom.LeaveRoom();
+            this._controller.SwRoom.Close();
             this.IsMicMute = true;
         }
 
