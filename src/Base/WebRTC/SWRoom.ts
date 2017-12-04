@@ -134,8 +134,6 @@ export default class SWRoom {
 
         this.RoomName = SWRoom.ToRoomName(name);
 
-        LogUtil.Error(this._service,this.RoomName);
-
         let opt = {};
 
         let modestr: string;
