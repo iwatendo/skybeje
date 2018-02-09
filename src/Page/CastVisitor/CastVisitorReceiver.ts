@@ -1,5 +1,5 @@
 ﻿
-import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
+import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import LogUtil from "../../Base/Util/LogUtil";
 import IconCursorSender  from "../../Base/Container/IconCursorSender";

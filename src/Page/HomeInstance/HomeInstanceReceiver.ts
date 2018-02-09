@@ -1,5 +1,5 @@
 ﻿
-import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
+import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 
 import * as HVContainer from "../HomeVisitor/HomeVisitorContainer";
@@ -7,7 +7,6 @@ import * as HIContainer from "./HomeInstanceContainer";
 
 import HomeInstanceController from "./HomeInstanceController";
 import ChatManager from "./Manager/ChatManager";
-import LocalCache from "../../Base/Common/LocalCache";
 import LogUtil from "../../Base/Util/LogUtil";
 
 

@@ -1,14 +1,14 @@
 ﻿
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import LogUtil from "../../Base/Util/LogUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
-import YouTubeUtil, { YouTubeOption, OnCreateYouTubePlayer } from "../../Base/Util/YouTubeUtil";
+import YouTubeUtil, { YouTubeOption, OnCreateYouTubePlayer } from "../../Contents/Util/YouTubeUtil";
 import GadgetVisitorController from "./GadgetVisitorController";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
-import { Icon } from "../../Base/IndexedDB/Personal";
-import { DialogMode } from "../../Base/Common/AbstractDialogController";
+import { Icon } from "../../Contents/IndexedDB/Personal";
+import { DialogMode } from "../../Base/AbstractDialogController";
 import { CursorController } from "../CastVisitor/Cursor/CurosrController";
 import { GadgetCastSettingSender, GetYouTubeStatusSender, YouTubeStatusSender } from "../GadgetInstance/GadgetInstanceContainer";
 

@@ -1,5 +1,5 @@
 ﻿
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import LogUtil from "../../Base/Util/LogUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
@@ -7,10 +7,10 @@ import CastVisitorController from "./CastVisitorController";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastCursor, CursorController } from "./Cursor/CurosrController";
-import { Icon } from "../../Base/IndexedDB/Personal";
+import { Icon } from "../../Contents/IndexedDB/Personal";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";
 import MobileDialog from "./Mobile/MobileDialog";
-import { DialogMode } from "../../Base/Common/AbstractDialogController";
+import { DialogMode } from "../../Base/AbstractDialogController";
 
 
 /**

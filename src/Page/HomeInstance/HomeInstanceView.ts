@@ -1,15 +1,15 @@
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 
-import * as Home from "../../Base/IndexedDB/Home";
+import * as Home from "../../Contents/IndexedDB/Home";
 
-import LocalCache from "../../Base/Common/LocalCache";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 
 import HomeInstanceController from "./HomeInstanceController";
 import { ClearTimelineSender } from "./HomeInstanceContainer";
 import { RoomView } from "./Room/RoomView";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 
 export default class HomeInstanceView extends AbstractServiceView<HomeInstanceController> {

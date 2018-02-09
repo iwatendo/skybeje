@@ -3,8 +3,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import FileUtil from "../../../../Base/Util/FileUtil";
-import * as Home from "../../../../Base/IndexedDB/Home";
-import * as Timeline from "../../../../Base/IndexedDB/Timeline";
+import * as Home from "../../../../Contents/IndexedDB/Home";
+import * as Timeline from "../../../../Contents/IndexedDB/Timeline";
 
 import SettingController, { DBEnum } from "../SettingController";
 import StdUtil from "../../../../Base/Util/StdUtil";

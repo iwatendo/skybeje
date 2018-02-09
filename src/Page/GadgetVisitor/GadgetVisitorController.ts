@@ -1,7 +1,7 @@
-﻿import AbstractServiceController from "../../Base/Common/AbstractServiceController";
+﻿import AbstractServiceController from "../../Base/AbstractServiceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 import { GadgetVisitorView } from "./GadgetVisitorView";
 import GadgetVisitorModel from "./GadgetVisitorModel";
 import { GadgetVisitorReceiver } from "./GadgetVisitorReceiver";

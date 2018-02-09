@@ -1,8 +1,7 @@
 ﻿
-import * as Home from "../../Base/IndexedDB/Home";
+import * as Home from "../../Contents/IndexedDB/Home";
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import LocalCache from "../../Base/Common/LocalCache";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
@@ -13,8 +12,9 @@ import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import { CastSettingSender, CastSpeechRecognitionSender } from "./CastInstanceContainer";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import { DialogMode } from "../../Base/Common/AbstractDialogController";
+import { DialogMode } from "../../Base/AbstractDialogController";
 import SettingDialogController from "./SettingDialog/SettingDialogController";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 

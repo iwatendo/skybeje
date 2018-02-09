@@ -1,5 +1,4 @@
-﻿
-import StdUtil from "../../Base/Util/StdUtil";
+﻿import StdUtil from "./Util/StdUtil";
 import { IServiceController } from "./IServiceController";
 
 

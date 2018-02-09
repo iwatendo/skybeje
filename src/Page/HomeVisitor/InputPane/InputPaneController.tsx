@@ -1,26 +1,26 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
-import * as Timeline from "../../../Base/IndexedDB/Timeline";
-
 import StdUtil from "../../../Base/Util/StdUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
-import LocalCache from "../../../Base/Common/LocalCache";
 import ImageInfo from "../../../Base/Container/ImageInfo";
-import { DialogMode } from "../../../Base/Common/AbstractDialogController";
+import { DialogMode } from "../../../Base/AbstractDialogController";
+import SpeechUtil from "../../../Base/Util/SpeechUtil";
+import StreamUtil from '../../../Base/Util/StreamUtil';
+import SWRoom, { SWRoomMode } from '../../../Base/WebRTC/SWRoom';
+import DeviceUtil, { DeviceKind } from '../../../Base/Util/DeviceUtil';
+
+import LocalCache from '../../../Contents/Cache/LocalCache';
+import * as Personal from "../../../Contents/IndexedDB/Personal";
+import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import HomeVisitorController from "../HomeVisitorController";
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
-import SpeechUtil from "../../../Base/Util/SpeechUtil";
-import StreamUtil from '../../../Base/Util/StreamUtil';
-import SWRoom, { SWRoomMode } from '../../../Base/WebRTC/SWRoom';
 import { VoiceChatMemberSender, VoiceChatMemberListSender } from '../../HomeInstance/HomeInstanceContainer';
 import { VoiceSfuRoomMemberComponent } from './VoiceSfuRoomMemberComponent';
 import IconCache from '../Cache/IconCache';
 import VoiceChatSettingDialog from './VoiceChatSettingDialog/VoiceChatSettingDialog';
-import DeviceUtil, { DeviceKind } from '../../../Base/Util/DeviceUtil';
 import { DeviceView } from '../../DeviceView/DeviceVew';
 
 export default class InputPaneController {

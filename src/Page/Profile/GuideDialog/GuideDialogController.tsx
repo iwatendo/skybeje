@@ -1,15 +1,15 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import FileUtil from "../../../Base/Util/FileUtil";
-import YouTubeUtil, { YouTubeOption } from "../../../Base/Util/YouTubeUtil";
+import YouTubeUtil, { YouTubeOption } from "../../../Contents/Util/YouTubeUtil";
 import LogUtil from "../../../Base/Util/LogUtil";
 import NoEmbedComponent from "./NoEmbed/NoEmbedComponent";
 import YouTubeComponent from "./YouTube/YouTubeComponent";
-import GuideUtil from "../../../Base/Util/GuideUtil";
+import GuideUtil from "../../../Contents/Util/GuideUtil";
 
 interface OnDropGuide { (owner: GuideDialogController, file: File, src): void }
 interface OnChangeGuide { (guideRec: Personal.Guide): void }

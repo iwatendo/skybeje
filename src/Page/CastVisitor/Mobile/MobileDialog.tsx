@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import AbstractDialogController from "../../../Base/Common/AbstractDialogController";
+import AbstractDialogController from "../../../Base/AbstractDialogController";
 
 import CastVisitorController from "../CastVisitorController";
 import MobileDialogComponent from "./MobileDialogComponent";

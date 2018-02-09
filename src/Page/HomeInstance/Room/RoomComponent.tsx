@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Home from "../../../Base/IndexedDB/Home";
+import * as Home from "../../../Contents/IndexedDB/Home";
 
 import { RoomView, RoomActors } from "./RoomView";
 import { RoomItemComponent } from "./RoomItemComponent";

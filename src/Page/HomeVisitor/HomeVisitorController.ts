@@ -1,15 +1,13 @@
 ﻿
-import * as Timeline from "../../Base/IndexedDB/Timeline";
-import * as Personal from "../../Base/IndexedDB/Personal";
-import * as Home from "../../Base/IndexedDB/Home";
+import * as Timeline from "../../Contents/IndexedDB/Timeline";
+import * as Personal from "../../Contents/IndexedDB/Personal";
+import * as Home from "../../Contents/IndexedDB/Home";
 
 import * as HVContainer from "./HomeVisitorContainer";
 
-import AbstractServiceController from "../../Base/Common/AbstractServiceController";
-import LocalCache from "../../Base/Common/LocalCache";
+import AbstractServiceController from "../../Base/AbstractServiceController";
 import LogUtil from "../../Base/Util/LogUtil";
-import ActorInfo from "../../Base/Container/ActorInfo";
-import { OnRead } from "../../Base/Common/AbstractServiceModel";
+import { OnRead } from "../../Base/AbstractServiceModel";
 import { Order } from "../../Base/Container/Order";
 import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
@@ -26,6 +24,7 @@ import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisi
 import BotController from "./BotController";
 import LogController from "./Log/LogController";
 import SWPeer from "../../Base/WebRTC/SWPeer";
+import ActorInfo from "../../Contents/Struct/ActorInfo";
 
 
 /**

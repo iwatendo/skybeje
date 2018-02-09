@@ -1,8 +1,8 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import LocalCache from "../../../../Base/Common/LocalCache";
 import SettingController, { DBEnum } from "../SettingController";
+import LocalCache from '../../../../Contents/Cache/LocalCache';
 
 
 /**

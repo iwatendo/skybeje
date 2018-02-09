@@ -1,8 +1,7 @@
 ﻿
-import * as Home from "../../Base/IndexedDB/Home";
+import * as Home from "../../Contents/IndexedDB/Home";
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import LocalCache from "../../Base/Common/LocalCache";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
@@ -10,6 +9,7 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
 import { CastSettingSender, CastSpeechRecognitionSender } from "../CastInstance/CastInstanceContainer";
 import StreamUtil from "../../Base/Util/StreamUtil";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 export default class CastInstanceScreenShareView extends AbstractServiceView<CastInstanceScreenShareController> {
 

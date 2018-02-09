@@ -1,4 +1,4 @@
-﻿import Sender from "../Container/Sender";
+﻿import Sender from "./Container/Sender";
 
 /*
  *  ServiceReciver

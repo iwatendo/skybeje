@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Message } from "../../../Base/IndexedDB/Timeline";
+import { Message } from "../../../Contents/IndexedDB/Timeline";
 import { SubTitlesComponent } from "./SubTitlesComponent";
 import { CastSpeechRecognitionSender } from "../../CastInstance/CastInstanceContainer";
 

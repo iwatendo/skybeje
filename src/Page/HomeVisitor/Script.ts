@@ -1,5 +1,5 @@
 
-import * as Home from "../../Base/IndexedDB/Home";
+import * as Home from "../../Contents/IndexedDB/Home";
 
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";

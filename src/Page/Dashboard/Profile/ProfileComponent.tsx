@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import { Order } from "../../../Base/Container/Order";
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import { DragAction } from "../INaviContainer";
 import DashboardController from "../DashboardController";

@@ -1,4 +1,4 @@
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Personal from "../IndexedDB/Personal";
 import YouTubeUtil, { YouTubeOption } from "./YouTubeUtil";
 
 interface OnDropUrl { (url: string, embedstatus: string) }

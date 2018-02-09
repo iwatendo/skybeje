@@ -1,7 +1,7 @@
 
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 
-import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/Common/AbstractServiceModel";
+import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/AbstractServiceModel";
 
 import HomeVisitorController from "./HomeVisitorController";
 

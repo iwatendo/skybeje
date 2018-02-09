@@ -1,10 +1,11 @@
-import * as Home from "../../../Base/IndexedDB/Home";
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import Sender from "../../../Base/Container/Sender";
+
+import * as Home from "../../../Contents/IndexedDB/Home";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
+import ActorInfo from "../../../Contents/Struct/ActorInfo";
 
 import HomeVisitorController from "../HomeVisitorController";
 import { GetProfileSender, GetActorSender } from "../HomeVisitorContainer";
-import ActorInfo from "../../../Base/Container/ActorInfo";
-import Sender from "../../../Base/Container/Sender";
 
 
 interface ActorFunc { (actor: ActorInfo): void }

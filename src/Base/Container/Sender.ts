@@ -1,5 +1,4 @@
-import LocalCache from "../Common/LocalCache";
-
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 export default abstract class Sender {
 

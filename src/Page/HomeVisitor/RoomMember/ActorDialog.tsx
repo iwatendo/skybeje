@@ -1,10 +1,10 @@
-﻿
-import * as React from 'react';
+﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import StdUtil from "../../../Base/Util/StdUtil";
-import ActorInfo from "../../../Base/Container/ActorInfo";
-import AbstractDialogController from "../../../Base/Common/AbstractDialogController";
+import AbstractDialogController from "../../../Base/AbstractDialogController";
+
+import ActorInfo from '../../../Contents/Struct/ActorInfo';
 
 import HomeVisitorController from "../HomeVisitorController";
 import ActorDialogComponent from "./ActorDialogComponent";

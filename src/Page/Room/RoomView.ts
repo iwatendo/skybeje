@@ -1,7 +1,7 @@
 ﻿
-import * as Home from "../../Base/IndexedDB/Home";
+import * as Home from "../../Contents/IndexedDB/Home";
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import ImageUtil from "../../Base/Util/ImageUtil";
 import ImageInfo from "../../Base/Container/ImageInfo";
 import ImageDialogController from "../Dashboard/ImageDialogController";

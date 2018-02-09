@@ -1,5 +1,5 @@
-﻿import SWPeer from "../WebRTC/SWPeer";
-import SWRoom from "../WebRTC/SWRoom";
+﻿import SWPeer from "./WebRTC/SWPeer";
+import SWRoom from "./WebRTC/SWRoom";
 
 /**
  * サービスコントローラー

@@ -1,8 +1,8 @@
 ﻿
-import * as Home from "../../Base/IndexedDB/Home";
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Home from "../../Contents/IndexedDB/Home";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 
-import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
+import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import IconCursorSender  from "../../Base/Container/IconCursorSender";
 

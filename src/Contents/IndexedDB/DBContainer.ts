@@ -1,9 +1,9 @@
 
-import * as Personal from "../../Base/IndexedDB/Personal";
-import * as Home from "../../Base/IndexedDB/Home";
-import * as Friend from "../../Base/IndexedDB/Friend";
-import * as Timeline from "../../Base/IndexedDB/Timeline";
-import { OnModelLoad } from "../Common/AbstractServiceModel";
+import * as Personal from "./Personal";
+import * as Home from "./Home";
+import * as Friend from "./Friend";
+import * as Timeline from "./Timeline";
+import { OnModelLoad } from "../../Base/AbstractServiceModel";
 
 export default class DBContainer {
 

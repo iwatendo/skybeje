@@ -1,5 +1,5 @@
-﻿import LogUtil from "../Util/LogUtil";
-import FileUtil from "../Util/FileUtil";
+﻿import LogUtil from "./Util/LogUtil";
+import FileUtil from "./Util/FileUtil";
 
 interface OnCreateDB { (): void };
 export interface OnRemoveDB { (): void };
@@ -14,7 +14,7 @@ export interface OnLoadComplete<T> { (data: T): void }
 export interface OnWriteComplete { (): void }
 
 
-export default abstract class Database<D> {
+export default abstract class AbstractIndexedDB<D> {
 
     protected _dbname: string;
     protected _db: IDBDatabase;

@@ -1,7 +1,7 @@
 ﻿
-import AbstractServiceController from "../../Base/Common/AbstractServiceController";
+import AbstractServiceController from "../../Base/AbstractServiceController";
 
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 
 import { Order } from "../../Base/Container/Order";
 import ProfileModel from "./ProfileModel";

@@ -1,5 +1,5 @@
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 import HomeVisitorController from "../HomeVisitorController";
 import { GetIconSender } from "../HomeVisitorContainer";
 

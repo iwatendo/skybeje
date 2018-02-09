@@ -1,4 +1,4 @@
-﻿import Sender from "../Container/Sender";
+﻿import Sender from "./Container/Sender";
 import { IServiceController } from "./IServiceController";
 import { IServiceView } from "./IServiceView";
 

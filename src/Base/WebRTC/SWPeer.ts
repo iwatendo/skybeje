@@ -1,7 +1,7 @@
 import Sender from "../Container/Sender";
 import LogUtil from "../Util/LogUtil";
 import SWConnectionCache from "./SWConnectionCache";
-import { IServiceController } from "../Common/IServiceController";
+import { IServiceController } from "../IServiceController";
 
 
 interface OnSWPeerOpen { (): void }

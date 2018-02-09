@@ -1,5 +1,5 @@
 ﻿
-import AbstractServiceController from "../../Base/Common/AbstractServiceController";
+import AbstractServiceController from "../../Base/AbstractServiceController";
 import DashboardModel from "./DashboardModel";
 import DashboardView, { NaviEnum } from "./DashboardView";
 

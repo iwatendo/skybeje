@@ -1,11 +1,10 @@
-﻿import Database from "./Database";
-import * as DBI from "./Database";
-
+﻿import AbstractIndexedDB from "../../Base/AbstractIndexedDB";
+import * as DBI from "../../Base/AbstractIndexedDB";
 
 export class Data {
 }
 
-export class DB extends Database<Data> {
+export class DB extends AbstractIndexedDB<Data> {
 
     public static NAME = "Friend";
     public static NOTE = "フレンド";

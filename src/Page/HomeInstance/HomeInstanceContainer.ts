@@ -1,9 +1,9 @@
-import * as Home from "../../Base/IndexedDB/Home";
-import * as Timeline from "../../Base/IndexedDB/Timeline";
+import * as Home from "../../Contents/IndexedDB/Home";
+import * as Timeline from "../../Contents/IndexedDB/Timeline";
 
 import Sender from "../../Base/Container/Sender";
-import ActorInfo from "../../Base/Container/ActorInfo";
 import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import ActorInfo from "../../Contents/Struct/ActorInfo";
 
 
 

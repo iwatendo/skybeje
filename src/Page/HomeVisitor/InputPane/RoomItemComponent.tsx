@@ -1,8 +1,8 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Home from "../../../Base/IndexedDB/Home";
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import * as Home from "../../../Contents/IndexedDB/Home";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import HomeVisitorController from "../HomeVisitorController";
 import { RoomUnread } from "./RoomComponent";

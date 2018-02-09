@@ -1,14 +1,14 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../../Base/IndexedDB/Personal";
-
-import GuideDialogController from "../GuideDialogController";
 import StdUtil from "../../../../Base/Util/StdUtil";
 import ImageInfo from "../../../../Base/Container/ImageInfo";
 import { Order } from "../../../../Base/Container/Order";
-import YouTubeUtil, { YouTubeOption } from "../../../../Base/Util/YouTubeUtil";
+import YouTubeUtil, { YouTubeOption } from "../../../../Contents/Util/YouTubeUtil";
 
+import * as Personal from "../../../../Contents/IndexedDB/Personal";
+
+import GuideDialogController from "../GuideDialogController";
 
 /**
  * プロパティ

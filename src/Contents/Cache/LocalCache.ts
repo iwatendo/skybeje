@@ -1,5 +1,4 @@
-﻿
-import StdUtil from "../Util/StdUtil";
+﻿import StdUtil from "../../Base/Util/StdUtil";
 
 export interface OnSetVoiceChatOptions { (option: VoiceChatOptions): void };
 export interface OnSetLiveCastOptions { (option: LiveCastOptions): void };

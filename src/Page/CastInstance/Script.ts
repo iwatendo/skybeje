@@ -1,9 +1,9 @@
 ﻿import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import LocalCache from "../../Base/Common/LocalCache";
 import CastInstanceController from "./CastInstanceController";
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 if (StdUtil.IsExecute(true)) {
 

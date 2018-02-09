@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Timeline from "../../../Base/IndexedDB/Timeline";
+import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";

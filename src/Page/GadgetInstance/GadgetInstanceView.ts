@@ -1,19 +1,19 @@
 ﻿
-import * as Home from "../../Base/IndexedDB/Home";
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Home from "../../Contents/IndexedDB/Home";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import LocalCache from "../../Base/Common/LocalCache";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import GadgetInstanceController from "./GadgetInstanceController";
 import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
-import YouTubeUtil, { YouTubeOption } from "../../Base/Util/YouTubeUtil";
+import YouTubeUtil, { YouTubeOption } from "../../Contents/Util/YouTubeUtil";
 import LogUtil from "../../Base/Util/LogUtil";
-import GuideUtil from "../../Base/Util/GuideUtil";
+import GuideUtil from "../../Contents/Util/GuideUtil";
 import { GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 

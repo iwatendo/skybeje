@@ -1,6 +1,6 @@
 import Sender from "../../Base/Container/Sender";
-import * as Personal from "../../Base/IndexedDB/Personal";
-import { YouTubeOption } from "../../Base/Util/YouTubeUtil";
+import * as Personal from "../../Contents/IndexedDB/Personal";
+import { YouTubeOption } from "../../Contents/Util/YouTubeUtil";
 
 /**
  * 

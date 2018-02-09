@@ -1,4 +1,4 @@
-import Sender from "../../Base/Container/Sender";
+import Sender from "../Container/Sender";
 
 
 /**

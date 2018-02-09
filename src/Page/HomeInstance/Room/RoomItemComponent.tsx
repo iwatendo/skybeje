@@ -1,16 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
-import * as Home from "../../../Base/IndexedDB/Home";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
+import * as Home from "../../../Contents/IndexedDB/Home";
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import LogUtil from "../../../Base/Util/LogUtil";
 import { Order } from "../../../Base/Container/Order";
-import ActorInfo from "../../../Base/Container/ActorInfo";
 import RoomMemberComponent from "./RoomMemberComponent";
 import { RoomView, DragItemType } from "./RoomView";
 import RoomComponent from "./RoomComponent";
+import ActorInfo from '../../../Contents/Struct/ActorInfo';
 
 
 /**

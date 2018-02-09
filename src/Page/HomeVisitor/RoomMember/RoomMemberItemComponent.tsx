@@ -1,13 +1,13 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 
-import { DialogMode } from "../../../Base/Common/AbstractDialogController";
+import { DialogMode } from "../../../Base/AbstractDialogController";
 
 import HomeVisitorController from "../HomeVisitorController";
 import ActorDialog from "./ActorDialog";
-import ActorInfo from "../../../Base/Container/ActorInfo";
+import ActorInfo from "../../../Contents/Struct/ActorInfo";
 import RoomActorItemComponent from "./RoomActorItemComponent";
 
 

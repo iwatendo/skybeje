@@ -1,18 +1,18 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
-import * as Home from "../../../Base/IndexedDB/Home";
-import * as Friend from "../../../Base/IndexedDB/Friend";
-import * as Timeline from "../../../Base/IndexedDB/Timeline";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
+import * as Home from "../../../Contents/IndexedDB/Home";
+import * as Friend from "../../../Contents/IndexedDB/Friend";
+import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
-import LocalCache from "../../../Base/Common/LocalCache";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 
 import DashboardController from "../DashboardController";
 import { INaviContainer, DragAction } from "../INaviContainer";
 import SettingComponent from "./SettingComponent";
 import DashboardModel from "../DashboardModel";
+import LocalCache from '../../../Contents/Cache/LocalCache';
 
 
 export enum DBEnum {

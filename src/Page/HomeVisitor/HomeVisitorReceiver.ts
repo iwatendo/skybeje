@@ -1,8 +1,8 @@
 ﻿
-import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
+import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 import CastInstanceSender from "../../Base/Container/CastInstanceSender";
 
 import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
@@ -10,8 +10,8 @@ import * as HVContainer from "./HomeVisitorContainer";
 import * as CIContainer from "../CastInstance/CastInstanceContainer";
 import HomeVisitorController from "./HomeVisitorController";
 import LogUtil from "../../Base/Util/LogUtil";
-import ActorInfo from "../../Base/Container/ActorInfo";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
+import ActorInfo from "../../Contents/Struct/ActorInfo";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 

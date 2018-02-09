@@ -1,5 +1,5 @@
 import LogUtil from "../Util/LogUtil";
-import { IServiceController } from "../Common/IServiceController";
+import { IServiceController } from "../IServiceController";
 import SWPeer from "./SWPeer";
 import Sender from "../Container/Sender";
 

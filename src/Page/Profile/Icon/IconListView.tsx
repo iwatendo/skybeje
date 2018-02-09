@@ -1,12 +1,12 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
-
-import StdUtil from "../../../Base/Util/StdUtil";
 import { Order } from "../../../Base/Container/Order";
 import ImageInfo from "../../../Base/Container/ImageInfo";
+import StdUtil from "../../../Base/Util/StdUtil";
 import ImageUtil from "../../../Base/Util/ImageUtil";
+
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import ImageDialogController from "../../Dashboard/ImageDialogController";
 import IconListComponent from "./IconListComponent";

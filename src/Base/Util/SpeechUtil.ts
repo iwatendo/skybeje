@@ -1,5 +1,3 @@
-
-import { Message } from "../IndexedDB/Timeline";
 import LinkUtil from "./LinkUtil";
 import LogUtil from "./LogUtil";
 
@@ -40,16 +38,10 @@ export default class SpeechUtil {
      * タイムラインメッセージの読上げ
      * @param tlmsg 
      */
-    public static TimelineSpeech(tlmsg: Message) {
-
-        if (tlmsg.ctime > this._lastCTime) {
-
-            this._lastCTime = tlmsg.ctime;
-
-            if (tlmsg.speech) {
-                this.Speech(tlmsg.text);
-            }
-
+    public static TimelineSpeech(ctime : number, msg : string) {
+        if (ctime > this._lastCTime) {
+            this._lastCTime = ctime;
+            this.Speech(msg);
         }
     }
 

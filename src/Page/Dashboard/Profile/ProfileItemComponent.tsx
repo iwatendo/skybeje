@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import LogUtil from "../../../Base/Util/LogUtil";

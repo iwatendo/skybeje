@@ -1,8 +1,8 @@
-import * as Timeline from "../../../Base/IndexedDB/Timeline";
+import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import StdUtil from "../../../Base/Util/StdUtil";
 
-import { OnRead } from "../../../Base/Common/AbstractServiceModel";
+import { OnRead } from "../../../Base/AbstractServiceModel";
 
 import HomeInstanceModel from "../HomeInstanceModel";
 import HomeInstanceController from "../HomeInstanceController";

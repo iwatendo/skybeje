@@ -1,11 +1,11 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
-
 import StdUtil from "../../../Base/Util/StdUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import { Order } from "../../../Base/Container/Order";
+
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import ProfileController from "../ProfileController";
 import IconListItemComponent from "./IconListItemComponent";

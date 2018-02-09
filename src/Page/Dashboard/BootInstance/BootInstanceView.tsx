@@ -3,11 +3,11 @@ import * as ReactDOM from 'react-dom';
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
-import LocalCache from "../../../Base/Common/LocalCache";
 
 import DashboardController from "../DashboardController";
 import { INaviContainer, DragAction } from "../INaviContainer";
 import BootInstanceComponent from "./BootInstanceComponent";
+import LocalCache from '../../../Contents/Cache/LocalCache';
 
 /**
  * 

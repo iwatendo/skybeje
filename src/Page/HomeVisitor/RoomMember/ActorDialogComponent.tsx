@@ -1,9 +1,10 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import ActorInfo from "../../../Base/Container/ActorInfo";
 import StdUtil from "../../../Base/Util/StdUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
+
+import ActorInfo from '../../../Contents/Struct/ActorInfo';
 
 import HomeVisitorController from "../HomeVisitorController";
 

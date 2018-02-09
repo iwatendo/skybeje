@@ -1,4 +1,4 @@
-import { IServiceController } from "../Common/IServiceController";
+import { IServiceController } from "../IServiceController";
 import LogUtil from "../Util/LogUtil";
 import SWPeer from "./SWPeer";
 

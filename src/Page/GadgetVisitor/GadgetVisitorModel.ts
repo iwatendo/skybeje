@@ -1,5 +1,5 @@
 
-import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/Common/AbstractServiceModel";
+import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/AbstractServiceModel";
 import GadgetVisitorController from "./GadgetVisitorController";
 
 

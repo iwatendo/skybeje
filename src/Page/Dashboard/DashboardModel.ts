@@ -1,16 +1,16 @@
-import DBContainer from "../../Base/IndexedDB/DBContainer";
-import * as Personal from "../../Base/IndexedDB/Personal";
-import * as Home from "../../Base/IndexedDB/Home";
-import * as Friend from "../../Base/IndexedDB/Friend";
-import * as Timeline from "../../Base/IndexedDB/Timeline";
+import DBContainer from "../../Contents/IndexedDB/DBContainer";
+import * as Personal from "../../Contents/IndexedDB/Personal";
+import * as Home from "../../Contents/IndexedDB/Home";
+import * as Friend from "../../Contents/IndexedDB/Friend";
+import * as Timeline from "../../Contents/IndexedDB/Timeline";
 
 import StdUtil from "../../Base/Util/StdUtil";
-import LocalCache from "../../Base/Common/LocalCache";
 import ImageInfo from "../../Base/Container/ImageInfo";
 
-import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite, OnRead2 } from "../../Base/Common/AbstractServiceModel";
+import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite, OnRead2 } from "../../Base/AbstractServiceModel";
 
 import DashboardController from "./DashboardController";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 
 export default class DashboardModel extends AbstractServiceModel<DashboardController> {

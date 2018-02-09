@@ -1,7 +1,7 @@
-﻿import Database from "./Database";
-import * as DBI from "./Database";
-import ImageInfo from "../Container/ImageInfo";
-import { IOrder } from "../Container/Order";
+﻿import AbstractIndexedDB from "../../Base/AbstractIndexedDB";
+import * as DBI from "../../Base/AbstractIndexedDB";
+import ImageInfo from "../../Base/Container/ImageInfo";
+import { IOrder } from "../../Base/Container/Order";
 
 
 export class Room implements IOrder {
@@ -31,7 +31,7 @@ export class Data {
 }
 
 
-export class DB extends Database<Data> {
+export class DB extends AbstractIndexedDB<Data> {
 
     public static NAME = "Home";
     public static NOTE = "ルーム";

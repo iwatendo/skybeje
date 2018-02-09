@@ -1,7 +1,5 @@
 
-import * as Home from "../../Base/IndexedDB/Home";
-
-import LocalCache from "../../Base/Common/LocalCache";
+import * as Home from "../../Contents/IndexedDB/Home";
 
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
@@ -9,6 +7,7 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import HomeInstanceController from "./HomeInstanceController";
 import HomeInstanceReceiver from "./HomeInstanceReceiver";
 import SWPeer from "../../Base/WebRTC/SWPeer";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 if (StdUtil.IsExecute()) {
 

@@ -1,9 +1,9 @@
-﻿import Database from "./Database";
-import * as DBI from "./Database";
-import ImageInfo from "../Container/ImageInfo";
-import { IOrder } from "../Container/Order";
-import StdUtil from "../Util/StdUtil";
-import LocalCache from "../Common/LocalCache";
+﻿import AbstractIndexedDB from "../../Base/AbstractIndexedDB";
+import * as DBI from "../../Base/AbstractIndexedDB";
+import ImageInfo from "../../Base/Container/ImageInfo";
+import { IOrder } from "../../Base/Container/Order";
+import StdUtil from "../../Base/Util/StdUtil";
+import LocalCache from "../Cache/LocalCache";
 
 
 /**
@@ -117,7 +117,7 @@ export class Data {
     Guide: Array<Guide>;
 }
 
-export class DB extends Database<Data> {
+export class DB extends AbstractIndexedDB<Data> {
 
     public static NAME = "Personal";
     public static NOTE = "プロフィール／アクター";

@@ -1,11 +1,10 @@
-﻿import * as Personal from "../../Base/IndexedDB/Personal";
+﻿import * as Personal from "../../Contents/IndexedDB/Personal";
 
-import AbstractServiceController from "../../Base/Common/AbstractServiceController";
+import AbstractServiceController from "../../Base/AbstractServiceController";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
-import CursorCache from "../../Base/Common/CursorCache";
 import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
@@ -14,6 +13,7 @@ import GadgetInstanceView from "./GadgetInstanceView";
 import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
 import { GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
+import CursorCache from "../../Contents/Cache/CursorCache";
 
 
 export default class GadgetInstanceController extends AbstractServiceController<GadgetInstanceView, GadgetInstanceModel> {

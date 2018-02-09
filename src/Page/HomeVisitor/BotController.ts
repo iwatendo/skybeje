@@ -1,7 +1,7 @@
 
-import * as Home from "../../Base/IndexedDB/Home";
-import * as Personal from "../../Base/IndexedDB/Personal";
-import * as Timeline from "../../Base/IndexedDB/Timeline";
+import * as Home from "../../Contents/IndexedDB/Home";
+import * as Personal from "../../Contents/IndexedDB/Personal";
+import * as Timeline from "../../Contents/IndexedDB/Timeline";
 
 import BotUtil from "../../Base/Util/BotUtil";
 

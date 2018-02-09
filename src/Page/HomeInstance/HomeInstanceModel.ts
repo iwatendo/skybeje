@@ -1,10 +1,10 @@
 
-import * as Home from "../../Base/IndexedDB/Home";
-import * as Timeline from "../../Base/IndexedDB/Timeline";
+import * as Home from "../../Contents/IndexedDB/Home";
+import * as Timeline from "../../Contents/IndexedDB/Timeline";
 
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
-import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/Common/AbstractServiceModel";
+import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/AbstractServiceModel";
 
 import HomeInstanceController from "./HomeInstanceController";
 

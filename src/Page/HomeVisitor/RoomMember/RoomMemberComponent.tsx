@@ -1,12 +1,13 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Personal from "../../../Base/IndexedDB/Personal";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import HomeVisitorController from "../HomeVisitorController";
 import { RoomActorMemberSender } from "../../HomeInstance/HomeInstanceContainer";
 import RoomMemberItemComponent from "./RoomMemberItemComponent";
-import ActorInfo from "../../../Base/Container/ActorInfo";
+
+import ActorInfo from "../../../Contents/Struct/ActorInfo";
 
 
 /**

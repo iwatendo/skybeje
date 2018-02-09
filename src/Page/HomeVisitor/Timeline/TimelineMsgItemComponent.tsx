@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Timeline from "../../../Base/IndexedDB/Timeline";
+import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
@@ -36,7 +36,9 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
 
         let msgtext = this.props.MsgGroup.map((tlmsg) => {
 
-            SpeechUtil.TimelineSpeech(tlmsg);
+            if (tlmsg.speech) {
+                SpeechUtil.TimelineSpeech(tlmsg.ctime, tlmsg.text);
+            }
 
             let mid = 'sbj-timeline-message-' + tlmsg.mid;
             let tmclass = "sbj-timeline-message" + (tlmsg.visible ? "" : " sbj-timeline-message-ignore");

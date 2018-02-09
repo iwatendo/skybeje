@@ -1,12 +1,11 @@
 
-import LocalCache from "../../Base/Common/LocalCache";
 import ImageInfo from "../../Base/Container/ImageInfo";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import { DialogMode } from "../../Base/Common/AbstractDialogController";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
+import { DialogMode } from "../../Base/AbstractDialogController";
 
 import DashboardController from "./DashboardController";
 import { INaviContainer } from "./INaviContainer";
@@ -17,6 +16,7 @@ import SettingController from "./Setting/SettingController";
 import BootInstanceView from "./BootInstance/BootInstanceView";
 import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 import MobileDialog from "./Mobile/MobileDialog";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 
 export enum NaviEnum {

@@ -1,9 +1,8 @@
-﻿
-import AbstractServiceController from "../../Base/Common/AbstractServiceController";
-
-import * as Home from "../../Base/IndexedDB/Home";
-
+﻿import AbstractServiceController from "../../Base/AbstractServiceController";
 import { Order } from "../../Base/Container/Order";
+
+import * as Home from "../../Contents/IndexedDB/Home";
+
 import RoomModel from "./RoomModel";
 import RoomView from "./RoomView";
 

@@ -1,6 +1,6 @@
-﻿import DBContainer from "../../Base/IndexedDB/DBContainer";
-import LocalCache from "../../Base/Common/LocalCache";
+﻿import DBContainer from "../../Contents/IndexedDB/DBContainer";
 import LinkUtil from "../../Base/Util/LinkUtil";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 if (!LocalCache.InitializedSkybeje) {
     let dbc = new DBContainer();

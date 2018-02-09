@@ -1,10 +1,10 @@
 
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 
 import StdUtil from "../../Base/Util/StdUtil";
 import ImageInfo from "../../Base/Container/ImageInfo";
 
-import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite, OnRead2 } from "../../Base/Common/AbstractServiceModel";
+import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite, OnRead2 } from "../../Base/AbstractServiceModel";
 import ProfileController from "./ProfileController";
 import { Order } from "../../Base/Container/Order";
 

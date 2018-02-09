@@ -1,11 +1,10 @@
-﻿
-/// <reference path="../../../node_modules/@types/youtube/index.d.ts"/>
+﻿/// <reference path="../../../node_modules/@types/youtube/index.d.ts"/>
 
-import StdUtil from "./StdUtil";
-import Sender from "../Container/Sender";
+import StdUtil from "../../Base/Util/StdUtil";
+import LogUtil from "../../Base/Util/LogUtil";
+import Sender from "../../Base/Container/Sender";
 import * as Youtube from "../../../node_modules/youtube";
 import { Guide } from "../IndexedDB/Personal";
-import LogUtil from "./LogUtil";
 
 export interface OnCreateYouTubePlayer { (player: YT.Player): void }
 

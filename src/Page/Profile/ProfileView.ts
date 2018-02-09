@@ -1,7 +1,7 @@
 ﻿
-import * as Personal from "../../Base/IndexedDB/Personal";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import ImageUtil from "../../Base/Util/ImageUtil";
 import IconListView from "./Icon/IconListView";
 import GuideListView from "./Guide/GuideListView";

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Home from "../../Base/IndexedDB/Home";
-import { Icon } from "../../Base/IndexedDB/Personal";
-import * as Timeline from "../../Base/IndexedDB/Timeline";
+import * as Home from "../../Contents/IndexedDB/Home";
+import { Icon } from "../../Contents/IndexedDB/Personal";
+import * as Timeline from "../../Contents/IndexedDB/Timeline";
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import LocalCache from "../../Base/Common/LocalCache";
+import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import ImageUtil from "../../Base/Util/ImageUtil";
 import ImageInfo from "../../Base/Container/ImageInfo";
