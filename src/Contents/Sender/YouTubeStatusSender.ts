@@ -1,55 +1,10 @@
 import Sender from "../../Base/Container/Sender";
-import * as Personal from "../../Contents/IndexedDB/Personal";
 import { YouTubeOption } from "../../Contents/Util/YouTubeUtil";
 
 /**
  * 
  */
-export class GetGadgetCastSettingSedner extends Sender {
-
-    public static ID = "GetGadgetCastSetting";
-
-    constructor() {
-        super(GetGadgetCastSettingSedner.ID);
-    }
-}
-
-
-/**
- * 
- */
-export class GadgetCastSettingSender extends Sender {
-
-    public static ID = "GadgetCastSetting";
-
-    constructor() {
-        super(GadgetCastSettingSender.ID);
-        this.dispUserCursor = false;
-        this.guide = null;
-    }
-    dispUserCursor: boolean;
-    guide: Personal.Guide;
-    status: YouTubeStatusSender;
-}
-
-
-/**
- * 
- */
-export class GetYouTubeStatusSender extends Sender {
-
-    public static ID = "GetYouTubeStatus";
-
-    constructor() {
-        super(GetYouTubeStatusSender.ID);
-    }
-}
-
-
-/**
- * 
- */
-export class YouTubeStatusSender extends Sender {
+export default class YouTubeStatusSender extends Sender {
 
     public static ID = "YouTubeStatus";
 

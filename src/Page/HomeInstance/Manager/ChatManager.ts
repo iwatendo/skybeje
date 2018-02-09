@@ -6,9 +6,10 @@ import { OnRead } from "../../../Base/AbstractServiceModel";
 
 import HomeInstanceModel from "../HomeInstanceModel";
 import HomeInstanceController from "../HomeInstanceController";
-import { RoomActorMemberSender, TimelineSender } from "../HomeInstanceContainer";
-import { UseActorSender, ChatMessageSender } from "../../HomeVisitor/HomeVisitorContainer";
 import RoomManager from "./RoomManager";
+
+import ChatMessageSender from "../../../Contents/Sender/ChatMessageSender";
+import TimelineSender from "../../../Contents/Sender/TimelineSender";
 
 
 export default class ChatManager {

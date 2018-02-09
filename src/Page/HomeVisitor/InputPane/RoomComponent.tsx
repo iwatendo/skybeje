@@ -5,7 +5,6 @@ import * as Home from "../../../Contents/IndexedDB/Home";
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import HomeVisitorController from "../HomeVisitorController";
-import { RoomActorMemberSender } from "../../HomeInstance/HomeInstanceContainer";
 import RoomItemComponent from "./RoomItemComponent";
 
 

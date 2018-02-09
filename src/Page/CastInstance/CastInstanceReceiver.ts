@@ -6,10 +6,10 @@ import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 
-import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import CastInstanceController from "./CastInstanceController";
-import { GetCastSettingSedner, CastSettingSender } from "./CastInstanceContainer";
 import CastInstanceView from "./CastInstanceView";
+import RoomSender from "../../Contents/Sender/RoomSender";
+import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 
 
 export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceController> {

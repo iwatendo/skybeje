@@ -2,8 +2,9 @@ import * as Home from "../../../Contents/IndexedDB/Home";
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import HomeVisitorController from "../HomeVisitorController";
-import { GetRoomSender, RoomActorMemberSender } from "../../HomeInstance/HomeInstanceContainer";
 import StdUtil from "../../../Base/Util/StdUtil";
+import RoomActorMemberSender from "../../../Contents/Sender/RoomActorMemberSender";
+import GetRoomSender from "../../../Contents/Sender/GetRoomSender";
 
 
 interface RoomFunc { (room: Home.Room): void }

@@ -1,15 +1,13 @@
 
 import { Actor } from "../../../Contents/IndexedDB/Personal";
-
 import LogUtil from "../../../Base/Util/LogUtil";
-
 import { OnRead } from "../../../Base/AbstractServiceModel";
 
-import { UseActorSender } from "../../HomeVisitor/HomeVisitorContainer";
 import HomeInstanceModel from "../HomeInstanceModel";
-import { RoomActorMemberSender } from "../HomeInstanceContainer";
 import HomeInstanceController from "../HomeInstanceController";
 import ActorInfo from "../../../Contents/Struct/ActorInfo";
+import UseActorSender from "../../../Contents/Sender/UseActorSender";
+import RoomActorMemberSender from "../../../Contents/Sender/RoomActorMemberSender";
 
 
 export class RoomActor {

@@ -5,7 +5,7 @@ import * as Personal from "../../../Contents/IndexedDB/Personal";
 import ActorInfo from "../../../Contents/Struct/ActorInfo";
 
 import HomeVisitorController from "../HomeVisitorController";
-import { GetProfileSender, GetActorSender } from "../HomeVisitorContainer";
+import GetActorSender from "../../../Contents/Sender/GetActorSender";
 
 
 interface ActorFunc { (actor: ActorInfo): void }

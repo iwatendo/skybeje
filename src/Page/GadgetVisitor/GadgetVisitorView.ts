@@ -6,11 +6,11 @@ import StdUtil from "../../Base/Util/StdUtil";
 import YouTubeUtil, { YouTubeOption, OnCreateYouTubePlayer } from "../../Contents/Util/YouTubeUtil";
 import GadgetVisitorController from "./GadgetVisitorController";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
-import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { Icon } from "../../Contents/IndexedDB/Personal";
 import { DialogMode } from "../../Base/AbstractDialogController";
 import { CursorController } from "../CastVisitor/Cursor/CurosrController";
-import { GadgetCastSettingSender, GetYouTubeStatusSender, YouTubeStatusSender } from "../GadgetInstance/GadgetInstanceContainer";
+import GadgetCastSettingSender from "../../Contents/Sender/GadgetCastSettingSender";
+import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
 
 
 /**

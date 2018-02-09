@@ -6,8 +6,6 @@ import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 import StdUtil from "../../../Base/Util/StdUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 
-import { UpdateTimelineSender } from "../../HomeInstance/HomeInstanceContainer";
-import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";
 import { TimelineMsgGroup } from "./TimelineComponent";
 import SpeechUtil from '../../../Base/Util/SpeechUtil';

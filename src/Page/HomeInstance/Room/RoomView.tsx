@@ -9,7 +9,6 @@ import ImageInfo from "../../../Base/Container/ImageInfo";
 import { Order } from "../../../Base/Container/Order";
 
 import HomeInstanceController from "../HomeInstanceController";
-import { RoomActorMemberSender } from "../HomeInstanceContainer";
 
 import { RoomItemComponent } from "./RoomItemComponent";
 import RoomMemberComponent from "./RoomMemberComponent";

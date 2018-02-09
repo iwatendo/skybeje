@@ -1,13 +1,22 @@
-﻿
-import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
+﻿import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
-
-import * as HVContainer from "../HomeVisitor/HomeVisitorContainer";
-import * as HIContainer from "./HomeInstanceContainer";
 
 import HomeInstanceController from "./HomeInstanceController";
 import ChatManager from "./Manager/ChatManager";
 import LogUtil from "../../Base/Util/LogUtil";
+
+import ClientBootSender from "../../Contents/Sender/ClientBootSender";
+import GetRoomSender from "../../Contents/Sender/GetRoomSender";
+import ConnInfoSender from "../../Contents/Sender/ConnInfoSender";
+import UseActorSender from "../../Contents/Sender/UseActorSender";
+import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
+import GetTimelineSender from "../../Contents/Sender/GetTimelineSender";
+import TimelineSender from "../../Contents/Sender/TimelineSender";
+import UpdateTimelineSender from "../../Contents/Sender/UpdateTimelineSender";
+import ServentSender from "../../Contents/Sender/ServentSender";
+import ServentCloseSender from "../../Contents/Sender/ServentCloseSender";
+import ForcedTerminationSender from "../../Contents/Sender/ForcedTerminationSender";
+import VoiceChatMemberSender from "../../Contents/Sender/VoiceChatMemberSender";
 
 
 export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeInstanceController> {
@@ -18,8 +27,8 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
         //  クライアントの起動通知
-        if (sender.type === HVContainer.ClientBootSender.ID) {
-            let ci = new HIContainer.ConnInfoSender();
+        if (sender.type === ClientBootSender.ID) {
+            let ci = new ConnInfoSender();
             let mbc = this.IsMultiBoot(sender.uid, conn);
             ci.isBootCheck = !mbc;
             ci.isMultiBoot = mbc;
@@ -28,54 +37,54 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
         }
 
         //  ルームの要求
-        if (sender.type === HIContainer.GetRoomSender.ID) {
-            this.Controller.SendRoom(conn, sender as HIContainer.GetRoomSender);
+        if (sender.type === GetRoomSender.ID) {
+            this.Controller.SendRoom(conn, sender as GetRoomSender);
         }
 
         //  使用アクター通知
-        if (sender.type === HVContainer.UseActorSender.ID) {
-            let useActor = sender as HVContainer.UseActorSender;
+        if (sender.type === UseActorSender.ID) {
+            let useActor = sender as UseActorSender;
             this.Controller.Manager.Room.SetActor(conn, useActor);
         }
 
         //  チャットメッセージ通知
-        if (sender.type === HVContainer.ChatMessageSender.ID) {
-            let chatMessage = sender as HVContainer.ChatMessageSender;
+        if (sender.type === ChatMessageSender.ID) {
+            let chatMessage = sender as ChatMessageSender;
             this.Controller.Manager.Chat.SetMessage(chatMessage);
         }
 
         //  タイムラインの要求
-        if (sender.type === HVContainer.GetTimelineSender.ID) {
-            let gtl = sender as HVContainer.GetTimelineSender;
-            let result = new HIContainer.TimelineSender();
+        if (sender.type === GetTimelineSender.ID) {
+            let gtl = sender as GetTimelineSender;
+            let result = new TimelineSender();
             result.msgs = this.Controller.Manager.Chat.GetBeforeMessages(gtl.hid, gtl.count);
             this.Controller.SwPeer.SendTo(conn, result);
         }
 
         //  タイムラインの更新
-        if (sender.type === HIContainer.UpdateTimelineSender.ID) {
-            let utl = sender as HIContainer.UpdateTimelineSender;
+        if (sender.type === UpdateTimelineSender.ID) {
+            let utl = sender as UpdateTimelineSender;
             this.Controller.Manager.Chat.UpdateTimeline(utl.message);
         }
 
         //  サーバントの起動/更新通知
-        if (sender.type === HIContainer.ServentSender.ID) {
-            this.Controller.Manager.Servent.SetServent(sender as HIContainer.ServentSender);
+        if (sender.type === ServentSender.ID) {
+            this.Controller.Manager.Servent.SetServent(sender as ServentSender);
         }
 
         //  サーバントの終了通知
-        if (sender.type === HIContainer.ServentCloseSender.ID) {
-            this.Controller.Manager.Servent.CloseServent(sender as HIContainer.ServentCloseSender);
+        if (sender.type === ServentCloseSender.ID) {
+            this.Controller.Manager.Servent.CloseServent(sender as ServentCloseSender);
         }
 
         //  強制終了処理
-        if (sender.type === HIContainer.ForcedTerminationSender.ID) {
+        if (sender.type === ForcedTerminationSender.ID) {
             this.Controller.SwPeer.Close();
         }
 
         //  ボイスチャットルームのメンバー通知
-        if (sender.type === HIContainer.VoiceChatMemberSender.ID) {
-            this.Controller.Manager.VoiceChat.SetMember(sender as HIContainer.VoiceChatMemberSender);
+        if (sender.type === VoiceChatMemberSender.ID) {
+            this.Controller.Manager.VoiceChat.SetMember(sender as VoiceChatMemberSender);
         }
 
     }

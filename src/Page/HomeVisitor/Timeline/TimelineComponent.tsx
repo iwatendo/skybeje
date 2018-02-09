@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 
 import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
-import { ChatMessageSender } from "../HomeVisitorContainer";
 import HomeVisitorController from "../HomeVisitorController";
 import { TimelineMsgItemComponent } from "./TimelineMsgItemComponent";
 

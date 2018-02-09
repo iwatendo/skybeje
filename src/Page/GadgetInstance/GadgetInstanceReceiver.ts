@@ -6,11 +6,13 @@ import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 
-import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceController from "./GadgetInstanceController";
-import { GetGadgetCastSettingSedner, GadgetCastSettingSender, GetYouTubeStatusSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import GadgetInstanceView from "./GadgetInstanceView";
-import { GuideSender, GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
+import RoomSender from "../../Contents/Sender/RoomSender";
+import GuideSender from "../../Contents/Sender/GuideSender";
+import GetGadgetCastSettingSedner from "../../Contents/Sender/GetGadgetCastSettingSedner";
+import GetYouTubeStatusSender from "../../Contents/Sender/GetYouTubeStatusSender";
+import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
 
 
 export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstanceController> {

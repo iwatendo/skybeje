@@ -5,14 +5,14 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
-import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceScreenShareModel from "./CastInstanceScreenShareModel";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
-import { CastSettingSender } from "../CastInstance/CastInstanceContainer";
 import { CastInstanceScreenShareReceiver } from "./CastInstanceScreenShareReceiver";
 import StreamUtil from "../../Base/Util/StreamUtil";
 import CursorCache from "../../Contents/Cache/CursorCache";
+import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import RoomSender from "../../Contents/Sender/RoomSender";
 
 
 export default class CastInstanceScreenShareController extends AbstractServiceController<CastInstanceScreenShareView, CastInstanceScreenShareModel> {

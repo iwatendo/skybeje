@@ -5,11 +5,9 @@ import LogUtil from "../../Base/Util/LogUtil";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import GadgetVisitorController from "./GadgetVisitorController";
 import { GadgetVisitorView } from "./GadgetVisitorView";
-import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
-import * as HVContainer from "../HomeVisitor/HomeVisitorContainer";
-import * as CIContainer from "../CastInstance/CastInstanceContainer";
-import { GadgetCastSettingSender, YouTubeStatusSender } from "../GadgetInstance/GadgetInstanceContainer";
-
+import IconSender from "../../Contents/Sender/IconSender";
+import GadgetCastSettingSender from "../../Contents/Sender/GadgetCastSettingSender";
+import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
 
 
 export class GadgetVisitorReceiver extends AbstractServiceReceiver<GadgetVisitorController> {
@@ -26,8 +24,8 @@ export class GadgetVisitorReceiver extends AbstractServiceReceiver<GadgetVisitor
         }
 
         //  アイコン取得
-        if (sender.type === HVContainer.IconSender.ID) {
-            this.Controller.View.Cursor.SetIcon(conn.peer, (sender as HVContainer.IconSender).icon);
+        if (sender.type === IconSender.ID) {
+            this.Controller.View.Cursor.SetIcon(conn.peer, (sender as IconSender).icon);
         }
 
         //  キャスト情報の通知

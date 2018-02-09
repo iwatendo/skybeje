@@ -15,13 +15,14 @@ import * as Personal from "../../../Contents/IndexedDB/Personal";
 import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import HomeVisitorController from "../HomeVisitorController";
-import { ChatMessageSender } from "../HomeVisitorContainer";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
-import { VoiceChatMemberSender, VoiceChatMemberListSender } from '../../HomeInstance/HomeInstanceContainer';
 import { VoiceSfuRoomMemberComponent } from './VoiceSfuRoomMemberComponent';
 import IconCache from '../Cache/IconCache';
 import VoiceChatSettingDialog from './VoiceChatSettingDialog/VoiceChatSettingDialog';
 import { DeviceView } from '../../DeviceView/DeviceVew';
+import ChatMessageSender from '../../../Contents/Sender/ChatMessageSender';
+import VoiceChatMemberSender from '../../../Contents/Sender/VoiceChatMemberSender';
+import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberListSender';
 
 export default class InputPaneController {
 

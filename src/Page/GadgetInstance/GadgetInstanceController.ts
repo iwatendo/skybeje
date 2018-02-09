@@ -7,13 +7,13 @@ import LogUtil from "../../Base/Util/LogUtil";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
-import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
-import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import { GadgetInstanceReceiver } from "./GadgetInstanceReceiver";
-import { GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
 import CursorCache from "../../Contents/Cache/CursorCache";
+import GadgetCastSettingSender from "../../Contents/Sender/GadgetCastSettingSender";
+import RoomSender from "../../Contents/Sender/RoomSender";
+import GetGuideSender from "../../Contents/Sender/GetGuideSender";
 
 
 export default class GadgetInstanceController extends AbstractServiceController<GadgetInstanceView, GadgetInstanceModel> {

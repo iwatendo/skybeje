@@ -5,10 +5,9 @@ import LogUtil from "../../Base/Util/LogUtil";
 import IconCursorSender  from "../../Base/Container/IconCursorSender";
 import CastVisitorController from "./CastVisitorController";
 import { CastVisitorView } from "./CastVisitorView";
-import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
-import * as HVContainer from "../HomeVisitor/HomeVisitorContainer";
-import * as CIContainer from "../CastInstance/CastInstanceContainer";
-
+import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import IconSender from "../../Contents/Sender/IconSender";
+import CastSpeechRecognitionSender from "../../Contents/Sender/CastSpeechRecognitionSender";
 
 
 export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorController> {
@@ -25,18 +24,18 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
         }
 
         //  キャスト情報の通知
-        if (sender.type === CIContainer.CastSettingSender.ID) {
-            this.Controller.View.SetCastSetting(sender as CIContainer.CastSettingSender);
+        if (sender.type === CastSettingSender.ID) {
+            this.Controller.View.SetCastSetting(sender as CastSettingSender);
         }
 
         //  アイコン取得
-        if (sender.type === HVContainer.IconSender.ID) {
-            this.Controller.View.Cursor.SetIcon(conn.peer, (sender as HVContainer.IconSender).icon);
+        if (sender.type === IconSender.ID) {
+            this.Controller.View.Cursor.SetIcon(conn.peer, (sender as IconSender).icon);
         }
 
         //  字幕表示
-        if(sender.type === CIContainer.CastSpeechRecognitionSender.ID){
-            this.Controller.View.SubTitles.SetMessage(sender as CIContainer.CastSpeechRecognitionSender);
+        if(sender.type === CastSpeechRecognitionSender.ID){
+            this.Controller.View.SubTitles.SetMessage(sender as CastSpeechRecognitionSender);
         }
     }
 

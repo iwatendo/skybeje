@@ -5,16 +5,15 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
-import { RoomSender } from "../HomeInstance/HomeInstanceContainer";
 import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
-import { CastSettingSender } from "./CastInstanceContainer";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 import StreamUtil from "../../Base/Util/StreamUtil";
 import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 import CursorCache from "../../Contents/Cache/CursorCache";
-
+import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import RoomSender from "../../Contents/Sender/RoomSender";
 
 export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
 

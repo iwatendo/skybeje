@@ -1,7 +1,6 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
-import { CastSpeechRecognitionSender } from "../../CastInstance/CastInstanceContainer";
+import CastSpeechRecognitionSender from '../../../Contents/Sender/CastSpeechRecognitionSender';
 
 
 interface SubTitlesProp {

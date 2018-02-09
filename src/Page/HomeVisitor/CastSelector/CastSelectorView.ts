@@ -1,10 +1,10 @@
 
 import HomeVisitorController from "../HomeVisitorController";
 import CastSelectorController from "./CastSelectorController";
-import { RoomServentSender, ServentSender } from "../../HomeInstance/HomeInstanceContainer";
 import ActorCache from "../Cache/ActorCache";
 import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 import ServentElementPack from "./ServentElementPack";
+import ServentSender from "../../../Contents/Sender/ServentSender";
 
 
 export default class CastSelectorView {

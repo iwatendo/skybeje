@@ -4,7 +4,6 @@ import { Room } from "../../Contents/IndexedDB/Home";
 import AbstractServiceController from "../../Base/AbstractServiceController";
 import LogUtil from "../../Base/Util/LogUtil";
 
-import * as HIContainer from "./HomeInstanceContainer";
 import HomeInstanceReceiver from "./HomeInstanceReceiver";
 import HomeInstanceView from "./HomeInstanceView";
 import HomeInstanceModel from "./HomeInstanceModel";
@@ -12,6 +11,9 @@ import HomeInstanceModel from "./HomeInstanceModel";
 import ManagerController from "./Manager/ManagerController";
 import { RoomView } from "./Room/RoomView";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import ForcedTerminationSender from "../../Contents/Sender/ForcedTerminationSender";
+import GetRoomSender from "../../Contents/Sender/GetRoomSender";
+import RoomSender from "../../Contents/Sender/RoomSender";
 
 /**
  * 
@@ -41,7 +43,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
         //  通常は呼ばれない。
         //  多重起動が検出されたケースで呼ばれる為、終了通知を出す。
-        this.SwPeer.SendToOwner(new HIContainer.ForcedTerminationSender());
+        this.SwPeer.SendToOwner(new ForcedTerminationSender());
 
     }
 
@@ -137,9 +139,9 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      * @param conn 
      * @param req 
      */
-    public SendRoom(conn: PeerJs.DataConnection, req: HIContainer.GetRoomSender) {
+    public SendRoom(conn: PeerJs.DataConnection, req: GetRoomSender) {
 
-        let sender = new HIContainer.RoomSender();
+        let sender = new RoomSender();
 
         this.Model.GetRoom(req.hid, (room) => {
             //  ルーム情報の通知
@@ -161,7 +163,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      * @param room 
      */
     public SendChnageRoom(room: Room) {
-        let sender = new HIContainer.RoomSender();
+        let sender = new RoomSender();
         sender.room = room;
         this.SwPeer.SendAll(sender);
     }

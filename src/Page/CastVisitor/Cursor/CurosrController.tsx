@@ -5,9 +5,9 @@ import { CursorComponent } from "./CursorComponent";
 import IconCursorSender from "../../../Base/Container/IconCursorSender";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
-import { GetIconSender } from "../../HomeVisitor/HomeVisitorContainer";
 import LogUtil from "../../../Base/Util/LogUtil";
 import { IServiceController } from '../../../Base/IServiceController';
+import GetIconSender from '../../../Contents/Sender/GetIconSender';
 
 
 export class VideoDispOffset {

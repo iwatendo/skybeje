@@ -7,7 +7,6 @@ import DeviceUtil from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
-import { CastSettingSender, CastSpeechRecognitionSender } from "../CastInstance/CastInstanceContainer";
 import StreamUtil from "../../Base/Util/StreamUtil";
 import LocalCache from "../../Contents/Cache/LocalCache";
 

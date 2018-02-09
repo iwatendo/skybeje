@@ -6,9 +6,10 @@ import * as Timeline from "../../Contents/IndexedDB/Timeline";
 import BotUtil from "../../Base/Util/BotUtil";
 
 import RoomCache from "./Cache/RoomCache";
-import { ChatMessageSender, GuideSender } from "./HomeVisitorContainer";
 import HomeVisitorController from "./HomeVisitorController";
 import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
+import GuideSender from "../../Contents/Sender/GuideSender";
 
 
 export default class BotController {

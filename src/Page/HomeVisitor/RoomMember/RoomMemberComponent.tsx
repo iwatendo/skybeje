@@ -4,10 +4,10 @@ import * as ReactDOM from 'react-dom';
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 
 import HomeVisitorController from "../HomeVisitorController";
-import { RoomActorMemberSender } from "../../HomeInstance/HomeInstanceContainer";
 import RoomMemberItemComponent from "./RoomMemberItemComponent";
 
 import ActorInfo from "../../../Contents/Struct/ActorInfo";
+import RoomActorMemberSender from '../../../Contents/Sender/RoomActorMemberSender';
 
 
 /**

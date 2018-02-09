@@ -10,12 +10,7 @@ import StdUtil from "../../Base/Util/StdUtil";
 import ImageUtil from "../../Base/Util/ImageUtil";
 import ImageInfo from "../../Base/Container/ImageInfo";
 
-import * as HomeContainer from "../HomeInstance/HomeInstanceContainer";
-import { RoomActorMemberSender } from "../HomeInstance/HomeInstanceContainer";
-import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
-import * as CIContainer from "../CastInstance/CastInstanceContainer";
 import { TimelineComponent } from "./Timeline/TimelineComponent";
-import { GetTimelineSender } from "./HomeVisitorContainer";
 import HomeVisitorController from "./HomeVisitorController";
 import RoomMemberComponent from "./RoomMember/RoomMemberComponent";
 import CastSelectorController from "./CastSelector/CastSelectorController";

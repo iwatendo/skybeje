@@ -10,7 +10,6 @@ import StreamUtil from "../../Base/Util/StreamUtil";
 
 import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
-import { CastSettingSender, CastSpeechRecognitionSender } from "./CastInstanceContainer";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Base/AbstractDialogController";
 import SettingDialogController from "./SettingDialog/SettingDialogController";

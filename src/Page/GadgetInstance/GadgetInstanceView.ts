@@ -8,12 +8,11 @@ import DeviceUtil from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import GadgetInstanceController from "./GadgetInstanceController";
-import { GadgetCastSettingSender, YouTubeStatusSender } from "./GadgetInstanceContainer";
 import YouTubeUtil, { YouTubeOption } from "../../Contents/Util/YouTubeUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import GuideUtil from "../../Contents/Util/GuideUtil";
-import { GetGuideSender } from "../HomeVisitor/HomeVisitorContainer";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 

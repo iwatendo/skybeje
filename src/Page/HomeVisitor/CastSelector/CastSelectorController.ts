@@ -1,7 +1,8 @@
 import HomeVisitorController from "../HomeVisitorController";
-import { RoomServentSender, ServentSender } from "../../HomeInstance/HomeInstanceContainer";
 import ServentMap from "./ServentMap";
 import CastSelectorView from "./CastSelectorView";
+import RoomServentSender from "../../../Contents/Sender/RoomServentSender";
+import ServentSender from "../../../Contents/Sender/ServentSender";
 
 
 export default class CastSelectorController {
@@ -84,7 +85,7 @@ export default class CastSelectorController {
             let peerElement = childDocument.getElementById("peerid");
             let aidElement = childDocument.getElementById("aid");
             let iidElement = childDocument.getElementById("iid");
-            
+
             if (peerElement && aidElement && iidElement) {
                 peerElement.textContent = this._ownerController.PeerId;
                 aidElement.textContent = this._ownerController.CurrentAid;
@@ -98,12 +99,12 @@ export default class CastSelectorController {
      * サーバント側に最終発言アクターの通知
      */
     public NotifyLastChatActorToServent(element: HTMLFrameElement) {
-        
+
         if (element) {
             let childDocument = element.contentDocument;
             let lastChatAidElement = childDocument.getElementById("lastChatAid");
             let lastChatIidElement = childDocument.getElementById("lastChatIid");
-            
+
             if (lastChatAidElement && lastChatIidElement) {
                 lastChatAidElement.textContent = this._ownerController.CurrentAid;
                 lastChatIidElement.textContent = this._ownerController.CurrentActor.dispIid;
@@ -112,7 +113,7 @@ export default class CastSelectorController {
             }
         }
     }
-            
+
 
     /**
      * サーバント側に使用アクターを通知
@@ -132,5 +133,5 @@ export default class CastSelectorController {
             this.NotifyLastChatActorToServent(this._view.GetFrame(i));
         }
     }
-    
+
 }

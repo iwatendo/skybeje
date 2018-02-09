@@ -1,6 +1,6 @@
-import { ServentSender } from "../../HomeInstance/HomeInstanceContainer";
 import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
 import HomeVisitorController from "../HomeVisitorController";
+import ServentSender from "../../../Contents/Sender/ServentSender";
 
 
 

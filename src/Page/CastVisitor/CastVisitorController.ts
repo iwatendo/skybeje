@@ -5,8 +5,8 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 import { CastVisitorView } from "./CastVisitorView";
 import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
-import { GetCastSettingSedner } from "../CastInstance/CastInstanceContainer";
 import SWPeer from "../../Base/WebRTC/SWPeer";
+import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {

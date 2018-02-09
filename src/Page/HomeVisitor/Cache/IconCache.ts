@@ -1,7 +1,7 @@
 
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 import HomeVisitorController from "../HomeVisitorController";
-import { GetIconSender } from "../HomeVisitorContainer";
+import GetIconSender from "../../../Contents/Sender/GetIconSender";
 
 
 export default class IconCache {

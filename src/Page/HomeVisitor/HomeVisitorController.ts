@@ -3,15 +3,12 @@ import * as Timeline from "../../Contents/IndexedDB/Timeline";
 import * as Personal from "../../Contents/IndexedDB/Personal";
 import * as Home from "../../Contents/IndexedDB/Home";
 
-import * as HVContainer from "./HomeVisitorContainer";
-
 import AbstractServiceController from "../../Base/AbstractServiceController";
 import LogUtil from "../../Base/Util/LogUtil";
 import { OnRead } from "../../Base/AbstractServiceModel";
 import { Order } from "../../Base/Container/Order";
 import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
-import { GetRoomSender, RoomActorMemberSender, UpdateTimelineSender, ServentCloseSender } from "../HomeInstance/HomeInstanceContainer";
 import TimelineCache from "./Cache/TimelineCache";
 import ActorCache from "./Cache/ActorCache";
 import RoomCache from "./Cache/RoomCache";
@@ -20,11 +17,17 @@ import ServentCache from "./Cache/ServentCache";
 import HomeVisitorReceiver from "./HomeVisitorReceiver";
 import HomeVisitorView from "./HomeVisitorView";
 import HomeVisitorModel from "./HomeVisitorModel";
-import { UseActorSender, ChatMessageSender, GetTimelineSender } from "./HomeVisitorContainer";
 import BotController from "./BotController";
 import LogController from "./Log/LogController";
 import SWPeer from "../../Base/WebRTC/SWPeer";
+
 import ActorInfo from "../../Contents/Struct/ActorInfo";
+import ClientBootSender from "../../Contents/Sender/ClientBootSender";
+import ServentCloseSender from "../../Contents/Sender/ServentCloseSender";
+import UseActorSender from "../../Contents/Sender/UseActorSender";
+import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
+import GetTimelineSender from "../../Contents/Sender/GetTimelineSender";
+import UpdateTimelineSender from "../../Contents/Sender/UpdateTimelineSender";
 
 
 /**
@@ -99,7 +102,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public OnOwnerConnection() {
         //  多重起動の確認の為に、UserIDを送信
-        this.SwPeer.SendToOwner(new HVContainer.ClientBootSender());
+        this.SwPeer.SendToOwner(new ClientBootSender());
     }
 
 

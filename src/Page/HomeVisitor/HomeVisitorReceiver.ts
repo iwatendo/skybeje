@@ -1,17 +1,30 @@
-﻿
-import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
-import Sender from "../../Base/Container/Sender";
-
-import * as Personal from "../../Contents/IndexedDB/Personal";
-import CastInstanceSender from "../../Base/Container/CastInstanceSender";
-
-import * as HIContainer from "../HomeInstance/HomeInstanceContainer";
-import * as HVContainer from "./HomeVisitorContainer";
-import * as CIContainer from "../CastInstance/CastInstanceContainer";
-import HomeVisitorController from "./HomeVisitorController";
+﻿import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import LogUtil from "../../Base/Util/LogUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
+
+import Sender from "../../Base/Container/Sender";
+import CastInstanceSender from "../../Base/Container/CastInstanceSender";
+
+import * as Personal from "../../Contents/IndexedDB/Personal";
 import ActorInfo from "../../Contents/Struct/ActorInfo";
+
+import HomeVisitorController from "./HomeVisitorController";
+
+import ConnInfoSender from "../../Contents/Sender/ConnInfoSender";
+import RoomSender from "../../Contents/Sender/RoomSender";
+import RoomActorMemberSender from "../../Contents/Sender/RoomActorMemberSender";
+import TimelineSender from "../../Contents/Sender/TimelineSender";
+import ClearTimelineSender from "../../Contents/Sender/ClearTimelineSender";
+import GetProfileSender from "../../Contents/Sender/GetProfileSender";
+import GetActorSender from "../../Contents/Sender/GetActorSender";
+import GetIconSender from "../../Contents/Sender/GetIconSender";
+import GetGuideSender from "../../Contents/Sender/GetGuideSender";
+import ActorInfoSender from "../../Contents/Sender/ActorInfoSender";
+import IconSender from "../../Contents/Sender/IconSender";
+import RoomServentSender from "../../Contents/Sender/RoomServentSender";
+import VoiceChatMemberListSender from "../../Contents/Sender/VoiceChatMemberListSender";
+import ProfileSender from "../../Contents/Sender/ProfileSender";
+import GuideSender from "../../Contents/Sender/GuideSender";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -24,13 +37,13 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
         //  ホームインスタンスからの接続情報の通知
-        if (sender.type === HIContainer.ConnInfoSender.ID) {
+        if (sender.type === ConnInfoSender.ID) {
 
-            let ci = (sender as HIContainer.ConnInfoSender);
+            let ci = (sender as ConnInfoSender);
 
             if (ci.isBootCheck) {
                 //  起動チェックに成功した場合、使用アクター情報を送信して画面を切替える
-                this.Controller.ConnStartTime = (sender as HIContainer.ConnInfoSender).starttime;
+                this.Controller.ConnStartTime = (sender as ConnInfoSender).starttime;
                 this.Controller.GetUseActors((ua) => { this.Controller.InitializeUseActors(ua); });
                 LogUtil.RemoveListener();
                 SpeechUtil.SetStartTime(ci.starttime);
@@ -45,8 +58,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  ルーム変更
-        if (sender.type === HIContainer.RoomSender.ID) {
-            let room = (sender as HIContainer.RoomSender).room;
+        if (sender.type === RoomSender.ID) {
+            let room = (sender as RoomSender).room;
             this.Controller.RoomCache.Set(room);
 
             if (this.Controller.CurrentHid === room.hid) {
@@ -55,8 +68,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  ルーム内のアクターの変更
-        if (sender.type === HIContainer.RoomActorMemberSender.ID) {
-            let ram = (sender as HIContainer.RoomActorMemberSender);
+        if (sender.type === RoomActorMemberSender.ID) {
+            let ram = (sender as RoomActorMemberSender);
 
             this.Controller.RoomCache.SetMember(ram);
             ram.members.forEach((ai) => { this.Controller.ActorCache.SetActor(ai.peerid, ai); });
@@ -71,46 +84,46 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  タイムライン情報
-        if (sender.type === HIContainer.TimelineSender.ID) {
-            let tl = (sender as HIContainer.TimelineSender);
+        if (sender.type === TimelineSender.ID) {
+            let tl = (sender as TimelineSender);
             this.Controller.View.SetTimeline(tl.msgs);
             this.Controller.Bot.CheckTimeline(tl.msgs);
         }
 
 
         //  タイムライン情報
-        if (sender.type === HIContainer.ClearTimelineSender.ID) {
+        if (sender.type === ClearTimelineSender.ID) {
             this.Controller.View.ClearTimeline();
         }
 
         //  プロフィール要求
-        if (sender.type === HVContainer.GetProfileSender.ID) {
+        if (sender.type === GetProfileSender.ID) {
             this.GetProfile(conn);
         }
 
         //  アクター要求
-        if (sender.type === HVContainer.GetActorSender.ID) {
-            this.GetActor(conn, sender as HVContainer.GetActorSender);
+        if (sender.type === GetActorSender.ID) {
+            this.GetActor(conn, sender as GetActorSender);
         }
 
         //  アイコン要求
-        if (sender.type === HVContainer.GetIconSender.ID) {
-            this.GetIcon(conn, sender as HVContainer.GetIconSender);
+        if (sender.type === GetIconSender.ID) {
+            this.GetIcon(conn, sender as GetIconSender);
         }
 
         //  ガイド要求
-        if (sender.type === HVContainer.GetGuideSender.ID) {
+        if (sender.type === GetGuideSender.ID) {
             this.GetGuide(conn);
         }
 
         //  アクター取得
-        if (sender.type === HVContainer.ActorInfoSender.ID) {
-            this.Controller.ActorCache.SetActor(conn.peer, (sender as HVContainer.ActorInfoSender).actorInfo);
+        if (sender.type === ActorInfoSender.ID) {
+            this.Controller.ActorCache.SetActor(conn.peer, (sender as ActorInfoSender).actorInfo);
         }
 
         //  アイコン取得
-        if (sender.type === HVContainer.IconSender.ID) {
-            this.Controller.IconCache.SetOtherUserIcon(conn.peer, (sender as HVContainer.IconSender).icon);
+        if (sender.type === IconSender.ID) {
+            this.Controller.IconCache.SetOtherUserIcon(conn.peer, (sender as IconSender).icon);
         }
 
         //  ライブキャストからの、起動通知 及び 設定変更通知
@@ -119,8 +132,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  サーバント（ライブキャストを含む）の変更通知
-        if (sender.type === HIContainer.RoomServentSender.ID) {
-            let rs = sender as HIContainer.RoomServentSender;
+        if (sender.type === RoomServentSender.ID) {
+            let rs = sender as RoomServentSender;
             this.Controller.ServentCache.SetRoomServent(rs);
 
             if (rs.hid === this.Controller.CurrentHid) {
@@ -129,8 +142,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  ボイスチャットルームメンバーの変更通知
-        if (sender.type === HIContainer.VoiceChatMemberListSender.ID) {
-            this.Controller.View.InputPane.ChangeVoiceChatMember(sender as HIContainer.VoiceChatMemberListSender);
+        if (sender.type === VoiceChatMemberListSender.ID) {
+            this.Controller.View.InputPane.ChangeVoiceChatMember(sender as VoiceChatMemberListSender);
         }
 
     }
@@ -142,7 +155,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      */
     public GetProfile(conn: PeerJs.DataConnection) {
         this.Controller.Model.GetUserProfile((profile) => {
-            let result = new HVContainer.ProfileSender();
+            let result = new ProfileSender();
             result.profile = profile;
             this.Controller.SwPeer.SendTo(conn, result);
         });
@@ -154,9 +167,9 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      * @param conn 
      * @param sender 
      */
-    public GetActor(conn: PeerJs.DataConnection, sender: HVContainer.GetActorSender) {
+    public GetActor(conn: PeerJs.DataConnection, sender: GetActorSender) {
         this.Controller.Model.GetActor(sender.aid, (actor) => {
-            let result = new HVContainer.ActorInfoSender();
+            let result = new ActorInfoSender();
             result.actorInfo = new ActorInfo(this.Controller.PeerId, Sender.Uid, actor);
             this.Controller.SwPeer.SendTo(conn, result);
         });
@@ -168,10 +181,10 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      * @param conn 
      * @param sender 
      */
-    public GetIcon(conn: PeerJs.DataConnection, sender: HVContainer.GetIconSender) {
+    public GetIcon(conn: PeerJs.DataConnection, sender: GetIconSender) {
 
         this.Controller.Model.GetIcon(sender.iid, (icon) => {
-            let result = new HVContainer.IconSender();
+            let result = new IconSender();
             if (icon) {
                 result.icon = icon;
             }
@@ -191,7 +204,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      * @param conn 
      */
     public GetGuide(conn: PeerJs.DataConnection) {
-        let result = new HVContainer.GuideSender();
+        let result = new GuideSender();
         result.guide = this.Controller.Bot.GetGuideQueue();
         this.Controller.SwPeer.SendTo(conn, result);
     }
@@ -222,7 +235,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let hid = serventSender.hid;
 
             let castroom = this.Controller.RoomCache.Get(hid, (room) => {
-                let castSender = new HIContainer.RoomSender();
+                let castSender = new RoomSender();
                 castSender.room = room;
                 this.Controller.SwPeer.SendTo(conn, castSender);
             })

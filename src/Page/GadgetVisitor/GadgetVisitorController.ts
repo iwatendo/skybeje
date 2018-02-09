@@ -5,8 +5,7 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 import { GadgetVisitorView } from "./GadgetVisitorView";
 import GadgetVisitorModel from "./GadgetVisitorModel";
 import { GadgetVisitorReceiver } from "./GadgetVisitorReceiver";
-import { GetCastSettingSedner } from "../CastInstance/CastInstanceContainer";
-import { GetGadgetCastSettingSedner } from "../GadgetInstance/GadgetInstanceContainer";
+import GetGadgetCastSettingSedner from "../../Contents/Sender/GetGadgetCastSettingSedner";
 
 
 export default class GadgetVisitorController extends AbstractServiceController<GadgetVisitorView, GadgetVisitorModel> {

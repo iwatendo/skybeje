@@ -2,7 +2,8 @@
 import * as ReactDOM from 'react-dom';
 import { Message } from "../../../Contents/IndexedDB/Timeline";
 import { SubTitlesComponent } from "./SubTitlesComponent";
-import { CastSpeechRecognitionSender } from "../../CastInstance/CastInstanceContainer";
+import CastSpeechRecognitionSender from '../../../Contents/Sender/CastSpeechRecognitionSender';
+
 
 /**
  * 字幕表示

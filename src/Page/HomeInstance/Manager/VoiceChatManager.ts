@@ -1,5 +1,7 @@
 import HomeInstanceController from "../HomeInstanceController";
-import { VoiceChatMemberSender, VoiceChatMemberListSender } from "../HomeInstanceContainer";
+
+import VoiceChatMemberSender from "../../../Contents/Sender/VoiceChatMemberSender";
+import VoiceChatMemberListSender from "../../../Contents/Sender/VoiceChatMemberListSender";
 
 
 export default class VoiceChatManager {

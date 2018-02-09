@@ -7,9 +7,9 @@ import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 
 import HomeInstanceController from "./HomeInstanceController";
-import { ClearTimelineSender } from "./HomeInstanceContainer";
 import { RoomView } from "./Room/RoomView";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import ClearTimelineSender from "../../Contents/Sender/ClearTimelineSender";
 
 
 export default class HomeInstanceView extends AbstractServiceView<HomeInstanceController> {

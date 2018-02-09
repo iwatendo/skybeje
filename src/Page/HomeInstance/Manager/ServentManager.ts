@@ -1,13 +1,15 @@
-
-import * as HIContainer from "../HomeInstanceContainer";
 import HomeInstanceController from "../HomeInstanceController";
 import RoomManager from "./RoomManager";
+
+import ServentSender from "../../../Contents/Sender/ServentSender";
+import ServentCloseSender from "../../../Contents/Sender/ServentCloseSender";
+import RoomServentSender from "../../../Contents/Sender/RoomServentSender";
 
 export default class ServentManager {
 
     private _controller: HomeInstanceController;
     private _roomManager: RoomManager;
-    private _peerServentMap = new Map<string, Array<HIContainer.ServentSender>>();    /* MAP : PeerID / Array<ServentSender> */
+    private _peerServentMap = new Map<string, Array<ServentSender>>();    /* MAP : PeerID / Array<ServentSender> */
 
 
     public get Controller(): HomeInstanceController {
@@ -30,12 +32,12 @@ export default class ServentManager {
      * サーバントの起動/変更通知
      * @param servent 
      */
-    public SetServent(servent: HIContainer.ServentSender) {
+    public SetServent(servent: ServentSender) {
 
         let peerid = servent.ownerPeerid;
 
         if (!this._peerServentMap.has(peerid)) {
-            this._peerServentMap.set(peerid, new Array<HIContainer.ServentSender>());
+            this._peerServentMap.set(peerid, new Array<ServentSender>());
         }
 
         let preList = this._peerServentMap.get(servent.ownerPeerid);
@@ -52,7 +54,7 @@ export default class ServentManager {
      * サーバントの終了通知
      * @param servent 
      */
-    public CloseServent(servent: HIContainer.ServentCloseSender) {
+    public CloseServent(servent: ServentCloseSender) {
 
         let peerid = servent.ownerPeerid;
 
@@ -61,8 +63,8 @@ export default class ServentManager {
         }
 
         let preList = this._peerServentMap.get(servent.ownerPeerid);
-        let newList = new Array<HIContainer.ServentSender>();
-        let removeServent: HIContainer.ServentSender = null;
+        let newList = new Array<ServentSender>();
+        let removeServent: ServentSender = null;
 
         this._peerServentMap.get(servent.ownerPeerid).forEach(pre => {
             if (pre.serventPeerId === servent.serventPeerId) {
@@ -98,7 +100,7 @@ export default class ServentManager {
             return;
         }
 
-        this._peerServentMap.set(peerid, new Array<HIContainer.ServentSender>());
+        this._peerServentMap.set(peerid, new Array<ServentSender>());
 
         preList.forEach(pre => {
             this.SendServent(pre.hid);
@@ -125,9 +127,9 @@ export default class ServentManager {
      * 指定した部屋のサーバント一覧を取得
      * @param hid 
      */
-    public GetServent(hid: string): HIContainer.RoomServentSender {
+    public GetServent(hid: string): RoomServentSender {
 
-        let result = new HIContainer.RoomServentSender();
+        let result = new RoomServentSender();
         result.hid = hid;
 
         this._peerServentMap.forEach((sslist, peerid) => {

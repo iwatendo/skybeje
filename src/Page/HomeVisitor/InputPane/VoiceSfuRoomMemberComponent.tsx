@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import HomeVisitorController from '../HomeVisitorController';
-import { VoiceChatMemberListSender } from '../../HomeInstance/HomeInstanceContainer';
+import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberListSender';
 
 
 /**
