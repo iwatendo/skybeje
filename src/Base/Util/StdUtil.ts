@@ -5,7 +5,38 @@
 import LogUtil from "./LogUtil";
 import LinkUtil from "./LinkUtil";
 
+interface OnGetMobleDeviceId { (deviceId: string): void }
+
 export default class StdUtil {
+
+    /**
+     * モバイル端末の個体識別子を取得します
+     * 【重要】devicereadyが動作しない。別の方法を検討する
+     * @param callback 
+     */
+    public static GetMobileDeviceId(callback: OnGetMobleDeviceId) {
+        window.addEventListener("load", () => {
+            document.addEventListener("deviceready", () => {
+                var uID = (window as any).device.uuid;
+                callback(uID);
+            }, false);
+        }, true);
+    }
+
+
+    /**
+     * mobile端末か判定
+     */
+    public static IsMobile() {
+        let ua = navigator.userAgent;
+        if (ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || (ua.indexOf('Android') > 0) && (ua.indexOf('Mobile') > 0) || ua.indexOf('Windows Phone') > 0) {
+            return true;
+        } else if (ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 動作するブラウザかチェック
@@ -16,9 +47,15 @@ export default class StdUtil {
         //  対応ブラウザかチェック
         let ua = window.navigator.userAgent.toLowerCase();
 
-        if (isLiveCast) {
-            if (ua.indexOf('safari') >= 0) {
-                return true;
+        if (ua.indexOf('safari') >= 0) {
+
+            let vers = this.GetIOSVer();
+            if (vers) {
+                //  iOS 11.2 以前は対象外とする
+                //  ※WebRTCがiOS11から対応で、iOS11.1迄はフリーズする不具合があった為対象外とする
+                if (vers[0] > 11 || (vers[0] == 11 && vers[1] >= 2)) {
+                    return true;
+                }
             }
         }
 
@@ -47,6 +84,23 @@ export default class StdUtil {
             return false;
         }
     }
+
+
+    /**
+     * 以下のサイトを参考にした
+     * https://qiita.com/gurigurico/items/bd19ed121bfdf77fced6
+     */
+    public static GetIOSVer(): number[] {
+        if (/iP(hone|od|ad)/.test(navigator.platform)) {
+            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+            var versions = [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || "0", 10)];
+            return versions;
+        }
+        else return null;
+    }
+
+
+    public static Is
 
 
     /**
@@ -246,12 +300,6 @@ export default class StdUtil {
             return;
         }
 
-        if (window.addEventListener) {
-            function TouchEventFunc(e) { }
-            // タッチしたまま平行移動すると実行されるイベント
-            document.addEventListener("touchmove", TouchEventFunc);
-        }
-
         //  PullToRefresh対策
         //  http://qiita.com/sundaycrafts/items/5ad6bbea8800ad3d764b
         //  http://elsur.xyz/android-preventdefault-error
@@ -296,8 +344,42 @@ export default class StdUtil {
 
         document.addEventListener('touchstart', preventPullToRefresh.touchstartHandler);
         document.addEventListener('touchmove', preventPullToRefresh.touchmoveHandler);
+    }
+
+
+    /**
+     * タッチでのズームを禁止します
+     * ※Safariにのみに適用されます。Androidでは無効化できません。
+     */
+    public static StopTouchZoom() {
+
+        //  ピッチイン、ピッチアウトによる拡大縮小を禁止
+        document.documentElement.addEventListener('touchstart', (te: TouchEvent) => {
+
+            let el = te.srcElement;
+
+            //  ビデオエレメントのタッチは無条件にキャンセル
+            if (el && el instanceof HTMLVideoElement) {
+                te.preventDefault();
+            }
+
+            if (te.touches.length > 1) {
+                event.preventDefault();
+            }
+
+        }, false);
+
+        var lastTouchEnd = 0;
+        document.documentElement.addEventListener('touchend', (te: TouchEvent) => {
+            var now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
 
     }
+
 
 
     /**
@@ -306,12 +388,12 @@ export default class StdUtil {
      */
     public static ClipBoardCopy(text: string): boolean {
 
-        var element : HTMLTextAreaElement = document.createElement('textarea');
+        var element: HTMLTextAreaElement = document.createElement('textarea');
 
         element.value = text;
         element.selectionStart = 0;
         element.selectionEnd = element.value.length;
-        
+
         var s = element.style;
         s.position = 'fixed';
         s.left = '-100%';

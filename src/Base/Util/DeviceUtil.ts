@@ -144,10 +144,10 @@ export default class DeviceUtil {
         if (!deviceName) {
             //  デバイス名称が設定されていない場合
             if (device.kind === 'audioinput') {
-                deviceName = 'microphone ' + index.toString();
+                deviceName = 'mic' + index.toString();
             }
             else if (device.kind === 'videoinput') {
-                deviceName = 'camera ' + index.toString();
+                deviceName = 'camera' + index.toString();
             }
         }
 

@@ -228,10 +228,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 this.ChnageDevice();
 
                 if (deviceId) {
-                    StreamUtil.SetPreview(previewElement, deviceId);
-                }
-                else {
-                    StreamUtil.StopPreview(previewElement);
+                    let msc = StreamUtil.GetMediaStreamConstraints(deviceId, null);
+                    StreamUtil.GetStreaming(msc, (stream) => {
+                        StreamUtil.StartPreview(previewElement, stream);
+                    }, (errname) => {
+                        alert(errname);
+                    });
                 }
             });
 

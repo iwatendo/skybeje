@@ -17,7 +17,7 @@ export default class LinkUtil {
      * URLのPeerIDを取得します
      */
     public static GetPeerID(): string {
-        return this.GetArgs('join');
+        return this.GetArgs('p');
     }
 
 
@@ -106,7 +106,7 @@ export default class LinkUtil {
         result = e.firstChild.href;
 
         if (peerid) {
-            result += "?join=" + peerid;
+            result += "?p=" + peerid;
         }
 
         return result;

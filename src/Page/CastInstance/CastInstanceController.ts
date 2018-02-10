@@ -114,8 +114,11 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public SetStreaming() {
 
-        StreamUtil.GetStreaming(this.AudioSource, this.VideoSource, (stream) => {
+        let msc = StreamUtil.GetMediaStreamConstraints(this.VideoSource, this.AudioSource);
+        StreamUtil.GetStreaming(msc, (stream) => {
             this.SwRoom.SetStream(stream);
+        }, (errname) => {
+            alert(errname);
         });
 
         //  オーナー 及び 接続クライアントに通知

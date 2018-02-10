@@ -81,7 +81,7 @@ export default class LogUtil {
     /**
      * リスナーの削除
      */
-    public static RemoveListener(){
+    public static RemoveListener() {
         this._listener = null;
     }
 
@@ -93,11 +93,12 @@ export default class LogUtil {
     public static LogHeader(service: IServiceController): string {
 
         let result = this._APPNAME + " : ";
-        if (service) result += service.ControllerName();
-
-        let peerid = service.SwPeer.PeerId;
-        if (peerid) result += " [" + peerid + "]";
-        result += " : ";
+        if (service) {
+            result += service.ControllerName();
+            let peerid = (service.SwPeer ? service.SwPeer.PeerId : "");
+            if (peerid) result += " [" + peerid + "]";
+            result += " : ";
+        }
 
         return result;
     }
@@ -149,7 +150,7 @@ export default class LogUtil {
      * エラーログの出力
      * @param value
      */
-    static Error(service: IServiceController,value: string) {
+    static Error(service: IServiceController, value: string) {
 
         console.error(this.LogHeader(service) + value);
 

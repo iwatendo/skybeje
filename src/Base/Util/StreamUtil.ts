@@ -2,31 +2,20 @@ import StdUtil from "./StdUtil";
 import LogUtil from "./LogUtil";
 import IServiceController from "../IServiceController";
 
-interface OnGetMediaStream { (stream: MediaStream): void }
+
 declare var SkyWay: any;
+interface OnGetMediaStream { (stream: MediaStream): void }
+interface OnErrorGetMediaStream { (errmsg: string): void }
+
+export enum MobileCam {
+    FRONT = 0,
+    REAR = 1,
+    NONE = 2,
+}
 
 export default class StreamUtil {
 
-    public static Service: IServiceController;
-    public static LocalStream: MediaStream;
-
-    private static _previewStream: MediaStream;
     private static _screenShare = null;
-    private static _existingCallList: Array<PeerJs.MediaConnection>;
-
-
-    /**
-     * プレビュー設定
-     * @param element 
-     * @param videoSource 
-     */
-    public static SetPreview(element: HTMLVideoElement, videoSource: string) {
-        if (element) {
-            this.GetMediaStream(videoSource, "", (stream) => {
-                this.StartPreview(element, stream);
-            });
-        }
-    }
 
 
     /**
@@ -35,7 +24,6 @@ export default class StreamUtil {
      * @param stream メディアストリーム
      */
     public static StartPreview(element: HTMLVideoElement, stream: MediaStream) {
-        this._previewStream = stream;
         element.src = null;
 
         if (StdUtil.IsSafari()) {
@@ -48,37 +36,63 @@ export default class StreamUtil {
 
 
     /**
-     * プレビュー停止
-     * @param element 
+     * メディアストリームの取得
+     * @param msc MediaStreamConstraints
+     * @param callback OnGetMediaStream
+     * @param errorcallback OnErrorGetMediaStream
      */
-    public static StopPreview(element: HTMLVideoElement) {
-        if (this._previewStream) {
-            if (this._previewStream.getVideoTracks().length > 0) {
-                this._previewStream.getVideoTracks()[0].stop();
-            }
+    public static GetStreaming(msc: MediaStreamConstraints, callback: OnGetMediaStream, errorcallback: OnErrorGetMediaStream) {
+
+        if (msc) {
+            this.GetMediaStream(msc, (stream) => {
+                callback(stream);
+            }, (errname) => {
+                errorcallback(errname);
+            });
         }
-        element.src = null;
     }
 
 
     /**
-     * メディア
-     * @param videoSource 
-     * @param audioSource 
+     * メディアストリームを取得します
+     * @param msc 
      * @param callback 
+     * @param error_callback 
+     * @param retryCount 
      */
-    private static GetMediaStream(videoSource: string, audioSource: string, callback: OnGetMediaStream) {
+    private static GetMediaStream(msc: MediaStreamConstraints, callback: OnGetMediaStream, error_callback: OnErrorGetMediaStream, retryCount: number = 0) {
 
-        let constraints = this.GetMediaTrackConstraints(videoSource, audioSource);
+        try {
 
-        navigator.getUserMedia(constraints,
-            (stream) => {
+            let p = navigator.mediaDevices.getUserMedia(msc);
+
+            p.then((stream) => {
                 callback(stream);
-            }, (err: MediaStreamError) => {
-                LogUtil.Error(this.Service, err.name);
-                LogUtil.Error(this.Service, err.message);
-            }
-        );
+            });
+
+            p.catch((err: MediaStreamError) => {
+
+                let errmsg = err.name + "\n" + err.message;
+
+                if (err.name === "TrackStartError" && retryCount < 5) {
+                    retryCount = retryCount + 1;
+                    LogUtil.Warning(null, errmsg + "/n retry " + retryCount.toString());
+                    //  １秒待ってからリトライ ※5回迄
+                    setTimeout(() => {
+                        this.GetMediaStream(msc, callback, error_callback, retryCount);
+                    }, 1000);
+                }
+                else {
+                    error_callback(err.name);
+                    LogUtil.Error(null, errmsg);
+                }
+            });
+
+        }
+        catch (err) {
+            error_callback(err.name);
+            LogUtil.Error(null, err);
+        }
     }
 
 
@@ -87,7 +101,7 @@ export default class StreamUtil {
      * @param videoSource 
      * @param audioSource 
      */
-    private static GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
+    public static GetMediaStreamConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
 
         let result: MediaStreamConstraints = {
             video: (videoSource ? { advanced: ([{ deviceId: videoSource }]) } : false),
@@ -95,6 +109,65 @@ export default class StreamUtil {
         };
 
         return result;
+    }
+
+
+    /**
+     * デフォルトデバイスの取得
+     */
+    public static GetMediaStreamConstraints_DefaultDevice(): MediaStreamConstraints {
+        return { audio: true, video: true };
+    }
+
+
+    /**
+     * モバイル端末のMediaStreamConstraints取得
+     */
+    public static GetMediaStreamConstraints_Mobile(cam: MobileCam, useAudio: boolean): MediaStreamConstraints {
+
+        switch (cam) {
+            case MobileCam.FRONT:
+                return { audio: useAudio, video: { facingMode: "user" } };
+            case MobileCam.REAR:
+                return { audio: useAudio, video: { facingMode: { exact: "environment" } } };
+            case MobileCam.NONE:
+                return { audio: useAudio, video: false };
+        }
+    }
+
+
+    /**
+     * 指定ストリームを停止します
+     * @param stream 
+     */
+    public static Stop(stream: MediaStream) {
+        if (stream) {
+            let tracks = stream.getTracks();
+            let count = tracks.length;
+            if (count > 0) {
+                for (let i = count - 1; i >= 0; i--) {
+                    let track: MediaStreamTrack = tracks[i];
+                    track.stop();
+                    stream.removeTrack(track);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 指定ストリームをミュートします
+     * @param stream 
+     * @param value 
+     */
+    public static SetMute(stream: MediaStream, value: boolean) {
+        if (stream) {
+            let tracks = stream.getAudioTracks();
+            if (tracks.length > 0) {
+                let track = tracks[0];
+                track.enabled = !value;
+            }
+        }
     }
 
 
@@ -110,6 +183,20 @@ export default class StreamUtil {
 
 
     /**
+     * スクリーンシェアの開始
+     * @param width 
+     * @param height 
+     * @param fr 
+     * @param callback 
+     */
+    public static GetScreenSheare(service: IServiceController, width: number, height: number, fr: number, callback: OnGetMediaStream) {
+        this.GetScreenShareMediaStream(service, width, height, fr, (stream) => {
+            callback(stream);
+        });
+    }
+
+
+    /**
      * スクリーンシェアのメディアストリームを取得します。
      * 【注意】Skybejeの Chrome Extension がインストールされている必要があります。
      * @param width 
@@ -117,7 +204,7 @@ export default class StreamUtil {
      * @param fr 
      * @param callback 
      */
-    private static GetScreenShareMediaStream(width: number, height: number, fr: number, callback: OnGetMediaStream) {
+    private static GetScreenShareMediaStream(service: IServiceController, width: number, height: number, fr: number, callback: OnGetMediaStream) {
 
         if (!this._screenShare) {
             this._screenShare = new SkyWay.ScreenShare({ debug: true });
@@ -142,141 +229,12 @@ export default class StreamUtil {
                 (stream) => {
                     callback(stream);
                 }, (err: MediaStreamError) => {
-                    LogUtil.Error(this.Service, err.name);
-                    LogUtil.Error(this.Service, err.message);
+                    LogUtil.Error(service, err.name);
+                    LogUtil.Error(service, err.message);
                 }, () => {
                 });
         } else {
-            this.ClearStreaming();
             alert('スクリーンシェアを開始するためには SkyBeje ScreenShare Extension のインストールが必要です。');
-        }
-    }
-
-
-    /**
-     * デフォルトのマイクを取得します
-     * @param callback 
-     */
-    public static GetDefaultMic(callback: OnGetMediaStream) {
-
-        if (!StdUtil.IsSafari()) {
-            this.Stop();
-        }
-
-
-        navigator.getUserMedia({ audio: true, video: false }, (stream) => {
-            this.LocalStream = stream;
-            callback(stream);
-        }, (err: MediaStreamError) => {
-            LogUtil.Error(this.Service, err.name);
-            LogUtil.Error(this.Service, err.message);
-        });
-    }
-
-
-    /**
-     * 
-     * @param audioSource 
-     * @param videoSource 
-     * @param callback 
-     */
-    public static GetStreaming(audioSource: string, videoSource: string, callback: OnGetMediaStream) {
-
-        if (!StdUtil.IsSafari()) {
-            this.Stop();
-        }
-
-        if (videoSource || audioSource) {
-            this.GetMediaStream(videoSource, audioSource, (stream) => {
-                this.LocalStream = stream;
-                callback(stream);
-            });
-        }
-        else {
-            this.ClearStreaming();
-        }
-    }
-
-
-    /**
-     * スクリーンシェアの開始
-     * @param width 
-     * @param height 
-     * @param fr 
-     * @param callback 
-     */
-    public static GetScreenSheare(width: number, height: number, fr: number, callback: OnGetMediaStream) {
-        this.GetScreenShareMediaStream(width, height, fr, (stream) => {
-            this.LocalStream = stream;
-            callback(stream);
-        });
-    }
-
-
-    /**
-     * 
-     */
-    private static ClearStreaming() {
-        this.LocalStream = null;
-
-        if (this._existingCallList) {
-            this._existingCallList.forEach(exc => {
-                exc.close();
-            });
-            this._existingCallList = null;
-        }
-    }
-
-
-    /**
-     * 動画配信処理の停止
-     */
-    public static Stop() {
-        if (this.LocalStream) {
-            if (this.LocalStream.getVideoTracks().length > 0) {
-                this.LocalStream.getVideoTracks()[0].stop();
-            }
-            if (this.LocalStream.getAudioTracks().length > 0) {
-                this.LocalStream.getAudioTracks()[0].stop();
-            }
-        }
-    }
-
-
-    /**
-     *  音声配信のミュート
-     */
-    public static set Mute(value) {
-        if (this.LocalStream) {
-            this.SetMute(this.LocalStream, value);
-        }
-    }
-
-
-    /**
-     * 指定ストリームをミュート状態にします
-     * @param stream 
-     */
-    private static SetMute(stream: any, value) {
-        let tracks = stream.getAudioTracks();
-        if (tracks.length > 0) {
-            let track = tracks[0];
-            track.enabled = !value;
-        }
-    }
-
-
-    /**
-     * 一時停止 / 再開
-     */
-    public static set Puase(value: boolean) {
-        if (this.LocalStream) {
-            if (this.LocalStream.getVideoTracks().length > 0) {
-                this.LocalStream.getVideoTracks()[0].enabled = !value;
-            }
-            if (this.LocalStream.getAudioTracks().length > 0) {
-                this.LocalStream.getAudioTracks()[0].enabled = !value;
-            }
         }
     }
 

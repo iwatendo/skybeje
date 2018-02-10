@@ -64,7 +64,6 @@ export default class InputPaneController {
 
     private _profileFrame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
 
-
     private _controller: HomeVisitorController;
     private _unreadMap: Map<string, number>;
     private _lastTlmCtime: number;
@@ -73,6 +72,7 @@ export default class InputPaneController {
     private _isVoiceRecognition: boolean;
     private _isVoiceChat: boolean;
     private _isMicMute: boolean = true;
+    private _voiceChatStream: MediaStream;
 
     private _audioDevice: string;
 
@@ -594,12 +594,16 @@ export default class InputPaneController {
             this._voiceChat.classList.remove("mdl-button--colored");
             this._voiceChat.classList.add("mdl-button--accent");
 
-            StreamUtil.GetStreaming(this._audioDevice, null, (stream) => {
+            let msc = StreamUtil.GetMediaStreamConstraints(null, this._audioDevice);
+
+            StreamUtil.GetStreaming(msc, (stream) => {
+                this._voiceChatStream = stream;
                 this.IsMicMute = true;
                 let peer = this._controller.SwPeer;
                 let ownerid = this._controller.SwPeer.OwnerPeerId;
-
                 this._controller.SwRoom = new SWRoom(this._controller, this._controller, this._controller.SwPeer.Peer, ownerid, SWRoomMode.SFU, stream);
+            }, (errname) => {
+                alert(errname);
             });
 
         }
@@ -635,7 +639,7 @@ export default class InputPaneController {
         this._isMicMute = value;
         this._voiceMicOn.hidden = value;
         this._voiceMicOff.hidden = !value;
-        StreamUtil.Mute = value;
+        StreamUtil.SetMute(this._voiceChatStream,value);
     }
 
 

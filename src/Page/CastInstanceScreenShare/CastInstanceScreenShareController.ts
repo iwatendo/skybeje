@@ -138,7 +138,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
      */
     public SetStreaming(width: number, height: number, fr: number, callback) {
 
-        StreamUtil.GetScreenSheare(width, height, fr, (stream) => {
+        StreamUtil.GetScreenSheare(this, width, height, fr, (stream) => {
             this.SwRoom.SetStream(stream);
             this.ServerSend(true, false);
             callback();
