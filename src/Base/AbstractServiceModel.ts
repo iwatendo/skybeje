@@ -6,7 +6,7 @@ import IServiceController from "./IServiceController";
 export interface OnModelLoad { (): void };
 export interface OnWrite { (): void };
 export interface OnRead<T> { (result: T): void };
-export interface OnRead2<T, U> { (result1: T, result2: U): void };
+export interface OnPearRead<T, U> { (result1: T, result2: U): void };
 
 /*
  *

@@ -4,7 +4,7 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 import StdUtil from "../../Base/Util/StdUtil";
 import ImageInfo from "../../Base/Container/ImageInfo";
 
-import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite, OnRead2 } from "../../Base/AbstractServiceModel";
+import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite, OnPearRead } from "../../Base/AbstractServiceModel";
 import ProfileController from "./ProfileController";
 import { Order } from "../../Base/Container/Order";
 
@@ -50,7 +50,7 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
      * プロフィール＋アイコンデータの取得
      * @param callback 
      */
-    public GetUserProfileInfo(callback: OnRead2<Personal.Actor, Array<Personal.Icon>>) {
+    public GetUserProfileInfo(callback: OnPearRead<Personal.Actor, Array<Personal.Icon>>) {
 
         //
         this.GetUserProfile((profile) => {
