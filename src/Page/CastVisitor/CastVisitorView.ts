@@ -9,7 +9,7 @@ import { CastCursor, CursorController } from "./Cursor/CurosrController";
 import { Icon } from "../../Contents/IndexedDB/Personal";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";
 import MobileDialog from "./Mobile/MobileDialog";
-import { DialogMode } from "../../Base/AbstractDialogController";
+import { DialogMode } from "../../Contents/AbstractDialogController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 
 

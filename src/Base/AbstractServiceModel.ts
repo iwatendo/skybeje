@@ -1,6 +1,6 @@
 ﻿import Sender from "./Container/Sender";
-import { IServiceModel } from "./IServiceModel";
-import { IServiceController } from "./IServiceController";
+import IServiceModel from "./IServiceModel";
+import IServiceController from "./IServiceController";
 
 
 export interface OnModelLoad { (): void };

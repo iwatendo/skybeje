@@ -1,12 +1,13 @@
-﻿import LogUtil from "./Util/LogUtil";
-import Sender from "./Container/Sender";
-import { IServiceController } from "./IServiceController";
-import { IServiceReceiver } from "./IServiceReceiver";
-import { IServiceView } from "./IServiceView";
-import { IServiceModel } from "./IServiceModel";
-import SWPeer from "./WebRTC/SWPeer";
-import SWRoom, { ISWRoom } from "./WebRTC/SWRoom";
+﻿import Sender from "./Container/Sender";
+import LogUtil from "./Util/LogUtil";
 import LinkUtil from "./Util/LinkUtil";
+import ISWRoom from "./WebRTC/ISWRoom";
+import SWPeer from "./WebRTC/SWPeer";
+import SWRoom from "./WebRTC/SWRoom";
+import IServiceController from "./IServiceController";
+import IServiceReceiver from "./IServiceReceiver";
+import IServiceView from "./IServiceView";
+import IServiceModel from "./IServiceModel";
 
 /**
  * Peerサービスコントローラーの抽象化クラス

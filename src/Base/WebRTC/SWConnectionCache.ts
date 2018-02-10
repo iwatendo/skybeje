@@ -1,6 +1,6 @@
 
 import SWConnection from "./SWConnection";
-import { IServiceController } from "../IServiceController";
+import IServiceController from "../IServiceController";
 import Sender from "../Container/Sender";
 import LogUtil from "../Util/LogUtil";
 import SWPeer from "./SWPeer";

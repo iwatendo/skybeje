@@ -1,4 +1,4 @@
 ﻿
-export interface IServiceView {
+export default interface IServiceView {
 
 }

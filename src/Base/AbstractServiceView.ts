@@ -1,6 +1,6 @@
 ﻿import Sender from "./Container/Sender";
-import { IServiceController } from "./IServiceController";
-import { IServiceView } from "./IServiceView";
+import IServiceController from "./IServiceController";
+import IServiceView from "./IServiceView";
 
 export interface OnViewLoad { (): void };
 

@@ -4,7 +4,7 @@ import SWRoom from "./WebRTC/SWRoom";
 /**
  * サービスコントローラー
  */
-export interface IServiceController {
+export default interface IServiceController {
 
     //
     SwPeer: SWPeer;

@@ -1,6 +1,6 @@
 import StdUtil from "./StdUtil";
 import LogUtil from "./LogUtil";
-import { IServiceController } from "../IServiceController";
+import IServiceController from "../IServiceController";
 
 interface OnGetMediaStream { (stream: MediaStream): void }
 declare var SkyWay: any;

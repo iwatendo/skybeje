@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import AbstractDialogController from "../../../Base/AbstractDialogController";
+import AbstractDialogController from "../../../Contents/AbstractDialogController";
 
 import DashboardController from "../DashboardController";
 import MobileDialogComponent from "./MobileDialogComponent";

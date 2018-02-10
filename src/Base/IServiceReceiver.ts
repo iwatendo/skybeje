@@ -3,7 +3,7 @@
 /*
  *  ServiceReciver
  */
-export interface IServiceReceiver {
+export default interface IServiceReceiver {
 
     Receive(conn: PeerJs.DataConnection, sender: Sender);
 

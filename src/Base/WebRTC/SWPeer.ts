@@ -1,7 +1,7 @@
 import Sender from "../Container/Sender";
 import LogUtil from "../Util/LogUtil";
 import SWConnectionCache from "./SWConnectionCache";
-import { IServiceController } from "../IServiceController";
+import IServiceController from "../IServiceController";
 
 
 interface OnSWPeerOpen { (): void }
@@ -66,7 +66,7 @@ export default class SWPeer {
             let peer = new Peer({ key: apikey, debug: 1 });
 
             window.onunload = window.onbeforeunload = () => {
-                if (!!peer && !peer.destroyed) {
+                if (peer && !peer.destroyed) {
                     peer.destroy();
                 }
             };

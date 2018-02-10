@@ -1,4 +1,4 @@
 ﻿
-export interface IServiceModel {
+export default interface IServiceModel {
 
 }

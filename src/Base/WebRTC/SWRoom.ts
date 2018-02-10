@@ -1,42 +1,14 @@
 import LogUtil from "../Util/LogUtil";
-import { IServiceController } from "../IServiceController";
+import IServiceController from "../IServiceController";
 import SWPeer from "./SWPeer";
 import Sender from "../Container/Sender";
+import ISWRoom from "./ISWRoom";
 
 
 export enum SWRoomMode {
     Default = 0,
     Mesh = 1,
     SFU = 2,
-}
-
-
-export interface ISWRoom {
-
-    //
-    OnRoomOpen();
-
-    //
-    OnRoomError(err);
-
-    //
-    OnRoomClose();
-
-    //
-    OnRoomPeerJoin(peerid: string);
-
-    //
-    OnRoomPeerLeave(peerid: string);
-
-    //
-    OnRoomRecv(peerid: string, recv);
-
-    //
-    OnRoomStream(peerid: string, stream);
-
-    //
-    OnRoomRemoveStream(peerid: string, stream);
-
 }
 
 
@@ -72,7 +44,7 @@ export default class SWRoom {
      * 
      * @param data 
      */
-    public Send(sender : Sender) {
+    public Send(sender: Sender) {
         if (this._room) {
             let data = JSON.stringify(sender);
             this._room.send(data);

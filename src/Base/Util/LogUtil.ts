@@ -1,5 +1,5 @@
 ﻿import Sender from "../Container/Sender";
-import { IServiceController } from "../IServiceController";
+import IServiceController from "../IServiceController";
 
 export enum LogType {
     Message = 0,

@@ -1,6 +1,6 @@
 ﻿import Sender from "./Container/Sender";
-import { IServiceReceiver } from "./IServiceReceiver";
-import { IServiceController } from "./IServiceController";
+import IServiceReceiver from "./IServiceReceiver";
+import IServiceController from "./IServiceController";
 
 /*
  *

@@ -1,5 +1,5 @@
-﻿import StdUtil from "./Util/StdUtil";
-import { IServiceController } from "./IServiceController";
+﻿import StdUtil from "../Base/Util/StdUtil";
+import IServiceController from "../Base/IServiceController";
 
 
 export enum DialogMode {
@@ -17,9 +17,7 @@ interface OnClose { (): void }
 
 
 /**
- * 汎用ダイアログの抽象化クラス
- * 
- * 実験段階の機能<dialog>要素を使用している事に注意してください。
+ * 汎用ダイアログの抽象化クラス / <dialog>要素を使用しています。
  * https://developer.mozilla.org/ja/docs/Web/HTML/Element/dialog
  */
 export default abstract class AbstractDialogController<U extends IServiceController, T> {

@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 
-import { DialogMode } from "../../../Base/AbstractDialogController";
+import { DialogMode } from "../../../Contents/AbstractDialogController";
 
 import HomeVisitorController from "../HomeVisitorController";
 import ActorDialog from "./ActorDialog";

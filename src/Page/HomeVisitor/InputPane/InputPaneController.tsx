@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 import StdUtil from "../../../Base/Util/StdUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
-import { DialogMode } from "../../../Base/AbstractDialogController";
+import { DialogMode } from "../../../Contents/AbstractDialogController";
 import SpeechUtil from "../../../Base/Util/SpeechUtil";
 import StreamUtil from '../../../Base/Util/StreamUtil';
 import SWRoom, { SWRoomMode } from '../../../Base/WebRTC/SWRoom';

@@ -5,7 +5,7 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
-import { DialogMode } from "../../Base/AbstractDialogController";
+import { DialogMode } from "../../Contents/AbstractDialogController";
 
 import DashboardController from "./DashboardController";
 import { INaviContainer } from "./INaviContainer";

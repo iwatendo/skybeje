@@ -11,7 +11,7 @@ import StreamUtil from "../../Base/Util/StreamUtil";
 import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import { DialogMode } from "../../Base/AbstractDialogController";
+import { DialogMode } from "../../Contents/AbstractDialogController";
 import SettingDialogController from "./SettingDialog/SettingDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
 

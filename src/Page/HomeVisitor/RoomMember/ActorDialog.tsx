@@ -2,7 +2,7 @@
 import * as ReactDOM from 'react-dom';
 
 import StdUtil from "../../../Base/Util/StdUtil";
-import AbstractDialogController from "../../../Base/AbstractDialogController";
+import AbstractDialogController from "../../../Contents/AbstractDialogController";
 
 import ActorInfo from '../../../Contents/Struct/ActorInfo';
 
