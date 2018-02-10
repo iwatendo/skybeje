@@ -2,12 +2,12 @@
 import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import LogUtil from "../../Base/Util/LogUtil";
-import IconCursorSender from "../../Base/Container/IconCursorSender";
 import GadgetVisitorController from "./GadgetVisitorController";
 import { GadgetVisitorView } from "./GadgetVisitorView";
 import IconSender from "../../Contents/Sender/IconSender";
 import GadgetCastSettingSender from "../../Contents/Sender/GadgetCastSettingSender";
 import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
+import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 
 
 export class GadgetVisitorReceiver extends AbstractServiceReceiver<GadgetVisitorController> {

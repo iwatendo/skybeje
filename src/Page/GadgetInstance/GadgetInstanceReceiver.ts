@@ -4,7 +4,6 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 
 import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
-import IconCursorSender from "../../Base/Container/IconCursorSender";
 
 import GadgetInstanceController from "./GadgetInstanceController";
 import GadgetInstanceView from "./GadgetInstanceView";
@@ -13,6 +12,7 @@ import GuideSender from "../../Contents/Sender/GuideSender";
 import GetGadgetCastSettingSedner from "../../Contents/Sender/GetGadgetCastSettingSedner";
 import GetYouTubeStatusSender from "../../Contents/Sender/GetYouTubeStatusSender";
 import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
+import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 
 
 export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstanceController> {

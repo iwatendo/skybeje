@@ -4,7 +4,6 @@ import LogUtil from "../../Base/Util/LogUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import CastVisitorController from "./CastVisitorController";
-import IconCursorSender from "../../Base/Container/IconCursorSender";
 import { CastCursor, CursorController } from "./Cursor/CurosrController";
 import { Icon } from "../../Contents/IndexedDB/Personal";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";

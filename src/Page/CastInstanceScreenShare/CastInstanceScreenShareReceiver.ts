@@ -4,12 +4,12 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 
 import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
-import IconCursorSender  from "../../Base/Container/IconCursorSender";
 
 import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
 import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
+import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 
 
 export class CastInstanceScreenShareReceiver extends AbstractServiceReceiver<CastInstanceScreenShareController> {

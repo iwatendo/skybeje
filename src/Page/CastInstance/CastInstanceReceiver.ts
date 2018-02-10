@@ -4,12 +4,12 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 
 import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
-import IconCursorSender from "../../Base/Container/IconCursorSender";
 
 import CastInstanceController from "./CastInstanceController";
 import CastInstanceView from "./CastInstanceView";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
+import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 
 
 export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceController> {

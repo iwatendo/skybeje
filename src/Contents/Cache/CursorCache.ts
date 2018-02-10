@@ -1,4 +1,4 @@
-import IconCursorSender from "../../Base/Container/IconCursorSender";
+import IconCursorSender from "../Sender/IconCursorSender";
 
 interface CursorFunc { (cursor: IconCursorSender): void }
 

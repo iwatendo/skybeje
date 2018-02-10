@@ -2,12 +2,12 @@
 import * as ReactDOM from 'react-dom';
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 import { CursorComponent } from "./CursorComponent";
-import IconCursorSender from "../../../Base/Container/IconCursorSender";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import LogUtil from "../../../Base/Util/LogUtil";
 import IServiceController from '../../../Base/IServiceController';
 import GetIconSender from '../../../Contents/Sender/GetIconSender';
+import IconCursorSender from '../../../Contents/Sender/IconCursorSender';
 
 
 export class VideoDispOffset {

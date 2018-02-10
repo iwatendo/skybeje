@@ -4,7 +4,6 @@ import AbstractServiceController from "../../Base/AbstractServiceController";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
-import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 import GadgetInstanceModel from "./GadgetInstanceModel";

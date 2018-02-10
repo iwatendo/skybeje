@@ -2,12 +2,12 @@
 import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 import LogUtil from "../../Base/Util/LogUtil";
-import IconCursorSender  from "../../Base/Container/IconCursorSender";
 import CastVisitorController from "./CastVisitorController";
 import { CastVisitorView } from "./CastVisitorView";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import IconSender from "../../Contents/Sender/IconSender";
 import CastSpeechRecognitionSender from "../../Contents/Sender/CastSpeechRecognitionSender";
+import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 
 
 export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorController> {

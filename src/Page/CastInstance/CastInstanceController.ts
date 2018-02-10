@@ -5,7 +5,6 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
-import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";

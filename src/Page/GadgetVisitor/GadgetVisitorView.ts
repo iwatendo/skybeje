@@ -5,7 +5,6 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import YouTubeUtil, { YouTubeOption, OnCreateYouTubePlayer } from "../../Contents/Util/YouTubeUtil";
 import GadgetVisitorController from "./GadgetVisitorController";
-import IconCursorSender from "../../Base/Container/IconCursorSender";
 import { Icon } from "../../Contents/IndexedDB/Personal";
 import { DialogMode } from "../../Contents/AbstractDialogController";
 import { CursorController } from "../CastVisitor/Cursor/CurosrController";
