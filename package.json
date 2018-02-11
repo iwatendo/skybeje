@@ -1,5 +1,6 @@
 {
   "name": "skybeje",
+  "version": "0.1.0",
   "license": "AGPL-3.0",
   "scripts": {
     "server": "http-server ./dist/ -p 8080 -c-1",
