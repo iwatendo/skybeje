@@ -17,8 +17,6 @@
     "build:debug": "npm-run-all -s webpack:debug copy:src"
   },
   "dependencies": {
-    "@types/react": "^15.0.34",
-    "@types/react-dom": "^15.5.1",
     "co": "^4.6.0",
     "cpx": "^1.5.0",
     "http-server": "^0.10.0",
