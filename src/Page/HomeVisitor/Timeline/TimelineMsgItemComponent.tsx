@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import StdUtil from "../../../Base/Util/StdUtil";
-import LinkUtil from "../../../Base/Util/LinkUtil";
+import MessageUtil from '../../../Base/Util/MessageUtil';
 
 import HomeVisitorController from "../HomeVisitorController";
 import { TimelineMsgGroup } from "./TimelineComponent";
@@ -105,7 +105,7 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
      */
     public SetAutoLink(baseText: string): JSX.Element {
 
-        let linkArray = LinkUtil.AutoLinkAnaylze(baseText);
+        let linkArray = MessageUtil.AutoLinkAnaylze(baseText);
 
         let result = linkArray.map((al) => {
             if (al.isLink) {

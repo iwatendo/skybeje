@@ -9,7 +9,7 @@ import { Order } from "../../../Base/Container/Order";
 import DashboardController from "../DashboardController";
 import ProfileView from "./ProfileView";
 import ProfileComponent from "./ProfileComponent";
-import LinkUtil from "../../../Base/Util/LinkUtil";
+import MessageUtil from "../../../Base/Util/MessageUtil";
 
 
 /**
@@ -64,7 +64,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
         let msgs = StdUtil.TextLineSplit(actor.profile);
         let ln = 0;
         let dispProfile = msgs.map(line => {
-            let dispLine = LinkUtil.AutoLinkAnaylze(line).map((al) => {
+            let dispLine = MessageUtil.AutoLinkAnaylze(line).map((al) => {
                 if (al.isLink) {
                     let dispurl = decodeURI(al.msg);
                     return (

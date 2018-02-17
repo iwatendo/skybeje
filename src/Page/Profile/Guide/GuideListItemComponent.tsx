@@ -11,7 +11,7 @@ import ImageDialogController from "../../Dashboard/ImageDialogController";
 import GuideListComponent from "./GuideListComponent";
 import GuideListView from "./GuideListView";
 import StdUtil from "../../../Base/Util/StdUtil";
-import LinkUtil from "../../../Base/Util/LinkUtil";
+import MessageUtil from '../../../Base/Util/MessageUtil';
 
 
 /**
@@ -51,7 +51,7 @@ export default class GuideListItemComponent extends React.Component<GuideListIte
             let ln = 0;
             let dispNotes = notes.map(line => {
 
-                let dispLine = LinkUtil.AutoLinkAnaylze(line).map((al) => {
+                let dispLine = MessageUtil.AutoLinkAnaylze(line).map((al) => {
                     if (al.isLink) {
                         let dispurl = decodeURI(al.msg);
                         return (

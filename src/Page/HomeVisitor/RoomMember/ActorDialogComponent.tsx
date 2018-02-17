@@ -2,7 +2,7 @@
 import * as ReactDOM from 'react-dom';
 
 import StdUtil from "../../../Base/Util/StdUtil";
-import LinkUtil from "../../../Base/Util/LinkUtil";
+import MessageUtil from "../../../Base/Util/MessageUtil";
 
 import ActorInfo from '../../../Contents/Struct/ActorInfo';
 
@@ -30,7 +30,7 @@ export default class ActorDialogComponent extends React.Component<ActorDialogPro
         let ln = 0;
         let dispProfile = msgs.map(line => {
 
-            let dispLine = LinkUtil.AutoLinkAnaylze(line).map((al) => {
+            let dispLine = MessageUtil.AutoLinkAnaylze(line).map((al) => {
                 if (al.isLink) {
                     let dispurl = decodeURI(al.msg);
                     return (
