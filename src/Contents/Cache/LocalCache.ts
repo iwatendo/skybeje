@@ -1,4 +1,5 @@
 ﻿import StdUtil from "../../Base/Util/StdUtil";
+import Sender from "../../Base/Container/Sender";
 
 export interface OnSetVoiceChatOptions { (option: VoiceChatOptions): void };
 export interface OnSetLiveCastOptions { (option: LiveCastOptions): void };
@@ -19,18 +20,11 @@ export default class LocalCache {
         localStorage.clear();
     }
 
+
     /**
-     *  ユーザーID / 初回起動時にランダムで設定されます
+     *  ユーザーID
      */
-    public static set UserID(val: string) { localStorage.setItem('user-id', val); }
-    public static get UserID(): string {
-        let uid = localStorage.getItem('user-id');
-        if (!uid) {
-            uid = StdUtil.CreateUuid();
-            this.UserID = uid;
-        }
-        return uid;
-    }
+    public static get UserID(): string { return StdUtil.UserID; }
 
 
     /**

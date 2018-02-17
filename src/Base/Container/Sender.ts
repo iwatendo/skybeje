@@ -1,14 +1,13 @@
-import LocalCache from "../../Contents/Cache/LocalCache";
+import StdUtil from "../Util/StdUtil";
 
 export default abstract class Sender {
 
-    public static Uid: string = LocalCache.UserID;
-
     constructor(type: string) {
+        this.uid = StdUtil.UserID;
         this.type = type;
-        this.uid = Sender.Uid;
     }
-    type: string;
+
     uid: string;
+    type: string;
 
 }

@@ -9,18 +9,20 @@ interface OnGetMobleDeviceId { (deviceId: string): void }
 
 export default class StdUtil {
 
+    public static UserID: string = StdUtil.CreateUserID();
+
     /**
-     * モバイル端末の個体識別子を取得します
-     * 【重要】devicereadyが動作しない。別の方法を検討する
-     * @param callback 
+     *  ユーザーID / 初回起動時にランダムで設定されます
      */
-    public static GetMobileDeviceId(callback: OnGetMobleDeviceId) {
-        window.addEventListener("load", () => {
-            document.addEventListener("deviceready", () => {
-                var uID = (window as any).device.uuid;
-                callback(uID);
-            }, false);
-        }, true);
+    private static CreateUserID(): string {
+
+        let userid = localStorage.getItem('user-id');
+
+        if (!userid) {
+            userid = StdUtil.CreateUuid();
+            localStorage.setItem('user-id', userid);
+        }
+        return userid;
     }
 
 

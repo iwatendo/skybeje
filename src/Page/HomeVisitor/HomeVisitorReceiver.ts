@@ -1,6 +1,7 @@
 ﻿import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import LogUtil from "../../Base/Util/LogUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
+import StdUtil from "../../Base/Util/StdUtil";
 
 import Sender from "../../Base/Container/Sender";
 import CastInstanceSender from "../../Base/Container/CastInstanceSender";
@@ -170,7 +171,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
     public GetActor(conn: PeerJs.DataConnection, sender: GetActorSender) {
         this.Controller.Model.GetActor(sender.aid, (actor) => {
             let result = new ActorInfoSender();
-            result.actorInfo = new ActorInfo(this.Controller.PeerId, Sender.Uid, actor);
+            result.actorInfo = new ActorInfo(this.Controller.PeerId, StdUtil.UserID, actor);
             this.Controller.SwPeer.SendTo(conn, result);
         });
     }

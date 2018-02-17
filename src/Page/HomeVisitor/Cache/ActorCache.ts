@@ -1,11 +1,12 @@
-import Sender from "../../../Base/Container/Sender";
-
 import * as Home from "../../../Contents/IndexedDB/Home";
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 import ActorInfo from "../../../Contents/Struct/ActorInfo";
 
 import HomeVisitorController from "../HomeVisitorController";
 import GetActorSender from "../../../Contents/Sender/GetActorSender";
+
+import StdUtil from "../../../Base/Util/StdUtil";
+
 
 
 interface ActorFunc { (actor: ActorInfo): void }
@@ -82,7 +83,7 @@ export default class ActorCache {
 
         if (this._controller.PeerId === peerid) {
             this._controller.Model.GetActor(aid, (actor) => {
-                callback(new ActorInfo(this._controller.PeerId, Sender.Uid, actor));
+                callback(new ActorInfo(this._controller.PeerId, StdUtil.UserID, actor));
             });
         }
         else {
