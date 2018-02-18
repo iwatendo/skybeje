@@ -10,6 +10,7 @@ import RoomManager from "./RoomManager";
 
 import ChatMessageSender from "../../../Contents/Sender/ChatMessageSender";
 import TimelineSender from "../../../Contents/Sender/TimelineSender";
+import ChatInfoSender from "../../../Contents/Sender/ChatInfoSender";
 
 
 export default class ChatManager {
@@ -17,6 +18,7 @@ export default class ChatManager {
     private _controller: HomeInstanceController;
     private _roomManager: RoomManager;
     private _tlmsgs: Array<Timeline.Message>;
+    private _inputMap: Map<string, ChatInfoSender>;
 
     /**
      * コンストラクタ
@@ -29,6 +31,7 @@ export default class ChatManager {
 
         controller.Model.GetTimelineAll((tlmsgs) => {
             this._tlmsgs = tlmsgs;
+            this._inputMap = new Map<string, ChatInfoSender>();
             callback();
         });
     }
@@ -60,6 +63,51 @@ export default class ChatManager {
 
 
     /**
+     * 
+     * @param cis 
+     */
+    public SetInfo(cis: ChatInfoSender) {
+
+        if (!cis) {
+            return;
+        }
+
+        cis.hid = this._roomManager.GetRoomId(cis.peerid, cis.aid);
+
+        if (cis.isInputing) {
+            this._inputMap.set(cis.peerid, cis);
+        }
+        else {
+            if (this._inputMap.has(cis.peerid)) {
+                this._inputMap.delete(cis.peerid);
+            }
+        }
+
+        this.SendInputing(cis);
+    }
+
+
+    /**
+     * 同一ルーム内の各Visitorに通知
+     * @param tlmsg 
+     */
+    private SendInputing(cis: ChatInfoSender) {
+
+        let sender = new TimelineSender();
+        this._inputMap.forEach((value, key) => {
+            if (cis.hid === value.hid) {
+                sender.ings.push(value);
+            }
+        });
+
+        this._roomManager.GetRoomInPeers(cis.hid).forEach((peerid) => {
+            this._controller.SwPeer.SendTo(peerid, sender);
+        });
+    }
+
+
+
+    /**
      * タイムラインの更新処理
      * @param tlmsg 
      */
@@ -82,8 +130,6 @@ export default class ChatManager {
             //  各Visitorへの通知
             this.SendMessage(utlmsg);
         });
-
-
 
     }
 
@@ -149,6 +195,17 @@ export default class ChatManager {
      */
     public AllClear() {
         this._tlmsgs = new Array<Timeline.Message>();
+    }
+
+
+    /**
+     * 指定PeerIdの除外
+     * @param peerid 
+     */
+    public RemoveConnection(peerid: string) {
+        if (this._inputMap.has(peerid)) {
+            this._inputMap.delete(peerid);
+        }
     }
 
 }

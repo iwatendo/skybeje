@@ -5,6 +5,8 @@ import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import HomeVisitorController from "../HomeVisitorController";
 import { TimelineMsgItemComponent } from "./TimelineMsgItemComponent";
+import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
+import { TimelineInputingItemComponent } from './TimelineInputingItemComponent';
 
 
 /**
@@ -13,6 +15,7 @@ import { TimelineMsgItemComponent } from "./TimelineMsgItemComponent";
 interface TimelineProp {
     controller: HomeVisitorController;
     messages: Array<Timeline.Message>;
+    inputs: Array<ChatInfoSender>;
 }
 
 
@@ -57,7 +60,6 @@ export class TimelineComponent extends React.Component<TimelineProp, any>{
             else {
                 group.push(tlmsg);
             }
-
         });
 
         let msgList = groups.map((groups) => {
@@ -66,9 +68,17 @@ export class TimelineComponent extends React.Component<TimelineProp, any>{
         });
 
 
+        //  入力中の表示
+        let ingList = this.props.inputs.map((ing)=>{
+            let key = ing.aid;
+            return (<TimelineInputingItemComponent key={key} controller={this.props.controller} chatInputing={ing} />);
+        });
+
+
         return (
             <div id='sbj-timeline'>
                 {msgList}
+                {ingList}
             </div>
         );
     }

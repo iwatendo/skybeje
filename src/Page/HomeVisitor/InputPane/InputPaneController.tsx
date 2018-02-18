@@ -23,6 +23,7 @@ import { DeviceView } from '../../DeviceView/DeviceVew';
 import ChatMessageSender from '../../../Contents/Sender/ChatMessageSender';
 import VoiceChatMemberSender from '../../../Contents/Sender/VoiceChatMemberSender';
 import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberListSender';
+import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
 
 export default class InputPaneController {
 
@@ -90,6 +91,7 @@ export default class InputPaneController {
 
         //  イベント設定
         this._textareaElement.onkeydown = (e) => { this.OnKeyDown(e); };
+        this._textareaElement.onkeyup = (e) => { this.OnTextChange(); }
         this._actorEditButton.onclick = (e) => { this.DoShowProfileEditDialog(); };
         this._actorIconElement.ondblclick = (e) => { this.DoShowProfileEditDialog(); };
         this._selectActorButton.onclick = (e) => { this.DoShowActorSelectPanel(); };
@@ -299,21 +301,28 @@ export default class InputPaneController {
     }
 
 
+    private CreateChatMessage(text: string, isVoiceRecognition: boolean): ChatMessageSender {
+        let chm = new ChatMessageSender();
+        let actor = this._controller.CurrentActor;
+        chm.peerid = this._controller.PeerId;
+        chm.aid = actor.aid;
+        chm.name = actor.name;
+        chm.iid = actor.dispIid;
+        chm.text = text;
+        chm.isVoiceRecog = isVoiceRecognition;
+        chm.isSpeech = this._isVoiceSpeech;
+        return chm;
+    }
+
+
     /**
      * メッセージ送信
      * @param text 
      */
     private SendChatMessage(text: string, isVoiceRecognition: boolean) {
-        let chatMessage = new ChatMessageSender();
-        let actor = this._controller.CurrentActor;
-        chatMessage.peerid = this._controller.PeerId;
-        chatMessage.aid = actor.aid;
-        chatMessage.name = actor.name;
-        chatMessage.iid = actor.dispIid;
-        chatMessage.text = text;
-        chatMessage.isVoiceRecog = isVoiceRecognition;
-        chatMessage.isSpeech = this._isVoiceSpeech;
-        this._controller.SendChatMessage(chatMessage);
+
+        let chm = this.CreateChatMessage(text, isVoiceRecognition);
+        this._controller.SendChatMessage(chm);
 
         switch (LocalCache.ChatMessageCopyMode) {
             case 1:
@@ -334,6 +343,30 @@ export default class InputPaneController {
 
         //  最終発言アクターをライブキャスト側に通知
         this._controller.View.CastSelector.NotifyLastChatActorToAllServent();
+    }
+
+
+    private _preInput: ChatInfoSender
+
+
+    /**
+     * 入力途中有無
+     * @param isInputing 
+     */
+    private OnTextChange() {
+
+        let chm = new ChatInfoSender();
+        let actor = this._controller.CurrentActor;
+        chm.peerid = this._controller.PeerId;
+        chm.aid = actor.aid;
+        chm.name = actor.name;
+        chm.iid = actor.dispIid;
+        chm.isInputing = this.IsInput();
+
+        if (!ChatInfoSender.Equals(chm, this._preInput)) {
+            this._controller.SwPeer.SendToOwner(chm);
+            this._preInput = chm;
+        }
     }
 
 
@@ -639,7 +672,7 @@ export default class InputPaneController {
         this._isMicMute = value;
         this._voiceMicOn.hidden = value;
         this._voiceMicOff.hidden = !value;
-        StreamUtil.SetMute(this._voiceChatStream,value);
+        StreamUtil.SetMute(this._voiceChatStream, value);
     }
 
 

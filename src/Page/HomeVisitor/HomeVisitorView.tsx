@@ -16,6 +16,7 @@ import RoomMemberComponent from "./RoomMember/RoomMemberComponent";
 import CastSelectorController from "./CastSelector/CastSelectorController";
 import InputPaneController from "./InputPane/InputPaneController";
 import LinkUtil from '../../Base/Util/LinkUtil';
+import ChatInfoSender from '../../Contents/Sender/ChatInfoSender';
 
 
 export default class HomeVisitorView extends AbstractServiceView<HomeVisitorController> {
@@ -38,7 +39,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      * 
      */
     protected Initialize(callback: OnViewLoad) {
-        
+
         //  ダッシュボードに通知
         this.Controller.NotifyDashbord(this.Controller.PeerId);
         //  ライブキャストは前回分が残らないようにクリア通知
@@ -228,14 +229,14 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      * タイムラインの再描画
      */
     public RefreshTimeline() {
-        this.SetTimeline(new Array<Timeline.Message>());
+        this.SetTimeline(new Array<Timeline.Message>(), new Array<ChatInfoSender>());
     }
 
 
     /**
      * タイムラインの更新
      */
-    public SetTimeline(tlms: Array<Timeline.Message>) {
+    public SetTimeline(tlms: Array<Timeline.Message>, ings: Array<ChatInfoSender>) {
 
         let controller = this.Controller;
 
@@ -250,9 +251,9 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             let te = this._timelineElement;
             let isScrollMax = (te.scrollHeight <= (te.scrollTop + te.offsetHeight) + 72);
 
-            ReactDOM.render(<TimelineComponent key={"timeline"} controller={this.Controller} messages={dispTlmsgs} />, this._timelineElement, () => {
+            ReactDOM.render(<TimelineComponent key={"timeline"} controller={this.Controller} messages={dispTlmsgs} inputs={ings} />, this._timelineElement, () => {
 
-                controller.TimelineCache.SetTimelineIcon(dispTlmsgs);
+                controller.TimelineCache.SetTimelineIcon(dispTlmsgs,ings);
                 this.InputPane.SetUnreadCount(tlms);
 
                 if (isScrollMax) {
@@ -301,7 +302,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     public ClearTimeline() {
         this.Controller.TimelineCache.Clear();
-        this.SetTimeline(new Array<Timeline.Message>());
+        this.SetTimeline(new Array<Timeline.Message>(), new Array<ChatInfoSender>());
     }
 
 

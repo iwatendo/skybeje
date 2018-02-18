@@ -184,10 +184,12 @@ export default class LogUtil {
         //  画像が含まれるものは除外する
         if (sender.type === 'Entrance') return false;
         if (sender.type === 'Room') return false;
-        if (sender.type === 'Icon') return false;
+        //  if (sender.type === 'Icon') return false;
 
         //  カーソルもログの量が多すぎるので除外する
         if (sender.type === 'IconCursor') return false;
+        if (sender.type === 'ChatInputing') return false;
+        if (sender.type === 'Timeline') return false;
 
         return true;
     }

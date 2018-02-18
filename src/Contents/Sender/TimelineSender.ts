@@ -1,5 +1,7 @@
 import Sender from "../../Base/Container/Sender";
 import * as Timeline from "../../Contents/IndexedDB/Timeline";
+import ChatMessageSender from "./ChatMessageSender";
+import ChatInfoSender from "./ChatInfoSender";
 
 
 /**
@@ -13,7 +15,9 @@ export default class TimelineSender extends Sender {
         super(TimelineSender.ID);
 
         this.msgs = new Array<Timeline.Message>();
+        this.ings = new Array<ChatInfoSender>();
     }
 
     msgs: Array<Timeline.Message>;
+    ings: Array<ChatInfoSender>;
 }

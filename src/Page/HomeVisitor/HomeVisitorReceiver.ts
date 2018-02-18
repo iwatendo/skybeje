@@ -26,6 +26,7 @@ import RoomServentSender from "../../Contents/Sender/RoomServentSender";
 import VoiceChatMemberListSender from "../../Contents/Sender/VoiceChatMemberListSender";
 import ProfileSender from "../../Contents/Sender/ProfileSender";
 import GuideSender from "../../Contents/Sender/GuideSender";
+import ChatInfoSender from "../../Contents/Sender/ChatInfoSender";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -87,7 +88,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         //  タイムライン情報
         if (sender.type === TimelineSender.ID) {
             let tl = (sender as TimelineSender);
-            this.Controller.View.SetTimeline(tl.msgs);
+            this.Controller.View.SetTimeline(tl.msgs, tl.ings);
             this.Controller.Bot.CheckTimeline(tl.msgs);
         }
 

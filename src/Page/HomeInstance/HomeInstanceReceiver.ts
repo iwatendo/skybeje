@@ -17,6 +17,7 @@ import ServentSender from "../../Contents/Sender/ServentSender";
 import ServentCloseSender from "../../Contents/Sender/ServentCloseSender";
 import ForcedTerminationSender from "../../Contents/Sender/ForcedTerminationSender";
 import VoiceChatMemberSender from "../../Contents/Sender/VoiceChatMemberSender";
+import ChatInfoSender from "../../Contents/Sender/ChatInfoSender";
 
 
 export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeInstanceController> {
@@ -52,6 +53,14 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             let chatMessage = sender as ChatMessageSender;
             this.Controller.Manager.Chat.SetMessage(chatMessage);
         }
+
+
+        //  チャット入力中通知
+        if (sender.type === ChatInfoSender.ID) {
+            let cis = sender as ChatInfoSender;
+            this.Controller.Manager.Chat.SetInfo(cis);
+        }
+        
 
         //  タイムラインの要求
         if (sender.type === GetTimelineSender.ID) {
