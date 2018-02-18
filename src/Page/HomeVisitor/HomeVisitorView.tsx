@@ -253,7 +253,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
             ReactDOM.render(<TimelineComponent key={"timeline"} controller={this.Controller} messages={dispTlmsgs} inputs={ings} />, this._timelineElement, () => {
 
-                controller.TimelineCache.SetTimelineIcon(dispTlmsgs,ings);
+                controller.TimelineCache.SetTimelineIcon(dispTlmsgs);
                 this.InputPane.SetUnreadCount(tlms);
 
                 if (isScrollMax) {

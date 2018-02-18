@@ -1,14 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import * as Timeline from "../../../Contents/IndexedDB/Timeline";
-
-import StdUtil from "../../../Base/Util/StdUtil";
-import MessageUtil from '../../../Base/Util/MessageUtil';
-
 import HomeVisitorController from "../HomeVisitorController";
-import { TimelineMsgGroup } from "./TimelineComponent";
-import SpeechUtil from '../../../Base/Util/SpeechUtil';
 import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
 
 
@@ -34,10 +27,7 @@ export class TimelineInputingItemComponent extends React.Component<TimelineInput
         let isMine = this.IsMyChatMessage();
 
         //
-        let imgclassName = "sbj-timeline-img sbj-icon-img-" + iid.toString();
-
-        //
-        let image_div = (iid ? (<div className='sbj-timeline-img-box'><div className={imgclassName}></div></div>) : (<div></div>));
+        let image_div = (iid ? (<div className='sbj-timeline-img-box'><div className='sbj-timeline-img-empty'></div></div>) : (<div></div>));
 
         //
         let msg_div = (
@@ -58,33 +48,6 @@ export class TimelineInputingItemComponent extends React.Component<TimelineInput
             return (<div key="right" className='sbj-timeline-flex-right'>{spc_div}{msg_div}{image_div}</div>);
         }
 
-    }
-
-    /**
-     * AutoLinkの設定
-     * @param baseText
-     */
-    public SetAutoLink(baseText: string): JSX.Element {
-
-        let linkArray = MessageUtil.AutoLinkAnaylze(baseText);
-
-        let result = linkArray.map((al) => {
-            if (al.isLink) {
-
-                let dispurl = decodeURI(al.msg);
-
-                return (
-                    <span>
-                        <a className="sbj-timeline-message-autolink" href={al.msg} target="_blank">{dispurl}</a>
-                    </span>
-                );
-            }
-            else {
-                return (<span>{al.msg}</span>);
-            }
-        });
-
-        return (<span>{result}</span>);
     }
 
 
