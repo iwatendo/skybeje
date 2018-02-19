@@ -1,23 +1,19 @@
 ﻿
-import StdUtil from "../../Base/Util/StdUtil";
-import FileUtil from "../../Base/Util/FileUtil";
-import ImageInfo from "../../Base/Container/ImageInfo";
-import * as Enum from "../../Base/Container/ImageInfo";
+import StdUtil from "../../../Base/Util/StdUtil";
+import FileUtil from "../../../Base/Util/FileUtil";
+import ImageInfo from "../../../Base/Container/ImageInfo";
+import * as Enum from "../../../Base/Container/ImageInfo";
+import { Icon } from "../../../Contents/IndexedDB/Personal";
 
 
-interface OnChangeImage { (imageRec: ImageInfo): void }
-interface OnDropImage { (owner: ImageDialogController, file: File, src): void }
+interface OnChangeIcon { (icon: Icon): void }
+interface OnDropIcon { (owner: IconDialogController, file: File, src): void }
 
 
-
-/**
- * イメージダイアログはどの処理からも呼べるように
- * Static関数を追加
- */
-export default class ImageDialogController {
+export default class IconDialogController {
 
 
-    private static _dialog: ImageDialogController = new ImageDialogController('sbj-image-dialog');
+    private static _dialog: IconDialogController = new IconDialogController('sbj-image-dialog');
 
     private _imageBackgroundElement = document.getElementById("sbj-image-background");
     private _imageView = document.getElementById("sbj-image-view");
@@ -25,29 +21,35 @@ export default class ImageDialogController {
     private _cameraButton = document.getElementById("sbj-image-camera");
     private _imageDropMsg = document.getElementById("sbj-image-drop-msg");
 
+    private _messageColorElement = document.getElementById("sbj-message-color-value") as HTMLInputElement;
+    private _balloonColorElement = document.getElementById("sbj-message-balloon-color-value") as HTMLInputElement;
+
+    private _scaleElement = document.getElementById("sbj-image-dispratio") as HTMLInputElement;
+    private _scaleValueElement = document.getElementById("sbj-image-dispratio-value") as HTMLInputElement;
+    private _voiceCodeElement = document.getElementById("sbj-voice-code-text") as HTMLInputElement;
 
 
     /**
      * 
      */
-    public static Add(callback: OnChangeImage) {
-        this.Start(true, false, false, new ImageInfo(), callback);
+    public static Add(callback: OnChangeIcon) {
+        this.Start(true, false, false, new Icon(), callback);
     }
 
 
     /**
      * 
      */
-    public static Edit(image: ImageInfo, callback: OnChangeImage) {
-        this.Start(false, true, false, image, callback);
+    public static Edit(icon: Icon, callback: OnChangeIcon) {
+        this.Start(false, true, false, icon, callback);
     }
 
 
     /**
      * 
      */
-    public static Delete(image: ImageInfo, callback: OnChangeImage) {
-        this.Start(false, false, true, image, callback);
+    public static Delete(icon: Icon, callback: OnChangeIcon) {
+        this.Start(false, false, true, icon, callback);
     }
 
 
@@ -59,7 +61,7 @@ export default class ImageDialogController {
      * @param image 
      * @param callback 
      */
-    private static Start(canAdd: boolean, canEdit: boolean, canDelete: boolean, image: ImageInfo, callback: OnChangeImage) {
+    private static Start(canAdd: boolean, canEdit: boolean, canDelete: boolean, icon: Icon, callback: OnChangeIcon) {
 
         document.getElementById('sbj-image-done').hidden = !canAdd;
         document.getElementById('sbj-image-update').hidden = !canEdit;
@@ -76,14 +78,19 @@ export default class ImageDialogController {
         cssEditElement.checked = false;
 
         this._dialog.SetCssEditMode(false);
-        this._dialog.SetImage(image);
+        this._dialog._icon = Icon.Copy(icon);
+        this._dialog.SetImage(icon.img);
+        this._dialog.SetDispratio(icon.dispratio);
+        this._dialog.SetVoiceCode(icon.voicecode);
+        this._dialog.SetMessageColor(icon.msgcolor);
+        this._dialog.SetMessageBalloonColor(icon.msgbackcolor);
         this._dialog.Show(callback);
     }
 
 
     private _dialog: any;
-    private _image: ImageInfo;
-    private _owner_callback: OnChangeImage;
+    private _icon: Icon;
+    private _owner_callback: OnChangeIcon;
 
     private _bgsizeMap: Map<Enum.BgSizeEnum, HTMLElement> = null;
     private _bgposMap: Map<Enum.BgPosEnum, HTMLElement> = null;
@@ -97,7 +104,7 @@ export default class ImageDialogController {
         StdUtil.StopPropagation();
 
         this._dialog = document.getElementById(dialogName) as any;
-        this._image = new ImageInfo();
+        this._icon = new Icon();
 
         this._imageBackgroundElement.onclick = (ev) => {
             if (ev.target == this._imageBackgroundElement)
@@ -197,7 +204,7 @@ export default class ImageDialogController {
      * イメージダイアログの表示
      * @param callback 
      */
-    public Show(callback: OnChangeImage) {
+    public Show(callback: OnChangeIcon) {
         this._owner_callback = callback;
         this._dialog.showModal();
     }
@@ -207,7 +214,13 @@ export default class ImageDialogController {
      * 画像データの追加／更新
      */
     private Done() {
-        this._owner_callback(this._image);
+
+        this._icon.dispratio = this.GetDispratio();
+        this._icon.voicecode = this.GetVoiceCode();
+        this._icon.msgcolor = this.GetMessageColor();
+        this._icon.msgbackcolor = this.GetMessageBalloonColor();
+
+        this._owner_callback(this._icon);
         this.Close();
     }
 
@@ -236,7 +249,7 @@ export default class ImageDialogController {
      * @param file
      * @param src
      */
-    private OnDropImage(owner: ImageDialogController, file: File, src) {
+    private OnDropImage(owner: IconDialogController, file: File, src) {
         let rec = owner.CreateImageRec(src);
         owner.SetImage(rec);
     }
@@ -249,7 +262,7 @@ export default class ImageDialogController {
     private CreateImageRec(src): ImageInfo {
         let rec = new ImageInfo();
         rec.src = src;
-        this._image = rec;
+        this._icon.img = rec;
         return rec;
     }
 
@@ -261,17 +274,17 @@ export default class ImageDialogController {
      */
     private Refresh(bg_size: Enum.BgSizeEnum, bg_pos: Enum.BgPosEnum) {
 
-        if (this._image) {
+        if (this._icon.img) {
 
             if (bg_size !== null) {
-                this._image.backgroundsize = bg_size;
+                this._icon.img.backgroundsize = bg_size;
             }
 
             if (bg_pos !== null) {
-                this._image.backgroundposition = bg_pos;
+                this._icon.img.backgroundposition = bg_pos;
             }
 
-            this.SetImage(this._image);
+            this.SetImage(this._icon.img);
         }
     }
 
@@ -286,7 +299,7 @@ export default class ImageDialogController {
             image = new ImageInfo();
         }
 
-        this._image = image;
+        this._icon.img = image;
 
         let imgStyle = this._imageView.style;
 
@@ -380,6 +393,91 @@ export default class ImageDialogController {
             this.OnDropImage(this, null, result);
         }
     }
+
+
+    /**
+     * メッセージの文字色設定
+     * @param value 
+     */
+    private SetMessageColor(value: string) {
+
+        if (!value) {
+            value = "#f5f5f5";
+        }
+
+        this._messageColorElement.value = value;
+    }
+
+
+    /**
+     * メッセージの文字色取得
+     */
+    private GetMessageColor(): string {
+        return this._messageColorElement.value;
+    }
+
+
+    /**
+     * メッセージの背景色取得
+     * @param value 
+     */
+    private SetMessageBalloonColor(value: string) {
+
+        if (!value) {
+            value = "#191970";
+        }
+
+        this._balloonColorElement.value = value;
+    }
+
+
+    /**
+     * メッセージの背景色取得
+     */
+    private GetMessageBalloonColor(): string {
+        return this._balloonColorElement.value;
+    }
+
+
+    /**
+     * 立絵サイズのセット
+     * @param scale 
+     */
+    private SetDispratio(scale: number) {
+
+        if (!scale)
+            scale = 8;
+
+        this._scaleElement.classList.add("is-dirty");
+        this._scaleValueElement.value = scale.toString();
+    }
+
+
+    /**
+     * 立絵サイズの取得
+     */
+    private GetDispratio(): number {
+        return Number.parseInt(this._scaleValueElement.value);
+    }
+
+
+    /**
+     * VoiceCode設定
+     * @param voicecode
+     */
+    private SetVoiceCode(voicecode: string) {
+        this._voiceCodeElement.value = (voicecode ? voicecode : "");
+        document.getElementById("sbj-voice-code-text-field").classList.add("is-dirty");
+    }
+
+
+    /**
+     * VoiceCode取得
+     */
+    private GetVoiceCode(): string {
+        return this._voiceCodeElement.value;
+    }
+
 
 }
 

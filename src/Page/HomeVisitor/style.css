@@ -365,6 +365,7 @@ textarea.sbj-inputpanel-text {
 .sbj-timeline-balloon {
     border-radius: 5px;
     margin: 1px;
+    padding: 2px 3px 0px 3px;
     color: var(--sbj-color-timeline-message);
     background-color: var(--sbj-color-timeline-ballon);
     clear: both;

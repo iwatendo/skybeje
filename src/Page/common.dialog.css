@@ -65,7 +65,13 @@
  *-------------------------------------------------------------*/
 
 .sbj-image-view{
-	margin:8px;
+	height: 424px;
+	margin: 8px;
+    color: var(--sbj-color-image-dialog-text);
+	background-color: var(--sbj-color-image-dialog-append);
+    border: 1px;
+    border-style: solid;
+    border-color: whitesmoke;	
 }
 
 .sbj-image-drop-text{
@@ -75,18 +81,21 @@
 
 .sbj-image-card.mdl-card {
     padding: 10px;
-    width: 468px;
+    width: 784px;
     height: 572px;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin: -286px 0 0 -234px;
+    margin: -286px 0 0 -392px;
 }
 
+.sbj-image-setting-main{
+	padding: 0px;
+}
 
-.sbj-image-card > .mdl-card__title {
-    color: var(--sbj-color-image-dialog-text);
-    background-color: var(--sbj-color-image-dialog-append);
+.sbj-image-setting{
+	width: 300px;
+	padding: 8px;
 }
 
 .sbj-image-edit-label {
@@ -104,7 +113,7 @@
 #sbj-image-center{
 	position: absolute;
     top: calc(50% - 20px);
-    left: calc(50% - 20px)
+    left: 212px;
 }
 
 #sbj-image-left{
@@ -116,30 +125,30 @@
 #sbj-image-right{
 	position: absolute;
 	top: calc(50% - 20px);
-    right: 26px;
+    left: 398px;
 }
 
 #sbj-image-top{
 	position: absolute;
-	top: calc(20% - 20px);
-    left: calc(50% - 20px)
+	top: calc(20% - 32px);
+    left: 212px;
 }
 
 #sbj-image-bottom{
 	position: absolute;
-	top: calc(80% - 20px);
-    left: calc(50% - 20px)
+	top: calc(80% - 8px);
+    left: 212px;
 }
 
 #sbj-image-cover{
 	position: absolute;
-	top: calc(80% - 20px);
+	top: calc(80% - 8px);
     left: 26px;
 }
 
 #sbj-image-contain{
 	position: absolute;
-	top: calc(80% - 20px);
+	top: calc(80% - 8px);
     left: 76px;
 }
 

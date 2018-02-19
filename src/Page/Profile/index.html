@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="sbj-profilie-tab-bar mdl-layout__tab-bar mdl-js-ripple-effect">
-                        <a href="#sbj-profile-icons" class="mdl-layout__tab is-active" draggable="false">アイコン</a>
+                        <a href="#sbj-profile-icons" class="mdl-layout__tab is-active" draggable="false">アイコン／発言設定</a>
                         <a href="#sbj-profile-guide" class="mdl-layout__tab" draggable="false">簡易チャットボット</a>
                     </div>
                 </header>
@@ -82,16 +82,6 @@
                                     削除
                                 </button>
                                 <span class="mdl-tooltip" for="sbj-profile-delete-icon">選択アイコンの削除</span>
-                                <button id='sbj-profile-voice-code' class="mdl-button mdl-js-button mdl-button--primary">
-                                    <i class='material-icons'>settings_voice</i>
-                                    音声
-                                </button>
-                                <span class="mdl-tooltip" for="sbj-profile-voice-code">選択アイコンの音声合成パラメータ設定</span>
-                                <button id='sbj-profile-standing-image' class="mdl-button mdl-js-button mdl-button--primary">
-                                    <i class='material-icons'>accessibility</i>
-                                    画像
-                                </button>
-                                <span class="mdl-tooltip" for="sbj-profile-standing-image">選択アイコンのライブ配信上の表示設定</span>
                             </div>
                             <div class="sbj-profile-sub-list" id="sbj-profile-icons-list">
                                 <!-- React -->
@@ -173,8 +163,35 @@
                 </div>
 
                 <!--画像表示エリア-->
-                <div id="sbj-image-view" class="sbj-image-view mdl-card__title mdl-card--expand">
-                    <h4 class="sbj-image-drop-text mdl-card__title_text" id='sbj-image-drop-msg'>ここに画像をドロップできます</h4>
+                <div class="mdl-card__title mdl-card--expand sbj-image-setting-main">
+
+                    <div id="sbj-image-view" class="sbj-image-view">
+                        <h4 class="sbj-image-drop-text mdl-card__title_text" id='sbj-image-drop-msg'>ここに画像をドロップできます</h4>
+                    </div>
+
+                    <!--Iconの付随情報設定エリア-->
+                    <div class="sbj-image-setting">
+
+                        <div class="sbj-message-color-box">
+                            <span class="sbj-message-color-lable">メッセージの文字色&nbsp;</span>
+                            <input class="sbj-message-color" id="sbj-message-color-value" type="color" value="#ffffff"/>
+                        </div>
+                        <div class="sbj-message-color-box">
+                            <span class="sbj-message-color-lable">メッセージの背景色&nbsp;</span>
+                            <input class="sbj-message-color" id="sbj-message-balloon-color-value" type="color" value="#ffffff"/>
+                        </div>
+                        <div class="sbj-message-color-box">
+                        </div>
+                        <div id="sbj-image-dispratio" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-image-dispratio-value"/>
+                            <label class="mdl-textfield__label" for="sbj-image-dispratio-value">配信の高さに対してのアイコン比率(％)</label>
+                            <span class="mdl-textfield__error">数値を入力してください</span>
+                        </div>
+                        <div id="sbj-voice-code-text-field" class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-voice-code-text" spellcheck=false maxlength="2048"></textarea>
+                            <label class="mdl-textfield__label" for="sbj-voice-code-text">Voice Code(Skybeje.Speaker用)</label>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 下部ボタン郡 -->
@@ -182,7 +199,7 @@
                     <div class="sbj-dialog-attach-action-left">
                         <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-image-css-edit" id="sbj-image-css-edit-check">
                             <input type="checkbox" id="sbj-image-css-edit" class="mdl-switch__input">
-                            <span class="mdl-switch__label">CSS設定（上級向)</span>
+                            <span class="mdl-switch__label">CSS設定</span>
                         </label>
                     </div>
                     <div class="sbj-dialog-attach-action-right">
@@ -230,6 +247,7 @@
                     <i class="material-icons">zoom_out_map</i>
                 </button>
             </div>
+
         </div>
     </dialog>
 
@@ -324,95 +342,6 @@
             </div>
         </div>
     </dialog>
-
-    
-    <!--VoiceCode Dialog-->
-    <dialog id='sbj-voice-code-dialog' class='sbj-dialog'>
-        <div id="sbj-voice-code-background" class="sbj-dialog-background">
-
-            <div class="sbj-voice-code-card mdl-card mdl-shadow--2dp flexiblebox">
-
-                <!-- 上部ボタン郡 -->
-                <div class="mdl-card__actions">
-                    <div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
-                        <i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon">settings_voice</i>
-                        <h4 class="sbj-dialog-title">
-                            <span id="sbj-dialog-title-value">連動アプリによる音声合成の設定</span>
-                        </h4>
-                    </div>
-                    <div class="sbj-dialog-attach-action-right">
-                        <button id='sbj-voice-code-dialog-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
-                            <i class="material-icons">close</i>
-                        </button>
-                    </div>
-                </div>
-                <div id="sbj-voice-code-main" class="sbj-voice-code-main mdl-card--expand">
-                    <div id="sbj-voice-code-text-field" class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-voice-code-text" spellcheck=false maxlength="2048"></textarea>
-                        <label class="mdl-textfield__label" for="sbj-voice-code-text">Skybeje.Speaker の Voice Code</label>
-                    </div>
-                </div>
-
-                <!-- 下部ボタン郡 -->
-                <div class="mdl-card__actions">
-                    <div class="sbj-dialog-attach-action-left">
-                    </div>
-                    <div class="sbj-dialog-attach-action-right">
-                        <button id='sbj-voice-code-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                            <i class="material-icons">done</i>&nbsp;更新&nbsp;
-                        </button>
-                        <button id='sbj-voice-code-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
-                            &nbsp;キャンセル&nbsp;
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </dialog>    
-
-    <!--StandingImage Dialog-->
-    <dialog id='sbj-standing-image-dialog' class='sbj-dialog'>
-        <div id="sbj-standing-image-background" class="sbj-dialog-background">
-            <div class="sbj-standing-image-card mdl-card mdl-shadow--2dp flexiblebox">
-                <!-- 上部ボタン郡 -->
-                <div class="mdl-card__actions">
-                    <div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
-                        <i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon">accessibility</i>
-                        <h4 class="sbj-dialog-title">
-                            <span id="sbj-dialog-title-value">ライブ配信上に表示するアイコンの設定</span>
-                        </h4>
-                    </div>
-                    <div class="sbj-dialog-attach-action-right">
-                        <button id='sbj-standing-image-dialog-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
-                            <i class="material-icons">close</i>
-                        </button>
-                    </div>
-                </div>
-                <div id="sbj-standing-image-main" class="sbj-standing-image-main mdl-card--expand">
-                    <div id="sbj-standing-image-scale" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-standing-image-scale-value">
-                        <label class="mdl-textfield__label" for="sbj-standing-image-scale-value">ライブ配信の高さに対してのアイコン表示比率（％）</label>
-                        <span class="mdl-textfield__error">数値を入力してください</span>
-                    </div>
-                </div>
-                <!-- 下部ボタン郡 -->
-                <div class="mdl-card__actions">
-                    <div class="sbj-dialog-attach-action-left">
-                    </div>
-                    <div class="sbj-dialog-attach-action-right">
-                        <button id='sbj-standing-image-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                            <i class="material-icons">done</i>&nbsp;更新&nbsp;
-                        </button>
-                        <button id='sbj-standing-image-cancel' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
-                            &nbsp;キャンセル&nbsp;
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </dialog>    
-            
 
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>

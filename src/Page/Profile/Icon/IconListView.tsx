@@ -8,11 +8,10 @@ import ImageUtil from "../../../Base/Util/ImageUtil";
 
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 
-import ImageDialogController from "../../Dashboard/ImageDialogController";
 import IconListComponent from "./IconListComponent";
 import ProfileController from "../ProfileController";
-import VoiceCodeDialogController from '../VoiceCodeDialog/VoiceCodeDialogController';
-import StandingImageDialogController from '../StandingImageDialog/StandingImageDialogController';
+import IconDialogController from './IconDialogController';
+import { Icon } from '../../../Contents/IndexedDB/Personal';
 
 
 /**
@@ -37,13 +36,11 @@ export default class IconListView {
         let editIconElement = document.getElementById('sbj-profile-edit-icon');
         let deleteIconElement = document.getElementById('sbj-profile-delete-icon');
         let voicecodeElement = document.getElementById('sbj-profile-voice-code');
-        let standingImageElement = document.getElementById('sbj-profile-standing-image');
+        let standingImageElement = document.getElementById('sbj-profile-image-dispratio');
 
         addIconElement.onclick = (e) => this.OnClickAddIcon(this);
         editIconElement.onclick = (e) => this.OnClickEditIcon(this);
         deleteIconElement.onclick = (e) => this.OnClickDeleteIcon(this);
-        voicecodeElement.onclick = (e) => this.OnClickVoiceCode(this);
-        standingImageElement.onclick = (e) => this.OnClickStandingImage(this);
 
         this.Refresh();
     }
@@ -91,7 +88,7 @@ export default class IconListView {
      * アイコンの追加処理
      */
     public OnClickAddIcon(view: IconListView) {
-        ImageDialogController.Add((img) => view.AddIcon(view, img));
+        IconDialogController.Add((icon) => view.AddIcon(view, icon));
     }
 
 
@@ -101,7 +98,7 @@ export default class IconListView {
     public OnClickEditIcon(view: IconListView) {
         let icon = view.SelectionIcon();
         if (icon) {
-            ImageDialogController.Edit(icon.img, (img) => this.UpdateIcon(view, icon, img));
+            IconDialogController.Edit(icon, (newIcon) => this.UpdateIcon(view, icon, newIcon));
         }
     }
 
@@ -112,7 +109,7 @@ export default class IconListView {
     public OnClickDeleteIcon(view: IconListView) {
         let icon = view.SelectionIcon();
         if (icon) {
-            ImageDialogController.Delete(icon.img, (img) => this.DeleteIcon(view, icon, img));
+            IconDialogController.Delete(icon, (newIcon) => this.DeleteIcon(view, icon));
         }
     }
 
@@ -122,7 +119,7 @@ export default class IconListView {
      * @param view 
      * @param imgRec 
      */
-    public AddIcon(view: IconListView, imgRec: ImageInfo) {
+    public AddIcon(view: IconListView, icon: Icon) {
 
         let model = view._owner.Model;
         let actor = view._owner.Actor;
@@ -130,10 +127,8 @@ export default class IconListView {
         //  アイコンデータ作成
         model.GetIconList(actor, (icons) => {
 
-            let icon = new Personal.Icon();
             icon.iid = StdUtil.CreateUuid();
             icon.order = Order.New(icons);
-            icon.img = imgRec;
 
             model.UpdateIcon(icon, () => {
 
@@ -156,19 +151,15 @@ export default class IconListView {
      * @param preIcon 
      * @param imgRec 
      */
-    public UpdateIcon(view: IconListView, preIcon: Personal.Icon, imgRec: ImageInfo) {
+    public UpdateIcon(view: IconListView, preIcon: Personal.Icon, newIcon: Personal.Icon) {
 
         let model = view._owner.Model;
         let actor = view._owner.Actor;
 
-        let newIcon = Personal.Icon.Copy(preIcon);
-
         //  アイコンデータ作成
         model.GetIconList(actor, (icons) => {
 
-            let newIcon = Personal.Icon.Copy(preIcon);
             newIcon.iid = StdUtil.CreateUuid();
-            newIcon.img = imgRec;
 
             model.UpdateIcon(newIcon, () => {
 
@@ -196,9 +187,8 @@ export default class IconListView {
      * アイコン削除
      * @param view 
      * @param icon 
-     * @param imgRec 
      */
-    public DeleteIcon(view: IconListView, icon: Personal.Icon, imgRec: ImageInfo) {
+    public DeleteIcon(view: IconListView, icon: Personal.Icon) {
 
         let owner = view._owner;
         let actor = owner.Actor;
@@ -211,36 +201,6 @@ export default class IconListView {
         owner.Model.DeleteIcon(icon);
 
         view.Refresh();
-    }
-
-
-    /**
-     * アイコンに対応する音声合成の設定
-     */
-    public OnClickVoiceCode(view: IconListView) {
-        let owner = view._owner;
-        let icon = view.SelectionIcon();
-        if (icon) {
-            VoiceCodeDialogController.Edit(icon.voicecode, (result) => {
-                icon.voicecode = result;
-                this.UpdateIcon(view, icon, icon.img);
-            });
-        }
-    }
-
-
-    /**
-     * アイコンに対応する立ち絵設定
-     */
-    public OnClickStandingImage(view: IconListView) {
-        let owner = view._owner;
-        let icon = view.SelectionIcon();
-        if (icon) {
-            StandingImageDialogController.Edit(icon.dispratio, (result) => {
-                icon.dispratio = result;
-                this.UpdateIcon(view, icon, icon.img);
-            });
-        }
     }
 
 }
