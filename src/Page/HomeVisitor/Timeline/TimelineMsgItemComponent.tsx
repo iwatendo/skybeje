@@ -44,13 +44,16 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
 
             //  自分のメッセージの場合は削除ボタンを表示
             let button = (<span></span>);
-            if (this.IsMyChatMessage()) {
-                button = (
-                    <button className='mdl-button mdl-js-button mdl-button--icon mdl-button--colored sbj-timeline-ignore' onClick={(e) => { this.OnIgnoreClick(tlmsg); }}>
-                        <i className='sbj-timeline-message-icon material-icons' id={mid}>{icon}</i>
-                    </button>
-                );
-            }
+
+            //  メッセージの削除ボタンの廃止
+            
+            // if (this.IsMyChatMessage()) {
+            //     button = (
+            //         <button className='mdl-button mdl-js-button mdl-button--icon mdl-button--colored sbj-timeline-ignore' onClick={(e) => { this.OnIgnoreClick(tlmsg); }}>
+            //             <i className='sbj-timeline-message-icon material-icons' id={mid}>{icon}</i>
+            //         </button>
+            //     );
+            // }
 
             let msgs = StdUtil.TextLineSplit(tlmsg.text);
             let ln = 0;

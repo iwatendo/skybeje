@@ -363,10 +363,8 @@ export default class InputPaneController {
         chm.iid = actor.dispIid;
         chm.isInputing = this.IsInput();
 
-        if (!ChatInfoSender.Equals(chm, this._preInput)) {
-            this._controller.SwPeer.SendToOwner(chm);
-            this._preInput = chm;
-        }
+        this._controller.SwPeer.SendToOwner(chm);
+        this._preInput = chm;
     }
 
 

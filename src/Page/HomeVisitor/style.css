@@ -353,8 +353,9 @@ textarea.sbj-inputpanel-text {
 
 .sbj-timeline-img-empty {
     width: 72px;
-    height: 72px;
+    height: 16px;
     min-width: 72px;
+    margin:4px;
 }
 
 .sbj-timeline-adjust{
@@ -370,14 +371,6 @@ textarea.sbj-inputpanel-text {
     background-color: var(--sbj-color-timeline-ballon);
     clear: both;
 }
-
-.sbj-timeline-inputing-balloon{
-    border-radius: 5px;
-    margin: 1px;
-    background-color: var(--sbj-color-timeline-inputing-ballon);
-    clear: both;
-}
-
 
 .sbj-timline-message-box{
     margin: 4px 2px;

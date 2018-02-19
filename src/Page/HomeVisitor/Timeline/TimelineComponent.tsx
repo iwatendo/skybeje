@@ -69,9 +69,11 @@ export class TimelineComponent extends React.Component<TimelineProp, any>{
 
 
         //  入力中の表示
-        let ingList = this.props.inputs.map((ing)=>{
-            let key = ing.aid;
-            return (<TimelineInputingItemComponent key={key} controller={this.props.controller} chatInputing={ing} />);
+        let ingList = this.props.inputs.map((ing) => {
+            if (ing.isInputing) {
+                let key = ing.aid;
+                return (<TimelineInputingItemComponent key={key} controller={this.props.controller} chatInputing={ing} />);
+            }
         });
 
 
