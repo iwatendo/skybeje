@@ -316,17 +316,33 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             return;
         }
 
-        let imgclassName = "sbj-icon-img-" + icon.iid.toString();
-        document.getElementsByClassName(imgclassName);
+        //  チャットの文字色 / 背景色設定
+        if (icon.msgcolor || icon.msgbackcolor) {
+            let msgclassName = "sbj-balloon-" + icon.iid.toString();
+            let elements = document.getElementsByClassName(msgclassName);
 
-        let elements = document.getElementsByClassName(imgclassName);
-
-        for (let i in elements) {
-            let element = elements[i] as HTMLElement;
-            if (element.style) {
-                ImageInfo.SetElementCss(element, icon.img);
+            for (let i in document.getElementsByClassName(msgclassName)) {
+                let element = elements[i] as HTMLElement;
+                if (element.style) {
+                    if (icon.msgcolor) element.style.color = icon.msgcolor;
+                    if (icon.msgbackcolor) element.style.backgroundColor = icon.msgbackcolor;
+                }
             }
         }
+
+        //  アイコン設定
+        if (icon.img) {
+            let imgclassName = "sbj-icon-img-" + icon.iid.toString();
+            let elements = document.getElementsByClassName(imgclassName);
+
+            for (let i in elements) {
+                let element = elements[i] as HTMLElement;
+                if (element.style) {
+                    ImageInfo.SetElementCss(element, icon.img);
+                }
+            }
+        }
+
     }
 
 }

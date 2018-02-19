@@ -56,13 +56,17 @@ export class Icon implements IOrder {
         this.img = new ImageInfo();
         this.dispratio = 0;
         this.voicecode = "";
+        this.msgcolor = "";
+        this.msgbackcolor = "";
     }
 
     iid: string;
     order: number;
     img: ImageInfo;
     dispratio: number;
-    voicecode:string;
+    voicecode: string;
+    msgcolor: string;
+    msgbackcolor: string;
 
     /**
      * データコピー(※Shallow Copy)

@@ -73,6 +73,7 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
 
         //
         let imgclassName = "sbj-timeline-img sbj-icon-img-" + iid.toString();
+        let msgClassName = "sbj-timeline-balloon sbj-balloon-" + iid.toString();
 
 
         //
@@ -82,7 +83,7 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
         let msg_div = (
             <div className='sbj-timline-message-box'>
                 {this.CreateNameTimeElement(this.props.MsgGroup[0], isMine)}
-                <div className='sbj-timeline-balloon'>
+                <div className={msgClassName}>
                     {msgtext}
                 </div>
             </div>

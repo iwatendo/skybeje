@@ -365,6 +365,7 @@ textarea.sbj-inputpanel-text {
 .sbj-timeline-balloon {
     border-radius: 5px;
     margin: 1px;
+    color: var(--sbj-color-timeline-message);
     background-color: var(--sbj-color-timeline-ballon);
     clear: both;
 }
@@ -393,12 +394,7 @@ label.sbj-timeline-name {
 
 p.sbj-timeline-message {
     font-size: 16px;
-    color: var(--sbj-color-timeline-message);
     margin: 2px;
-}
-
-p.sbj-timeline-message:hover{
-    background-color: var(--sbj-color-timeline-ballon-hover);
 }
 
 i.sbj-timeline-message-icon{
