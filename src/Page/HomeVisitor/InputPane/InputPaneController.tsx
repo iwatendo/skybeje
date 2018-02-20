@@ -24,7 +24,7 @@ import ChatMessageSender from '../../../Contents/Sender/ChatMessageSender';
 import VoiceChatMemberSender from '../../../Contents/Sender/VoiceChatMemberSender';
 import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberListSender';
 import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
-import StylelCache from '../../../Contents/Cache/StyleCache';
+import StyleCache from '../../../Contents/Cache/StyleCache';
 
 export default class InputPaneController {
 
@@ -156,7 +156,7 @@ export default class InputPaneController {
         let iid = actor.dispIid;
         let iconElement = document.getElementById('sbj-inputpanel-actor-icon');
 
-        StylelCache.SetIconStyleElement(iconElement, iid);
+        StyleCache.SetIconStyleElement(iconElement, iid);
 
         if (iid) {
             this._controller.IconCache.GetIcon(this._controller.PeerId, iid);
@@ -332,7 +332,7 @@ export default class InputPaneController {
                 break;
             case 2:
 
-                if( this._controller.VoiceCode.length > 0){
+                if (this._controller.VoiceCode.length > 0) {
                     let json = JSON.parse(this._controller.VoiceCode);
                     json.Message = text;
                     JSON.stringify(json)

@@ -16,7 +16,7 @@ import CastSelectorController from "./CastSelector/CastSelectorController";
 import InputPaneController from "./InputPane/InputPaneController";
 import LinkUtil from '../../Base/Util/LinkUtil';
 import ChatInfoSender from '../../Contents/Sender/ChatInfoSender';
-import StylelCache from '../../Contents/Cache/StyleCache';
+import StyleCache from '../../Contents/Cache/StyleCache';
 
 
 export default class HomeVisitorView extends AbstractServiceView<HomeVisitorController> {
@@ -314,10 +314,10 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         if (icon) {
             //  チャットの文字色 / 背景色設定
-            StylelCache.SetTimelineMsgStyle(icon.iid, icon);
+            StyleCache.SetTimelineMsgStyle(icon.iid, icon);
             //  アイコン設定
             if (icon.img) {
-                StylelCache.SetIconStyle(icon.iid, icon.img);
+                StyleCache.SetIconStyle(icon.iid, icon.img);
             }
         }
     }

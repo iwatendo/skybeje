@@ -2,6 +2,7 @@
 import * as ReactDOM from 'react-dom';
 import HomeVisitorController from '../HomeVisitorController';
 import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberListSender';
+import StyleCache from '../../../Contents/Cache/StyleCache';
 
 
 /**
@@ -23,11 +24,11 @@ export class VoiceSfuRoomMemberComponent extends React.Component<VoiceSfuRoomMem
     public render() {
 
         let iconDivs = this.props.memberList.Members.map((vcm) => {
-            if(vcm.iid){
-                let imgclassName = "sbj-voicechat-member-img sbj-icon-img-" + vcm.iid.toString();
-                return (<div className='sbj-voicechat-member-img-box'><div className={imgclassName}></div></div>);
+            if (vcm.iid) {
+                let imgstyle = StyleCache.GetIconStyle(vcm.iid);
+                return (<div className='sbj-voicechat-member-img-box'><div className='sbj-voicechat-member-img' style={imgstyle}></div></div>);
             }
-            else{
+            else {
                 return (<div></div>);
             }
         });

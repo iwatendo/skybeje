@@ -118,6 +118,20 @@ export default class ImageInfo {
 
 
     /**
+     * コピー
+     * @param pre 
+     */
+    public static Copy(pre: ImageInfo) : ImageInfo{
+        let result = new ImageInfo();
+        result.src = pre.src;
+        result.backgroundsize = pre.backgroundsize;
+        result.backgroundrepeat = pre.backgroundrepeat;
+        result.backgroundposition = pre.backgroundposition;
+        return result;
+    }
+
+
+    /**
      * 同一画像か？
      * @param pre 
      * @param cur 
@@ -125,7 +139,7 @@ export default class ImageInfo {
     public static Equals(pre: ImageInfo, cur: ImageInfo): boolean {
 
         if (pre && cur) {
-            if (pre.backgroundposition !== cur.backgroundposition) return false;
+            if (pre.backgroundsize !== cur.backgroundsize) return false;
             if (pre.backgroundrepeat !== cur.backgroundrepeat) return false;
             if (pre.backgroundposition !== cur.backgroundposition) return false;
             if (pre.src !== cur.src) return false;

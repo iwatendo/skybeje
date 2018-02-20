@@ -1,7 +1,7 @@
 import ImageInfo, { BgPosEnum, BgRepeatEnum, BgSizeEnum } from "../../Base/Container/ImageInfo";
 import { Icon } from "../IndexedDB/Personal";
 
-export default class StylelCache {
+export default class StyleCache {
 
 
     /*---------------------------------------------
@@ -16,7 +16,7 @@ export default class StylelCache {
      */
     public static GetTimelineMsgStyle(key: string): any {
 
-        if (!this._msgCssMap.has(key)) {
+        if (!StyleCache._msgCssMap.has(key)) {
             //  デフォルト設定
             document.documentElement.style.setProperty('--sbj-msgc-' + key, "var(--sbj-color-timeline-message)");
             document.documentElement.style.setProperty('--sbj-msgbc-' + key, "var(--sbj-color-timeline-ballon)");
@@ -37,14 +37,14 @@ export default class StylelCache {
     public static SetTimelineMsgStyle(key: string, icon: Icon) {
 
         //  チャットの文字色 / 背景色設定
-        if (icon && icon.msgcolor.length > 0 && icon.msgbackcolor.length > 0) {
-            if (this._msgCssMap.has(key)) {
+        if (icon && icon.msgcolor && icon.msgbackcolor) {
+            if (StyleCache._msgCssMap.has(key)) {
                 return;
             }
             else {
                 document.documentElement.style.setProperty('--sbj-msgc-' + key, icon.msgcolor);
                 document.documentElement.style.setProperty('--sbj-msgbc-' + key, icon.msgbackcolor);
-                this._msgCssMap.set(key, key);
+                StyleCache._msgCssMap.set(key, key);
             }
         }
 
@@ -63,7 +63,7 @@ export default class StylelCache {
      * @param key 
      */
     public static HasIconStyle(key: string): boolean {
-        return this._imgCssMap.has(key);
+        return StyleCache._imgCssMap.has(key);
     }
 
 
@@ -88,7 +88,7 @@ export default class StylelCache {
     public static GetIconStyle(key: string): any {
 
         //  デフォルト設定
-        if (!this._imgCssMap.has(key)) {
+        if (!StyleCache._imgCssMap.has(key)) {
             document.documentElement.style.setProperty('--sbj-bgc-' + key, 'rgba(0,0,0,.3)');
         }
 
@@ -108,19 +108,19 @@ export default class StylelCache {
      * @param rec 
      */
     public static SetIconStyle(key: string, rec: ImageInfo) {
-        if (this._imgCssMap.has(key)) {
+        if (StyleCache._imgCssMap.has(key)) {
             return;
         }
         else {
             if (rec) {
                 document.documentElement.style.setProperty('--sbj-bgc-' + key, "");
                 document.documentElement.style.setProperty('--sbj-imgbg-' + key, 'url(' + rec.src + ')');
-                document.documentElement.style.setProperty('--sbj-imgbgs-' + key, this.SizeEnumToString(rec.backgroundsize));
-                document.documentElement.style.setProperty('--sbj-imgbgr-' + key, this.RepeatEnumToString(rec.backgroundrepeat));
-                document.documentElement.style.setProperty('--sbj-imgbgp-' + key, this.PosEnumToString(rec.backgroundposition));
+                document.documentElement.style.setProperty('--sbj-imgbgs-' + key, StyleCache.SizeEnumToString(rec.backgroundsize));
+                document.documentElement.style.setProperty('--sbj-imgbgr-' + key, StyleCache.RepeatEnumToString(rec.backgroundrepeat));
+                document.documentElement.style.setProperty('--sbj-imgbgp-' + key, StyleCache.PosEnumToString(rec.backgroundposition));
                 document.documentElement.style.setProperty('--sbj-imgbg-' + key, 'url(' + rec.src + ')');
             }
-            this._imgCssMap.set(key, key);
+            StyleCache._imgCssMap.set(key, key);
         }
     }
 

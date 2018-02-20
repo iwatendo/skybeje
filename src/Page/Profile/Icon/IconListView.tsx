@@ -98,7 +98,12 @@ export default class IconListView {
     public OnClickEditIcon(view: IconListView) {
         let icon = view.SelectionIcon();
         if (icon) {
-            IconDialogController.Edit(icon, (newIcon) => this.UpdateIcon(view, icon, newIcon));
+            IconDialogController.Edit(icon, (newIcon) => {
+                //  変更あった時のみ更新
+                if (!Personal.Icon.Equlas(icon, newIcon)) {
+                    this.UpdateIcon(view, icon, newIcon);
+                }
+            });
         }
     }
 

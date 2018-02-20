@@ -71,7 +71,6 @@ export class Icon implements IOrder {
     iid: string;
     order: number;
     img: ImageInfo;
-    dispmode: ActorType;
     dispratio: number;
     voicecode: string;
     msgcolor: string;
@@ -85,11 +84,38 @@ export class Icon implements IOrder {
         let result = new Icon();
         result.iid = icon.iid;
         result.order = icon.order;
-        result.img = icon.img;
+        result.img = ImageInfo.Copy(icon.img);
         result.dispratio = icon.dispratio;
         result.voicecode = icon.voicecode;
+        result.msgcolor = icon.msgcolor;
+        result.msgbackcolor = icon.msgbackcolor;
         return result;
     }
+
+
+    /**
+     * データ比較
+     * @param icon1 
+     * @param icon2 
+     */
+    public static Equlas(icon1: Icon, icon2: Icon): boolean {
+        if (icon1 || icon2) {
+            if (icon1.dispratio === icon2.dispratio
+                && icon1.voicecode === icon2.voicecode
+                && icon1.msgcolor === icon2.msgcolor
+                && icon1.msgbackcolor === icon2.msgbackcolor
+                && ImageInfo.Equals(icon1.img, icon2.img)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
 }
 
 

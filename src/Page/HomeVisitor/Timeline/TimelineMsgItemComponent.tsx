@@ -10,7 +10,7 @@ import HomeVisitorController from "../HomeVisitorController";
 import { TimelineMsgGroup } from "./TimelineComponent";
 import SpeechUtil from '../../../Base/Util/SpeechUtil';
 import ImageInfo from '../../../Base/Container/ImageInfo';
-import StylelCache from '../../../Contents/Cache/StyleCache';
+import StyleCache from '../../../Contents/Cache/StyleCache';
 
 
 /**
@@ -76,8 +76,8 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
             );
         });
 
-        let iconstyle = StylelCache.GetIconStyle(iid);
-        let msgstyle = StylelCache.GetTimelineMsgStyle(iid);
+        let iconstyle = StyleCache.GetIconStyle(iid);
+        let msgstyle = StyleCache.GetTimelineMsgStyle(iid);
 
         //
         let image_div = (iid ? (<div className='sbj-timeline-img-box'><div className='sbj-timeline-img' style={iconstyle}></div></div>) : (<div></div>));

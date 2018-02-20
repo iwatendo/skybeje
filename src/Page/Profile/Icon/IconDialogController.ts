@@ -79,7 +79,7 @@ export default class IconDialogController {
 
         this._dialog.SetCssEditMode(false);
         this._dialog._icon = Icon.Copy(icon);
-        this._dialog.SetImage(icon.img);
+        this._dialog.SetImage(this._dialog._icon.img);
         this._dialog.SetDispratio(icon.dispratio);
         this._dialog.SetVoiceCode(icon.voicecode);
         this._dialog.SetMessageColor(icon.msgcolor);
