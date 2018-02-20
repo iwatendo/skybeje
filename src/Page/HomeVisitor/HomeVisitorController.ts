@@ -55,7 +55,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         return (this._currentActor ? this._currentActor.aid : "");
     }
     public get CurrentActor(): Personal.Actor { return this._currentActor; }
-    public CurrentIcon: Personal.Icon;
+    public VoiceCode: string;
     public CurrentHid: string;
     public HasError: boolean;
 
@@ -403,7 +403,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             this._elementMap.set(peerid, videoElement);
         }
     }
-    
+
 
     /**
      * 
@@ -498,6 +498,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             this.View.InputPane.ChangeVoiceChatStreamMember(this._peerList);
         }
     }
-    
+
 
 };

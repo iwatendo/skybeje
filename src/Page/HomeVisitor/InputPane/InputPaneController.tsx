@@ -24,6 +24,7 @@ import ChatMessageSender from '../../../Contents/Sender/ChatMessageSender';
 import VoiceChatMemberSender from '../../../Contents/Sender/VoiceChatMemberSender';
 import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberListSender';
 import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
+import StylelCache from '../../../Contents/Cache/StyleCache';
 
 export default class InputPaneController {
 
@@ -152,22 +153,23 @@ export default class InputPaneController {
         //  選択しているアクターの名称表示
         this._actorNameElement.textContent = (actor ? actor.name : "");
 
-        //  アイコン表示
-        let doDispIcon = (iconImg) => {
-            ImageInfo.SetCss('sbj-inputpanel-actor-icon', iconImg);
-            this._textareaElement.focus();
-        }
+        let iid = actor.dispIid;
+        let iconElement = document.getElementById('sbj-inputpanel-actor-icon');
 
-        if (actor.dispIid) {
-            this._controller.Model.GetIcon(actor.dispIid, (icon) => {
-                this._controller.CurrentIcon = icon;
-                doDispIcon(icon.img);
+        StylelCache.SetIconStyleElement(iconElement, iid);
+
+        if (iid) {
+            this._controller.IconCache.GetIcon(this._controller.PeerId, iid);
+            this._controller.Model.GetIcon(iid, (icon) => {
+                if (icon) {
+                    this._controller.VoiceCode = icon.voicecode;
+                }
             });
         }
         else {
-            this._controller.CurrentIcon = new Personal.Icon();
-            doDispIcon(new ImageInfo())
+            this._controller.VoiceCode = "";
         }
+        this._textareaElement.focus();
     }
 
 
@@ -323,7 +325,6 @@ export default class InputPaneController {
 
         let chm = this.CreateChatMessage(text, isVoiceRecognition);
         this._controller.SendChatMessage(chm);
-        let icon = this._controller.CurrentIcon;
 
         switch (LocalCache.ChatMessageCopyMode) {
             case 1:
@@ -331,9 +332,8 @@ export default class InputPaneController {
                 break;
             case 2:
 
-                if (icon && icon.voicecode) {
-
-                    let json = JSON.parse(icon.voicecode);
+                if( this._controller.VoiceCode.length > 0){
+                    let json = JSON.parse(this._controller.VoiceCode);
                     json.Message = text;
                     JSON.stringify(json)
                     StdUtil.ClipBoardCopy(JSON.stringify(json));

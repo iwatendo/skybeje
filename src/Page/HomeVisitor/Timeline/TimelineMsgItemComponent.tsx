@@ -76,7 +76,7 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
             );
         });
 
-        let iconstyle = StylelCache.GetImageStyle(iid);
+        let iconstyle = StylelCache.GetIconStyle(iid);
         let msgstyle = StylelCache.GetTimelineMsgStyle(iid);
 
         //

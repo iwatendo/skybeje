@@ -317,7 +317,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             StylelCache.SetTimelineMsgStyle(icon.iid, icon);
             //  アイコン設定
             if (icon.img) {
-                StylelCache.SetImageStyle(icon.iid, icon.img);
+                StylelCache.SetIconStyle(icon.iid, icon.img);
             }
         }
     }

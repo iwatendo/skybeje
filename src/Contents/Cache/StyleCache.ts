@@ -51,18 +51,41 @@ export default class StylelCache {
     }
 
 
-
     /*---------------------------------------------
     //  画像データのCSS
     //-------------------------------------------*/
 
     private static _imgCssMap = new Map<string, string>();
 
+
     /**
-     * 画像のCSS指定取得
+     * アイコンのスタイルはキャシュ（設定済か？）
      * @param key 
      */
-    public static GetImageStyle(key: string): any {
+    public static HasIconStyle(key: string): boolean {
+        return this._imgCssMap.has(key);
+    }
+
+
+    /**
+     * 
+     * @param element 
+     * @param key 
+     */
+    public static SetIconStyleElement(element: HTMLElement, key: string) {
+        element.style.background = 'var(--sbj-imgbg-' + key + ')';
+        element.style.backgroundSize = 'var(--sbj-imgbgs-' + key + ')';
+        element.style.backgroundRepeat = 'var(--sbj-imgbgr-' + key + ')';
+        element.style.backgroundPosition = 'var(--sbj-imgbgp-' + key + ')';
+        element.style.backgroundColor = 'var(--sbj-bgc-' + key + ')';
+    }
+
+
+    /**
+     * アイコンのCSS指定取得
+     * @param key 
+     */
+    public static GetIconStyle(key: string): any {
 
         //  デフォルト設定
         if (!this._imgCssMap.has(key)) {
@@ -81,10 +104,10 @@ export default class StylelCache {
 
     /**
      * 画像のCSS指定
-     * @param key 
+     * @param key
      * @param rec 
      */
-    public static SetImageStyle(key: string, rec: ImageInfo) {
+    public static SetIconStyle(key: string, rec: ImageInfo) {
         if (this._imgCssMap.has(key)) {
             return;
         }
