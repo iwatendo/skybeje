@@ -331,14 +331,19 @@ export default class InputPaneController {
                 StdUtil.ClipBoardCopy(text);
                 break;
             case 2:
-
-                if (this._controller.VoiceCode.length > 0) {
-                    let json = JSON.parse(this._controller.VoiceCode);
-                    json.Message = text;
-                    JSON.stringify(json)
-                    StdUtil.ClipBoardCopy(JSON.stringify(json));
+                try {
+                    if (this._controller.VoiceCode.length > 0) {
+                        let json = JSON.parse(this._controller.VoiceCode);
+                        json.Message = text;
+                        JSON.stringify(json)
+                        StdUtil.ClipBoardCopy(JSON.stringify(json));
+                    }
+                    break;
                 }
-                break;
+                catch (e) {
+                    let msg = "VoiceCode Error\n" + e.toString();
+                    alert(msg);
+                }
         }
 
         //  最終発言アクターをライブキャスト側に通知
