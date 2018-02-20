@@ -6,6 +6,12 @@ import StdUtil from "../../Base/Util/StdUtil";
 import LocalCache from "../Cache/LocalCache";
 
 
+export enum ActorType {
+    Default = 0,
+    Live = 1,
+}
+
+
 /**
  * アクター情報（ユーザープロフィール情報）
  */
@@ -13,6 +19,7 @@ export class Actor implements IOrder {
 
     constructor() {
         this.aid = "";
+        this.actorType = ActorType.Default;
         this.isUserProfile = false;
         this.isUsing = false;
         this.name = "";
@@ -25,6 +32,7 @@ export class Actor implements IOrder {
     }
 
     aid: string;
+    actorType: ActorType;
     isUserProfile: boolean;
     isUsing: boolean;
     name: string;
@@ -63,6 +71,7 @@ export class Icon implements IOrder {
     iid: string;
     order: number;
     img: ImageInfo;
+    dispmode: ActorType;
     dispratio: number;
     voicecode: string;
     msgcolor: string;

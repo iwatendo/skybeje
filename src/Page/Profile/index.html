@@ -114,9 +114,9 @@
                 <footer class="sbj-profile-footer mdl-mini-footer">
                     <div class="sbj-profile-footer-panel">
                         <div class="sbj-profile-footer-left">
-                            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-profile-icon-change-switch">
-                                <input type="checkbox" id="sbj-profile-icon-change-switch" class="mdl-switch__input" checked>
-                                <span class="mdl-switch__label">アイコンのダブルクリックで、発言アイコンを変更</span>
+                            <label id="sbj-profile-liveicon-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-profile-liveicon">
+                                <input type="checkbox" id="sbj-profile-liveicon" class="mdl-switch__input">
+                                <span class="mdl-switch__label">発言時に、配信上に表示しているアイコンを自動的に切替える</span>
                             </label>                            
                         </div>
                         <div class="sbj-profile-footer-right">
@@ -184,7 +184,7 @@
                         </div>
                         <div id="sbj-image-dispratio" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-image-dispratio-value"/>
-                            <label class="mdl-textfield__label" for="sbj-image-dispratio-value">配信の高さに対してのアイコン比率(％)</label>
+                            <label class="mdl-textfield__label" for="sbj-image-dispratio-value">配信画面の高さに対する表示比率(％)</label>
                             <span class="mdl-textfield__error">数値を入力してください</span>
                         </div>
                         <div id="sbj-voice-code-text-field" class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">

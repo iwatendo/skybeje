@@ -323,6 +323,7 @@ export default class InputPaneController {
 
         let chm = this.CreateChatMessage(text, isVoiceRecognition);
         this._controller.SendChatMessage(chm);
+        let icon = this._controller.CurrentIcon;
 
         switch (LocalCache.ChatMessageCopyMode) {
             case 1:
@@ -330,7 +331,6 @@ export default class InputPaneController {
                 break;
             case 2:
 
-                let icon = this._controller.CurrentIcon;
                 if (icon && icon.voicecode) {
 
                     let json = JSON.parse(icon.voicecode);
@@ -342,11 +342,13 @@ export default class InputPaneController {
         }
 
         //  最終発言アクターをライブキャスト側に通知
-        this._controller.View.CastSelector.NotifyLastChatActorToAllServent();
+        if (this._controller.CurrentActor.actorType === Personal.ActorType.Live) {
+            this._controller.View.CastSelector.NotifyLastChatActorToAllServent();
+        }
     }
 
 
-    private _preInput: ChatInfoSender
+    private _preInput: ChatInfoSender;
 
 
     /**

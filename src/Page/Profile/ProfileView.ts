@@ -97,6 +97,15 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         (document.getElementById('sbj-profile-tag') as HTMLInputElement).value = actor.tag;
         (document.getElementById('sbj-profile-note') as HTMLInputElement).value = actor.profile;
 
+        let isIconChnageMode = (actor.actorType == Personal.ActorType.Live);
+        if (isIconChnageMode) {
+            document.getElementById('sbj-profile-liveicon-label').classList.add('is-checked');
+        }
+        else{
+            document.getElementById('sbj-profile-liveicon-label').classList.remove('is-checked');
+        }
+        (document.getElementById('sbj-profile-liveicon') as HTMLInputElement).checked = isIconChnageMode;
+
         this._iconListView = new IconListView(this.Controller, document.getElementById('sbj-profile-icons-list'));
         this._guideListView = new GuideListView(this.Controller, document.getElementById('sbj-profile-guides-list'))
     }
@@ -137,8 +146,11 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
      * アイコンのダブルクリック時
      */
     public IconDoubleClick() {
-        let ics = document.getElementById('sbj-profile-icon-change-switch') as HTMLInputElement;
-        if (ics.checked) {
+
+        //  アイコンのダブルクリックで確定するパターンの処理も残しておく
+        let isIconChangeMode = false;
+
+        if (isIconChangeMode) {
             this.UpdateActor(this.Controller);
         }
         else {
@@ -157,10 +169,14 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         let nameElement = document.getElementById('sbj-profile-name') as HTMLInputElement;
         let tagElement = document.getElementById('sbj-profile-tag') as HTMLInputElement;
         let noteElement = document.getElementById('sbj-profile-note') as HTMLInputElement;
+        let actorTypeElement = document.getElementById('sbj-profile-liveicon') as HTMLInputElement;
+
 
         actor.name = nameElement.value;
         actor.tag = tagElement.value;
         actor.profile = noteElement.value;
+        actor.actorType = (actorTypeElement.checked ? Personal.ActorType.Live : Personal.ActorType.Default);
+
         controller.Model.UpdateActor(actor, () => {
             controller.ChangeActorNotify(actor.aid);
             controller.CloseNotify();
