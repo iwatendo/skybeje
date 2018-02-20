@@ -9,6 +9,8 @@ import MessageUtil from '../../../Base/Util/MessageUtil';
 import HomeVisitorController from "../HomeVisitorController";
 import { TimelineMsgGroup } from "./TimelineComponent";
 import SpeechUtil from '../../../Base/Util/SpeechUtil';
+import ImageInfo from '../../../Base/Container/ImageInfo';
+import StylelCache from '../../../Contents/Cache/StyleCache';
 
 
 /**
@@ -46,7 +48,7 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
             let button = (<span></span>);
 
             //  メッセージの削除ボタンの廃止
-            
+
             // if (this.IsMyChatMessage()) {
             //     button = (
             //         <button className='mdl-button mdl-js-button mdl-button--icon mdl-button--colored sbj-timeline-ignore' onClick={(e) => { this.OnIgnoreClick(tlmsg); }}>
@@ -74,19 +76,17 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
             );
         });
 
-        //
-        let imgclassName = "sbj-timeline-img sbj-icon-img-" + iid.toString();
-        let msgClassName = "sbj-timeline-balloon sbj-balloon-" + iid.toString();
-
+        let iconstyle = StylelCache.GetImageStyle(iid);
+        let msgstyle = StylelCache.GetTimelineMsgStyle(iid);
 
         //
-        let image_div = (iid ? (<div className='sbj-timeline-img-box'><div className={imgclassName}></div></div>) : (<div></div>));
+        let image_div = (iid ? (<div className='sbj-timeline-img-box'><div className='sbj-timeline-img' style={iconstyle}></div></div>) : (<div></div>));
 
         //
         let msg_div = (
             <div className='sbj-timline-message-box'>
                 {this.CreateNameTimeElement(this.props.MsgGroup[0], isMine)}
-                <div className={msgClassName}>
+                <div className='sbj-timeline-balloon' style={msgstyle}>
                     {msgtext}
                 </div>
             </div>

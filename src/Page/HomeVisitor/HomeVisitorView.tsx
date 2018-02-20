@@ -7,7 +7,6 @@ import * as Timeline from "../../Contents/IndexedDB/Timeline";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
-import ImageUtil from "../../Base/Util/ImageUtil";
 import ImageInfo from "../../Base/Container/ImageInfo";
 
 import { TimelineComponent } from "./Timeline/TimelineComponent";
@@ -17,6 +16,7 @@ import CastSelectorController from "./CastSelector/CastSelectorController";
 import InputPaneController from "./InputPane/InputPaneController";
 import LinkUtil from '../../Base/Util/LinkUtil';
 import ChatInfoSender from '../../Contents/Sender/ChatInfoSender';
+import StylelCache from '../../Contents/Cache/StyleCache';
 
 
 export default class HomeVisitorView extends AbstractServiceView<HomeVisitorController> {
@@ -312,37 +312,14 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     public SetIconCss(icon: Icon) {
 
-        if (!icon) {
-            return;
-        }
-
-        //  チャットの文字色 / 背景色設定
-        if (icon.msgcolor || icon.msgbackcolor) {
-            let msgclassName = "sbj-balloon-" + icon.iid.toString();
-            let elements = document.getElementsByClassName(msgclassName);
-
-            for (let i in document.getElementsByClassName(msgclassName)) {
-                let element = elements[i] as HTMLElement;
-                if (element.style) {
-                    if (icon.msgcolor) element.style.color = icon.msgcolor;
-                    if (icon.msgbackcolor) element.style.backgroundColor = icon.msgbackcolor;
-                }
+        if (icon) {
+            //  チャットの文字色 / 背景色設定
+            StylelCache.SetTimelineMsgStyle(icon.iid, icon);
+            //  アイコン設定
+            if (icon.img) {
+                StylelCache.SetImageStyle(icon.iid, icon.img);
             }
         }
-
-        //  アイコン設定
-        if (icon.img) {
-            let imgclassName = "sbj-icon-img-" + icon.iid.toString();
-            let elements = document.getElementsByClassName(imgclassName);
-
-            for (let i in elements) {
-                let element = elements[i] as HTMLElement;
-                if (element.style) {
-                    ImageInfo.SetElementCss(element, icon.img);
-                }
-            }
-        }
-
     }
 
 }
