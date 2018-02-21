@@ -13,9 +13,9 @@
 * バージョン59 以降で動作します。
 * Windows10 / Mac / Ubuntu / Android※ の Chromeでの動作を確認しています。
 * ※Androidについては一部機能のみ確認。基本的にはPC版のChromeをターゲットにしたサービスです。
-* ※iOSのChromeについては、現状WebRTCに対応していない為、動作しません。
 ### 使用ライブラリ ###
 * [adapterjs](https://github.com/webrtc/adapter) [(LICENSE)](https://github.com/webrtc/adapter/blob/master/LICENSE.md)
+* [ForcedTimer](https://github.com/Kanasansoft/ForcedTimer)[(LICENSE)](https://github.com/Kanasansoft/ForcedTimer/blob/master/LICENSE.txt)
 * [jQuery](https://jquery.com/) [(LICENSE)](https://jquery.org/license/)
 * [jquery.qrcode.js](http://jeromeetienne.github.io/jquery-qrcode/) [(LICENSE)](https://github.com/jeromeetienne/jquery-qrcode/blob/master/MIT-LICENSE.txt)
 * [jquery.split-pane](https://github.com/shagstrom/split-pane) [(LICENSE)](https://github.com/shagstrom/split-pane/blob/master/LICENSE)
