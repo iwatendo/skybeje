@@ -6013,7 +6013,6 @@ var DataConnection = function (_Connection) {
   }, {
     key: 'send',
     value: function send(data) {
-
       var _this3 = this;
 
       if (!this.open) {
@@ -6067,8 +6066,6 @@ var DataConnection = function (_Connection) {
         dataMeta.index = sliceIndex;
         dataMeta.data = slice;
 
-        console.info("send 6070");
-
         // Add all chunks to our buffer and start the send loop (if we haven't already)
         _util2.default.blobToArrayBuffer(_jsBinarypack2.default.pack(dataMeta), function (ab) {
           _this3._sendBuffer.push(ab);
@@ -6103,18 +6100,17 @@ var DataConnection = function (_Connection) {
       if (!this.sendInterval) {
         // Define send interval
         // Try sending a new chunk with every callback
-        this.sendInterval = setInterval(function () {
+        this.sendInterval = ForcedTimer.setInterval(function () {
           // Might need more extensive buffering than this:
           var currMsg = _this4._sendBuffer.shift();
           try {
-            console.info("send 6110 : " + currMsg.toString());
             _this4._dc.send(currMsg);
           } catch (error) {
             _this4._sendBuffer.push(currMsg);
           }
 
           if (_this4._sendBuffer.length === 0) {
-            clearInterval(_this4.sendInterval);
+            ForcedTimer.clearInterval(_this4.sendInterval);
             _this4.sendInterval = undefined;
           }
         }, _config2.default.sendInterval);
@@ -8598,9 +8594,6 @@ var Socket = function (_EventEmitter) {
   }, {
     key: 'send',
     value: function send(type, message) {
-
-      console.info("send 8600");
-      
       if (!type) {
         this._io.emit('error', 'Invalid message');
         return;
@@ -16774,9 +16767,6 @@ var SFURoom = function (_Room) {
   }, {
     key: 'send',
     value: function send(data) {
-
-      console.info("send 16776");
-
       if (!this._open) {
         return;
       }
@@ -17217,7 +17207,6 @@ var MeshRoom = function (_Room) {
   }, {
     key: 'send',
     value: function send(data) {
-
       var message = {
         roomName: this.name,
         data: data
