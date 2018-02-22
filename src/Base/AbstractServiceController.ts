@@ -153,10 +153,11 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
         if (recv === null)
             return;
 
-        let sender: Sender = JSON.parse(recv) as Sender;
+        let json = decodeURIComponent(recv);
+        let sender: Sender = JSON.parse(json) as Sender;
 
         if (LogUtil.IsOutputSender(sender))
-            LogUtil.Info(this, "recv : " + recv);
+            LogUtil.Info(this, "recv : " + json);
 
         if (sender === null)
             return;

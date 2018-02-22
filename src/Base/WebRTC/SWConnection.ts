@@ -52,7 +52,7 @@ export default class SWConnection {
         //  接続済みの場合は即送信
         if (this._isOpen) {
             if (this._conn.open) {
-                this._conn.send(data);
+                this._conn.send(encodeURIComponent(data));
             }
         }
         else {
@@ -73,7 +73,7 @@ export default class SWConnection {
     private OnConnectionOpen(conn: PeerJs.DataConnection) {
         this._isOpen = true;
         LogUtil.Info(this._service, "data connection [" + this._swpeer.PeerId + "] <-> [" + conn.peer + "]");
-        this._sendQueue.forEach((data) => { conn.send(data); });
+        this._sendQueue.forEach((data) => { conn.send(encodeURIComponent(data)); });
         this._sendQueue = new Array<any>();
         this._service.OnChildConnection(conn);
     }
