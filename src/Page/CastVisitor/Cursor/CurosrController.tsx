@@ -57,7 +57,7 @@ export class CastCursor {
  */
 export class CursorController {
 
-    private _service : IServiceController;
+    private _service: IServiceController;
     private _video: HTMLVideoElement;
     private _cursorDispElement: HTMLElement;
     private _busy: boolean = false;
@@ -85,7 +85,7 @@ export class CursorController {
      * @param itemDivElement 
      * @param cursorDivElement 
      */
-    public constructor(service:IServiceController, video: HTMLVideoElement, itemDivElement: HTMLElement, cursorDivElement: HTMLElement) {
+    public constructor(service: IServiceController, video: HTMLVideoElement, itemDivElement: HTMLElement, cursorDivElement: HTMLElement) {
 
         this._service = service;
         this._video = video;
@@ -241,14 +241,14 @@ export class CursorController {
         if (sender && sender.isDisp) {
 
             //  発言アクターに変更があった場合、表示を差替える
-            if( sender.aid !== aid || sender.iid !== iid){
+            if (sender.aid !== aid || sender.iid !== iid) {
                 sender.aid = aid;
                 sender.iid = iid;
                 this.SendCursorToOwner(sender);
             }
         }
     }
-    
+
 
     /**
      * マウスカーソルの表示処理
@@ -273,15 +273,16 @@ export class CursorController {
 
         });
 
-
-        //  ququeがある場合、最後に送信する
-        if (this._queue !== null && this._queue.aid === cursor.aid) {
-            this.SendCursorToOwner(this._queue);
-            this._queue = null;
-        }
-        else {
-            this._busy = false;
-        }
+        setTimeout(() => {
+            //  queueがある場合、最後に送信する
+            if (this._queue !== null && this._queue.aid === cursor.aid) {
+                this.SendCursorToOwner(this._queue);
+                this._queue = null;
+            }
+            else {
+                this._busy = false;
+            }
+        }, 10);
     }
 
 
@@ -492,8 +493,8 @@ export class CursorController {
                     element.onmouseup = (e) => clearOffsset();
 
                     //  イメージ画像として掴んでしまい、うまく動かせないケースの対策
-                    element.onselectstart = (e) =>{ return false; }
-                    element.onmousemove = (e)=>{ return false; }
+                    element.onselectstart = (e) => { return false; }
+                    element.onmousemove = (e) => { return false; }
                 }
             }
         }
