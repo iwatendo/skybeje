@@ -4,10 +4,10 @@ import FileUtil from "../../../Base/Util/FileUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import * as Enum from "../../../Base/Container/ImageInfo";
 import { Icon } from "../../../Contents/IndexedDB/Personal";
+import FileAttachUtil from "../../../Base/Util/FileAttachUtil";
 
 
 interface OnChangeIcon { (icon: Icon): void }
-interface OnDropIcon { (owner: IconDialogController, file: File, src): void }
 
 
 export default class IconDialogController {
@@ -17,8 +17,8 @@ export default class IconDialogController {
 
     private _imageBackgroundElement = document.getElementById("sbj-image-background");
     private _imageView = document.getElementById("sbj-image-view");
-    private _attachButton = document.getElementById("sbj-image-attach");
-    private _cameraButton = document.getElementById("sbj-image-camera");
+    private _attachButton = document.getElementById("sbj-image-attach") as HTMLButtonElement;
+    private _cameraButton = document.getElementById("sbj-image-camera") as HTMLButtonElement;
     private _imageDropMsg = document.getElementById("sbj-image-drop-msg");
 
     private _messageColorElement = document.getElementById("sbj-message-color-value") as HTMLInputElement;
@@ -111,35 +111,15 @@ export default class IconDialogController {
                 this.Close();
         };
 
-        //  ファイル選択画面の表示
-        this._attachButton.onclick = (e) => {
-            FileUtil.SelectImageFile((file) => {
-                this.FileToBase64(file);
-            });
-        };
-
-        //  カメラの起動
-        this._cameraButton.onclick = (e) => {
-            FileUtil.SelectImageCamera((file) => {
-                this.FileToBase64(file);
-            });
-        };
-
-        //  画像エリアのイベント（ドラック＆ドロップ用）
-        this._imageView.ondragover = (event) => {
-            event.preventDefault();
-            event.dataTransfer.dropEffect = 'copy';
-            this._imageView.focus();
-        };
-
-        this._imageView.ondrop = (event) => {
-            event.preventDefault();
-            let files: FileList = event.dataTransfer.files;
-            if (files.length > 0) {
-                this.FileToBase64(files[0]);
+        FileAttachUtil.SetImageDropEvenet(
+            this._imageView,
+            this._attachButton,
+            this._cameraButton,
+            (file, src) => {
+                let rec = this.CreateImageRec(src);
+                this.SetImage(rec);
             }
-            this.UrtTobase64(event.dataTransfer.items);
-        };
+        );
 
         //  CSS設定
         this._bgsizeMap = this.CreateBackgoundSizeMap();
@@ -245,17 +225,6 @@ export default class IconDialogController {
 
 
     /**
-     * 画像ドロップ時イベント
-     * @param file
-     * @param src
-     */
-    private OnDropImage(owner: IconDialogController, file: File, src) {
-        let rec = owner.CreateImageRec(src);
-        owner.SetImage(rec);
-    }
-
-
-    /**
      * 画像データ生成
      * @param src
      */
@@ -306,7 +275,6 @@ export default class IconDialogController {
         imgStyle.width = "424px";
         imgStyle.height = "424px";
 
-
         if (image.src == null || image.src.length == 0) {
             imgStyle.background = "";
             this.SetEditButtonDisabled(true);
@@ -334,64 +302,6 @@ export default class IconDialogController {
         (document.getElementById('sbj-image-done') as HTMLInputElement).disabled = disabled;
         (document.getElementById('sbj-image-update') as HTMLInputElement).disabled = disabled;
         this._imageDropMsg.hidden = !disabled;
-    }
-
-
-    /**
-     * 指定されたファイルを Base64 形式に変換する
-     * @param files
-     */
-    private FileToBase64(file: File) {
-
-        let owner = this;
-
-        if (file) {
-
-            if (file.type.indexOf('image/') === 0) {
-
-                let reader = new FileReader();
-
-                let dropImage = this.OnDropImage;
-
-                reader.onload = function (event) {
-                    let target = event.target as FileReader;
-                    dropImage(owner, file, target.result);
-                };
-
-                reader.readAsDataURL(file);
-            }
-
-        }
-    }
-
-
-    /**
-     * 指定されたURLの画像を Base64 形式に変換する
-     * @param itemList
-     */
-    private UrtTobase64(itemList) {
-
-        for (let i = 0, l = itemList.length; i < l; i++) {
-
-            let dti: DataTransferItem = itemList[i];
-
-            if (dti != null && dti.type == 'text/html')
-                dti.getAsString((s) => { this.DataTransferItem(s) });
-        }
-    }
-
-
-    /**
-     * データ変換処理
-     * @param value
-     */
-    private DataTransferItem(value: string) {
-        let doc: Document = new DOMParser().parseFromString(value, 'text/html');
-        let image = doc.images[0];
-        if (image) {
-            let result = image.attributes.getNamedItem('src').nodeValue;
-            this.OnDropImage(this, null, result);
-        }
     }
 
 
