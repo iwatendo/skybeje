@@ -28,7 +28,8 @@ import UseActorSender from "../../Contents/Sender/UseActorSender";
 import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
 import GetTimelineSender from "../../Contents/Sender/GetTimelineSender";
 import UpdateTimelineSender from "../../Contents/Sender/UpdateTimelineSender";
-
+import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
+import CursorInfo from "../../Contents/Struct/CursorInfo";
 
 /**
  * 
@@ -73,6 +74,8 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.TimelineCache = new TimelineCache(this);
         this.ServentCache = new ServentCache(this);
         this.Bot = new BotController(this);
+
+        MessageChannelUtil.SetOwner();
     };
 
 
@@ -182,6 +185,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.Model.GetActor(aid, (actor) => {
             this._currentActor = actor;
             this.SetUseActors(ua);
+            this.PostActorToServent();
         });
     }
 
@@ -295,9 +299,22 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
             //  変更したアクターの部屋へ変更
             this.RoomCache.GetRoomByActorId(aid, (room) => {
                 this.View.SetRoomInfo(room);
-                this.View.CastSelector.NotifyActorToAllServent();
+                this.PostActorToServent();
             });
         });
+    }
+
+
+    /**
+     * サーバント側に使用アクターを通知
+     */
+    public PostActorToServent(isDispChange: boolean = false) {
+        let info = new CursorInfo();
+        info.peerid = this.PeerId;
+        info.aid = this.CurrentAid;
+        info.iid = this.CurrentActor.dispIid;
+        info.isDispChange = isDispChange;
+        MessageChannelUtil.Post(JSON.stringify(info));
     }
 
 

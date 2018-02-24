@@ -90,11 +90,9 @@ export default class ServentElementPack {
             frame.onload = (e) => {
                 //  エンターキー押下時に、テキストボックスにフォーカスが移るようにする
                 frame.contentDocument.onkeyup = this._homeController.View.InputPane.OnOtherKeyPress;
-
                 frame.contentDocument.onmouseover = (e) => {
                     frame.contentWindow.document.body.focus();
                 }
-                this._homeController.View.CastSelector.NotifyActorToServent(frame);
             }
             frame.setAttribute('src', url);
         }

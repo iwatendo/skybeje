@@ -8,6 +8,7 @@ import LogUtil from "../../../Base/Util/LogUtil";
 import IServiceController from '../../../Base/IServiceController';
 import GetIconSender from '../../../Contents/Sender/GetIconSender';
 import IconCursorSender from '../../../Contents/Sender/IconCursorSender';
+import CursorInfo from '../../../Contents/Struct/CursorInfo';
 
 
 export class VideoDispOffset {
@@ -66,16 +67,13 @@ export class CursorController {
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
     private _iconCache = new Map<string, Map<string, Personal.Icon>>();
 
-    private _ownerPeerIdElement = document.getElementById('peerid') as HTMLInputElement;
-    private _ownerAidElement = document.getElementById('aid') as HTMLInputElement;
-    private _ownerIidElement = document.getElementById('iid') as HTMLInputElement;
-
-    private _homePeerId: string;
-
     private static _videoHeight = 0;
     private static _cursorOffsetX = 0;
     private static _cursorOffsetY = 0;
     private static _mineCursor: IconCursorSender = null;
+
+    public CursorInfo: CursorInfo;
+
 
     /**
      * 初期化処理
@@ -118,10 +116,6 @@ export class CursorController {
             this.CastCursorSend(this._video, itemDivElement, 0, 0, false);
         }
 
-        this._homePeerId = this._ownerPeerIdElement.textContent;
-        this._ownerPeerIdElement.onchange = (e) => {
-            this._homePeerId = this._ownerPeerIdElement.textContent;
-        }
     }
 
 
@@ -297,7 +291,7 @@ export class CursorController {
      */
     private CastCursorSend(video: HTMLVideoElement, cursorpost: HTMLElement, clientX: number, clientY: number, isDisp: boolean) {
 
-        if (!this._homePeerId) {
+        if (!this.CursorInfo) {
             return;
         }
 
@@ -310,10 +304,10 @@ export class CursorController {
 
 
         let sender = new IconCursorSender();
-        sender.homePeerId = this._homePeerId;
+        sender.homePeerId = this.CursorInfo.peerid;
         sender.visitorPeerId = this._service.SwPeer.PeerId;
-        sender.aid = this._ownerAidElement.textContent;
-        sender.iid = this._ownerIidElement.textContent;
+        sender.aid = this.CursorInfo.aid;
+        sender.iid = this.CursorInfo.iid;
 
         sender.posRx = posRx;
         sender.posRy = posRy;
@@ -475,7 +469,7 @@ export class CursorController {
                 element.style.margin = "-" + mergin.toString() + "px";
 
                 //  自分自身のアイコンの場合はクリックイベントを追加する
-                if (icon.iid === this._ownerIidElement.textContent) {
+                if (icon.iid === this.CursorInfo.iid) {
 
                     element.onmousedown = (e) => {
                         CursorController._cursorOffsetX = e.offsetX - mergin;

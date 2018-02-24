@@ -10,6 +10,8 @@ import { SubTitlesController } from "./SubTitles/SubTitlesController";
 import MobileDialog from "./Mobile/MobileDialog";
 import { DialogMode } from "../../Contents/AbstractDialogController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
+import CursorInfo from "../../Contents/Struct/CursorInfo";
 
 
 /**
@@ -23,7 +25,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
     //
     public Initialize(callback: OnViewLoad) {
-        
+
         this.SubTitles = new SubTitlesController();
 
         StdUtil.StopPropagation();
@@ -117,19 +119,20 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         this.Cursor = new CursorController(this.Controller, video, itemport, curport);
         this.Cursor.DisplayAll();
 
-        //  クライアント側の発言アイコン通知
-        let lastChatAidElement = document.getElementById('lastChatAid') as HTMLInputElement;
-        let lastChatIidElement = document.getElementById('lastChatIid') as HTMLInputElement;
 
-        let chnageLastChatActor = (e) => {
-            let aid = lastChatAidElement.textContent;
-            let iid = lastChatIidElement.textContent;
+        MessageChannelUtil.SetReceiver(this.Controller.SwPeer.PeerId, (msg) => {
 
-            this.Cursor.SetLastChatActor(aid, iid);
-        }
+            if (msg) {
+                let curInfo = JSON.parse(msg) as CursorInfo;
+                if (curInfo) {
+                    this.Cursor.CursorInfo = curInfo;
+                    if (curInfo.isDispChange) {
+                        this.Cursor.SetLastChatActor(curInfo.aid, curInfo.iid);
+                    }
+                }
+            }
 
-        lastChatAidElement.onclick = chnageLastChatActor;
-        lastChatIidElement.onclick = chnageLastChatActor;
+        });
     }
 
 

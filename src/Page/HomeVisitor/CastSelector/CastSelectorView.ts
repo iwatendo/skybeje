@@ -47,10 +47,6 @@ export default class CastSelectorView {
             let slp = new ServentElementPack(controller, i);
             this._servnetElementPacks.push(slp);
 
-            slp.Frame.onload = (ev) => {
-                this._castSelectorController.NotifyActorToServent(slp.Frame);
-            }
-
             slp.Button.onclick = (ev) => {
                 let index = i;
                 this.LiveCastSelectClick(index);

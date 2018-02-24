@@ -7,6 +7,7 @@ import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
+import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
 
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
@@ -32,6 +33,10 @@ export default class CastVisitorController extends AbstractServiceController<Cas
         this.View = new CastVisitorView(this, () => {
             //  
         });
+    }
+
+    public OnPeerClose() {
+        MessageChannelUtil.RemoveReceiver(this.SwPeer.PeerId);
     }
 
 
@@ -95,15 +100,15 @@ export default class CastVisitorController extends AbstractServiceController<Cas
             });
         });
     }
-        
-        
+
+
     /**
      * 
      */
     public OnRoomOpen() {
         this.DummyJoin();
     }
-    
+
 
     /**
      * 
@@ -118,6 +123,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
             element.srcObject = stream;
             element.play();
         }
-    }    
+    }
 
 };
