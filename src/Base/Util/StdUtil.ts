@@ -1,8 +1,4 @@
-﻿
-/**
- * 
- */
-import LogUtil from "./LogUtil";
+﻿import LogUtil from "./LogUtil";
 import LinkUtil from "./LinkUtil";
 
 interface OnGetMobleDeviceId { (deviceId: string): void }

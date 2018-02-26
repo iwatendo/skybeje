@@ -3,8 +3,8 @@ module.exports = {
     boot: './src/Page/Boot/Script.ts',
     errorpage: './src/Page/ErrorPage/Script.ts',
     dashboard: './src/Page/Dashboard/Script.ts',
-    profile:'./src/Page/Profile/Script.ts',
-    room:'./src/Page/Room/Script.ts',
+    profile: './src/Page/Profile/Script.ts',
+    room: './src/Page/Room/Script.ts',
     homeinstance: './src/Page/HomeInstance/Script.ts',
     homevisitor: './src/Page/HomeVisitor/Script.ts',
     castinstance: './src/Page/CastInstance/Script.ts',
@@ -14,6 +14,7 @@ module.exports = {
     gadgetinstance: './src/Page/GadgetInstance/Script.ts',
     gadgetvisitor: './src/Page/GadgetVisitor/Script.ts',
     qrcode: './src/Page/QrCode/Script.ts',
+    usersettings: './src/Page/UserSettings/Script.ts',
   },
   output: {
     path: __dirname + '/dist',
