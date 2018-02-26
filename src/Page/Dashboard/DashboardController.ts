@@ -22,28 +22,6 @@ export default class DashboardController extends AbstractServiceController<Dashb
 
 
     /**
-     * ホームインスタンスが起動していた場合に
-     * ルームデータに変更があった事を通知する
-     */
-    public ChangeRoomNotify() {
-
-        let frame = window.parent.document.getElementById('sbj-main-home-instance-frame') as HTMLFrameElement;
-
-        if (!frame) {
-            return;
-        }
-
-        //  ホームインスタンス側のエレメント
-        let document = frame.contentDocument;
-        let element = document.getElementById("sbj-dashborad-change-room");
-
-        if (element) {
-            element.click();
-        }
-    }
-
-
-    /**
      * クライアントが起動していた場合に
      * アクターが変更があった事を通知する
      */

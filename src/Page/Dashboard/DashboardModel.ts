@@ -30,22 +30,9 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
      */
     protected Initialize(callback: OnModelLoad) {
         this._dbc = new DBContainer();
-
-        if (LocalCache.InitializedSkybeje) {
-            //  通常起動
-            this._dbc.ConnectAll(() => {
-                callback();
-            });
-        }
-        else {
-            //  初期データをセットして起動
-            this._dbc.RemoveAll(() => {
-                this._dbc.ConnectAll(() => {
-                    this.CreateDefaultData(callback);
-                });
-                LocalCache.InitializedSkybeje = true;
-            });
-        }
+        this._dbc.ConnectAll(() => {
+            callback();
+        });
     }
 
 
@@ -57,29 +44,6 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
     public GetRooms(callback: OnRead<Array<Home.Room>>) {
         this.HomeDB.ReadAll(Home.DB.ROOM, callback);
     }
-
-
-    /**
-     * ルーム情報の書込み
-     * @param room 
-     * @param callback 
-     */
-    public UpdateRoom(room: Home.Room, callback: OnWrite = null) {
-        this.HomeDB.Write<Home.Room>(Home.DB.ROOM, room.hid, room, callback);
-        this.Controller.ChangeRoomNotify();
-    }
-
-
-    /**
-     * ルーム情報の削除
-     * @param room 
-     * @param callback 
-     */
-    public DeleteRoom(room: Home.Room, callback: OnWrite = null) {
-        this.HomeDB.Delete<Home.Room>(Home.DB.ROOM, room.hid, callback);
-        this.Controller.ChangeRoomNotify();
-    }
-
 
 
     /**
@@ -290,62 +254,5 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
             callback(result);
         }
     }
-
-
-    /**
-     * 
-     */
-    public CreateDefaultData(callback: OnWrite) {
-
-        //  デフォルトアイコン
-        let icon = new Personal.Icon;
-        icon.iid = StdUtil.CreateUuid();
-        icon.img = new ImageInfo();
-        icon.img.src = "/image/default-icon.png";
-
-        //  デフォルトユーザー
-        let user = new Personal.Actor();
-        user.aid = LocalCache.UserID;
-        user.name = "名前未設定";
-        user.tag = "";
-        user.isUserProfile = true;
-        user.profile = "";
-        user.iconIds.push(icon.iid);
-        user.dispIid = icon.iid;
-
-        //
-        let room1 = new Home.Room();
-        room1.name = "エントランス";
-        room1.hid = StdUtil.CreateUuid();
-        room1.order = 1;
-        room1.tag = "Default";
-        room1.note = "接続したメンバーが最初に配置される部屋です";
-        room1.isDefault = true;
-        room1.background = new ImageInfo();
-        room1.background.src = "/image/default-room1.jpg";
-
-        //  
-        let room2 = new Home.Room();
-        room2.name = "リビング";
-        room2.hid = StdUtil.CreateUuid();
-        room2.order = 2;
-        room2.tag = "Default";
-        room2.note = "ホームインスタンスのオーナーの操作で入れる部屋です";
-        room2.isDefault = false;
-        room2.background = new ImageInfo();
-        room2.background.src = "/image/default-room2.jpg";
-
-        this.UpdateActor(user, () => {
-            this.UpdateIcon(icon, () => {
-                this.UpdateRoom(room1, () => {
-                    this.UpdateRoom(room2, () => {
-                        callback();
-                        LocalCache.InitializedSkybeje = true;
-                    });
-                });
-            });
-        });
-    }
-
 
 }

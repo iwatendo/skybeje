@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 
 <head>
-    <title>SkyBeje</title>
+    <title>Skybeje-ChatServer</title>
     <meta charset='utf-8'>
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
     <script src='/lib/forcedtimer.js'></script>
@@ -21,20 +21,16 @@
                 <span class="mdl-layout-title">ホームインスタンス&nbsp; </span>
                 <div id="sbj-home-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-home-instance-account-count">接続人数</div>
-                
+
                 <button id='sbj-start-visitor' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                     <i class="material-icons">directions_walk</i>
                     &nbsp; クライアント起動 &nbsp;
                 </button>
-                <button id='sbj-start-visitor-tab' class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
-                    &nbsp; 別タブでクライアントを起動 &nbsp;
+
+                <button id='sbj-start-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
+                    &nbsp; 招待URLのコピー &nbsp;
                 </button>
 
-                <div class="mdl-layout-spacer"></div>
-                <button id='sbj-stop-instance' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                    <i class="material-icons">stop</i>
-                    &nbsp; ホームインスタンスの停止 &nbsp;
-                </button>
             </div>
         </header>
 
@@ -45,18 +41,37 @@
             <div class="sbj-home-instance-actions mdl-card__actions">
                 <button id="sbj-home-instance-room-add-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                     <i class='material-icons'>add</i>
-                    &nbsp;ルーム追加&nbsp;
+                    &nbsp;チャットルーム追加&nbsp;
                 </button>
                 <button id='sbj-clear-timeline' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                     &nbsp; タイムラインのクリア &nbsp;
                 </button>
             </div>
             <div class="sbj-home-instance-info mdl-card__supporting-text">
-                ・接続したメンバーは、上記ルーム内に配置されます。<br/> 
-                ・ドラック＆ドロップで、部屋を移動させる事ができます。<br/>
-                ・部屋の移動は、ホームインスタンスのオーナーのみが可能です。
+                ・接続したメンバーは、上記ルーム内に配置されます。
+                <br/> ・ドラック＆ドロップで、部屋を移動させる事ができます。
+                <br/> ・部屋の移動は、ホームインスタンスのオーナーのみが可能です。
             </div>
         </main>
+
+        <main id="sbj-home-instance-mulitboot-error" hidden>
+            <div class="sbj-home-instance-info mdl-card__supporting-text">
+                <h6>
+                    起動済みのホームインスタンスが検出されました。
+                    <br /> ホームインスタンスは同時に複数起動することはできません。
+                    <br /> 前回の起動時に、正常終了しなかった場合にも検出される事があります。
+                </h6>
+                <button id="sbj-home-instance-force-boot" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent sbj-start-instance">
+                    <i class='material-icons'>cast</i>
+                    &nbsp;ホームインスタンスの強制起動&nbsp;
+                </button>
+                <h6>
+                    ホームインスタンスを複数起動した場合
+                    <br /> どちらのインスタンスも正常に動作しなくなるので注意してください。
+                </h6>
+            </div>
+        </main>
+
     </div>
 
     <!-- room edit -->

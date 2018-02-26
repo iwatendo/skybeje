@@ -22,21 +22,29 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      * @param callback 
      */
     protected Initialize(callback: OnViewLoad) {
-        
+
         StdUtil.StopPropagation();
 
-        document.getElementById('sbj-stop-instance').onclick = (e) => {
-            this.NotifyDashbord("");
-        };
-
         document.getElementById('sbj-start-visitor').onclick = (e) => {
-            this.StartVisitor(false);
-        };
-
-        document.getElementById('sbj-start-visitor-tab').onclick = (e) => {
             this.StartVisitor(true);
         };
 
+        //  「招待URLのコピー」
+        let clipcopybtn = document.getElementById('sbj-start-linkcopy') as HTMLInputElement;
+        clipcopybtn.onclick = (e) => {
+            let linkurl = LinkUtil.CreateLink("../Dashboard", LocalCache.BootHomeInstancePeerID);
+            StdUtil.ClipBoardCopy(linkurl);
+            clipcopybtn.textContent = " 招待URLをクリップボードにコピーしました ";
+            clipcopybtn.classList.remove('mdl-button--colored');
+            clipcopybtn.classList.add('mdl-button--raised');
+            clipcopybtn.disabled = true;
+            window.setTimeout(() => {
+                clipcopybtn.textContent = " 招待URLのコピー ";
+                clipcopybtn.classList.add('mdl-button--colored');
+                clipcopybtn.classList.remove('mdl-button--raised');
+                clipcopybtn.disabled = false;
+            }, 2000);
+        };
 
         document.getElementById('sbj-clear-timeline').onclick = (e) => {
             this.ClearTimeline();
@@ -56,17 +64,26 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
             });
         }
 
-        let peerid = LocalCache.BootHomeInstancePeerID;
-
-        //  this.SetInviteUrl(peerid);
-        this.NotifyDashbord(peerid);
-
-        this.Controller.Model.GetRooms((rooms) => {
+        //  ルーム情報を表示
+        let roomViewSet = (rooms) => {
             let element = document.getElementById("sbj-home-instance-rooms");
             this.Controller.Room = new RoomView(this.Controller, element, rooms);
             callback();
-        });
+        }
 
+        this.Controller.Model.GetRooms((rooms) => {
+            if (rooms && rooms.length > 0) {
+                roomViewSet(rooms);
+            }
+            else {
+                //  ルーム情報が存在しない場合、デフォルトデータをセットして表示
+                this.Controller.Model.CreateDefaultData(() => {
+                    this.Controller.Model.GetRooms((rooms) => {
+                        roomViewSet(rooms);
+                    });
+                });
+            }
+        });
     }
 
 
@@ -91,26 +108,12 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
 
 
     /**
-     * ホームインスタンスが起動した事を、ダッシュボードへ通知
-     * @param peerid ホームインスタンスのPeerID
-     */
-    public NotifyDashbord(peerid: string) {
-        let element = window.parent.document.getElementById('sbj-main-home-instance-id');
-
-        if (element) {
-            element.textContent = peerid;
-            element.click();
-        }
-    }
-
-
-    /**
      * 
      */
     public StartVisitor(isNewTab: boolean) {
 
         if (isNewTab) {
-            let url = LinkUtil.CreateLink("../", LocalCache.BootHomeInstancePeerID);
+            let url = LinkUtil.CreateLink("../dashboard", LocalCache.BootHomeInstancePeerID);
             window.open(url, '_blank');
         } else {
             let element = window.parent.document.getElementById('sbj-main-home-visitor-start');

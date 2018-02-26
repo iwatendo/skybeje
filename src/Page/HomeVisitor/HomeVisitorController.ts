@@ -164,7 +164,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      */
     public GetUseActors(callback: OnRead<Array<Personal.Actor>>) {
 
-        this.Model.GetActors((actors) => {
+        let func = (actors) => {
             Order.Sort(actors);
             let result = new Array<Personal.Actor>();
             actors.forEach((actor) => {
@@ -173,6 +173,19 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
                 }
             });
             callback(result);
+        };
+
+        this.Model.GetActors((actors) => {
+            if (actors && actors.length > 0) {
+                func(actors);
+            }
+            else {
+                this.Model.CreateDefaultData(() => {
+                    this.Model.GetActors((actors) => {
+                        func(actors);
+                    });
+                });
+            }
         });
     }
 

@@ -86,11 +86,6 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             this.Controller.Manager.Servent.CloseServent(sender as ServentCloseSender);
         }
 
-        //  強制終了処理
-        if (sender.type === ForcedTerminationSender.ID) {
-            this.Controller.SwPeer.Close();
-        }
-
         //  ボイスチャットルームのメンバー通知
         if (sender.type === VoiceChatMemberSender.ID) {
             this.Controller.Manager.VoiceChat.SetMember(sender as VoiceChatMemberSender);

@@ -1,25 +1,30 @@
-
-import * as Home from "../../Contents/IndexedDB/Home";
-
 import StdUtil from "../../Base/Util/StdUtil";
-import LinkUtil from "../../Base/Util/LinkUtil";
-
-import HomeInstanceController from "./HomeInstanceController";
-import HomeInstanceReceiver from "./HomeInstanceReceiver";
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import HomeInstanceController from "./HomeInstanceController";
 
 if (StdUtil.IsExecute()) {
 
-    let db = new Home.DB();
+    let bootid = LocalCache.BootHomeInstancePeerID;
 
-    db.Connect(() => {
+    if (bootid && bootid.length > 0) {
+
+        //  instanceIDが設定されていた場合は多重起動と判定する
+        document.getElementById('sbj-home-instance-header').hidden = true;
+        document.getElementById('sbj-home-instance-main').hidden = true;
+        document.getElementById('sbj-home-instance-mulitboot-error').hidden = false;
+
+        //  強制起動
+        document.getElementById('sbj-home-instance-force-boot').onclick = () => {
+            LocalCache.BootHomeInstancePeerID = "";
+            location.reload();
+        }
+    }
+    else {
+        //  通常起動
         let server = new HomeInstanceController();
         server.SwPeer = new SWPeer(server, null, null);
-
-        //  前回起動時に正常終了している場合、以下の値は空になる為、通常は設定されない
-        //  オーナー接続できた場合、多重起動された状態なので強制終了の通知を出す
-        let ownerID = LocalCache.BootHomeInstancePeerID;
-    });
-
+    }
 }
+
+

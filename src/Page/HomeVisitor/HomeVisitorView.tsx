@@ -73,16 +73,6 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             }, 3000);
         };
 
-        //  「退室」処理
-        document.getElementById('sbj-home-visitor-stop').onclick = (e) => {
-            this.Controller.NotifyDashbord('');
-        };
-
-        //  切断時の「退室」ボタン
-        document.getElementById('sbj-home-visitor-disconnect-exit').onclick = (e) => {
-            this.Controller.NotifyDashbord('');
-        };
-
         //  切断時の「再接続」ボタン
         document.getElementById('sbj-home-visitor-disconnect-retry').onclick = (e) => {
             location.reload();

@@ -7,6 +7,7 @@ import StdUtil from "../../Base/Util/StdUtil";
 import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/AbstractServiceModel";
 
 import HomeInstanceController from "./HomeInstanceController";
+import ImageInfo from "../../Base/Container/ImageInfo";
 
 
 export default class HomeInstanceModel extends AbstractServiceModel<HomeInstanceController> {
@@ -32,9 +33,42 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
                 });
             });
         });
-
     }
 
+
+    /**
+     * 
+     */
+    public CreateDefaultData(callback: OnWrite) {
+
+        //
+        let room1 = new Home.Room();
+        room1.name = "エントランス";
+        room1.hid = StdUtil.CreateUuid();
+        room1.order = 1;
+        room1.tag = "Default";
+        room1.note = "接続したメンバーが最初に配置される部屋です";
+        room1.isDefault = true;
+        room1.background = new ImageInfo();
+        room1.background.src = "/image/default-room1.jpg";
+
+        //  
+        let room2 = new Home.Room();
+        room2.name = "リビング";
+        room2.hid = StdUtil.CreateUuid();
+        room2.order = 2;
+        room2.tag = "Default";
+        room2.note = "ホームインスタンスのオーナーの操作で入れる部屋です";
+        room2.isDefault = false;
+        room2.background = new ImageInfo();
+        room2.background.src = "/image/default-room2.jpg";
+
+        this.UpdateRoom(room1, () => {
+            this.UpdateRoom(room2, () => {
+                callback();
+            });
+        });
+    }
 
     /**
      * 部屋情報の取得

@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="ja">
 
 <head>
@@ -7,7 +8,6 @@
     <meta charset="utf-8" />
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
     <link rel='stylesheet' href='/lib/material.min.css' />
-    <link rel="stylesheet" href="/lib/split-pane.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="common.css?v={version}">
     <link rel="stylesheet" href="style.css?v={version}">
@@ -17,52 +17,192 @@
 <body>
     <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
 
-        <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100 is-upgraded" data-upgraded=",MaterialLayout">
+        <header class="dl-layout__header mdl-layout__header--scroll mdl-color--indigo-A100 mdl-color-text--grey-800">
+            <div class="mdl-layout__header-row">
+                <img class="sbj-logo" src="/image/logo.png" />
+                <div class="mdl-layout-spacer"></div>
+                <nav class="mdl-navigation mdl-layout--large-screen-only">
+                    <a class="mdl-navigation__link" target="_blank" href="https://github.com/iwatendo/skybeje">
+                        <i class="material-icons">link</i>
+                        GitHub
+                    </a>
+                </nav>
+            </div>
+        </header>
 
-            <header class="sbj-header mdl-layout__header mdl-layout__header--scroll mdl-color--blue-grey-500 mdl-color-text--grey-800">
-                <div class="mdl-layout__header-row">
-                    <img class="sbj-logo" src="/image/logo.png"><img>
-                    <div class="mdl-layout-spacer"></div>
-                    <nav class="mdl-navigation mdl-layout--large-screen-only">
-                        <a class="mdl-navigation__link" target="_blank" href="https://github.com/iwatendo/skybeje">
-                            <i class="material-icons">link</i>
-                            GitHub
-                        </a>
-                        <a class="mdl-navigation__link" target="_blank" href="http://iwatendo.hateblo.jp/">
-                            <i class="material-icons">link</i>
-                            Blog
-                        </a>
-                    </nav>
+        <main class="sbj-main mdl-layout__content">
+            <div class="sbj-container mdl-grid mdl-color-text--grey-600">
+
+                <div class="mdl-cell mdl-cell--12-col">
+                    <h4>
+                        Skybejeはブラウザを「チャットサーバー」にするサービスです
+                    </h4>
                 </div>
-            </header>
 
-            <main class="sbj-main mdl-layout__content">
-                <div class="sbj-container mdl-grid mdl-color-text--grey-600">
-
-                    <div class="sbj-content mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-                        <h5>
-                            Skybejeは、ユーザー登録不要でチャット・グループ通話・画面共有ができるサービスです<br/>
-                        </h5>
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick='location.href="/dashboard/?auto=1"'>
-                                <i class="material-icons">dashboard</i>
-                                &nbsp;Skybejeを起動する&nbsp;
-                            </button>
-                            <span class="alpha">　※β版です。Google Chrome(PC版)でのみ動作します。</span>
-                        </div>
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='location.href="/dashboard/"'>
-                                ダッシュボードのみ起動する
-                            </button>
-                        </div>
-                        <h6>
-                            ブラウザ間で通信し、登録データは全てブラウザ上に保存します。<br/>
-                            <a target="_blank" href="https://github.com/iwatendo/skybeje/wiki/Terms-of-Service">プライバシーポリシーと利用規約</a>
-                        </h6>
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--8-col">
+                    <div class="mdl-card__actions">
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./homeinstance", "_blank")'>
+                            <i class="material-icons">dashboard</i>
+                            &nbsp;チャットサーバーを起動します&nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        ・チャットサーバーへの接続URLは毎回変わります
+                        <br/> ・ブラウザを閉じればチャットサーバーは停止します
+                        <br/> ・データは全て、ブラウザ内DB(IndexedDB)に保存されます
+                        <br/> ・ただし、プロフィール情報は各ユーザー側に保存されます
                     </div>
                 </div>
-            </main>
-        </div>
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                            <i class="material-icons">settings</i>
+                            &nbsp;各種設定&nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        ・チャットクライアント設定
+                        <br/> ・データのインポート/エクスポート
+                        <br/> ・ブラウザ内DBの初期化処理
+                    </div>
+                </div>
+
+                <div class="mdl-cell mdl-cell--12-col">
+                    <h5>
+                        以下のサービスの機能を連結させることができます
+                        <br/>※以下のサービスは単独でも動作します。
+                    </h5>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <div class="mdl-card__actions">
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                                <i class="material-icons">videocam</i>
+                                &nbsp; ビデオ配信 &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            複数台のWebカメラを使っての同時配信も可能です
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <div class="mdl-card__actions">
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                                <i class="material-icons">screen_share</i>
+                                &nbsp; スクリーンシェア &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            ブラウザのみで、デスクトップの配信をします
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <div class="mdl-card__actions">
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                                <i class="material-icons">smartphone</i>
+                                &nbsp; モバイル端末配信 &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            アプリ不用でスマートフォンやタブレットのカメラから配信します
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <div class="mdl-card__actions">
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                                <i class="material-icons">music_video</i>
+                                &nbsp; 楽曲ファイルの再生 &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            mp3/ogg等の楽曲ファイルを再生させる事ができます。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <div class="mdl-card__actions">
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                                <i class="material-icons">collections</i>
+                                &nbsp; 画像を表示 &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            &nbsp;&nbsp;拡大/縮小機能、透過画像を重ねて表示させる事ができます
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <div class="mdl-card__actions">
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                                <i class="material-icons">add_a_photo</i>
+                                &nbsp; モバイル端末の写真表示 &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            モバイル端末の写真をパソコンのブラウザに簡単に表示できます
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <div class="mdl-card__actions">
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                                <i class="material-icons">ondemand_video</i>
+                                &nbsp; YouTube同期再生 &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            動画の再生位置・一時停止・再生速度・音量設定等を同期させることができます
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card__actions">
+                        <div class="mdl-card__actions">
+                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
+                                <i class="material-icons">person_pin</i>
+                                &nbsp; 位置情報の表示 &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            モバイル端末の位置情報を、リアルタイムにGoogleMap上に表示します
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="mdl-mini-footer mdl-color-text--grey-800">
+                <div class="mdl-mini-footer__left-section">
+                    <div class="mdl-logo"></div>
+                </div>
+                <div class="mdl-mini-footer__right-section">
+                    <ul class="mdl-mini-footer__link-list">
+                        <li>
+                            <a target="_blank" href="https://github.com/iwatendo/skybeje/wiki/Terms-of-Service">
+                                プライバシーポリシーと利用規約
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </footer>
+
+        </main>
     </div>
 
     <script src="boot/bundle.js?v={version}"></script>

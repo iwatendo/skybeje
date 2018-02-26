@@ -37,28 +37,6 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
 
     /**
-     * オーナー接続時イベント
-     */
-    public OnOwnerConnection() {
-
-        //  通常は呼ばれない。
-        //  多重起動が検出されたケースで呼ばれる為、終了通知を出す。
-        this.SwPeer.SendToOwner(new ForcedTerminationSender());
-
-    }
-
-
-    /**
-     *  オーナ切断時イベント
-     */
-    public OnOwnerClose() {
-        //  強制終了側のインスタンスで
-        //  以下の値が削除される為再設定する
-        LocalCache.BootHomeInstancePeerID = this.PeerID;
-    }
-
-
-    /**
      * 自身のPeer生成時イベント
      * ※サーバー用のPeerID取得時イベント
      * @param peer

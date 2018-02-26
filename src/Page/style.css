@@ -28,8 +28,6 @@ body {
 
 .sbj-content {
   border-radius: 2px;
-  padding: 28px 54px;
-  margin-top: 80px;
   background-color: var(--sbj-color-default-background);
 }
 
