@@ -1,7 +1,6 @@
 
 import * as Personal from "./Personal";
 import * as Home from "./Home";
-import * as Friend from "./Friend";
 import * as Timeline from "./Timeline";
 import { OnModelLoad } from "../../Base/AbstractServiceModel";
 
@@ -9,7 +8,6 @@ export default class DBContainer {
 
     public PersonalDB: Personal.DB;
     public HomeDB: Home.DB;
-    public FriendDB: Friend.DB;
     public TimelineDB: Timeline.DB;
 
     /**
@@ -18,7 +16,6 @@ export default class DBContainer {
     public constructor() {
         this.PersonalDB = new Personal.DB();
         this.HomeDB = new Home.DB();
-        this.FriendDB = new Friend.DB();
         this.TimelineDB = new Timeline.DB();
     }
 
@@ -31,10 +28,8 @@ export default class DBContainer {
 
         this.PersonalDB.Remove(() => {
             this.HomeDB.Remove(() => {
-                this.FriendDB.Remove(() => {
-                    this.TimelineDB.Remove(() => {
-                        callback();
-                    });
+                this.TimelineDB.Remove(() => {
+                    callback();
                 });
             });
         });
@@ -50,10 +45,8 @@ export default class DBContainer {
 
         this.PersonalDB.Connect(() => {
             this.HomeDB.Connect(() => {
-                this.FriendDB.Connect(() => {
-                    this.TimelineDB.Connect(() => {
-                        callback();
-                    });
+                this.TimelineDB.Connect(() => {
+                    callback();
                 });
             });
         });

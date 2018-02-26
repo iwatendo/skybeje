@@ -1,7 +1,6 @@
 import DBContainer from "../../Contents/IndexedDB/DBContainer";
 import * as Personal from "../../Contents/IndexedDB/Personal";
 import * as Home from "../../Contents/IndexedDB/Home";
-import * as Friend from "../../Contents/IndexedDB/Friend";
 import * as Timeline from "../../Contents/IndexedDB/Timeline";
 
 import StdUtil from "../../Base/Util/StdUtil";
@@ -20,7 +19,6 @@ export default class DashboardModel extends AbstractServiceModel<DashboardContro
 
     public get PersonalDB() { return this._dbc.PersonalDB }
     public get HomeDB() { return this._dbc.HomeDB }
-    public get FriendDB() { return this._dbc.FriendDB }
     public get TimelineDB() { return this._dbc.TimelineDB }
 
 

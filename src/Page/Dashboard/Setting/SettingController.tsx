@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 import * as Home from "../../../Contents/IndexedDB/Home";
-import * as Friend from "../../../Contents/IndexedDB/Friend";
 import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import LinkUtil from "../../../Base/Util/LinkUtil";
@@ -95,7 +94,6 @@ export default class SettingController implements INaviContainer {
         switch (exportdb) {
             case DBEnum.Personal: this._controller.Model.PersonalDB.Export(); break;
             case DBEnum.Home: this._controller.Model.HomeDB.Export(); break;
-            case DBEnum.Friend: this._controller.Model.FriendDB.Export(); break;
             case DBEnum.Timeline: this._controller.Model.TimelineDB.Export(); break;
         }
     }
@@ -127,7 +125,6 @@ export default class SettingController implements INaviContainer {
 
         if (this._controller.Model.PersonalDB.IsImportMatch(data)) return this._controller.Model.PersonalDB;
         if (this._controller.Model.HomeDB.IsImportMatch(data)) return this._controller.Model.HomeDB;
-        if (this._controller.Model.FriendDB.IsImportMatch(data)) return this._controller.Model.FriendDB;
         if (this._controller.Model.TimelineDB.IsImportMatch(data)) return this._controller.Model.TimelineDB;
 
         return null;
