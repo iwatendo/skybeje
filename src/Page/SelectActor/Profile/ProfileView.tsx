@@ -18,9 +18,6 @@ export default class ProfileView {
     private _owner: SelectActorController;
     private _element: HTMLElement;
 
-    private _hoveVisitorIdElement = document.getElementById('sbj-main-home-visitor-id') as HTMLInputElement;
-    private _editCallback;
-
     /**
      * 
      */
@@ -34,14 +31,13 @@ export default class ProfileView {
     /**
      * 
      */
-    public DoShoActorEditDialog(aid: string, callback) {
+    public DoShoActorEditDialog(aid: string) {
 
         let controller = this._owner;
 
         controller.Model.GetUserProfile((userProfile) => {
             let frame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
             let src = LinkUtil.CreateLink("../Profile/") + "?aid=" + aid;
-            this._editCallback = callback;
 
             frame.onload = (e) => {
                 frame.hidden = false;
@@ -57,7 +53,7 @@ export default class ProfileView {
      */
     public Refresh() {
 
-        let isConnected = false;
+        let isConnected = true;
 
         this._owner.Model.GetActors((actors) => {
             let key = StdUtil.CreateUuid();

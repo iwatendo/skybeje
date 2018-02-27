@@ -7,6 +7,8 @@ import ProfileView from "./Profile/ProfileView";
 
 export default class SelectActorView extends AbstractServiceView<SelectActorController> {
 
+    public ProfileView : ProfileView;
+
     /**
      * 初期化処理
      * @param callback 
@@ -14,7 +16,7 @@ export default class SelectActorView extends AbstractServiceView<SelectActorCont
     protected Initialize(callback: OnViewLoad) {
         StdUtil.StopPropagation();
         let element = document.getElementById('sbj-main');
-        new ProfileView(this.Controller, element);
+        this.ProfileView = new ProfileView(this.Controller, element);
 
         callback();
     }

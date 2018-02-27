@@ -172,7 +172,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
 
         let controller = this.props.owner.props.controller;
         controller.Model.UpdateActor(actor, () => {
-            controller.ChangeActorNotify(actor.aid);
+            controller.PostChangeActor(actor.aid);
         });
     }
 
@@ -183,8 +183,7 @@ export default class ProfileItemComponent extends React.Component<ProfileItemPro
      */
     private OnSelectClick(event) {
         let actor = this.props.actor;
-        this.props.owner.props.controller.SelectActorNotify(actor.aid);
-        this.props.owner.Close(false);
+        this.props.owner.props.controller.PostSelectClose(actor.aid);
     }
 
 

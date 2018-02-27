@@ -77,7 +77,7 @@ export default class SelectActorModel extends AbstractServiceModel<SelectActorCo
      */
     public UpdateActor(actor: Personal.Actor, callback: OnWrite = null) {
         this.PersonalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, callback);
-        this.Controller.ChangeActorNotify(actor.aid);
+        this.Controller.PostChangeActor(actor.aid);
     }
 
 

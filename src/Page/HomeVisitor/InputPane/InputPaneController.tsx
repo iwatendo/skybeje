@@ -124,19 +124,17 @@ export default class InputPaneController {
                 //  プロフィール更新画面からの通知
                 if (info.updateAid) {
                     this._controller.ChagneActorInfo(info.updateAid);
+                    this.ChangeSelectionActorIcon(info.updateAid);
                 }
 
                 //  アクター選択画面からの通知
                 if (info.selectAid) {
-                    this._profileFrame.hidden = true;
                     this._controller.ChangeCurrentActor(info.selectAid);
                 }
 
                 //  プロフィール更新画面を閉じる
                 if (info.isClose) {
                     this._profileFrame.hidden = true;
-                    //  名称等の再描画の為にコール
-                    this.ChangeSelectionActorIcon(controller.CurrentAid);
                     this._textareaElement.focus();
                 }
             }

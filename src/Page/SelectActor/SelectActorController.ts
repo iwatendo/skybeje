@@ -2,6 +2,8 @@
 import AbstractServiceController from "../../Base/AbstractServiceController";
 import SelectActorModel from "./SelectActorModel";
 import SelectActorView from "./SelectActorView";
+import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
+import ProfileChangeInfo from "../../Contents/Struct/ProfileChangeInfo";
 
 
 export default class SelectActorController extends AbstractServiceController<SelectActorView, SelectActorModel> {
@@ -16,55 +18,78 @@ export default class SelectActorController extends AbstractServiceController<Sel
 
         this.Model = new SelectActorModel(this, () => {
             this.View = new SelectActorView(this, () => {
+                this.SetMessageChannel();
             });
         });
     }
 
 
     /**
-     * クライアントが起動していた場合に
-     * アクターが変更があった事を通知する
+     * メッセージチャンネルの設定
      */
-    public ChangeActorNotify(aid: string) {
+    private SetMessageChannel() {
 
-        let frame = window.parent.document.getElementById('sbj-main-home-visitor-frame') as HTMLFrameElement;
+        //  HomeVisitorの子フレームである事を設定
+        MessageChannelUtil.SetChild(this, (msg) => { });
 
-        if (!frame) {
-            return;
-        }
+        //  Profileの親フレームである事を設定
+        MessageChannelUtil.SetOwner((msg) => {
 
-        //  ホームインスタンス側のエレメント
-        let document = frame.contentDocument;
-        let element = document.getElementById("sbj-dashborad-change-actor") as HTMLInputElement;
+            //  Profileフレームからの通知
+            let info = JSON.parse(msg) as ProfileChangeInfo;
 
-        if (element) {
-            element.value = aid;
-            element.click();
-        }
+            if (info) {
+
+                //  プロフィール更新画面からの通知
+                if (info.updateAid) {
+                    this.PostChangeActor(info.updateAid);
+                    this.View.ProfileView.Refresh();
+                }
+
+                //  プロフィール更新画面を閉じる
+                if (info.isClose) {
+                    let profileFrame = document.getElementById('sbj-profile-frame');
+                    profileFrame.hidden = true;
+                }
+            }
+        });
+
     }
 
 
     /**
-     * クライアントが起動していた場合に
+     * アクターが変更があった事を通知する
+     */
+    public PostChangeActor(aid: string) {
+
+        let info = new ProfileChangeInfo();
+        info.updateAid = aid;
+        info.isClose = false;
+
+        MessageChannelUtil.PostOwner(JSON.stringify(info));
+    }
+
+
+    /**
      * 選択しているアクターが変更された事を通知する
      */
-    public SelectActorNotify(aid: string) {
+    public PostSelectClose(aid: string) {
 
-        let frame = window.parent.document.getElementById('sbj-main-home-visitor-frame') as HTMLFrameElement;
+        let info = new ProfileChangeInfo();
+        info.selectAid = aid;
+        info.isClose = true;
 
-        if (!frame) {
-            return;
-        }
-
-        //  ホームインスタンス側のエレメント
-        let document = frame.contentDocument;
-        let element = document.getElementById("sbj-dashborad-select-actor") as HTMLInputElement;
-
-        if (element) {
-            element.value = aid;
-            element.click();
-        }
+        MessageChannelUtil.PostOwner(JSON.stringify(info));
     }
-    
+
+
+    /** 
+     * 
+     */
+    public PostClose() {
+        let info = new ProfileChangeInfo();
+        info.isClose = true;
+        MessageChannelUtil.PostOwner(JSON.stringify(info));
+    }
 
 }

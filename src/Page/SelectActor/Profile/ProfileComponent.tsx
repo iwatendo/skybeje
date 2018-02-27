@@ -112,26 +112,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
             event.target.className === 'sbj-dashboard-profile' ||
             event.target.className === 'sbj-dashboard-profile-grid'
         )) {
-            this.Close(true);
-        }
-    }
-
-
-    /**
-     * プロフィール画面を閉じる
-     */
-    public Close(isActorRedraw: boolean) {
-        if (this.props.isConnected) {
-            this.setState({ selectedActor: "" },
-                () => {
-                    if (isActorRedraw) {
-                        //  Visitor側のアクター情報の再描画をする
-                        let frame = document.getElementById('sbj-main-home-visitor-frame') as HTMLFrameElement;
-                        let element = frame.contentDocument.getElementById('sbj-profile-do-close');
-                        if (element) element.click();
-                    }
-                }
-            );
+            this.props.controller.PostClose();
         }
     }
 
@@ -151,47 +132,45 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
      * @param actor 
      */
     public EditProfile(aid: string) {
+        this.props.view.DoShoActorEditDialog(aid);
+    }
 
-        this.props.view.DoShoActorEditDialog(aid, () => {
 
-            this.props.controller.Model.GetActor(aid, (actor) => {
+    public UpdateProfile(aid: string) {
 
-                if (!actor) {
-                    return;
-                }
+        this.props.controller.Model.GetActor(aid, (actor) => {
 
-                //  更新データの差替え
-                let newActors = this.state.actors.filter((a) => a.aid != aid);
-                newActors.push(actor);
-                Order.Sort(newActors);
+            if (!actor) {
+                return;
+            }
 
-                this.setState({
-                    actors: newActors,
-                    selectedActor: aid,
-                }, () => {
-                    let iid = actor.dispIid;
-                    this.props.controller.Model.GetIcon(iid, (icon) => {
-                        let img = (icon == null ? null : icon.img);
-                        ImageInfo.SetCss("sbj-icon-img-" + iid.toString(), img);
-                    });
+            //  更新データの差替え
+            let newActors = this.state.actors.filter((a) => a.aid != aid);
+            newActors.push(actor);
+            Order.Sort(newActors);
 
-                    this.props.controller.ChangeActorNotify(aid);
-
+            this.setState({
+                actors: newActors,
+                selectedActor: aid,
+            }, () => {
+                let iid = actor.dispIid;
+                this.props.controller.Model.GetIcon(iid, (icon) => {
+                    let img = (icon == null ? null : icon.img);
+                    ImageInfo.SetCss("sbj-icon-img-" + iid.toString(), img);
                 });
-
             });
 
         });
 
-    }
 
+    }
 
     /**
      * 「戻る」ボタン押下時処理
      * @param ev 
      */
     public OnClick_Back(ev) {
-        this.Close(true);
+        this.props.controller.PostClose();
     }
 
 
