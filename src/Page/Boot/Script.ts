@@ -11,6 +11,6 @@ if (!LocalCache.InitializedSkybeje) {
 else {
     let id = LinkUtil.GetPeerID();
     if (id) {
-        window.location.href = LinkUtil.CreateLink("dashboard/", id);
+        window.location.href = LinkUtil.CreateLink("HomeVisitor/", id);
     }
 }

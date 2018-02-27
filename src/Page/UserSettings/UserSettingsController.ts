@@ -6,7 +6,7 @@ import UserSettingsView from "./UserSettingsView";
 
 export default class UserSettingsController extends AbstractServiceController<UserSettingsView, UserSettingsModel> {
 
-    public ControllerName(): string { return "Dashboard"; }
+    public ControllerName(): string { return "UserSettings"; }
 
     /**
      * 

@@ -59,7 +59,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         //  「招待URLのコピー」
         let clipcopybtn = document.getElementById('sbj-home-visitor-linkcopy') as HTMLInputElement;
         clipcopybtn.onclick = (e) => {
-            let linkurl = LinkUtil.CreateLink("../Dashboard", LinkUtil.GetPeerID());
+            let linkurl = LinkUtil.CreateLink("../HomeVisitor", LinkUtil.GetPeerID());
             StdUtil.ClipBoardCopy(linkurl);
             clipcopybtn.textContent = " 招待URLをクリップボードにコピーしました ";
             clipcopybtn.classList.remove('mdl-button--colored');
