@@ -16,6 +16,7 @@ module.exports = {
     gadgetinstance: './src/Page/GadgetInstance/Script.ts',
     gadgetvisitor: './src/Page/GadgetVisitor/Script.ts',
     qrcode: './src/Page/QrCode/Script.ts',
+    selectactor: './src/Page/SelectActor/Script.ts',
     usersettings: './src/Page/UserSettings/Script.ts',
   },
   output: {

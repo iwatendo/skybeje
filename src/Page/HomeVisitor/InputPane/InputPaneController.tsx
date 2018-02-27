@@ -381,8 +381,17 @@ export default class InputPaneController {
     private DoShowActorSelectPanel() {
 
         let controller = this._controller;
-        controller.NotifyShowProfile(controller.CurrentAid, true);
-        this._profileFrame.src = "";
+        let useActors = controller.UseActors;
+        let aid = controller.CurrentAid;
+
+        let src = LinkUtil.CreateLink("../SelectActor/") + "?aid=" + aid;
+
+        this._profileFrame.src = null;
+        this._profileFrame.onload = () => {
+            this._profileFrame.hidden = false;
+            this._profileFrame.onload = null;
+        }
+        this._profileFrame.src = src;
     }
 
 

@@ -40,8 +40,6 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     protected Initialize(callback: OnViewLoad) {
 
-        //  ダッシュボードに通知
-        this.Controller.NotifyDashbord(this.Controller.PeerId);
         //  ライブキャストは前回分が残らないようにクリア通知
         this.Controller.NotifyClearLiveCast();
 

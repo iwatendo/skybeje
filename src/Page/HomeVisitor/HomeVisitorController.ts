@@ -331,30 +331,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     }
 
 
-    /**
-     * ダッシュボードへ起動したインスンタンスIDを通知
-     */
-    public NotifyDashbord(peerid: string) {
-        let element = window.parent.document.getElementById('sbj-main-home-visitor-id');
-        if (element) {
-            element.textContent = peerid;
-            element.click();
-        }
-    }
-
-
-    /**
-     * ダッシュボード側へ選択アクターを通知
-     * @param aid 
-     * @param isOpenProfile 
-     */
-    public NotifyShowProfile(aid: string, isOpenProfile: boolean) {
-        let element = window.parent.document.getElementById('sbj-main-home-visitor-profile-id');
-        if (element) {
-            element.textContent = aid;
-            element.click();
-        }
-    }
 
 
     /**
