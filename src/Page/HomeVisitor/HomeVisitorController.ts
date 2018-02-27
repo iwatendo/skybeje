@@ -74,8 +74,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.TimelineCache = new TimelineCache(this);
         this.ServentCache = new ServentCache(this);
         this.Bot = new BotController(this);
-
-        MessageChannelUtil.SetOwner();
     };
 
 

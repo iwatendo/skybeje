@@ -18,8 +18,6 @@ export default class ProfileView {
     private _owner: SelectActorController;
     private _element: HTMLElement;
 
-    private _profileSelectionIconElement = document.getElementById('sbj-profile-selection-icon') as HTMLInputElement;
-    private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
     private _hoveVisitorIdElement = document.getElementById('sbj-main-home-visitor-id') as HTMLInputElement;
     private _editCallback;
 
@@ -30,19 +28,6 @@ export default class ProfileView {
         this._owner = owner;
         this._element = element;
         this.Refresh();
-
-        //  プロフィール画面からのアイコン変更通知
-        this._profileSelectionIconElement.onclick = (e) => {
-        };
-
-        //  プロフィール画面からのダイアログクローズ通知
-        this._profileDoCloseElement.onclick = (e) => {
-            document.getElementById('sbj-profile-frame').hidden = true;
-            if (this._editCallback) {
-                this._editCallback();
-            }
-        }
-
     }
 
 

@@ -6,6 +6,7 @@ import ImageUtil from "../../Base/Util/ImageUtil";
 import IconListView from "./Icon/IconListView";
 import GuideListView from "./Guide/GuideListView";
 import ProfileController from "./ProfileController";
+import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
 
 
 export default class ProfileView extends AbstractServiceView<ProfileController> {
@@ -38,6 +39,9 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         this.SetButtonDisabled();
         this.InitializeEvent();
         document.getElementById('sbj-profile-name').focus();
+
+        MessageChannelUtil.SetChild(this.Controller, () => { });
+
         callback();
     }
 
@@ -101,7 +105,7 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         if (isIconChnageMode) {
             document.getElementById('sbj-profile-liveicon-label').classList.add('is-checked');
         }
-        else{
+        else {
             document.getElementById('sbj-profile-liveicon-label').classList.remove('is-checked');
         }
         (document.getElementById('sbj-profile-liveicon') as HTMLInputElement).checked = isIconChnageMode;
@@ -178,8 +182,7 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         actor.actorType = (actorTypeElement.checked ? Personal.ActorType.Live : Personal.ActorType.Default);
 
         controller.Model.UpdateActor(actor, () => {
-            controller.ChangeActorNotify(actor.aid);
-            controller.CloseNotify();
+            controller.PostChangeClose(actor.aid);
         });
     }
 
@@ -195,13 +198,12 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
             if (actor.iconIds.length > 0 || actor.guideIds.length > 0) {
                 actor.name = "（名称未設定）";
                 controller.Model.UpdateActor(actor, () => {
-                    controller.ChangeActorNotify(actor.aid);
-                    controller.CloseNotify();
+                    controller.PostChangeClose(actor.aid);
                 });
             }
         }
 
-        this.Controller.CloseNotify();
+        this.Controller.PostChangeClose("");
     }
 
 }

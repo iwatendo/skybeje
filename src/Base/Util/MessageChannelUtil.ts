@@ -1,8 +1,11 @@
+import IServiceController from "../IServiceController";
+
 interface OnMsg { (meg: string): void }
 
 
 export default class MessageChannelUtil {
 
+    private static _ownerPort: MessagePort = null;
     private static _ports = new Map<string, MessagePort>();
     private static _msg: string;
 
@@ -11,7 +14,7 @@ export default class MessageChannelUtil {
      * 
      * @param func 
      */
-    public static SetOwner() {
+    public static SetOwner(onmsg: OnMsg) {
         var port: MessagePort;
         window.onmessage = (e: MessageEvent) => {
             let key = e.data;
@@ -19,6 +22,9 @@ export default class MessageChannelUtil {
             if (port) {
                 this._ports.set(key, port);
                 port.postMessage(this._msg);
+                port.onmessage = (e) => {
+                    onmsg(e.data);
+                }
             }
             else {
                 if (this._ports.has(key)) {
@@ -27,6 +33,34 @@ export default class MessageChannelUtil {
             }
         }
     }
+
+
+    /**
+     * 
+     * @param controller 
+     * @param onmsg 
+     */
+    public static SetChild(controller: IServiceController, onmsg: OnMsg) {
+        var mc = new MessageChannel();
+        var port = mc.port1;
+        let key = controller.ControllerName();
+        if (controller.SwPeer) {
+            key += controller.SwPeer.PeerId;
+        }
+        window.parent.postMessage(key, location.origin, [mc.port2]);
+        port.onmessage = (e) => { onmsg(e.data); }
+        this._ownerPort = port;
+    }
+
+
+    /**
+     * 
+     * @param key 
+     */
+    public static RemoveChild(key: string) {
+        window.parent.postMessage(key, location.origin);
+    }
+
 
 
     /**
@@ -42,22 +76,10 @@ export default class MessageChannelUtil {
 
     /**
      * 
-     * @param onmsg 
+     * @param value 
      */
-    public static SetReceiver(key: string, onmsg: OnMsg) {
-        var mc = new MessageChannel();
-        var port = mc.port1;
-        window.parent.postMessage(key, location.origin, [mc.port2]);
-        port.onmessage = (e) => { onmsg(e.data); }
-    }
-
-
-    /**
-     * 
-     * @param key 
-     */
-    public static RemoveReceiver(key: string) {
-        window.parent.postMessage(key, location.origin);
+    public static PostOwner(value: string) {
+        this._ownerPort.postMessage(value);
     }
 
 }

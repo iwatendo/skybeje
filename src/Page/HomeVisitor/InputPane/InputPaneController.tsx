@@ -25,6 +25,8 @@ import VoiceChatMemberSender from '../../../Contents/Sender/VoiceChatMemberSende
 import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberListSender';
 import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
 import StyleCache from '../../../Contents/Cache/StyleCache';
+import MessageChannelUtil from '../../../Base/Util/MessageChannelUtil';
+import ProfileChangeInfo from '../../../Contents/Struct/ProfileChangeInfo';
 
 export default class InputPaneController {
 
@@ -58,11 +60,6 @@ export default class InputPaneController {
     private _otherRoomList = document.getElementById('sbj-inputpanel-other-room-list');
     private _otherRoomButton = document.getElementById('sbj-inputpanel-other-room-button');
     private _otherRoomCount = document.getElementById('sbj-inputpanel-noread-other-room-count');
-
-    private _dashboradChangeActorElement = document.getElementById('sbj-dashborad-change-actor') as HTMLInputElement;
-    private _dashboradSelectActorElement = document.getElementById('sbj-dashborad-select-actor') as HTMLInputElement;
-
-    private _profileDoCloseElement = document.getElementById('sbj-profile-do-close') as HTMLInputElement;
 
     private _profileFrame = document.getElementById('sbj-profile-frame') as HTMLFrameElement;
 
@@ -98,17 +95,6 @@ export default class InputPaneController {
         this._selectActorButton.onclick = (e) => { this.DoShowActorSelectPanel(); };
         this._sendMessageButton.onclick = (e) => { this.SendInputMessage(); };
 
-        //  ダッシュボードからの変更通知
-        this._dashboradChangeActorElement.onclick = (e) => {
-            this._controller.ChagneActorInfo(this._dashboradChangeActorElement.value);
-        }
-
-        this._dashboradSelectActorElement.onclick = (e) => {
-            this._profileFrame.hidden = true;
-            let aid = this._dashboradSelectActorElement.value
-            this._controller.ChangeCurrentActor(aid);
-        }
-
         this._voiceSpeech.onclick = (e) => {
             this.ChangeVoiceSpeech();
         }
@@ -129,12 +115,33 @@ export default class InputPaneController {
             this.IsMicMute = !this.IsMicMute;
         }
 
-        //  プロフィール画面からのダイアログクローズ通知
-        this._profileDoCloseElement.onclick = (e) => {
-            this._profileFrame.hidden = true;
-            this.ChangeSelectionActorIcon(controller.CurrentAid); //   名称等の再描画の為にコール
-            this._textareaElement.focus();
-        }
+        MessageChannelUtil.SetOwner((msg) => {
+
+            let info = JSON.parse(msg) as ProfileChangeInfo;
+
+            if (info) {
+
+                //  プロフィール更新画面からの通知
+                if (info.updateAid) {
+                    this._controller.ChagneActorInfo(info.updateAid);
+                }
+
+                //  アクター選択画面からの通知
+                if (info.selectAid) {
+                    this._profileFrame.hidden = true;
+                    this._controller.ChangeCurrentActor(info.selectAid);
+                }
+
+                //  プロフィール更新画面を閉じる
+                if (info.isClose) {
+                    this._profileFrame.hidden = true;
+                    //  名称等の再描画の為にコール
+                    this.ChangeSelectionActorIcon(controller.CurrentAid);
+                    this._textareaElement.focus();
+                }
+            }
+
+        });
 
         this._isMicMute = true;
         this._voiceMic.hidden = true;

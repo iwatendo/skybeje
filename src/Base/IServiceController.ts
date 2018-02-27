@@ -12,7 +12,7 @@ export default interface IServiceController {
     //
     SwRoom: SWRoom;
 
-    //  PeerIDの取得
+    //  
     ControllerName(): string;
 
     //  自身のPeer生成時イベント

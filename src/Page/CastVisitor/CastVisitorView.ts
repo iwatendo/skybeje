@@ -120,7 +120,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         this.Cursor.DisplayAll();
 
 
-        MessageChannelUtil.SetReceiver(this.Controller.SwPeer.PeerId, (msg) => {
+        MessageChannelUtil.SetChild(this.Controller, (msg) => {
 
             if (msg) {
                 let curInfo = JSON.parse(msg) as CursorInfo;

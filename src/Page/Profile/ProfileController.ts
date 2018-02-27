@@ -6,6 +6,8 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 import { Order } from "../../Base/Container/Order";
 import ProfileModel from "./ProfileModel";
 import ProfileView from "./ProfileView";
+import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
+import ProfileChangeInfo from "../../Contents/Struct/ProfileChangeInfo";
 
 
 export default class ProfileController extends AbstractServiceController<ProfileView, ProfileModel> {
@@ -57,27 +59,13 @@ export default class ProfileController extends AbstractServiceController<Profile
     /**
      * アクターの変更通知
      */
-    public ChangeActorNotify(aid: string) {
+    public PostChangeClose(aid: string) {
 
-        let element = window.parent.document.getElementById('sbj-dashborad-change-actor') as HTMLInputElement;
+        let info = new ProfileChangeInfo();
+        info.updateAid = aid;
+        info.isClose = true;
 
-        if (element) {
-            element.value = aid;
-            element.click();
-        }
-    }
-
-
-    /**
-     * クローズ通知
-     * ※親ドキュメント側から閉じる
-     */
-    public CloseNotify() {
-        let element = window.parent.document.getElementById('sbj-profile-do-close') as HTMLInputElement;
-
-        if (element) {
-            element.click();
-        }
+        MessageChannelUtil.PostOwner(JSON.stringify(info));
     }
 
 };

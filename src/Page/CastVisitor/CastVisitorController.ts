@@ -36,7 +36,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     }
 
     public OnPeerClose() {
-        MessageChannelUtil.RemoveReceiver(this.SwPeer.PeerId);
+        MessageChannelUtil.RemoveChild(this.SwPeer.PeerId);
     }
 
 
