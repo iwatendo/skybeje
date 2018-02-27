@@ -58,7 +58,7 @@ export interface ILogListener {
 export default class LogUtil {
 
 
-    public static _APPNAME = 'SkyBeje';
+    public static _APPNAME = 'Skybeje';
 
 
     //  リスナー管理
