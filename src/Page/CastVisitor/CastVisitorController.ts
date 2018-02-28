@@ -14,6 +14,8 @@ export default class CastVisitorController extends AbstractServiceController<Cas
 
     public View: CastVisitorView;
 
+    private _castPeerId: string;
+
     /**
      * コンストラクタ
      */
@@ -108,6 +110,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     }
 
 
+
     /**
      * 
      * @param peerid 
@@ -118,21 +121,24 @@ export default class CastVisitorController extends AbstractServiceController<Cas
         let element = document.getElementById('sbj-video') as HTMLVideoElement;
 
         if (element) {
+            this._castPeerId = peerid;
             element.hidden = false;
             element.srcObject = stream;
             element.play();
         }
     }
 
+
     /**
      * 
      * @param peerid 
-     * @param stream 
      */
-    public OnRoomRemoveStream(peerid: string, stream: MediaStream) {
+    public OnRoomPeerLeave(peerid: string) {
         let element = document.getElementById('sbj-video') as HTMLVideoElement;
-        if (element) {
+
+        if (element && peerid == this._castPeerId) {
             element.hidden = true;
         }
     }
+
 };

@@ -60,9 +60,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         //  ストリーミング停止ボタン
         stopButton.onclick = (e) => {
-            this.Controller.StopStreaming();
             this.Controller.ServerSend(false, false);
-            this.ChangeDisplayMode(false);
+            location.href = "";
         };
 
         //  配信設定ボタン（※モバイル配信画面には無いボタン）

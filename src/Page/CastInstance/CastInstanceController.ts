@@ -78,7 +78,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
         this.SwPeer.Close();
-        this.View.SetControllHidden();
+        window.open('about:blank', '_self').close();
     }
 
 
