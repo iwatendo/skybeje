@@ -40,6 +40,13 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     }
 
 
+    //  Peerエラー
+    public OnPeerError(err: Error) {
+        document.getElementById('sbj-cast-visitor-message-port').hidden = false;
+        document.getElementById('sbj-cast-visitor-message').textContent = "接続に失敗しました。または配信が終了しています。";
+    }
+
+
     /**
      * オーナー接続時イベント
      */
@@ -134,10 +141,10 @@ export default class CastVisitorController extends AbstractServiceController<Cas
      * @param peerid 
      */
     public OnRoomPeerLeave(peerid: string) {
-        let element = document.getElementById('sbj-video') as HTMLVideoElement;
 
-        if (element && peerid == this._castPeerId) {
-            element.hidden = true;
+        if (peerid == this._castPeerId) {
+            document.getElementById('sbj-cast-visitor-message-port').hidden = false;
+            document.getElementById('sbj-cast-visitor-message').textContent = "配信は終了しました";
         }
     }
 

@@ -39,12 +39,6 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             submenuMain.style.opacity = "0.0";
         }
 
-        //  別タブで開かれたステージはサブメニューは表示しない
-        if (LinkUtil.GetArgs("allout")) {
-            document.getElementById('sbj-cast-visitor-allout').hidden = true;
-            document.getElementById('sbj-cast-visitor-mobile-view').hidden = true;
-        }
-
         //  Video
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
 
@@ -133,22 +127,6 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
                 this.Cursor.Clear();
             }
         }
-    }
-
-
-    /**
-     * 
-     */
-    public DoShowQrCodeDialog() {
-
-        let catUrl = window.location.href;
-
-        if (!catUrl.indexOf("mute")) { catUrl += "&mute=1"; }
-        catUrl += "&allout=1";
-
-        let dialog = new MobileDialog(this.Controller);
-        dialog.Show(DialogMode.View, catUrl, () => { });
-
     }
 
 }
