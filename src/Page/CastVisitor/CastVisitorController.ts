@@ -1,13 +1,11 @@
 ﻿import AbstractServiceController from "../../Base/AbstractServiceController";
-import LinkUtil from "../../Base/Util/LinkUtil";
-import LogUtil from "../../Base/Util/LogUtil";
+import SWPeer from "../../Base/WebRTC/SWPeer";
+import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
+import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import * as Personal from "../../Contents/IndexedDB/Personal";
 import { CastVisitorView } from "./CastVisitorView";
 import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
-import SWPeer from "../../Base/WebRTC/SWPeer";
-import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
-import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
 
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
@@ -120,9 +118,21 @@ export default class CastVisitorController extends AbstractServiceController<Cas
         let element = document.getElementById('sbj-video') as HTMLVideoElement;
 
         if (element) {
+            element.hidden = false;
             element.srcObject = stream;
             element.play();
         }
     }
 
+    /**
+     * 
+     * @param peerid 
+     * @param stream 
+     */
+    public OnRoomRemoveStream(peerid: string, stream: MediaStream) {
+        let element = document.getElementById('sbj-video') as HTMLVideoElement;
+        if (element) {
+            element.hidden = true;
+        }
+    }
 };

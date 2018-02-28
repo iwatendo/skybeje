@@ -35,7 +35,6 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     constructor() {
         super();
         this.Receiver = new CastInstanceReceiver(this);
-        this.View = new CastInstanceView(this, () => { });
         this.CursorCache = new CursorCache();
     };
 
@@ -49,6 +48,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
         this._peerid = peer.id;
+        this.View = new CastInstanceView(this, () => { });
     }
 
     /**
@@ -123,6 +123,14 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
         //  オーナー 及び 接続クライアントに通知
         this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
+    }
+
+
+    /** 
+     * ストリーミングの停止
+     */
+    public StopStreaming() {
+        this.SwRoom.Close();
     }
 
 

@@ -60,22 +60,10 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         //  ストリーミング停止ボタン
         stopButton.onclick = (e) => {
+            this.Controller.StopStreaming();
             this.Controller.ServerSend(false, false);
             this.ChangeDisplayMode(false);
         };
-
-        //  キャンセルボタン押下時
-        cancelButton.onclick = (e) => {
-            this.Close();
-        };
-
-        //  キー入力時イベント
-        document.onkeydown = (e) => {
-            //  エスケープキーはダイアログを閉じる
-            if (e.keyCode === 27) {
-                this.Close();
-            }
-        }
 
         //  配信設定ボタン（※モバイル配信画面には無いボタン）
         if (settingButton) {
@@ -85,31 +73,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         }
 
         let options = LocalCache.LiveCastOptions;
-
-        // //  音声認識チェック
-        // let speechRecCheckElement = document.getElementById('speech_recognition') as HTMLInputElement;
-        // speechRecCheckElement.onchange = (e) => {
-
-        //     let isCheced = speechRecCheckElement.checked;
-        //     LocalCache.SetLiveCastOptions((opt) => opt.IsSpeechRecognition = isCheced);
-
-        //     this.Controller.CastSetting.dispSubtitles = isCheced;
-        //     this.Controller.SendCastInfo();
-
-        //     if (isCheced) {
-        //         SpeechUtil.StartSpeechRecognition();
-        //     } else {
-        //         SpeechUtil.StopSpeechRecognition();
-        //     }
-        // };
-        // speechRecCheckElement.checked = options.IsSpeechRecognition;
-        // this.Controller.CastSetting.dispSubtitles = options.IsSpeechRecognition;
-
-        // //  音声認識からのメッセージ取得
-        // SpeechUtil.InitSpeechRecognition((message) => {
-        //     let send = new CastSpeechRecognitionSender(message);
-        //     WebRTCService.SendAll(send);
-        // });
 
         //  カーソル表示有無
         let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
@@ -125,6 +88,11 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
         this.SetMediaDevice();
+
+        //  接続URLのコピー
+        let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
+        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
+        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
     }
 
 

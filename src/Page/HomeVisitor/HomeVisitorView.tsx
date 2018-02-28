@@ -54,22 +54,11 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             this.OnTimelineScroll();
         };
 
-        //  「招待URLのコピー」
+
+        //  「接続URLのコピー」
+        let linkurl = LinkUtil.CreateLink("../HomeVisitor", LinkUtil.GetPeerID());
         let clipcopybtn = document.getElementById('sbj-home-visitor-linkcopy') as HTMLInputElement;
-        clipcopybtn.onclick = (e) => {
-            let linkurl = LinkUtil.CreateLink("../HomeVisitor", LinkUtil.GetPeerID());
-            StdUtil.ClipBoardCopy(linkurl);
-            clipcopybtn.textContent = " 招待URLをクリップボードにコピーしました ";
-            clipcopybtn.classList.remove('mdl-button--colored');
-            clipcopybtn.classList.add('mdl-button--raised');
-            clipcopybtn.disabled = true;
-            window.setTimeout(() => {
-                clipcopybtn.textContent = " 招待URLのコピー ";
-                clipcopybtn.classList.add('mdl-button--colored');
-                clipcopybtn.classList.remove('mdl-button--raised');
-                clipcopybtn.disabled = false;
-            }, 3000);
-        };
+        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
 
         //  切断時の「再接続」ボタン
         document.getElementById('sbj-home-visitor-disconnect-retry').onclick = (e) => {
@@ -87,8 +76,32 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             }
         }, 10000);
 
+        this.SetServiceListEvent(this.Controller.SwPeer.PeerId);
+
         //  
         callback();
+    }
+
+
+    /**
+     * 連動サービスの選択時イベント設定
+     * @param peerid 
+     */
+    public SetServiceListEvent(peerid: string) {
+
+        let clickevent = (url: string) => {
+            let link = LinkUtil.CreateLink(url, peerid);
+            window.open(link, "_blank");
+        }
+
+        document.getElementById('sbj-service-castinstance').onclick = (e) => { clickevent("../CastInstance/"); }
+        document.getElementById('sbj-service-castinstance-screenshare').onclick = (e) => { clickevent("../CastInstanceScreenShare/"); }
+        document.getElementById('sbj-service-castinstance-mobile').onclick = (e) => { clickevent("../CastInstanceMobile/"); }
+        document.getElementById('sbj-service-audioshare').onclick = (e) => { clickevent(""); }
+        document.getElementById('sbj-service-imageshare').onclick = (e) => { clickevent(""); }
+        document.getElementById('sbj-service-imageshare-mobile').onclick = (e) => { clickevent(""); }
+        document.getElementById('sbj-service-gadgetinstance-youtube').onclick = (e) => { clickevent("../GadgetInstance/"); }
+        document.getElementById('sbj-service-gadgetinstance-map').onclick = (e) => { clickevent(""); }
     }
 
 

@@ -29,22 +29,11 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
             this.StartVisitor(true);
         };
 
-        //  「招待URLのコピー」
+        let linkurl = LinkUtil.CreateLink("../HomeVisitor", LocalCache.BootHomeInstancePeerID);
         let clipcopybtn = document.getElementById('sbj-start-linkcopy') as HTMLInputElement;
-        clipcopybtn.onclick = (e) => {
-            let linkurl = LinkUtil.CreateLink("../HomeVisitor", LocalCache.BootHomeInstancePeerID);
-            StdUtil.ClipBoardCopy(linkurl);
-            clipcopybtn.textContent = " 招待URLをクリップボードにコピーしました ";
-            clipcopybtn.classList.remove('mdl-button--colored');
-            clipcopybtn.classList.add('mdl-button--raised');
-            clipcopybtn.disabled = true;
-            window.setTimeout(() => {
-                clipcopybtn.textContent = " 招待URLのコピー ";
-                clipcopybtn.classList.add('mdl-button--colored');
-                clipcopybtn.classList.remove('mdl-button--raised');
-                clipcopybtn.disabled = false;
-            }, 2000);
-        };
+
+        //  「接続URLのコピー」
+        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
 
         document.getElementById('sbj-clear-timeline').onclick = (e) => {
             this.ClearTimeline();

@@ -39,27 +39,10 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             submenuMain.style.opacity = "0.0";
         }
 
-
         //  別タブで開かれたステージはサブメニューは表示しない
         if (LinkUtil.GetArgs("allout")) {
             document.getElementById('sbj-cast-visitor-allout').hidden = true;
             document.getElementById('sbj-cast-visitor-mobile-view').hidden = true;
-        }
-
-
-        //  mobileViewボタン
-        document.getElementById('sbj-cast-visitor-mobile-view').onclick = (e) => {
-            this.DoShowQrCodeDialog();
-        }
-
-        //  alloutボタン押下時の場合は別タブで開く
-        document.getElementById('sbj-cast-visitor-allout').onclick = (e) => {
-            let url = window.location.href;
-
-            if (!url.indexOf("mute")) { url += "&mute=1"; }
-            url += "&allout=1";
-
-            window.open(url);
         }
 
         //  Video
@@ -149,10 +132,6 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             else {
                 this.Cursor.Clear();
             }
-        }
-
-        if (!sender.dispSubtitles) {
-            this.SubTitles.Clear();
         }
     }
 

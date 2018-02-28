@@ -10,8 +10,6 @@ export default class CastSettingSender extends Sender {
     constructor() {
         super(CastSettingSender.ID);
         this.dispUserCursor = false;
-        this.dispSubtitles = false;
     }
-    dispSubtitles: boolean;
     dispUserCursor: boolean;
 }

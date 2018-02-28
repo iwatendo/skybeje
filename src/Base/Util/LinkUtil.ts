@@ -1,4 +1,5 @@
-﻿
+﻿import StdUtil from "./StdUtil";
+
 export default class LinkUtil {
 
     /**
@@ -98,6 +99,28 @@ export default class LinkUtil {
         }
 
         return result;
+    }
+
+
+    /**
+     * 
+     * @param btn 
+     * @param link 
+     */
+    public static SetCopyLinkButton(btn: HTMLButtonElement, link: string) {
+        btn.onclick = (e) => {
+            StdUtil.ClipBoardCopy(link);
+            btn.textContent = " 接続URLをクリップボードにコピーしました ";
+            btn.classList.remove('mdl-button--colored');
+            btn.classList.add('mdl-button--raised');
+            btn.disabled = true;
+            window.setTimeout(() => {
+                btn.textContent = " 接続URLのコピー ";
+                btn.classList.add('mdl-button--colored');
+                btn.classList.remove('mdl-button--raised');
+                btn.disabled = false;
+            }, 2000);
+        };
     }
 
 }

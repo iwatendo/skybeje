@@ -7,10 +7,8 @@
     <script src='/lib/forcedtimer.js'></script>
     <script src='/lib/skyway.min.js'></script>
     <link rel='stylesheet' href='/lib/material.min.css' />
-    <link rel="stylesheet" href="/lib/split-pane.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
-    <link rel='stylesheet' href='../common.dialog.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
     <script src="/lib/material.min.js"></script>
 </head>
@@ -37,68 +35,11 @@
                             <i id="sbj-cact-visitor-volume-on" class="material-icons">volume_up</i>
                             <i id="sbj-cact-visitor-volume-off" hidden class="material-icons">volume_off</i>
                         </button>
-                        <button id="sbj-cast-visitor-mobile-view" class="sbj-cact-visitor-button mdl-button mdl-js-button mdl-button--icon" hidden>
-                            <i class="material-icons">android</i>
-                        </button>
-                        <button id="sbj-cast-visitor-allout" class="sbj-cact-visitor-button mdl-button mdl-js-button mdl-button--icon">
-                            <i class="material-icons">all_out</i>
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-	<!--Common Dialog-->
-	<dialog id='sbj-dialog' class='sbj-dialog'>
-		<div class="sbj-dialog-background" id="sbj-dialog-background">
-
-			<div id="sbj-dialog-card" class="sbj-dialog-card mdl-card mdl-shadow--2dp flexiblebox">
-
-				<!-- 上部ボタン郡 -->
-				<div class="mdl-card__actions">
-					<div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
-						<i id="sbj-dialog-title-icon" class="material-icons sbj-dialog-title-icon"></i>
-						<h4 class="sbj-dialog-title">
-							<span id="sbj-dialog-title-value"></span>
-						</h4>
-					</div>
-					<div class="sbj-dialog-attach-action-right">
-						<button id='sbj-dialog-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
-							<i class="material-icons">close</i>
-						</button>
-					</div>
-				</div>
-
-				<!--表示エリア-->
-				<div id="sbj-dialog-view" class="sbj-dialog-view mdl-card__supporting-text mdl-card--expand">
-					<!--Reactで生成-->
-				</div>
-
-				<!-- 下部ボタン郡 -->
-				<div class="mdl-card__actions">
-					<div class="sbj-dialog-attach-action-left">
-					</div>
-
-					<div class="sbj-dialog-attach-action-right">
-						<button id='sbj-dialog-delete' tabindex=-1 class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-							<i class="material-icons">delete_forever</i>&nbsp;削除&nbsp;
-						</button>
-						<button id='sbj-dialog-update' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-							<i class="material-icons">done</i>&nbsp;更新&nbsp;
-						</button>
-						<button id='sbj-dialog-done' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-							<i class="material-icons">done</i>&nbsp;追加&nbsp;
-						</button>
-						<button id='sbj-dialog-select' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-							<i class="material-icons">done</i>&nbsp;選択&nbsp;
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</dialog>
-    
 
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>

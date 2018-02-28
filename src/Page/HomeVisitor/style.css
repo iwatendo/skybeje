@@ -70,6 +70,32 @@
     margin-left: 32px !important;
 }
 
+/*-----------------------------
+ *  
+ *---------------------------*/
+
+#sbj-service-list{
+    width: 280px;
+}
+
+.sbj-service-list-item{
+    color: var(--sbj-color-default-text);
+}
+
+.sbj-service-list-item{
+    color: var(--sbj-color-default-text);
+}
+
+.sbj-service-list-item:hover{
+    cursor: pointer;
+}
+
+
+/*-----------------------------
+ *  
+ *---------------------------*/
+
+
 .split-pane{
     background-color: var(--sbj-color-room-default-background);
 }
