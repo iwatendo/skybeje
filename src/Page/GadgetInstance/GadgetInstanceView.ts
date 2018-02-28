@@ -13,6 +13,7 @@ import LogUtil from "../../Base/Util/LogUtil";
 import GuideUtil from "../../Contents/Util/GuideUtil";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
+import LinkUtil from "../../Base/Util/LinkUtil";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 
@@ -23,13 +24,12 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      * 初期化処理
      */
     public Initialize(callback: OnViewLoad) {
-        
+
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
         let backpanel = document.getElementById('sbj-gadget-instance');
         let mainpanel = document.getElementById('sbj-gadget-instance-layout');
         let startButton = document.getElementById('sbj-gadget-instance-start') as HTMLInputElement;
-        let cancelButton = document.getElementById('sbj-gadget-instance-cancel');
         let stopButton = document.getElementById('sbj-gadget-instance-stop');
         let pauseButton = document.getElementById('sbj-gadget-instance-pause');
         let pauseRestart = document.getElementById('sbj-gadget-instance-restart');
@@ -46,19 +46,6 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
         window.onfocus = (ev) => {
             this.Controller.CastInstance.isHide = false;
-        }
-
-        //  キャンセルボタン押下時
-        cancelButton.onclick = (e) => {
-            this.Close();
-        };
-
-        //  キー入力時イベント
-        document.onkeydown = (e) => {
-            //  エスケープキーはダイアログを閉じる
-            if (e.keyCode === 27) {
-                this.Close();
-            }
         }
 
         //  開始ボタン
@@ -98,6 +85,15 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
         callback();
     }
+
+
+    public SetLinkUrlEvent() {
+        //  接続URLのコピー
+        let linkurl = LinkUtil.CreateLink("../GadgetVisitor", this.Controller.SwPeer.PeerId);
+        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
+        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+    }
+
 
     /**
      * 接続peer数の表示

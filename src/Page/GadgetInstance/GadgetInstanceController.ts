@@ -34,7 +34,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
         super();
         this.Receiver = new GadgetInstanceReceiver(this);
         this.CursorCache = new CursorCache();
-        this.View = new GadgetInstanceView(this, () => { 
+        this.View = new GadgetInstanceView(this, () => {
         });
     };
 
@@ -48,6 +48,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
         this.PeerId = peer.id;
+        this.View.SetLinkUrlEvent();
         this.SendStageService();
     }
 
@@ -161,6 +162,6 @@ export default class GadgetInstanceController extends AbstractServiceController<
         sender.isClose = false;
         this.SwPeer.SendToOwner(sender);
     }
-    
+
 
 };

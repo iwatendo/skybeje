@@ -9,12 +9,8 @@
 }
 
 .sbj-cast-instance-layout{
-    width: 550px;
-    height: 600px;
-    position: absolute;
-    top: 0px;
-    left: 72px;
-    margin: 0 0 0 0;
+    width: 100%;
+    height: 100%;
 }
 
 #sbj-cast-instance-main{
@@ -72,6 +68,6 @@
     width: 400px;
     height: 600px;
     position: absolute;
-    top: 0px;
-    left: 622px;
+    top: 72px;
+    left: 256px;
 }

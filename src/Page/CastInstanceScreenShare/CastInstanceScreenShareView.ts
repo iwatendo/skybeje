@@ -9,6 +9,7 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
 import StreamUtil from "../../Base/Util/StreamUtil";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import LinkUtil from "../../Base/Util/LinkUtil";
 
 export default class CastInstanceScreenShareView extends AbstractServiceView<CastInstanceScreenShareController> {
 
@@ -18,12 +19,11 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
      * 初期化処理
      */
     public Initialize(callback: OnViewLoad) {
-        
+
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
         let backpanel = document.getElementById('sbj-cast-instance');
         let startButton = document.getElementById('sbj-cast-instance-start');
-        let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let note = document.getElementById('sbj-screenshare-note');
@@ -94,19 +94,6 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             });
         };
 
-        //  キャンセルボタン押下時
-        cancelButton.onclick = (e) => {
-            this.Close();
-        };
-
-        //  キー入力時イベント
-        document.onkeydown = (e) => {
-            //  エスケープキーはダイアログを閉じる
-            if (e.keyCode === 27) {
-                this.Close();
-            }
-        }
-
         //  ストリーミング停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.ServerSend(false, false);
@@ -142,8 +129,16 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
                 case 4: option4.checked = true; break;
             }
         }
-        
+
         callback();
+    }
+
+
+    public SetLinkUrlEvent() {
+        //  接続URLのコピー
+        let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
+        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
+        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
     }
 
 

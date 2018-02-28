@@ -52,6 +52,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
         this._peerid = peer.id;
+        this.View.SetLinkUrlEvent();
         this.SendStageService();
     }
 

@@ -1,13 +1,12 @@
 <html>
 
 <head>
-    <title>Skybeje</title>
+    <title>Skybeje-ScreenShare</title>
     <meta charset='utf-8'>
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
     <script src='/lib/forcedtimer.js'></script>
     <script src='/lib/skyway.min.js'></script>
     <link rel='stylesheet' href='/lib/material.min.css' />
-    <link rel="stylesheet" href="/lib/split-pane.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
@@ -28,9 +27,9 @@
                     </span>
                     <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
                     <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
-                    <div class="mdl-layout-spacer"></div>
-                    <button id="sbj-cast-instance-cancel" class="mdl-button mdl-js-button mdl-button--raised sbj-dialog-close" type="button">
-                        <i class="material-icons">close</i>
+
+                    <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
+                        &nbsp; 接続URLのコピー &nbsp;
                     </button>
                 </div>
             </header>
@@ -110,9 +109,9 @@
                         <br/>
                         <a href="https://chrome.google.com/webstore/detail/skybeje-screen-share/ofehfbpdidnjcafogdedlnghhcijgpdd?hl=ja" target="_blank">SyBeje Screen Share Extension</a>
                         <br/>
-                        <br/>※Extensionの追加後、このダイアログを再読込してください。
+                        <br/>※Extensionの追加後、このページを再読込してください。
                         <br/>
-                        <a href="" onclick="location.reload()">ダイアログの再読込</a>
+                        <a href="" onclick="location.reload()">ページの再読込</a>
                     </h6>
                 </main>
 
