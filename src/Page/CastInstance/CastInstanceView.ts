@@ -109,6 +109,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
+        let linkElement = document.getElementById('sbj-linkcopy');
 
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
@@ -116,6 +117,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         roomName.hidden = !isLiveCasting;
         micElement.hidden = isLiveCasting;
         camElement.hidden = isLiveCasting;
+        linkElement.hidden = !isLiveCasting;
 
         if (settingButton)
             settingButton.hidden = isLiveCasting;
@@ -225,19 +227,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
         let options = LocalCache.LiveCastOptions;
         startButton.disabled = !((options.SelectCam ? true : false) || (options.SelectMic ? true : false));
-    }
-
-
-    /**
-     * 
-     * @param hidden 
-     */
-    public SetControllHidden() {
-        document.getElementById('sbj-cast-instance-main').hidden = true;
-
-        let disconnect = document.getElementById('sbj-cast-instance-disconnect');
-        if (disconnect)
-            disconnect.hidden = false;
     }
 
 

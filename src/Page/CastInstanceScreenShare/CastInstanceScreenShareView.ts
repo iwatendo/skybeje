@@ -38,6 +38,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
 
         let mainElement = document.getElementById('sbj-cast-instance-main');
         let noExtElement = document.getElementById('sbj-cast-instance-main-no-extension');
+        let linkElement = document.getElementById('sbj-linkcopy');
 
         window.onload = () => {
             if (!StreamUtil.IsEnabledExtension()) {
@@ -91,6 +92,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
                 accountCount.hidden = false;
                 roomName.hidden = false;
                 note.hidden = true;
+                linkElement.hidden = false;
             });
         };
 

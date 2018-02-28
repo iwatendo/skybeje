@@ -167,6 +167,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             document.getElementById('sbj-gadget-instance-stop').hidden = false;
             document.getElementById('sbj-livecast-room-name').hidden = false;
             document.getElementById('sbj-gadget-instance-account-count').hidden = false;
+            document.getElementById('sbj-linkcopy').hidden = false;
         }
     }
 
