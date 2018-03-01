@@ -13,7 +13,7 @@ import { INaviContainer } from "./INaviContainer";
 import NotImplementView from "./NotImplement/NotImplementView";
 import ProfileView from "./Profile/ProfileView";
 import SettingController from "./Setting/SettingController";
-import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 import MobileDialog from "./Mobile/MobileDialog";
 import LocalCache from "../../Contents/Cache/LocalCache";
 

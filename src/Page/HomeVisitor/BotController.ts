@@ -7,7 +7,7 @@ import BotUtil from "../../Base/Util/BotUtil";
 
 import RoomCache from "./Cache/RoomCache";
 import HomeVisitorController from "./HomeVisitorController";
-import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
 import GuideSender from "../../Contents/Sender/GuideSender";
 

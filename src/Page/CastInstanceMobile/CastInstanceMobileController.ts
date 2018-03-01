@@ -3,7 +3,7 @@ import AbstractServiceController from "../../Base/AbstractServiceController";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
-import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import CastStatusSender, { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 
 import CastInstanceMobileModel from "./CastInstanceMobileModel";
 import CastInstanceMobileView from "./CastInstanceMobileView";
@@ -20,7 +20,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
 
     public View: CastInstanceMobileView;
 
-    public CastStatus = new CastInstanceSender(CastTypeEnum.LiveCast);
+    public CastStatus = new CastStatusSender(CastTypeEnum.LiveCast);
     public CastSetting = new CastSettingSender();
     public CastRoom = new RoomSender();
 
@@ -65,7 +65,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      * オーナー接続時イベント
      */
     public OnOwnerConnection() {
-        this.CastStatus = new CastInstanceSender(CastTypeEnum.LiveCast);
+        this.CastStatus = new CastStatusSender(CastTypeEnum.LiveCast);
         this.CastStatus.instanceUrl = location.href;
         this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
         this.SwPeer.SendToOwner(this.CastStatus);

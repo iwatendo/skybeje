@@ -2,7 +2,7 @@
 import HomeVisitorController from "../HomeVisitorController";
 import CastSelectorController from "./CastSelectorController";
 import ActorCache from "../Cache/ActorCache";
-import { CastTypeEnum } from "../../../Base/Container/CastInstanceSender";
+import { CastTypeEnum } from "../../../Base/Container/CastStatusSender";
 import ServentElementPack from "./ServentElementPack";
 import ServentSender from "../../../Contents/Sender/ServentSender";
 

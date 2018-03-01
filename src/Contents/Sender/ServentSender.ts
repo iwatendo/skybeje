@@ -1,5 +1,5 @@
 import Sender from "../../Base/Container/Sender";
-import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 
 /**
  * サーバントの起動通知

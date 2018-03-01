@@ -47,8 +47,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         };
 
         window.onfocus = (ev) => {
-            if (this.Controller && this.Controller.CastInstance) {
-                this.Controller.CastInstance.isHide = false;
+            if (this.Controller && this.Controller.CastStatus) {
+                this.Controller.CastStatus.isHide = false;
             }
         }
 
@@ -235,9 +235,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      */
     public Close() {
         //  ストリーミング中の場合は表示を切替える
-        this.Controller.CastInstance.isHide = this.Controller.CastInstance.isCasting;
+        this.Controller.CastStatus.isHide = this.Controller.CastStatus.isCasting;
         //  ストリーミングしていない場合、フレームを閉じる
-        this.Controller.CastInstance.isClose = !this.Controller.CastInstance.isCasting;
+        this.Controller.CastStatus.isClose = !this.Controller.CastStatus.isCasting;
         this.Controller.SendCastInfo();
     }
 

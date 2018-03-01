@@ -4,7 +4,7 @@ import AbstractServiceController from "../../Base/AbstractServiceController";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
-import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import CastStatusSender, { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 
 import GadgetInstanceModel from "./GadgetInstanceModel";
 import GadgetInstanceView from "./GadgetInstanceView";
@@ -21,7 +21,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
 
     public PeerId: string;
     public View: GadgetInstanceView;
-    public CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
+    public CastInstance = new CastStatusSender(CastTypeEnum.Gadget);
     public CastSetting = new GadgetCastSettingSender();
     public CastRoom = new RoomSender();
     public Guide = new Personal.Guide;
@@ -90,7 +90,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
         //  オーナーにURLを通知する
         if (this._isConnectOwner && this.PeerId) {
 
-            this.CastInstance = new CastInstanceSender(CastTypeEnum.Gadget);
+            this.CastInstance = new CastStatusSender(CastTypeEnum.Gadget);
             this.CastInstance.instanceUrl = location.href;
             this.CastInstance.clientUrl = LinkUtil.CreateLink('../GadgetVisitor/index.html', this.PeerId);
 

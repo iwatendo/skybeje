@@ -56,7 +56,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         };
 
         window.onfocus = (ev) => {
-            this.Controller.CastInstance.isHide = false;
+            this.Controller.CastStatus.isHide = false;
         }
 
         framerateRange.onmousemove = (e) => {
@@ -168,9 +168,9 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
      */
     public Close() {
         //  ストリーミング中の場合は表示を切替える
-        this.Controller.CastInstance.isHide = this.Controller.CastInstance.isCasting;
+        this.Controller.CastStatus.isHide = this.Controller.CastStatus.isCasting;
         //  ストリーミングしていない場合、フレームを閉じる
-        this.Controller.CastInstance.isClose = !this.Controller.CastInstance.isCasting;
+        this.Controller.CastStatus.isClose = !this.Controller.CastStatus.isCasting;
         this.Controller.SendCastInfo();
     }
 

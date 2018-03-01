@@ -1,6 +1,6 @@
 
 import HomeVisitorController from "../HomeVisitorController";
-import CastInstanceSender from "../../../Base/Container/CastInstanceSender";
+import CastStatusSender from "../../../Base/Container/CastStatusSender";
 import ServentSender from "../../../Contents/Sender/ServentSender";
 import RoomServentSender from "../../../Contents/Sender/RoomServentSender";
 
@@ -30,7 +30,7 @@ export default class ServentCache {
      * @param cib 
      * @param callback 
      */
-    public GetMyServent(serventPid: string, cib: CastInstanceSender, callback: OnGetServentSender) {
+    public GetMyServent(serventPid: string, cib: CastStatusSender, callback: OnGetServentSender) {
 
         let cache = this._myServentCache;
 

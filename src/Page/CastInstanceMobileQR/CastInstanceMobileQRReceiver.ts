@@ -10,7 +10,7 @@ import CastInstanceMobileQRView from "./CastInstanceMobileQRView";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
-import CastInstanceSender from "../../Base/Container/CastInstanceSender";
+import CastStatusSender from "../../Base/Container/CastStatusSender";
 
 
 export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastInstanceMobileQRController> {
@@ -26,7 +26,7 @@ export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastIn
         if (sender.type === GetCastSettingSedner.ID) { this.Controller.SwPeer.SendAll(sender); }
 
         //  配信ステータスはオーナー側にも送信
-        if (sender.type === CastInstanceSender.ID) {
+        if (sender.type === CastStatusSender.ID) {
             this.Controller.SwPeer.SendToOwner(sender);
         }
 

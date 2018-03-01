@@ -7,7 +7,7 @@ import AbstractServiceController from "../../Base/AbstractServiceController";
 import LogUtil from "../../Base/Util/LogUtil";
 import { OnRead } from "../../Base/AbstractServiceModel";
 import { Order } from "../../Base/Container/Order";
-import { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 
 import TimelineCache from "./Cache/TimelineCache";
 import ActorCache from "./Cache/ActorCache";

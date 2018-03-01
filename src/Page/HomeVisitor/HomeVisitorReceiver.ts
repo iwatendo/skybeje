@@ -4,7 +4,7 @@ import SpeechUtil from "../../Base/Util/SpeechUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 
 import Sender from "../../Base/Container/Sender";
-import CastInstanceSender from "../../Base/Container/CastInstanceSender";
+import CastStatusSender from "../../Base/Container/CastStatusSender";
 
 import * as Personal from "../../Contents/IndexedDB/Personal";
 import ActorInfo from "../../Contents/Struct/ActorInfo";
@@ -129,8 +129,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         //  ライブキャストからの、起動通知 及び 設定変更通知
-        if (sender.type === CastInstanceSender.ID) {
-            this.SendCastInstance(conn, sender as CastInstanceSender);
+        if (sender.type === CastStatusSender.ID) {
+            this.SendCastInstance(conn, sender as CastStatusSender);
         }
 
         //  サーバント（ライブキャストを含む）の変更通知
@@ -217,7 +217,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      * @param serventPid 
      * @param cib 
      */
-    private SendCastInstance(conn: PeerJs.DataConnection, cib: CastInstanceSender) {
+    private SendCastInstance(conn: PeerJs.DataConnection, cib: CastStatusSender) {
 
         let serventPid = conn.peer;
 
