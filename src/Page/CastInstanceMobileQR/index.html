@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <title>Skybeje-MobileCast</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <script src='/lib/forcedtimer.js'></script>
+    <script src='/lib/skyway.min.js'></script>
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='style.css?v={version}' />
+    <script src="../lib/material.min.js"></script>
+    <script src='../lib/jquery-2.2.3.min.js'></script>
+</head>
+
+<body>
+
+    <div class="mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+
+        <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+            <div class="mdl-layout__header-row sbj-header">
+                <span class="mdl-layout-title">
+                    モバイル配信
+                </span>
+            </div>
+        </header>
+
+        <main class="sbj-layout mdl-layout__content mdl-color--grey-100 mdl-color-text--grey-600">
+            <h6 class="sbj-dashbord-mobile-label">スマートフォンやタブレット端末のカメラからライブ配信します</h6>
+            <div class="mdl-shadow--3dp sbj-mobile-qrcode-box">
+                <iframe id="sbj-mobile-qrcode" class="sbj-mobile-qrcode-frame" src=""></iframe>
+            </div>
+
+            <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="option_sfu">
+                <input type="checkbox" id="option_sfu" class="mdl-switch__input" checked>
+                <span class="mdl-switch__label">SFUを使用（iOSの場合は使用できません）</span>
+                </span>
+            </label>
+
+            <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="option_rear">
+                <input type="checkbox" id="option_rear" class="mdl-switch__input" checked>
+                <span class="mdl-switch__label">リアカメラで配信</span>
+                </span>
+            </label>
+
+            <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="option_cursor">
+                <input type="checkbox" id="option_cursor" class="mdl-switch__input" checked>
+                <span class="mdl-switch__label">ユーザーのアイコンや画像の配置を許可</span>
+            </label>
+
+        </main>
+    </div>
+
+    <script src="bundle.js?v={version}"></script>
+
+</body>
+
+</html>

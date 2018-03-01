@@ -1,0 +1,22 @@
+
+.sbj-header{
+    padding-left: 40px;
+}
+
+.sbj-layout{
+    padding: 10px 40px;
+}
+
+.sbj-mobile-qrcode-frame{
+    width: 340px;
+    height: 340px;
+}
+
+.sbj-mobile-qrcode-box{
+    width: 340px;
+    height: 340px;
+}
+
+.sbj-cast-instance-option{
+    margin: 20px 4px 0px 0px;
+}
