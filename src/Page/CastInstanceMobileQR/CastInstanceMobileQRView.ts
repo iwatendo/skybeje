@@ -17,9 +17,9 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         StdUtil.StopPropagation();
         this.SetQRCode();
 
-        (document.getElementById('option_sfu') as HTMLInputElement).onchange = (e) => { this.ChangeOption() }
-        (document.getElementById('option_rear') as HTMLInputElement).onchange = (e) => { this.ChangeOption() }
-        (document.getElementById('option_cursor') as HTMLInputElement).onchange = (e) => { this.ChangeOption() }
+        (document.getElementById('option_sfu') as HTMLInputElement).onchange = (e) => { this.SendOption() }
+        (document.getElementById('option_rear') as HTMLInputElement).onchange = (e) => { this.SendOption() }
+        (document.getElementById('option_cursor') as HTMLInputElement).onchange = (e) => { this.SendOption() }
 
         callback();
     }
@@ -37,11 +37,13 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     }
 
 
-    public ChangeOption() {
+    public SendOption() {
         let sender = new MobileCastSettingSender();
         sender.isSFU = (document.getElementById('option_sfu') as HTMLInputElement).checked;
         sender.isRearCamera = (document.getElementById('option_rear') as HTMLInputElement).checked;
         sender.isDispCursor = (document.getElementById('option_cursor') as HTMLInputElement).checked;
+
+        this.Controller.SwPeer.SendAll(sender);
     }
 
 

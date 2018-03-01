@@ -13,6 +13,7 @@ import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 import CursorCache from "../../Contents/Cache/CursorCache";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
+import MobileCastSettingSender from "../../Contents/Sender/MobileCastSettingSender";
 
 export default class CastInstanceMobileController extends AbstractServiceController<CastInstanceMobileView, CastInstanceMobileModel> {
 
@@ -22,6 +23,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
 
     public CastStatus = new CastStatusSender(CastTypeEnum.LiveCast);
     public CastSetting = new CastSettingSender();
+    public MobileCastSetting = new MobileCastSettingSender();
     public CastRoom = new RoomSender();
 
     public AudioSource: string = null;
@@ -110,9 +112,23 @@ export default class CastInstanceMobileController extends AbstractServiceControl
 
 
     /**
+     * 
+     * @param mcs 
+     */
+    public SetMobileCastSetting(mcs: MobileCastSettingSender) {
+        this.MobileCastSetting = mcs;
+    }
+
+
+    /**
      * ストリーミングの開始
      */
     public SetStreaming() {
+
+        //  PeerIDをルーム名称とする
+        let roomName = this.SwPeer.PeerId;
+        let roomMode = (this.MobileCastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
+        this.SwRoom = new SWRoom(this, this, this.SwPeer.Peer, roomName, roomMode);
 
         let msc = StreamUtil.GetMediaStreamConstraints(this.VideoSource, this.AudioSource);
         StreamUtil.GetStreaming(msc, (stream) => {

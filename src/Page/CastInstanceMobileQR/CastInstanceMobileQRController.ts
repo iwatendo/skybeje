@@ -30,4 +30,13 @@ export default class CastInstanceMobileQRController extends AbstractServiceContr
         this.View = new CastInstanceMobileQRView(this, () => { });
     }
 
+
+    /**
+     * 子Peerからの接続時イベント
+     * @param conn
+     */
+    public OnChildConnection(conn: PeerJs.DataConnection) {
+        this.View.SendOption();
+    }    
+
 };

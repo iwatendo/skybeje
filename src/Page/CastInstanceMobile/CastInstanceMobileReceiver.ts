@@ -10,6 +10,7 @@ import CastInstanceMobileView from "./CastInstanceMobileView";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
+import MobileCastSettingSender from "../../Contents/Sender/MobileCastSettingSender";
 
 
 export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInstanceMobileController> {
@@ -37,6 +38,11 @@ export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInst
         //
         if (sender.type === GetCastSettingSedner.ID) {
             this.Controller.SwPeer.SendTo(conn, this.Controller.CastSetting);
+        }
+
+        if(sender.type === MobileCastSettingSender.ID){
+            let mcs = sender as MobileCastSettingSender;
+            this.Controller.SetMobileCastSetting(mcs);
         }
 
     }
