@@ -11,6 +11,8 @@ import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CastStatusSender from "../../Base/Container/CastStatusSender";
+import TerminalInfoSender from "../../Contents/Sender/TerminalInfoSender";
+import ConnCountSender from "../../Contents/Sender/ConnCountSender";
 
 
 export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastInstanceMobileQRController> {
@@ -31,7 +33,17 @@ export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastIn
             this.Controller.SwPeer.SendToOwner(castStatus);
             this.Controller.View.SetCastStauts(castStatus);
         }
-        
+
+        if (sender.type === TerminalInfoSender.ID) {
+            let info = sender as TerminalInfoSender;
+            this.Controller.View.SetTerminalInfo(info);
+        }
+
+        if (sender.type === ConnCountSender.ID) {
+            let cc = sender as ConnCountSender;
+            this.Controller.View.SetPeerCount(cc.count);
+        }
+
     }
 
 }

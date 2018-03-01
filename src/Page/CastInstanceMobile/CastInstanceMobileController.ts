@@ -13,6 +13,8 @@ import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 import CursorCache from "../../Contents/Cache/CursorCache";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
+import TerminalInfoSender from "../../Contents/Sender/TerminalInfoSender";
+import ConnCountSender from "../../Contents/Sender/ConnCountSender";
 
 export default class CastInstanceMobileController extends AbstractServiceController<CastInstanceMobileView, CastInstanceMobileModel> {
 
@@ -67,6 +69,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
         this.CastStatus.instanceUrl = location.href;
         this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid) + "&sfu=" + (this.CastSetting.isSFU ? 1 : 0);
         this.SwPeer.SendToOwner(this.CastStatus);
+        this.SendTerminalInfo();
     }
 
 
@@ -92,7 +95,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
             this.SwPeer.SendTo(conn, cursor);
         });
 
-        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
+        this.SendPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
 
@@ -102,7 +105,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
+        this.SendPeerCount(this.SwPeer.GetAliveConnectionCount());
         this.CursorCache.Remove(conn.peer);
     }
 
@@ -113,6 +116,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      */
     public SetCastSetting(mcs: CastSettingSender) {
         this.CastSetting = mcs;
+        this.SwPeer.SendAll(mcs);
     }
 
 
@@ -170,6 +174,29 @@ export default class CastInstanceMobileController extends AbstractServiceControl
         if (this.CastStatus) {
             this.SwPeer.SendToOwner(this.CastStatus);
         }
+    }
+
+
+    /**
+     * 端末情報を送信
+     */
+    public SendTerminalInfo() {
+        let info = new TerminalInfoSender();
+        info.platform = window.navigator.platform;
+        info.userAgent = window.navigator.userAgent;
+        info.appVersion = window.navigator.appVersion;
+        this.SwPeer.SendToOwner(info);
+    }
+
+
+    /**
+     * 接続数を送信
+     * @param count 
+     */
+    public SendPeerCount(count: number) {
+        let info = new ConnCountSender();
+        info.count = count;
+        this.SwPeer.SendToOwner(info);
     }
 
 };

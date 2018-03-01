@@ -266,14 +266,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
 
 
     /**
-     * 接続peer数の表示
-     * @param count 
-     */
-    public SetPeerCount(count: number) {
-        //  document.getElementById("sbj-cast-instance-account-count").setAttribute("data-badge", count.toString());
-    }
-
-    /**
      * 他のユーザーからのストリーム接続時イベント
      * @param peerid 
      */

@@ -4,6 +4,7 @@ import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView"
 import CastInstanceMobileQRController from "./CastInstanceMobileQRController";
 import CastStatusSender from "../../Base/Container/CastStatusSender";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import TerminalInfoSender from "../../Contents/Sender/TerminalInfoSender";
 
 export default class CastInstanceMobileQRView extends AbstractServiceView<CastInstanceMobileQRController> {
 
@@ -36,13 +37,22 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     }
 
 
+    /**
+     * 接続peer数の表示
+     * @param count 
+     */
+    public SetPeerCount(count: number) {
+        let element = document.getElementById('sbj-cast-instance-account-count');
+        element.setAttribute("data-badge", count.toString());
+    }
+
+
     public SendOption() {
         let sender = new CastSettingSender();
         sender.isSFU = (document.getElementById('option_sfu') as HTMLInputElement).checked;
         sender.dispUserCursor = (document.getElementById('option_cursor') as HTMLInputElement).checked;
         this.Controller.SwPeer.SendAll(sender);
     }
-
 
     /**
      * 
@@ -57,6 +67,28 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
 
             document.getElementById('sbj-linkcopy').hidden = false;
         }
+    }
+
+
+    /**
+     * 
+     * @param info 
+     */
+    public SetTerminalInfo(info: TerminalInfoSender) {
+
+        document.getElementById('sbj-cast-instance-account-count').hidden = false;
+        document.getElementById("sbj-cast-setting").hidden = true;
+
+        if (StdUtil.IsSafari(info.userAgent)) {
+            (document.getElementById('option_sfu') as HTMLInputElement).checked = false;
+            this.SendOption();
+        }
+
+        document.getElementById("sbj-terminal-info").hidden = false;
+
+        document.getElementById('sbj-platform').textContent = info.platform;
+        document.getElementById('sbj-appversion').textContent = info.appVersion;
+        document.getElementById('sbj-useragent').textContent = info.userAgent;
     }
 
 }

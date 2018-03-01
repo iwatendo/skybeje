@@ -62,14 +62,17 @@ export default class StdUtil {
                 return true;
             }
         }
+
+        return false;
     }
 
 
     /**
      * 
      */
-    public static IsSafari() {
-        let ua = window.navigator.userAgent.toLowerCase();
+    public static IsSafari(ua: string = window.navigator.userAgent) {
+
+        ua = ua.toLocaleLowerCase();
 
         if (ua.indexOf('chrome') >= 0) {
             return false;
@@ -81,24 +84,26 @@ export default class StdUtil {
         else {
             return false;
         }
+
     }
+
+
 
 
     /**
      * 以下のサイトを参考にした
      * https://qiita.com/gurigurico/items/bd19ed121bfdf77fced6
+     * @param pf platform
+     * @param ap appVersion
      */
-    public static GetIOSVer(): number[] {
-        if (/iP(hone|od|ad)/.test(navigator.platform)) {
+    public static GetIOSVer(pf: string = navigator.platform, ap: string = navigator.appVersion): number[] {
+        if (/iP(hone|od|ad)/.test(pf)) {
             var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
             var versions = [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || "0", 10)];
             return versions;
         }
         else return null;
     }
-
-
-    public static Is
 
 
     /**

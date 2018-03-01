@@ -23,6 +23,10 @@
                 <span class="mdl-layout-title">
                     モバイル配信
                 </span>
+
+                <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
+                <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">モバイル配信への接続数</div>
+
                 <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
                     &nbsp; 接続URLのコピー &nbsp;
                 </button>
@@ -30,21 +34,33 @@
         </header>
 
         <main class="sbj-layout mdl-layout__content mdl-color--grey-100 mdl-color-text--grey-600">
-            <h6 class="sbj-dashbord-mobile-label">スマートフォンやタブレット端末のカメラからライブ配信します</h6>
-            <div class="mdl-shadow--3dp sbj-mobile-qrcode-box">
-                <iframe id="sbj-mobile-qrcode" class="sbj-mobile-qrcode-frame" src=""></iframe>
-            </div>
 
-            <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="option_sfu">
-                <input type="checkbox" id="option_sfu" class="mdl-switch__input" checked>
-                <span class="mdl-switch__label">SFUを使用（iOSの場合は使用できません）</span>
-                </span>
-            </label>
+            <div id="sbj-cast-setting">
+                <h6 class="sbj-mobile-label">スマートフォンやタブレット端末のカメラからライブ配信します</h6>
+                <div class="mdl-shadow--3dp sbj-mobile-qrcode-box">
+                    <iframe id="sbj-mobile-qrcode" class="sbj-mobile-qrcode-frame" src=""></iframe>
+                </div>
+                <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="option_sfu">
+                    <input type="checkbox" id="option_sfu" class="mdl-switch__input" checked>
+                    <span class="mdl-switch__label">SFUを使用（iOSの場合は使用できません）</span>
+                    </span>
+                </label>
+            </div>
 
             <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="option_cursor">
                 <input type="checkbox" id="option_cursor" class="mdl-switch__input" checked>
                 <span class="mdl-switch__label">ユーザーのアイコンや画像の配置を許可</span>
             </label>
+
+            <div id="sbj-terminal-info" hidden>
+                <h4>配信端末情報</h4>
+                <h5 class="sbj-mobile-label">Platform</h5>
+                <span id="sbj-platform"></span>
+                <h5 class="sbj-mobile-label">AppVersion</h5>
+                <span id="sbj-appversion"></span>
+                <h5 class="sbj-mobile-label">UserArgent</h5>
+                <span id="sbj-useragent"></span>
+            </div>
 
         </main>
     </div>
