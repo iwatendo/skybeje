@@ -31,10 +31,10 @@ export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInst
 
         if (sender.type === RoomSender.ID) {
             this.Controller.CastRoom = sender as RoomSender;
-            this.Controller.View.SetRoom(this.Controller.CastRoom.room);
+            this.Controller.View.SetRoomName(this.Controller.CastRoom.room);
         }
 
-        //  キャスト情報の送信
+        //
         if (sender.type === GetCastSettingSedner.ID) {
             this.Controller.SwPeer.SendTo(conn, this.Controller.CastSetting);
         }

@@ -29,8 +29,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
      */
     public SetQRCode() {
         let peerid = LinkUtil.GetPeerID();
-        let linkurl = LinkUtil.CreateLink("../CastInstanceMobile/", peerid);
-        linkurl += (peerid ? "&" : "?") + "s=" + this.Controller.SwPeer.PeerId;
+        let linkurl = LinkUtil.CreateLink("../CastInstanceMobile/", this.Controller.SwPeer.PeerId);
 
         let element = document.getElementById('sbj-mobile-qrcode') as HTMLFrameElement;
         element.src = LinkUtil.CreateLink("../QrCode/") + "?linkurl=" + encodeURIComponent(linkurl);

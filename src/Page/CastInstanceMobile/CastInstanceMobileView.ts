@@ -46,8 +46,8 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         };
 
         window.onfocus = (ev) => {
-            if (this.Controller && this.Controller.CastInstanceMobile) {
-                this.Controller.CastInstanceMobile.isHide = false;
+            if (this.Controller && this.Controller.CastStatus) {
+                this.Controller.CastStatus.isHide = false;
             }
         }
 
@@ -137,7 +137,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
      * 配信ルーム名の表示
      * @param room 
      */
-    public SetRoom(room: Home.Room) {
+    public SetRoomName(room: Home.Room) {
         let message = "「" + room.name + "」に配信中";
         document.getElementById("sbj-livecast-room-name").innerText = message;
     }
@@ -227,9 +227,9 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
      */
     public Close() {
         //  ストリーミング中の場合は表示を切替える
-        this.Controller.CastInstanceMobile.isHide = this.Controller.CastInstanceMobile.isCasting;
+        this.Controller.CastStatus.isHide = this.Controller.CastStatus.isCasting;
         //  ストリーミングしていない場合、フレームを閉じる
-        this.Controller.CastInstanceMobile.isClose = !this.Controller.CastInstanceMobile.isCasting;
+        this.Controller.CastStatus.isClose = !this.Controller.CastStatus.isCasting;
         this.Controller.SendCastInfo();
     }
 

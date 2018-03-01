@@ -3,7 +3,7 @@ import AbstractServiceController from "../../Base/AbstractServiceController";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
-import CastInstanceMobileSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
+import CastInstanceSender, { CastTypeEnum } from "../../Base/Container/CastInstanceSender";
 
 import CastInstanceMobileModel from "./CastInstanceMobileModel";
 import CastInstanceMobileView from "./CastInstanceMobileView";
@@ -20,7 +20,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
 
     public View: CastInstanceMobileView;
 
-    public CastInstanceMobile = new CastInstanceMobileSender(CastTypeEnum.LiveCast);
+    public CastStatus = new CastInstanceSender(CastTypeEnum.LiveCast);
     public CastSetting = new CastSettingSender();
     public CastRoom = new RoomSender();
 
@@ -65,10 +65,10 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      * オーナー接続時イベント
      */
     public OnOwnerConnection() {
-        this.CastInstanceMobile = new CastInstanceMobileSender(CastTypeEnum.LiveCast);
-        this.CastInstanceMobile.instanceUrl = location.href;
-        this.CastInstanceMobile.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
-        this.SwPeer.SendToOwner(this.CastInstanceMobile);
+        this.CastStatus = new CastInstanceSender(CastTypeEnum.LiveCast);
+        this.CastStatus.instanceUrl = location.href;
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
+        this.SwPeer.SendToOwner(this.CastStatus);
     }
 
 
@@ -141,12 +141,12 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      */
     public ServerSend(isStreaming: boolean, isClose: boolean) {
 
-        if (!isClose && this.CastInstanceMobile.isCasting == isStreaming)
+        if (!isClose && this.CastStatus.isCasting == isStreaming)
             return;
 
-        this.CastInstanceMobile.isCasting = isStreaming;
-        this.CastInstanceMobile.isClose = isClose;
-        this.CastInstanceMobile.isHide = false;
+        this.CastStatus.isCasting = isStreaming;
+        this.CastStatus.isClose = isClose;
+        this.CastStatus.isHide = false;
         this.SendCastInfo();
     }
 
@@ -160,8 +160,8 @@ export default class CastInstanceMobileController extends AbstractServiceControl
         this.SwPeer.SendAll(this.CastSetting);
 
         //  オーナー側への通知
-        if (this.CastInstanceMobile) {
-            this.SwPeer.SendToOwner(this.CastInstanceMobile);
+        if (this.CastStatus) {
+            this.SwPeer.SendToOwner(this.CastStatus);
         }
     }
 

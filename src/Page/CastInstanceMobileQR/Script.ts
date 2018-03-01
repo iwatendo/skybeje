@@ -7,5 +7,6 @@ import CastInstanceMobileQRController from "./CastInstanceMobileQRController";
 if (StdUtil.IsExecute(true)) {
 
     let controller = new CastInstanceMobileQRController();
-    controller.SwPeer = new SWPeer(controller, null, null);
+    let ownerId = LinkUtil.GetPeerID();
+    controller.SwPeer = new SWPeer(controller, ownerId, () => null);
 }
