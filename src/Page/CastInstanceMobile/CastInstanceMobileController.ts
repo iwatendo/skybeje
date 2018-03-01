@@ -13,7 +13,6 @@ import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 import CursorCache from "../../Contents/Cache/CursorCache";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
-import MobileCastSettingSender from "../../Contents/Sender/MobileCastSettingSender";
 
 export default class CastInstanceMobileController extends AbstractServiceController<CastInstanceMobileView, CastInstanceMobileModel> {
 
@@ -23,13 +22,10 @@ export default class CastInstanceMobileController extends AbstractServiceControl
 
     public CastStatus = new CastStatusSender(CastTypeEnum.LiveCast);
     public CastSetting = new CastSettingSender();
-    public MobileCastSetting = new MobileCastSettingSender();
     public CastRoom = new RoomSender();
 
-    public AudioSource: string = null;
-    public VideoSource: string = null;
-
     public CursorCache: CursorCache;
+    public Stream: MediaStream;
 
     /**
      *
@@ -69,7 +65,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
     public OnOwnerConnection() {
         this.CastStatus = new CastStatusSender(CastTypeEnum.LiveCast);
         this.CastStatus.instanceUrl = location.href;
-        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid) + "&sfu=" + (this.CastSetting.isSFU ? 1 : 0);
         this.SwPeer.SendToOwner(this.CastStatus);
     }
 
@@ -115,38 +111,31 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      * 
      * @param mcs 
      */
-    public SetMobileCastSetting(mcs: MobileCastSettingSender) {
-        this.MobileCastSetting = mcs;
+    public SetCastSetting(mcs: CastSettingSender) {
+        this.CastSetting = mcs;
     }
 
 
     /**
      * ストリーミングの開始
      */
-    public SetStreaming() {
+    public StartStreaming() {
 
-        //  PeerIDをルーム名称とする
-        let roomName = this.SwPeer.PeerId;
-        let roomMode = (this.MobileCastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
-        this.SwRoom = new SWRoom(this, this, this.SwPeer.Peer, roomName, roomMode);
+        let roomName = this.SwPeer.PeerId;        //  PeerIDをルーム名称とする
+        let roomMode = (this.CastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
+        this.SwRoom = new SWRoom(this, this, this.SwPeer.Peer, roomName, roomMode, this.Stream);
 
-        let msc = StreamUtil.GetMediaStreamConstraints(this.VideoSource, this.AudioSource);
-        StreamUtil.GetStreaming(msc, (stream) => {
-            this.SwRoom.SetStream(stream);
-        }, (errname) => {
-            alert(errname);
-        });
-
-        //  オーナー 及び 接続クライアントに通知
-        this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
+        this.ServerSend(true, false);
     }
 
 
-    /** 
+    /**
      * ストリーミングの停止
      */
     public StopStreaming() {
         this.SwRoom.Close();
+        StreamUtil.Stop(this.Stream);
+        this.ServerSend(false, false);
     }
 
 
@@ -163,6 +152,8 @@ export default class CastInstanceMobileController extends AbstractServiceControl
         this.CastStatus.isCasting = isStreaming;
         this.CastStatus.isClose = isClose;
         this.CastStatus.isHide = false;
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid) + "&sfu=" + (this.CastSetting.isSFU ? 1 : 0);
+
         this.SendCastInfo();
     }
 

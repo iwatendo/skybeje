@@ -31,7 +31,7 @@ export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastIn
             this.Controller.SwPeer.SendToOwner(castStatus);
             this.Controller.View.SetCastStauts(castStatus);
         }
-
+        
     }
 
 }

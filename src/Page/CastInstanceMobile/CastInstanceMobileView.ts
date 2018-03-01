@@ -6,7 +6,7 @@ import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
 import LogUtil from "../../Base/Util/LogUtil";
-import StreamUtil from "../../Base/Util/StreamUtil";
+import StreamUtil, { MobileCam } from "../../Base/Util/StreamUtil";
 
 import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceMobileController from "./CastInstanceMobileController";
@@ -16,111 +16,252 @@ import LocalCache from "../../Contents/Cache/LocalCache";
 
 export default class CastInstanceMobileView extends AbstractServiceView<CastInstanceMobileController> {
 
-    private _micDeviceView: DeviceView;
-    private _camDeviceView: DeviceView;
-
+    private _isAudioInit = false;
+    private _preVolumeValue: string = "70";
+    private static _mediaStream: MediaStream = null;
+    private _audioContext: AudioContext = null;
+    private _mediaStreamNode: MediaStreamAudioSourceNode = null;
+    private _gainNode: GainNode = null;
 
     /**
      * 初期化処理
      */
-    public Initialize() {
+    public Initialize(callback) {
 
+        (window as any).AudioContext = (window as any).AudioContext || (window as any).webkitAudioContext;
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
-        let backpanel = document.getElementById('sbj-cast-instance');
-        let startButton = document.getElementById('sbj-cast-instance-start');
-        let cancelButton = document.getElementById('sbj-cast-instance-cancel');
-        let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let settingButton = document.getElementById('sbj-cast-instance-settings');
-        let roomName = document.getElementById('sbj-livecast-room-name');
-        let accountCount = document.getElementById('sbj-cast-instance-account-count');
-        let micElement = document.getElementById('mic-select-div');
-        let camElement = document.getElementById('webcam-select-div');
+        StdUtil.StopTouchZoom();
 
-        //
-        backpanel.onclick = (e: MouseEvent) => {
-            let targetClassName = (e.target as any).className;
-            if (targetClassName === "mdl-layout__container") {
-                this.Close();
-            }
-        };
-
-        window.onfocus = (ev) => {
-            if (this.Controller && this.Controller.CastStatus) {
-                this.Controller.CastStatus.isHide = false;
-            }
-        }
+        let audioElement = document.getElementById('audio') as HTMLAudioElement;
+        let startBotton = document.getElementById('sbj-cast-instance-start') as HTMLInputElement;
+        let stopBotton = document.getElementById('sbj-cast-instance-stop');
+        let camchangeBotton = document.getElementById('sbj-camchange') as HTMLInputElement;
+        let volumeOn = document.getElementById("sbj-volume-button-on");
+        let volumeOff = document.getElementById("sbj-volume-button-off");
+        let sliderDiv = document.getElementById("sbj-volume");
+        let volumeSlider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
 
         //  ストリーミング開始ボタン
-        startButton.onclick = (e) => {
-            this.Controller.SetStreaming();
-            this.ChangeDisplayMode(true);
+        startBotton.onclick = (e) => {
+            this.Controller.StartStreaming();
+            startBotton.hidden = true;
+            stopBotton.hidden = false;
+            camchangeBotton.hidden = true;
+
+            //  volumeOff.hidden = false;
+            //  sliderDiv.hidden = false;
         }
 
         //  ストリーミング停止ボタン
-        stopButton.onclick = (e) => {
-            this.Controller.ServerSend(false, false);
-            location.href = "";
+        stopBotton.onclick = (e) => {
+
+            this.Controller.StopStreaming();
+            //  ページごと閉じてしまう。
+            this.PageClose();
         };
 
-        let options = LocalCache.LiveCastOptions;
+        let isSafari = StdUtil.IsSafari();
+        let isInit = false;
 
-        //  カーソル表示有無
-        let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
-        cursorDispElement.onchange = (e) => {
+        //  ミュート状態解除
+        volumeOff.onclick = (e) => {
+            volumeOn.hidden = false;
+            volumeOff.hidden = true;
+            this.SetMute(false, isSafari);
+        }
 
-            let isCheced = cursorDispElement.checked;
-            LocalCache.SetLiveCastOptions((opt) => opt.IsIconCursor = isCheced);
+        //  ミュートにする
+        volumeOn.onclick = (e) => {
+            volumeOn.hidden = true;
+            volumeOff.hidden = false;
+            this.SetMute(true, isSafari);
+        }
 
-            this.Controller.CastSetting.dispUserCursor = isCheced;
-            this.Controller.SendCastInfo();
+        //  音量調整
+        volumeSlider.oninput = (e) => {
+            let volumeStr = volumeSlider.value;
+
+            let isMute = (volumeStr === "0");
+            volumeOn.hidden = isMute;
+            volumeOff.hidden = !isMute;
+
+            this.SetVolume(volumeStr, isSafari);
+        }
+
+        let cam = MobileCam.REAR;
+
+        //  プレビュー表示処理
+        let startPreviewFunc = (cam: MobileCam) => {
+            setTimeout(() => {
+                this.SetStreamPreview(cam, () => {
+                    camchangeBotton.disabled = false;
+                    startBotton.disabled = false;
+                });
+            }, 200);
+        }
+
+        //  カメラ変更ボタン
+        camchangeBotton.onclick = (e) => {
+            camchangeBotton.disabled = true;
+            startBotton.disabled = true;
+            setTimeout(() => {
+                this.StopStreamPreview();
+                //  リアとフロントのカメラを切替えプレビュー表示
+                cam = (cam === MobileCam.REAR ? MobileCam.FRONT : MobileCam.REAR);
+                startPreviewFunc(cam);
+            }, 200);
         };
-        cursorDispElement.checked = options.IsIconCursor;
-        this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
-        this.SetMediaDevice();
+        //  起動時はリアカメラでプレビュー表示する
+        startPreviewFunc(MobileCam.REAR);
 
-        //  接続URLのコピー
-        let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
-        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
-        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+        callback();
+    }
+
+
+    /**
+     * ページごと閉じる
+     */
+    public PageClose() {
+        window.open('about:blank', '_self').close();
+    }
+
+
+    /**
+     * ボリューム設定
+     * @param volume 
+     * @param isSafari 
+     */
+    private SetVolume(volumeStr: string, isSafari: boolean) {
+
+        let volume = (Number.parseInt(volumeStr) / 100.0);
+
+        if (!this._isAudioInit && volume > 0) {
+            this.InitilizeAudio(isSafari);
+            this._isAudioInit = true;
+        }
+
+        if (isSafari) {
+            this._gainNode.gain.value = volume;
+        }
+        else {
+            (document.getElementById('audio') as HTMLAudioElement).volume = volume;
+        }
     }
 
 
     /**
      * 
-     * @param isLiveCasting 
+     * @param isMute 
+     * @param isSafari 
      */
-    public ChangeDisplayMode(isLiveCasting: boolean) {
+    private SetMute(isMute: boolean, isSafari: boolean) {
+        let slider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
+        if (isMute) {
+            this._preVolumeValue = slider.value;
+            slider.value = "0";
+        }
+        else {
+            slider.value = this._preVolumeValue;
+        }
+        this.SetVolume(slider.value, isSafari);
+    }
 
-        let videoElement = document.getElementById('video');
-        let startButton = document.getElementById('sbj-cast-instance-start');
-        let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let settingButton = document.getElementById('sbj-cast-instance-settings');
-        let roomName = document.getElementById('sbj-livecast-room-name');
-        let accountCount = document.getElementById('sbj-cast-instance-account-count');
-        let micElement = document.getElementById('mic-select-div');
-        let camElement = document.getElementById('webcam-select-div');
-        let linkElement = document.getElementById('sbj-linkcopy');
 
-        startButton.hidden = isLiveCasting;
-        stopButton.hidden = !isLiveCasting;
-        accountCount.hidden = !isLiveCasting;
-        roomName.hidden = !isLiveCasting;
-        micElement.hidden = isLiveCasting;
-        camElement.hidden = isLiveCasting;
-        linkElement.hidden = !isLiveCasting;
+    /**
+     * 
+     * @param isSafari 
+     */
+    private InitilizeAudio(isSafari: boolean) {
+        if (isSafari) {
+            this.SetStream_WebAudio();
+        }
+        else {
+            let audioElement = document.getElementById('audio') as HTMLAudioElement;
+            this.SetStream_AudioElement(audioElement);
+        }
+    }
 
-        if (settingButton)
-            settingButton.hidden = isLiveCasting;
+    /**
+     * 
+     * @param audioElement 
+     */
+    private SetStream_AudioElement(audioElement: HTMLAudioElement) {
+        audioElement.volume = 0;
+        audioElement.srcObject = CastInstanceMobileView._mediaStream;
+        audioElement.play();
+    }
 
-        //  配信設定ボタンが無い場合はモバイルと判断
-        let isMoblie: boolean = (!settingButton);
 
-        if (isMoblie) {
-            videoElement.hidden = isLiveCasting;
+    /**
+     * 
+     * @param isMute 
+     */
+    private SetStream_WebAudio() {
+
+        if (CastInstanceMobileView._mediaStream) {
+            this._audioContext = new AudioContext();
+            this._mediaStreamNode = this._audioContext.createMediaStreamSource(CastInstanceMobileView._mediaStream);
+            this._gainNode = this._audioContext.createGain();
+            this._mediaStreamNode.connect(this._gainNode);
+            this._gainNode.gain.value = 0;
+            this._gainNode.connect(this._audioContext.destination);
+        }
+    }
+
+
+
+    public StopStreamPreview() {
+
+        let videoElement = document.getElementById('video-preview') as HTMLVideoElement;
+        if (videoElement) videoElement.srcObject = null;
+
+        if (this.Controller.Stream) {
+            StreamUtil.Stop(this.Controller.Stream);
+        }
+    }
+
+
+    /**
+     * Video/Audioソースの取得とリストへのセット
+     */
+    public SetStreamPreview(cam: MobileCam, callback) {
+
+        let controller = this.Controller;
+        let videoElement = document.getElementById('video-preview') as HTMLVideoElement;
+
+        let msc: MediaStreamConstraints;
+        let isDebug = false;
+
+        if (isDebug) {
+            msc = StreamUtil.GetMediaStreamConstraints_DefaultDevice();
+        }
+        else {
+            msc = StreamUtil.GetMediaStreamConstraints_Mobile(cam, true);
         }
 
+        StreamUtil.GetStreaming(msc,
+            (stream) => {
+                controller.Stream = stream;
+
+                if (stream === null) {
+                    this.StreamErrorClose();
+                    return;
+                }
+
+                if (stream && videoElement) {
+                    videoElement.onplaying = (e) => { callback(); }
+                    StreamUtil.StartPreview(videoElement, stream);
+                }
+                else {
+                    callback();
+                }
+            },
+            (error) => {
+                alert(error);
+            }
+        );
     }
 
 
@@ -129,108 +270,52 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
      * @param count 
      */
     public SetPeerCount(count: number) {
-        document.getElementById("sbj-cast-instance-account-count").setAttribute("data-badge", count.toString());
+        //  document.getElementById("sbj-cast-instance-account-count").setAttribute("data-badge", count.toString());
+    }
+
+    /**
+     * 他のユーザーからのストリーム接続時イベント
+     * @param peerid 
+     */
+    public SetMediaStream(peerid: string, stream: MediaStream, isAlive: boolean) {
+        CastInstanceMobileView._mediaStream = stream;
+
+        let videoRecv = document.getElementById('video-receiver') as HTMLVideoElement;
+        videoRecv.srcObject = stream;
+
+        (document.getElementById("sbj-volume-button-on") as HTMLInputElement).disabled = false;
+        (document.getElementById("sbj-volume-button-off") as HTMLInputElement).disabled = false;
+        (document.getElementById("sbj-volume-slider") as HTMLInputElement).disabled = false;
     }
 
 
     /**
-     * 配信ルーム名の表示
-     * @param room 
+     * エラーメッセージを表示します
+     * @param message 
      */
-    public SetRoomName(room: Home.Room) {
-        let message = "「" + room.name + "」に配信中";
-        document.getElementById("sbj-livecast-room-name").innerText = message;
-    }
+    public SetError(message: string) {
 
+        document.getElementById('sbj-cast-instance-main').hidden = true;
 
-    /**
-     * Video/Audioソースの取得とリストへのセット
-     */
-    public SetMediaDevice() {
+        let disconnect = document.getElementById('sbj-cast-instance-disconnect');
 
-        let controller = this.Controller;
-
-        let preMic = LocalCache.LiveCastOptions.SelectMic;
-        let preCam = LocalCache.LiveCastOptions.SelectCam;
-        let isInit = (!preMic && !preCam);
-
-        DeviceUtil.GetAudioDevice((devices) => {
-
-            let textElement = document.getElementById('mic-select') as HTMLInputElement;
-            var listElement = document.getElementById('mic-list') as HTMLElement;
-
-            var view = new DeviceView(DeviceKind.Audio, textElement, listElement, devices, (deviceId, deviceName) => {
-                controller.AudioSource = deviceId;
-                LocalCache.SetLiveCastOptions((opt) => opt.SelectMic = deviceId);
-                this.ChnageDevice();
-            });
-
-            if (isInit) {
-                view.SelectFirstDevice();
-            } else {
-                view.SelectDeivce(preMic);
-            }
-
-            this._micDeviceView = view;
-            document.getElementById("mic-select-div").classList.add("is-dirty");
-            this.ChnageDevice();
-        });
-
-        DeviceUtil.GetVideoDevice((devices) => {
-
-            let previewElement = document.getElementById('video') as HTMLVideoElement;
-            let textElement = document.getElementById('webcam-select') as HTMLInputElement;
-            var listElement = document.getElementById('webcam-list') as HTMLElement;
-
-            var view = new DeviceView(DeviceKind.Video, textElement, listElement, devices, (deviceId, deviceName) => {
-
-                controller.VideoSource = deviceId;
-                LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceId);
-                this.ChnageDevice();
-
-                if (deviceId) {
-                    let msc = StreamUtil.GetMediaStreamConstraints(deviceId, null);
-                    StreamUtil.GetStreaming(msc, (stream) => {
-                        StreamUtil.StartPreview(previewElement, stream);
-                    }, (errname) => {
-                        alert(errname);
-                    });
-                }
-            });
-
-            if (isInit) {
-                view.SelectFirstDevice();
-            } else {
-                view.SelectDeivce(preCam);
-            }
-
-            this._camDeviceView = view;
-            document.getElementById("webcam-select-div").classList.add("is-dirty");
-            this.ChnageDevice();
-        });
+        if (disconnect) {
+            disconnect.hidden = false;
+            let errorEelement = document.getElementById('error-message');
+            errorEelement.innerText = message;
+        }
 
     }
 
 
     /**
-     * デバイス変更時の共通処理
+     * ストリームが取得できなかった場合、メッセージ表示して終了する
      */
-    public ChnageDevice() {
-        let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
-        let options = LocalCache.LiveCastOptions;
-        startButton.disabled = !((options.SelectCam ? true : false) || (options.SelectMic ? true : false));
-    }
-
-
-    /**
-     * フレームを閉じる
-     */
-    public Close() {
-        //  ストリーミング中の場合は表示を切替える
-        this.Controller.CastStatus.isHide = this.Controller.CastStatus.isCasting;
-        //  ストリーミングしていない場合、フレームを閉じる
-        this.Controller.CastStatus.isClose = !this.Controller.CastStatus.isCasting;
-        this.Controller.SendCastInfo();
+    public StreamErrorClose() {
+        document.getElementById('video-preview').hidden = true;
+        document.getElementById('video-receiver').hidden = true;
+        document.getElementById('sbj-cast-instance-stream-error').hidden = false;
+        this.Controller.SwPeer.Close();
     }
 
 }

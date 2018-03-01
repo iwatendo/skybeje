@@ -37,6 +37,7 @@ export default class ServentCache {
         if (cache.has(serventPid)) {
             let servent = cache.get(serventPid);
             servent.isCasting = cib.isCasting;
+            servent.clientUrl = cib.clientUrl;  //  クライアントURLも、オプションが変更される可能性があるため差替える
             callback(servent);
         }
         else {

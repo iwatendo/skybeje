@@ -1,115 +1,77 @@
 <html>
 
 <head>
-    <title>Skybeje-MoblieCast</title>
+    <title>Tellspot</title>
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <link rel="icon" type="image/vnd.microsoft.icon" href='../image/favicon.ico'>
     <script src='/lib/forcedtimer.js'></script>
     <script src='/lib/skyway.min.js'></script>
-    <link rel='stylesheet' href='/lib/material.min.css' />
-    <link rel="stylesheet" href="/lib/split-pane.css" />
+    <link rel='stylesheet' href='../lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
+    <script src='../lib/material.min.js'></script>
 </head>
 
 <body>
 
-    <div class="sbj-cast-instance" id="sbj-cast-instance">
+    <div class="mdl-layout mdl-js-layout">
+        <main id="sbj-cast-instance-main" class="mdl-layout__content">
 
-        <div class="sbj-cast-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+            <audio id='audio' autoplay="true" hidden></audio>
+            <video id='video-preview' autoplay="true" playsinline="true" muted></video>
+            <video id='video-receiver' autoplay="true" playsinline="true" muted></video>
 
-            <header class="sbj-cast-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
-                <div class="sbj-cast-instance--header-row mdl-layout__header-row">
-
-                    <span id="sbj-cast-instance-title" class="mdl-layout-title">
-                        ライブキャスト
-                    </span>
-                    <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
-
-                    <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
-
-                    <div class="mdl-layout-spacer"></div>
-
-                    <button id="sbj-cast-instance-cancel" class="mdl-button mdl-js-button mdl-button--raised sbj-dialog-close" hidden type="button">
-                        <i class="material-icons">close</i>
-                    </button>
-
+            <div id="sbj-actions" class="sbj-actions mdl-card__actions">
+                <button id="sbj-volume-button-on" class="sbj-volume-button mdl-button mdl-js-button mdl-button--raised mdl-button--icon mdl-button--colored"
+                    hidden disabled>
+                    <i class="material-icons">volume_up</i>
+                </button>
+                <button id="sbj-volume-button-off" class="sbj-volume-button mdl-button mdl-js-button mdl-button--raised mdl-button--icon mdl-button--accent"
+                    hidden disabled>
+                    <i class="material-icons">volume_off</i>
+                </button>
+                <div id="sbj-volume" class="sbj-volume" hidden>
+                    <input id="sbj-volume-slider" type="range" min="0" max="100" value="0" tabindex="0" disabled>
                 </div>
-            </header>
+                <button id="sbj-camchange" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
+                    <i class="material-icons">cached</i>
+                    &nbsp;カメラ&nbsp;
+                </button>
+                <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
+                    <i class="material-icons">videocam</i>
+                    &nbsp;開始&nbsp;
+                </button>
+                <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                    <i class="material-icons">videocam_off</i>
+                    &nbsp;終了&nbsp;
+                </button>
+            </div>
 
-            <main id="sbj-cast-instance-main" class="mdl-layout__content">
+            <div id="sbj-cast-instance-stream-error" class="mdl-card__supporting-text" hidden>
+                <h5>
+                    カメラ及びマイクへの接続に失敗しました。
+                    <br/>
+                    <br/>アプリ内のブラウザから開いた場合は、標準ブラウザから開き直してください。
+                    <br/>アプリ内のブラウザから、標準ブラウザを起動できます。
+                </h5>
+            </div>
 
-                <video id='video' autoplay="true" playsinline="true"></video>
+        </main>
 
-                <div id="sbj-cast-instance-mobile-menu">
-                    <div class="sbj-cast-instance-mobile-cell mdl-cell mdl-cell--6-col mdl-color-text--grey-600">
-                        <div>
-                            <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
-                                <i class="material-icons">play_arrow</i>
-                                &nbsp;開始&nbsp;
-                            </button>
-                            <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
-                                <i class="material-icons">stop</i>
-                                &nbsp;停止&nbsp;
-                            </button>
-                        </div>
-                        <div>
-                            <!-- Mic -->
-                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
-                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
-                                <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
-                                <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
-                                    <li class="mdl-menu__item"></li>
-                                </ul>
-                            </div>
-                            <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="mic-select-div">ライブキャスト中は
-                                <br/>マイクの変更はできません</span>
-                        </div>
-                        <div>
-                            <!-- Camera -->
-                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
-                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
-                                <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
-                                <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
-                                    <li class="mdl-menu__item" onclick=""></li>
-                                </ul>
-                            </div>
-                            <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="webcam-select-div">ライブキャスト中は
-                                <br/>カメラの変更はできません</span>
-                        </div>
-                        <div>
-                            <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="cursor_disp">
-                                <input type="checkbox" id="cursor_disp" class="mdl-switch__input" checked>
-                                <span class="mdl-switch__label">ユーザーのアイコンや画像の配置を許可</span>
-                            </label>
-                            <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="speech_recognition" hidden>
-                                <input type="checkbox" id="speech_recognition" class="mdl-switch__input" checked>
-                                <span class="mdl-switch__label">音声認識での字幕表示</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </main>
-
-            <main id="sbj-cast-instance-disconnect" class="sbj-cast-instance-disconnect mdl-color-text--grey-600" hidden>
-                <div class="mdl-card__supporting-text">
-                    <h4>
-                        接続先のクライアントが閉じられました。
-                        <br /> または、ネットワークが切断されました。
-                        <br />
-                    </h4>
-                </div>
-        </div>
+        <main id="sbj-cast-instance-disconnect" class="sbj-cast-instance-disconnect mdl-color-text--grey-600" hidden>
+            <div class="mdl-card__supporting-text">
+                <h4 id="error-message">
+                </h4>
+            </div>
+        </main>
 
     </div>
-    </div>
 
-    <script src="/lib/material.min.js"></script>
-    <script src="/lib/react.min.js"></script>
-    <script src="/lib/react-dom.min.js"></script>
-    <script src="../castinstance/bundle.js?v={version}"></script>
+    <script src='../lib/react.min.js'></script>
+    <script src='../lib/react-dom.min.js'></script>
+    <script src="./bundle.js?v={version}"></script>
 
 </body>
 
