@@ -3,6 +3,7 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import CastInstanceMobileQRController from "./CastInstanceMobileQRController";
 import MobileCastSettingSender from "../../Contents/Sender/MobileCastSettingSender";
+import CastStatusSender from "../../Base/Container/CastStatusSender";
 
 export default class CastInstanceMobileQRView extends AbstractServiceView<CastInstanceMobileQRController> {
 
@@ -47,11 +48,16 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     /**
      * 
      */
-    public SetLinkUrlEvent() {
-        //  接続URLのコピー
-        let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
-        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
-        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+    public SetCastStauts(castStatus: CastStatusSender) {
+
+        if (castStatus.isCasting) {
+
+            let linkurl = castStatus.clientUrl;
+            let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
+            LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+
+            document.getElementById('sbj-linkcopy').hidden = false;
+        }
     }
 
 }
