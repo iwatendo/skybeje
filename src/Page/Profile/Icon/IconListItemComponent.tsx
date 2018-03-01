@@ -7,7 +7,6 @@ import { Order, IOrder } from "../../../Base/Container/Order";
 
 import * as Personal from "../../../Contents/IndexedDB/Personal";
 
-import ImageDialogController from "../../Dashboard/ImageDialogController";
 import IconListComponent from "./IconListComponent";
 import IconListView from "./IconListView";
 

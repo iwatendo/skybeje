@@ -4,8 +4,8 @@ import * as Home from "../../Contents/IndexedDB/Home";
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import ImageUtil from "../../Base/Util/ImageUtil";
 import ImageInfo from "../../Base/Container/ImageInfo";
-import ImageDialogController from "../Dashboard/ImageDialogController";
 import RoomController from "./RoomController";
+import ImageDialogController from "../../Contents/ImageDialogController";
 
 
 export default class RoomView extends AbstractServiceView<RoomController> {

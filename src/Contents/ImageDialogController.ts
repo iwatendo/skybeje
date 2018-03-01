@@ -1,9 +1,9 @@
 ﻿
-import StdUtil from "../../Base/Util/StdUtil";
-import FileUtil from "../../Base/Util/FileUtil";
-import ImageInfo from "../../Base/Container/ImageInfo";
-import * as Enum from "../../Base/Container/ImageInfo";
-import FileAttachUtil from "../../Base/Util/FileAttachUtil";
+import StdUtil from "../Base/Util/StdUtil";
+import FileUtil from "../Base/Util/FileUtil";
+import ImageInfo from "../Base/Container/ImageInfo";
+import * as Enum from "../Base/Container/ImageInfo";
+import FileAttachUtil from "../Base/Util/FileAttachUtil";
 
 
 interface OnChangeImage { (imageRec: ImageInfo): void }

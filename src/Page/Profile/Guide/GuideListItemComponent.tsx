@@ -7,7 +7,6 @@ import LogUtil from "../../../Base/Util/LogUtil";
 import ImageInfo from "../../../Base/Container/ImageInfo";
 import { Order, IOrder } from "../../../Base/Container/Order";
 
-import ImageDialogController from "../../Dashboard/ImageDialogController";
 import GuideListComponent from "./GuideListComponent";
 import GuideListView from "./GuideListView";
 import StdUtil from "../../../Base/Util/StdUtil";
