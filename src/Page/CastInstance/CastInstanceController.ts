@@ -69,6 +69,8 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         this.CastStatus.instanceUrl = location.href;
         this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
         this.SwPeer.SendToOwner(this.CastStatus);
+
+        this.View.InitializeChatLink();
     }
 
 

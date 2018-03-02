@@ -37,6 +37,14 @@ export default class CastInstanceMobileQRController extends AbstractServiceContr
      */
     public OnChildConnection(conn: PeerJs.DataConnection) {
         this.View.SendOption();
-    }    
+    }
+
+
+    /**
+     * オーナー接続時イベント
+     */
+    public OnOwnerConnection() {
+        this.View.InitializeChatLink();
+    }
 
 };

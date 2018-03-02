@@ -72,6 +72,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
     public OnOwnerConnection() {
         this._isConnectOwner = true;
         this.SendStageService();
+        this.View.InitializeChatLink();
     }
 
 

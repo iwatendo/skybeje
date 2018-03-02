@@ -62,7 +62,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         let options = LocalCache.GadgetCastOptions;
 
         //  カーソル表示有無
-        let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
+        let cursorDispElement = document.getElementById('sbj-check-cursor-disp') as HTMLInputElement;
         cursorDispElement.onchange = (e) => {
 
             let isCheced = cursorDispElement.checked;

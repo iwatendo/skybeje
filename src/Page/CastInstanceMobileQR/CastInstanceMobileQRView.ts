@@ -18,10 +18,15 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         StdUtil.StopPropagation();
         this.SetQRCode();
 
-        (document.getElementById('option_sfu') as HTMLInputElement).onchange = (e) => { this.SendOption() }
-        (document.getElementById('option_cursor') as HTMLInputElement).onchange = (e) => { this.SendOption() }
+        (document.getElementById('sbj-check-sfu') as HTMLInputElement).onchange = (e) => { this.SendOption() }
+        (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).onchange = (e) => { this.SendOption() }
 
         callback();
+    }
+
+
+    public InitializeChatLink() {
+        (document.getElementById('sbj-check-cursor-disp-label') as HTMLInputElement).hidden = false;
     }
 
 
@@ -49,8 +54,8 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
 
     public SendOption() {
         let sender = new CastSettingSender();
-        sender.isSFU = (document.getElementById('option_sfu') as HTMLInputElement).checked;
-        sender.dispUserCursor = (document.getElementById('option_cursor') as HTMLInputElement).checked;
+        sender.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
+        sender.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
         this.Controller.SwPeer.SendAll(sender);
     }
 
@@ -80,7 +85,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         document.getElementById("sbj-cast-setting").hidden = true;
 
         if (StdUtil.IsSafari(info.userAgent)) {
-            (document.getElementById('option_sfu') as HTMLInputElement).checked = false;
+            (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked = false;
             this.SendOption();
         }
 

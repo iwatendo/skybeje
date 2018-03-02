@@ -104,7 +104,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
 
 
         //  カーソル表示有無
-        let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
+        let cursorDispElement = document.getElementById('sbj-check-cursor-disp') as HTMLInputElement;
         cursorDispElement.onchange = (e) => {
 
             let isCheced = cursorDispElement.checked;
@@ -133,6 +133,12 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         }
 
         callback();
+    }
+
+
+    public InitializeChatLink() {
+        document.getElementById('sbj-screenshare-cast-settings').hidden = false;
+        document.getElementById('sbj-check-cursor-disp-label').hidden = false;
     }
 
 

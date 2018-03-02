@@ -74,7 +74,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let options = LocalCache.LiveCastOptions;
 
         //  カーソル表示有無
-        let cursorDispElement = document.getElementById('cursor_disp') as HTMLInputElement;
+        let cursorDispElement = document.getElementById('sbj-check-cursor-disp') as HTMLInputElement;
         cursorDispElement.onchange = (e) => {
 
             let isCheced = cursorDispElement.checked;
@@ -92,6 +92,11 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
         LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+    }
+
+
+    public InitializeChatLink() {
+        (document.getElementById('sbj-check-cursor-disp-label') as HTMLInputElement).hidden = false;
     }
 
 
