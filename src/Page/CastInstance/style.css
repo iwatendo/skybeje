@@ -13,6 +13,17 @@
     height: 100%;
 }
 
+.sbj-split-left {
+    float: left;
+    width: 550px;
+    padding: 0px;
+}
+
+.sbj-split-right {
+    float: right;
+    width: calc(100% - 554px);
+}
+
 #sbj-cast-instance-main{
     margin: 16px 32px;
 }
@@ -76,7 +87,7 @@
  *---------------------------*/
 
 .sbj-client-link{
-    padding: 20px 0px;
+    padding: 16px 0px;
 }
 
 .sbj-mobile-qrcode-box{
