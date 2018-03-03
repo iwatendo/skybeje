@@ -35,11 +35,11 @@
 
                 <div class="mdl-cell mdl-cell--12-col">
                     <h4>
-                        Skybejeはブラウザを「チャットサーバー」にするサービスです
+                        Skybejeはブラウザを小さな「チャットサーバー」にします。
                     </h4>
                 </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--8-col">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--8-col sbj-cell">
                     <div class="mdl-card__actions">
                         <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./homeinstance", "_blank")'>
                             <i class="material-icons">dashboard</i>
@@ -47,13 +47,14 @@
                         </button>
                     </div>
                     <div class="mdl-card__supporting-text">
-                        ・チャットサーバーへの接続URLは毎回変わります
+                        ・起動するとチャットサーバーへの接続する為のURLが発行されます
+                        <br/> ・接続URLは毎回変わります
                         <br/> ・ブラウザを閉じればチャットサーバーは停止します
                         <br/> ・データは全て、ブラウザ内DB(IndexedDB)に保存されます
-                        <br/> ・ただし、プロフィール情報は各ユーザー側に保存されます
+                        <br/> ・プロフィール情報は各ユーザー側のブラウザに保存されます
                     </div>
                 </div>
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
                     <div class="mdl-card__actions">
                         <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./usersettings", "_blank")'>
                             <i class="material-icons">settings</i>
@@ -61,130 +62,136 @@
                         </button>
                     </div>
                     <div class="mdl-card__supporting-text">
-                        ・チャットクライアント設定
+                        ・チャットクライアントの設定
                         <br/> ・データのインポート/エクスポート
                         <br/> ・ブラウザ内DBの初期化処理
                     </div>
                 </div>
 
                 <div class="mdl-cell mdl-cell--12-col">
+                    <h4>
+                        Skybejeはさまざまな機能と連動させることができます。
+                    </h4>
+                    <h6>
+                        以下のサービスは単独でも動作しますが、チャットクライアントと連動させる事もできます。
+                        <br/>連動させる場合は、チャットクライアントの「連動サービス」から起動してください。
+                    </h6>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                    <div class="mdl-card__actions">
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstance", "_blank")'>
+                            <i class="material-icons">videocam</i>
+                            &nbsp; ライブキャスト &nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        &nbsp;&nbsp; 一般的なビデオ通話で利用されるWebRTCを利用した低遅延のライブキャスト機能です。
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                    <div class="mdl-card__actions">
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstancemobileqr", "_blank")'>
+                            <i class="material-icons">smartphone</i>
+                            &nbsp; ライブキャスト(モバイル) &nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        &nbsp;&nbsp; アプリのインストール不用で、スマートフォンやタブレットのカメラからライブキャストします。
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                    <div class="mdl-card__actions">
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstancescreenshare", "_blank")'>
+                            <i class="material-icons">screen_share</i>
+                            &nbsp; スクリーンシェア &nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        &nbsp;&nbsp; ブラウザ(Google Chrome)のみで、パソコンのデスクトップの映像を配信をします。
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                    <div class="mdl-card__actions">
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("近日実装予定です")'>
+                            <i class="material-icons">collections</i>
+                            &nbsp; 画像を表示 &nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <span class="sbj-text-warning">近日実装予定です</span>
+                        <br/>
+                        <br/> &nbsp;&nbsp; アップロードサーバーを使用せずに、直接画像をファイルを接続クライアントに表示します。
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                    <div class="mdl-card__actions">
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("近日実装予定です")'>
+                            <i class="material-icons">music_video</i>
+                            &nbsp; 楽曲ファイルの再生 &nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <span class="sbj-text-warning">近日実装予定です</span>
+                        <br/>
+                        <br/> &nbsp;&nbsp; アップロードサーバーを使用せずに、mp3/ogg等の楽曲/音声ファイルを接続クライアントで再生します。
+                    </div>
+                </div>
+
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                    <div class="mdl-card__actions">
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("近日実装予定です")'>
+                            <i class="material-icons">add_a_photo</i>
+                            &nbsp; モバイル端末の写真表示 &nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <span class="sbj-text-warning">近日実装予定です</span>
+                        <br/>
+                        <br/> &nbsp;&nbsp; スマートフォンやタブレットのカメラで撮影した写真を、接続クライアントに表示します。
+                    </div>
+                </div>
+
+
+                <div class="mdl-cell mdl-cell--12-col">
                     <h5>
-                        以下のサービスの機能を連結させることができます
-                        <br/>※単独でも動作します。
+                        外部のWebサービスやWebAPIと連動
                     </h5>
                 </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
                     <div class="mdl-card__actions">
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstance", "_blank")'>
-                                <i class="material-icons">videocam</i>
-                                &nbsp; ライブ配信 &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            &nbsp;&nbsp; 少人数向けの配信機能ですが、一般的なビデオ通話で利用されるWebRTCを使った低遅延の配信機能です。
-                        </div>
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./gadgetinstance", "_blank")'>
+                            <i class="material-icons">ondemand_video</i>
+                            &nbsp; YouTube同期再生 &nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <span class="sbj-text-warning">β版です</span>
+                        <br/>
+                        <br/> &nbsp;&nbsp; 動画の再生位置・一時停止・再生速度・音量設定等を同期させることができます
                     </div>
                 </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
                     <div class="mdl-card__actions">
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstancescreenshare", "_blank")'>
-                                <i class="material-icons">screen_share</i>
-                                &nbsp; スクリーンシェア &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            ブラウザ(Google Chrome)のみで、パソコンのデスクトップの映像を配信をします。
-                        </div>
+                        <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("近日実装予定です")'>
+                            <i class="material-icons">person_pin</i>
+                            &nbsp; 位置情報の表示 &nbsp;
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <span class="sbj-text-warning">近日実装予定です</span>
+                        <br/>
+                        <br/> &nbsp;&nbsp; モバイル端末の位置情報を、リアルタイムにGoogleMap上に表示します
                     </div>
                 </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
-                    <div class="mdl-card__actions">
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstancemobileqr", "_blank")'>
-                                <i class="material-icons">smartphone</i>
-                                &nbsp; モバイル配信 &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            アプリ不用で、スマートフォンやタブレットのカメラからライブ配信します。
-                        </div>
-                    </div>
-                </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
-                    <div class="mdl-card__actions">
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
-                                <i class="material-icons">music_video</i>
-                                &nbsp; 楽曲ファイルの再生 &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            mp3/ogg等の楽曲ファイルをブラウザ上で再生します。
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
-                    <div class="mdl-card__actions">
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
-                                <i class="material-icons">collections</i>
-                                &nbsp; 画像を表示 &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            &nbsp;&nbsp;
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
-                    <div class="mdl-card__actions">
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
-                                <i class="material-icons">add_a_photo</i>
-                                &nbsp; モバイル端末の写真表示 &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            モバイル端末の写真をパソコンのブラウザに簡単に表示できます
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
-                    <div class="mdl-card__actions">
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./gadgetinstance", "_blank")'>
-                                <i class="material-icons">ondemand_video</i>
-                                &nbsp; YouTube同期再生 &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            動画の再生位置・一時停止・再生速度・音量設定等を同期させることができます
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col">
-                    <div class="mdl-card__actions">
-                        <div class="mdl-card__actions">
-                            <button id="sbj-start-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='alert("未実装/移行中")'>
-                                <i class="material-icons">person_pin</i>
-                                &nbsp; 位置情報の表示 &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            モバイル端末の位置情報を、リアルタイムにGoogleMap上に表示します
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <footer class="mdl-mini-footer mdl-color-text--grey-800">

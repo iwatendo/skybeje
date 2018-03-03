@@ -111,13 +111,13 @@ export default class ServentElementPack {
         switch (servent.castType) {
             case CastTypeEnum.LiveCast:
                 if (servent.instanceUrl.indexOf('mobile') >= 0) {
-                    castTypeName = "モバイル配信";
+                    castTypeName = "ライブキャスト（モバイル）";
                 }
                 else {
-                    castTypeName = "ライブ配信";
+                    castTypeName = "ライブキャスト";
                 }
                 break;
-            case CastTypeEnum.ScreenShare: castTypeName = "画面共有"; break;
+            case CastTypeEnum.ScreenShare: castTypeName = "スクリーンシェア"; break;
             case CastTypeEnum.Gadget: castTypeName = "ガジェット配信"; break;
         }
 

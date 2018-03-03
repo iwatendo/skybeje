@@ -44,9 +44,12 @@ body {
   max-width: 280px;
 }
 
-.alpha{
+.sbj-text-warning{
   color:var(--sbj-color-warning-text);
-  font-weight: 600;
+}
+
+.sbj-cell{
+  padding: 8px;
 }
 
 a{
