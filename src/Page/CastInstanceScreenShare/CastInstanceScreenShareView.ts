@@ -146,7 +146,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         //  接続URLのコピー
         let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
-        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+        LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn);
     }
 
 

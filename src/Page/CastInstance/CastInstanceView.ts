@@ -54,8 +54,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         //  ストリーミング開始ボタン
         startButton.onclick = (e) => {
-            this.Controller.SetStreaming();
             this.ChangeDisplayMode(true);
+            this.StartStreaming();
         }
 
         //  ストリーミング停止ボタン
@@ -73,25 +73,17 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         let options = LocalCache.LiveCastOptions;
 
-        //  カーソル表示有無
+        let checkSfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;
         let cursorDispElement = document.getElementById('sbj-check-cursor-disp') as HTMLInputElement;
-        cursorDispElement.onchange = (e) => {
 
-            let isCheced = cursorDispElement.checked;
-            LocalCache.SetLiveCastOptions((opt) => opt.IsIconCursor = isCheced);
+        //
+        checkSfuElement.onchange = (e) => { this.SendOption(); }
+        cursorDispElement.onchange = (e) => { this.SendOption(); }
 
-            this.Controller.CastSetting.dispUserCursor = isCheced;
-            this.Controller.SendCastInfo();
-        };
         cursorDispElement.checked = options.IsIconCursor;
         this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
         this.SetMediaDevice();
-
-        //  接続URLのコピー
-        let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
-        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
-        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
     }
 
 
@@ -100,21 +92,27 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     }
 
 
+    public SendOption() {
+        this.Controller.CastSetting.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
+        this.Controller.CastSetting.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
+        this.Controller.SendCastInfo();
+    }
+
     /**
      * 
      * @param isLiveCasting 
      */
     public ChangeDisplayMode(isLiveCasting: boolean) {
 
-        let videoElement = document.getElementById('video');
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let settingButton = document.getElementById('sbj-cast-instance-settings');
+        let settingElement = document.getElementById('sbj-cast-setting');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
-        let linkElement = document.getElementById('sbj-linkcopy');
+        let linkElement = document.getElementById('sbj-client-link');
 
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
@@ -124,16 +122,23 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         camElement.hidden = isLiveCasting;
         linkElement.hidden = !isLiveCasting;
 
-        if (settingButton)
-            settingButton.hidden = isLiveCasting;
+        settingButton.hidden = isLiveCasting;
+        settingElement.hidden = isLiveCasting;
+    }
 
-        //  配信設定ボタンが無い場合はモバイルと判断
-        let isMoblie: boolean = (!settingButton);
 
-        if (isMoblie) {
-            videoElement.hidden = isLiveCasting;
-        }
+    /** 
+     * 
+     */
+    public StartStreaming() {
+        let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
+        linkurl += "&sfu=" + (this.Controller.CastSetting.isSFU ? "1" : "0");
+        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
+        let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
+        let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
+        LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn, clientopenbtn, qrcode);
 
+        this.Controller.SetStreaming();
     }
 
 

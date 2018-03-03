@@ -104,26 +104,40 @@ export default class LinkUtil {
 
     /**
      * 
-     * @param btn 
      * @param link 
+     * @param linkCopyBtn 
+     * @param openBtn 
+     * @param qrcode 
      */
-    public static SetCopyLinkButton(btn: HTMLButtonElement, link: string) {
+    public static SetCopyLinkButton(link: string, linkCopyBtn: HTMLButtonElement, openBtn: HTMLButtonElement = null, qrcode: HTMLFrameElement = null) {
 
-        if (btn && link) {
-            btn.onclick = (e) => {
-                StdUtil.ClipBoardCopy(link);
-                btn.textContent = " 接続URLをクリップボードにコピーしました ";
-                btn.classList.remove('mdl-button--colored');
-                btn.classList.add('mdl-button--raised');
-                btn.disabled = true;
-                window.setTimeout(() => {
-                    btn.textContent = " 接続URLのコピー ";
-                    btn.classList.add('mdl-button--colored');
-                    btn.classList.remove('mdl-button--raised');
-                    btn.disabled = false;
-                }, 2000);
-            };
+        if (link) {
+            if (linkCopyBtn) {
+                linkCopyBtn.onclick = (e) => {
+                    StdUtil.ClipBoardCopy(link);
+                    linkCopyBtn.textContent = " 接続URLをクリップボードにコピーしました ";
+                    linkCopyBtn.classList.remove('mdl-button--colored');
+                    linkCopyBtn.classList.add('mdl-button--raised');
+                    linkCopyBtn.disabled = true;
+                    window.setTimeout(() => {
+                        linkCopyBtn.textContent = " 接続URLのコピー ";
+                        linkCopyBtn.classList.add('mdl-button--colored');
+                        linkCopyBtn.classList.remove('mdl-button--raised');
+                        linkCopyBtn.disabled = false;
+                    }, 2000);
+                };
+            }
+
+            if (openBtn) {
+                openBtn.onclick = (e) => { window.open(link, "_blank"); }
+            }
+
+            if (qrcode) {
+                qrcode.src = LinkUtil.CreateLink("../QrCode/") + "?linkurl=" + encodeURIComponent(link);
+            }
+
         }
+
     }
 
 }

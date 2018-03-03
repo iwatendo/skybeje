@@ -117,8 +117,12 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public SetStreaming() {
 
         let msc = StreamUtil.GetMediaStreamConstraints(this.VideoSource, this.AudioSource);
+
         StreamUtil.GetStreaming(msc, (stream) => {
-            this.SwRoom.SetStream(stream);
+            //  PeerIDをルーム名称とする
+            let roomname = this.SwPeer.PeerId;
+            let roommode = (this.CastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
+            this.SwRoom = new SWRoom(this, this, this.SwPeer.Peer, roomname, roommode, stream);
         }, (errname) => {
             alert(errname);
         });
@@ -149,6 +153,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         this.CastStatus.isCasting = isStreaming;
         this.CastStatus.isClose = isClose;
         this.CastStatus.isHide = false;
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid) + "&sfu=" + (this.CastSetting.isSFU ? 1 : 0);
         this.SendCastInfo();
     }
 

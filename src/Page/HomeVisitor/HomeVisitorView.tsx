@@ -58,7 +58,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         //  「接続URLのコピー」
         let linkurl = LinkUtil.CreateLink("../HomeVisitor", LinkUtil.GetPeerID());
         let clipcopybtn = document.getElementById('sbj-home-visitor-linkcopy') as HTMLInputElement;
-        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+        LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn);
 
         //  切断時の「再接続」ボタン
         document.getElementById('sbj-home-visitor-disconnect-retry').onclick = (e) => {

@@ -33,7 +33,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         let clipcopybtn = document.getElementById('sbj-start-linkcopy') as HTMLInputElement;
 
         //  「接続URLのコピー」
-        LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+        LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn);
 
         document.getElementById('sbj-clear-timeline').onclick = (e) => {
             this.ClearTimeline();

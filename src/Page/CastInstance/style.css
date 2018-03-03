@@ -14,7 +14,6 @@
 }
 
 #sbj-cast-instance-main{
-    overflow: hidden;
     margin: 16px 32px;
 }
 
@@ -70,4 +69,23 @@
     position: absolute;
     top: 72px;
     left: 256px;
+}
+
+/*-----------------------------
+ *
+ *---------------------------*/
+
+.sbj-client-link{
+    padding: 20px 0px;
+}
+
+.sbj-mobile-qrcode-box{
+    margin: 24px 0px;
+    width: 340px;
+    height: 340px;
+}
+
+.sbj-link-qrcode-frame{
+    width: 340px;
+    height: 340px;
 }

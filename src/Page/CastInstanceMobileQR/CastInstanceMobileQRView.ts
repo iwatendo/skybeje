@@ -68,7 +68,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
 
             let linkurl = castStatus.clientUrl;
             let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
-            LinkUtil.SetCopyLinkButton(clipcopybtn, linkurl);
+            LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn);
 
             document.getElementById('sbj-linkcopy').hidden = false;
         }

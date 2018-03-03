@@ -19,8 +19,5 @@ if (StdUtil.IsExecute(true)) {
     let controller = new CastInstanceController();
     let ownerId = LinkUtil.GetPeerID();
     controller.SwPeer = new SWPeer(controller, ownerId, () => {
-        //  PeerIDをルーム名称とする
-        let roomname = controller.SwPeer.PeerId;
-        controller.SwRoom = new SWRoom(controller, controller, controller.SwPeer.Peer, roomname, SWRoomMode.SFU);
     });
 }

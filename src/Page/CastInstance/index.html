@@ -29,16 +29,11 @@
 
                     <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
                     <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
-
-                    <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
-                        &nbsp; 接続URLのコピー &nbsp;
-                    </button>
-
                 </div>
             </header>
 
-            <main id="sbj-cast-instance-main" class="mdl-layout__content">
-                <div class="mdl-color-text--grey-600">
+            <main class="mdl-layout__content">
+                <div class="mdl-color-text--grey-600" id="sbj-cast-instance-main">
 
                     <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
                         <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
@@ -65,11 +60,28 @@
                             <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">ユーザーアイコンの配置を許可</span>
                         </label>
-                        <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="speech_recognition" hidden>
-                            <input type="checkbox" id="speech_recognition" class="mdl-switch__input" checked>
-                            <span class="mdl-switch__label">音声認識での字幕表示</span>
+                    </div>
+
+                    <div id="sbj-cast-setting">
+                        <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu">
+                            <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">SFUを使用</span>
+                            </span>
                         </label>
                     </div>
+
+                    <div id="sbj-client-link" class="sbj-client-link" hidden>
+                        <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            &nbsp; 接続ページ起動 &nbsp;
+                        </button>
+                        <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
+                            &nbsp; 接続URLのコピー &nbsp;
+                        </button>
+                        <div class="mdl-shadow--3dp sbj-mobile-qrcode-box">
+                            <iframe id="sbj-link-qrcode" class="sbj-link-qrcode-frame" src=""></iframe>
+                        </div>
+                    </div>
+
                 </div>
             </main>
         </div>
