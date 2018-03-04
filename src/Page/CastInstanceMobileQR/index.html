@@ -26,10 +26,6 @@
 
                 <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">ライブキャストへの接続数</div>
-
-                <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
-                    &nbsp; 接続URLのコピー &nbsp;
-                </button>
             </div>
         </header>
 
@@ -62,6 +58,18 @@
                 <span id="sbj-appversion"></span>
                 <h5 class="sbj-mobile-label">UserArgent</h5>
                 <span id="sbj-useragent"></span>
+            </div>
+
+            <div id="sbj-client-link" class="sbj-client-link" hidden>
+                <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                    &nbsp; 接続ページ起動 &nbsp;
+                </button>
+                <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
+                    &nbsp; 接続URLのコピー &nbsp;
+                </button>
+                <div class="mdl-shadow--3dp sbj-link-qrcode-box">
+                    <iframe id="sbj-link-qrcode" class="sbj-client-link-qrcode-frame" src=""></iframe>
+                </div>
             </div>
 
         </main>

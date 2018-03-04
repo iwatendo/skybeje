@@ -65,12 +65,15 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     public SetCastStauts(castStatus: CastStatusSender) {
 
         if (castStatus.isCasting) {
-
+            let isSfu = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
             let linkurl = castStatus.clientUrl;
-            let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
-            LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn);
+            linkurl += "&sfu=" + (isSfu ? "1" : "0");
+            let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
+            let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
+            let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
+            LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn, clientopenbtn, qrcode);
 
-            document.getElementById('sbj-linkcopy').hidden = false;
+            document.getElementById('sbj-client-link').hidden = false;
         }
     }
 

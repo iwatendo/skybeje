@@ -20,3 +20,22 @@
 .sbj-cast-instance-option{
     margin: 20px 4px 0px 0px;
 }
+
+/*-----------------------------
+ *
+ *---------------------------*/
+
+ .sbj-client-link{
+    padding: 16px 0px;
+}
+
+.sbj-link-qrcode-box{
+    margin: 24px 0px;
+    width: 340px;
+    height: 340px;
+}
+
+.sbj-client-link-qrcode-frame{
+    width: 340px;
+    height: 340px;
+}
