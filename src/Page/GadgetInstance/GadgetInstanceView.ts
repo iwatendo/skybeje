@@ -66,13 +66,10 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         cursorDispElement.onchange = (e) => {
 
             let isCheced = cursorDispElement.checked;
-            LocalCache.SetGadgetCastOptions((opt) => opt.IsIconCursor = isCheced);
 
             this.Controller.CastSetting.dispUserCursor = isCheced;
             this.Controller.SwPeer.SendAll(this.Controller.CastSetting);
         };
-        cursorDispElement.checked = options.IsIconCursor;
-        this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
 
         let controller = this.Controller;
 

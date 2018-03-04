@@ -115,9 +115,6 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let options = LocalCache.ScreenShareOptions;
         if (options) {
 
-            cursorDispElement.checked = options.IsIconCursor;
-            this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
-
             framerateRange.value = options.FrameRage.toString();
             switch (options.Resolution) {
                 case 0: option0.checked = true; break;
@@ -153,7 +150,6 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
     public SendOption() {
         this.Controller.CastSetting.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
         this.Controller.CastSetting.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
-        LocalCache.SetScreenShareOptions((opt) => opt.IsIconCursor = this.Controller.CastSetting.dispUserCursor);
         this.Controller.SendCastInfo();
     }
 

@@ -165,8 +165,6 @@ export class VoiceChatOptions {
 export class LiveCastOptions {
     SelectMic: string;
     SelectCam: string;
-    IsSpeechRecognition: boolean;
-    IsIconCursor: boolean;
 }
 
 
@@ -177,11 +175,9 @@ export class ScreenShareOptions {
     constructor() {
         this.FrameRage = 15;
         this.Resolution = 1;
-        this.IsIconCursor = false;
     }
     Resolution: number;
     FrameRage: number;
-    IsIconCursor: boolean;
 }
 
 
@@ -189,6 +185,5 @@ export class ScreenShareOptions {
  * ガジェットキャスト時のオプション設定
  */
 export class GadgetCastOptions {
-    IsIconCursor: boolean;
 }
 

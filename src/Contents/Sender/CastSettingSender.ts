@@ -9,7 +9,7 @@ export default class CastSettingSender extends Sender {
 
     constructor() {
         super(CastSettingSender.ID);
-        this.dispUserCursor = false;
+        this.dispUserCursor = true;
         this.isSFU = true;
     }
     dispUserCursor: boolean;

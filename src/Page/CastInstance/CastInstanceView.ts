@@ -80,9 +80,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         checkSfuElement.onchange = (e) => { this.SendOption(); }
         cursorDispElement.onchange = (e) => { this.SendOption(); }
 
-        cursorDispElement.checked = options.IsIconCursor;
-        this.Controller.CastSetting.dispUserCursor = options.IsIconCursor;
-
         this.SetMediaDevice();
     }
 
@@ -95,7 +92,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     public SendOption() {
         this.Controller.CastSetting.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
         this.Controller.CastSetting.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
-        LocalCache.SetScreenShareOptions((opt) => opt.IsIconCursor = this.Controller.CastSetting.dispUserCursor);
         this.Controller.SendCastInfo();
     }
 
