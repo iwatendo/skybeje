@@ -1,15 +1,11 @@
-﻿
-import * as Home from "../../Contents/IndexedDB/Home";
-
-import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
+﻿import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil from "../../Base/Util/DeviceUtil";
-import SpeechUtil from "../../Base/Util/SpeechUtil";
-
-import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
 import StreamUtil from "../../Base/Util/StreamUtil";
-import LocalCache from "../../Contents/Cache/LocalCache";
 import LinkUtil from "../../Base/Util/LinkUtil";
+import * as Home from "../../Contents/IndexedDB/Home";
+import LocalCache from "../../Contents/Cache/LocalCache";
+import CastInstanceScreenShareController from "./CastInstanceScreenShareController";
 
 export default class CastInstanceScreenShareView extends AbstractServiceView<CastInstanceScreenShareController> {
 
@@ -38,10 +34,13 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
 
         let mainElement = document.getElementById('sbj-cast-instance-main');
         let noExtElement = document.getElementById('sbj-cast-instance-main-no-extension');
-        let linkElement = document.getElementById('sbj-linkcopy');
+        let linkElement = document.getElementById('sbj-client-link');
 
         window.onload = () => {
-            if (!StreamUtil.IsEnabledExtension()) {
+
+            let isDebug = false;
+
+            if (!StreamUtil.IsEnabledExtension() && !isDebug) {
                 mainElement.hidden = true;
                 noExtElement.hidden = false;
             }
@@ -86,14 +85,16 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             });
 
             this.Controller.SetStreaming(width, height, fr, () => {
-                document.getElementById("sbj-screenshare-setting").hidden = true;
                 startButton.hidden = true;
                 stopButton.hidden = false;
                 accountCount.hidden = false;
                 roomName.hidden = false;
                 note.hidden = true;
                 linkElement.hidden = false;
+                this.SetClientLink();
+                this.SetDisabled(true);
             });
+
         };
 
         //  ストリーミング停止ボタン
@@ -103,16 +104,11 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         };
 
 
-        //  カーソル表示有無
+        let checkSfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;
         let cursorDispElement = document.getElementById('sbj-check-cursor-disp') as HTMLInputElement;
-        cursorDispElement.onchange = (e) => {
-
-            let isCheced = cursorDispElement.checked;
-            LocalCache.SetScreenShareOptions((opt) => opt.IsIconCursor = isCheced);
-
-            this.Controller.CastSetting.dispUserCursor = isCheced;
-            this.Controller.SendCastInfo();
-        };
+        //
+        checkSfuElement.onchange = (e) => { this.SendOption(); }
+        cursorDispElement.onchange = (e) => { this.SendOption(); }
 
 
         //  初期値設定
@@ -137,16 +133,41 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
 
 
     public InitializeChatLink() {
-        document.getElementById('sbj-screenshare-cast-settings').hidden = false;
         document.getElementById('sbj-check-cursor-disp-label').hidden = false;
     }
 
 
-    public SetLinkUrlEvent() {
-        //  接続URLのコピー
+    /**
+     * 
+     * @param isStreaming 
+     */
+    public SetDisabled(isStreaming: boolean) {
+        let chkSfu = document.getElementById("sbj-check-sfu") as HTMLInputElement;
+        chkSfu.disabled = isStreaming;
+    }
+
+
+    /** 
+     * 
+     */
+    public SendOption() {
+        this.Controller.CastSetting.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
+        this.Controller.CastSetting.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
+        LocalCache.SetScreenShareOptions((opt) => opt.IsIconCursor = this.Controller.CastSetting.dispUserCursor);
+        this.Controller.SendCastInfo();
+    }
+
+
+    /** 
+     * 
+     */
+    public SetClientLink() {
         let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
-        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
-        LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn);
+        linkurl += "&sfu=" + (this.Controller.CastSetting.isSFU ? "1" : "0");
+        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
+        let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
+        let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
+        LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn, clientopenbtn, qrcode);
     }
 
 

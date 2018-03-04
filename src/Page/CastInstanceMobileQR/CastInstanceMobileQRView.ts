@@ -84,11 +84,16 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         document.getElementById('sbj-cast-instance-account-count').hidden = false;
         document.getElementById("sbj-cast-setting").hidden = true;
 
+        let sfuElement = document.getElementById("sbj-check-sfu") as HTMLInputElement;
+
         if (StdUtil.IsSafari(info.userAgent)) {
-            (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked = false;
+            //  現状、SafariはSFUに対応していない為、強制的にSFUの使用を不可にする。
+            sfuElement.checked = false;
+            document.getElementById('sbj-check-sfu-label').classList.remove('is-checked');
             this.SendOption();
         }
 
+        sfuElement.disabled = true;
         document.getElementById("sbj-terminal-info").hidden = false;
 
         document.getElementById('sbj-platform').textContent = info.platform;

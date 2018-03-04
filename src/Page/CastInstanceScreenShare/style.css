@@ -52,7 +52,7 @@
 }
 
 .sbj-cast-instance-option{
-    margin: 0px 20px;
+    margin: 0px 0px 16px 20px;
 }
 
 .sbj-split-left {
@@ -83,4 +83,23 @@
 	min-width: 36px;
     width: 36px;
     padding: 0px;
+}
+
+/*-----------------------------
+ *
+ *---------------------------*/
+
+ .sbj-client-link{
+    padding: 16px 0px;
+}
+
+.sbj-mobile-qrcode-box{
+    margin: 24px 0px;
+    width: 340px;
+    height: 340px;
+}
+
+.sbj-link-qrcode-frame{
+    width: 340px;
+    height: 340px;
 }

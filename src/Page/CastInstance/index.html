@@ -29,6 +29,7 @@
 
                     <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
                     <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
+                    <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
                 </div>
             </header>
 
@@ -49,26 +50,20 @@
                                 <i class="material-icons">settings</i>
                                 &nbsp;配信設定&nbsp;
                             </button>
-                            <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
                         </div>
 
                         <div class="mdl-list__item-primary-content">
                             <video id='video' autoplay="true"></video>
                         </div>
-                        <div>
-                            <label id="sbj-check-cursor-disp-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-cursor-disp"
-                                hidden>
-                                <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
-                                <span class="mdl-switch__label">ユーザーアイコンの配置を許可</span>
-                            </label>
-                        </div>
-
-                        <div id="sbj-cast-setting">
-                            <label class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu">
-                                <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input" checked>
-                                <span class="mdl-switch__label">SFUを使用</span>
-                            </label>
-                        </div>
+                        <label id="sbj-check-sfu-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu">
+                            <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">SFUを使用</span>
+                        </label>
+                        <label id="sbj-check-cursor-disp-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-cursor-disp"
+                            hidden>
+                            <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">ユーザーアイコンの配置を許可</span>
+                        </label>
                     </div>
                 </div>
 

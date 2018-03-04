@@ -95,6 +95,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     public SendOption() {
         this.Controller.CastSetting.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
         this.Controller.CastSetting.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
+        LocalCache.SetScreenShareOptions((opt) => opt.IsIconCursor = this.Controller.CastSetting.dispUserCursor);
         this.Controller.SendCastInfo();
     }
 
@@ -107,12 +108,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let settingButton = document.getElementById('sbj-cast-instance-settings');
-        let settingElement = document.getElementById('sbj-cast-setting');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
         let linkElement = document.getElementById('sbj-client-link');
+        let sfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;
 
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
@@ -123,7 +124,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         linkElement.hidden = !isLiveCasting;
 
         settingButton.hidden = isLiveCasting;
-        settingElement.hidden = isLiveCasting;
+        sfuElement.disabled = isLiveCasting;
     }
 
 

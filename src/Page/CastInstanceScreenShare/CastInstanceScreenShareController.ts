@@ -12,6 +12,7 @@ import StreamUtil from "../../Base/Util/StreamUtil";
 import CursorCache from "../../Contents/Cache/CursorCache";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
+import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 
 
 export default class CastInstanceScreenShareController extends AbstractServiceController<CastInstanceScreenShareView, CastInstanceScreenShareModel> {
@@ -52,7 +53,6 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
         this._peerid = peer.id;
-        this.View.SetLinkUrlEvent();
         this.SendStageService();
     }
 
@@ -141,7 +141,10 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
     public SetStreaming(width: number, height: number, fr: number, callback) {
 
         StreamUtil.GetScreenSheare(this, width, height, fr, (stream) => {
-            this.SwRoom.SetStream(stream);
+            //  PeerIDをルーム名称とする
+            let roomname = this.SwPeer.PeerId;
+            let roommode = (this.CastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
+            this.SwRoom = new SWRoom(this, this, this.SwPeer.Peer, roomname, roommode, stream);
             this.ServerSend(true, false);
             callback();
         });
@@ -162,6 +165,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
         this.CastStatus.isCasting = isStreaming;
         this.CastStatus.isClose = isClose;
         this.CastStatus.isHide = false;
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid) + "&sfu=" + (this.CastSetting.isSFU ? 1 : 0);
         this.SendCastInfo();
     }
 

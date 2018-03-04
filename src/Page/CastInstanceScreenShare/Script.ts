@@ -8,9 +8,6 @@ if (StdUtil.IsExecute()) {
 
     let controller = new CastInstanceScreenShareController();
     controller.SwPeer = new SWPeer(controller, LinkUtil.GetPeerID(), () => {
-        //  PeerIDをルーム名称とする
-        let roomname = controller.SwPeer.PeerId;
-        controller.SwRoom = new SWRoom(controller, controller, controller.SwPeer.Peer, roomname, SWRoomMode.SFU);
     });
 
 }

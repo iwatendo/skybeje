@@ -27,28 +27,25 @@
                     </span>
                     <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
                     <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
-
-                    <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
-                        &nbsp; 接続URLのコピー &nbsp;
-                    </button>
+                    <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
                 </div>
             </header>
 
             <main id="sbj-cast-instance-main" class="mdl-layout__content">
 
-                <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
-                    <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                        <i class="material-icons">screen_share</i>
-                        &nbsp;共有する画面の選択&nbsp;
-                    </button>
-                    <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
-                        <i class="material-icons">stop</i>
-                        &nbsp;停止&nbsp;
-                    </button>
-                    <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
-                </div>
-
                 <div class="sbj-split-left mdl-color-text--grey-600">
+
+                    <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
+                        <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                            <i class="material-icons">screen_share</i>
+                            &nbsp;共有する画面の選択&nbsp;
+                        </button>
+                        <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                            <i class="material-icons">stop</i>
+                            &nbsp;停止&nbsp;
+                        </button>
+                    </div>
+
                     <div id="sbj-screenshare-setting">
                         <h6 class="sbj-screenshare-label mdl-color-text--grey-600">配信解像度</h6>
                         <div class="sbj-screenshare-resolution">
@@ -80,7 +77,11 @@
                         </div>
                     </div>
                     <div>
-                        <h6 id="sbj-screenshare-cast-settings" class="mdl-color-text--grey-600" hidden>配信設定</h6>
+                        <h6 id="sbj-cast-setting-label" class="mdl-color-text--grey-600">配信設定</h6>
+                        <label id="sbj-check-sfu-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu">
+                            <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">SFUを使用</span>
+                        </label>
                         <label id="sbj-check-cursor-disp-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-cursor-disp"
                             hidden>
                             <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
@@ -98,12 +99,23 @@
                         <br/> 仮想ウェブカメラとは、デスクトップの画面をWebカメラとして扱えるソフトウェアです。
                         <br/> ManyCam / ニコ生デスクトップキャプチャー / OBS-VirtualCam といったソフトウェアがあります。
                     </h6>
+                    <div id="sbj-client-link" class="sbj-client-link" hidden>
+                        <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            &nbsp; 接続ページ起動 &nbsp;
+                        </button>
+                        <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
+                            &nbsp; 接続URLのコピー &nbsp;
+                        </button>
+                        <div class="mdl-shadow--3dp sbj-mobile-qrcode-box">
+                            <iframe id="sbj-link-qrcode" class="sbj-link-qrcode-frame" src=""></iframe>
+                        </div>
+                    </div>
                 </div>
             </main>
 
             <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
 
-                <main id="sbj-cast-instance-main-no-extension" hidden class="mdl-layout__content">
+                <main id="sbj-cast-instance-main-no-extension" class="mdl-layout__content" hidden>
                     <h6 class="sbj-screenshare-note">
                         スクリーンシェア機能を利用するには、
                         <br/> 以下の Chrome Extension の追加が必要です。
