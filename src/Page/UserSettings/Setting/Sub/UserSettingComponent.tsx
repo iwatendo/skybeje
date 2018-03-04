@@ -20,7 +20,9 @@ export interface UserSettingStat {
     enterMode: number,
     actorChangeMode: number,
     voiceRecognitionMode: number,
-    cahtMessageCopyMode: number
+    cahtMessageCopyMode: number,
+    useActors: boolean,
+    useChatBot: boolean,
 }
 
 
@@ -42,7 +44,9 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
             enterMode: LocalCache.ChatEnterMode,
             actorChangeMode: LocalCache.ActorChangeKeyMode,
             voiceRecognitionMode: LocalCache.VoiceRecognitionMode,
-            cahtMessageCopyMode: LocalCache.ChatMessageCopyMode
+            cahtMessageCopyMode: LocalCache.ChatMessageCopyMode,
+            useActors: LocalCache.UseActors,
+            useChatBot: LocalCache.UseChatBot,
         };
     }
 
@@ -69,7 +73,7 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                         </h6>
                     </div>
                     <div className="mdl-card__supporting-text">
-                        <h5>アイコン及びアクター変更のショートカットキー</h5>
+                        <h5>アイコン変更（アクター変更）のショートカットキー</h5>
                         <h6>
                             <div className="sbj-option" onClick={(e) => { this.OnActorChangeModeSelect(0) }}>
                                 <input type="radio" name="sbj-options-actorchange-key" checked={this.state.actorChangeMode === 0}></input>
@@ -111,6 +115,33 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                             </div>
                         </h6>
                     </div>
+                    <div className="mdl-card__supporting-text">
+                        <h5>アクター機能（複数プロフィール登録）</h5>
+                        <h6>
+                            <div className="sbj-option" onClick={(e) => { this.OnChangeUseActors(false) }}>
+                                <input type="radio" name="sbj-options-useactor-key" checked={!this.state.useActors}></input>
+                                <span className={!this.state.useActors ? selectClass : noSelectClass}>使用しない</span>
+                            </div>
+                            <div className="sbj-option" onClick={(e) => { this.OnChangeUseActors(true) }}>
+                                <input type="radio" name="sbj-options-useactor-key" checked={this.state.useActors}></input>
+                                <span className={this.state.useActors ? selectClass : noSelectClass}>使用する</span>
+                            </div>
+                        </h6>
+                    </div>
+                    <div className="mdl-card__supporting-text">
+                        <h5>簡易チャットボット機能（β版）</h5>
+                        <h6>
+                            <div className="sbj-option" onClick={(e) => { this.OnChangeUseChatBot(false) }}>
+                                <input type="radio" name="sbj-options-usechatbot-key" checked={!this.state.useChatBot}></input>
+                                <span className={!this.state.useChatBot ? selectClass : noSelectClass}>使用しない</span>
+                            </div>
+                            <div className="sbj-option" onClick={(e) => { this.OnChangeUseChatBot(true) }}>
+                                <input type="radio" name="sbj-options-usechatbot-key" checked={this.state.useChatBot}></input>
+                                <span className={this.state.useChatBot ? selectClass : noSelectClass}>使用する</span>
+                            </div>
+                        </h6>
+                    </div>
+
                 </div>
             </div>
         );
@@ -166,6 +197,32 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
 
         this.setState({
             cahtMessageCopyMode: mode,
+        });
+    }
+
+
+    /**
+     * アクター機能の使用有無
+     * @param actorChangeMode 
+     */
+    public OnChangeUseActors(value: boolean) {
+        LocalCache.UseActors = value;
+
+        this.setState({
+            useActors: value,
+        });
+    }
+
+
+    /**
+     * 簡易チャットボット機能の使用有無
+     * @param actorChangeMode 
+     */
+    public OnChangeUseChatBot(value: boolean) {
+        LocalCache.UseChatBot = value;
+
+        this.setState({
+            useChatBot: value,
         });
     }
 

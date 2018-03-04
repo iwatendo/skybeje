@@ -49,7 +49,7 @@ body {
 #sbj-video {
     height: 100%;
     width: 100%;
-    background-color: var(--sbj-color-edge-background);
+    background-color: var(--sbj-color-cast-background);
 }
 
 #sbj-cact-visitor-item-port #sbj-cact-visitor-cursor-port {

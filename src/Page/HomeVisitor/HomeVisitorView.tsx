@@ -54,6 +54,16 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             this.OnTimelineScroll();
         };
 
+        let userSettingsFrame = document.getElementById('sbj-user-settings-frame') as HTMLFrameElement;
+
+        //  「ユーザー設定」
+        document.getElementById('sbj-user-settings').onclick = (e) => {
+            userSettingsFrame.src = LinkUtil.CreateLink("../UserSettings");
+            userSettingsFrame.onload = (e) => {
+                this.VisibleSetting(true);
+            }
+        };
+
 
         //  「接続URLのコピー」
         let linkurl = LinkUtil.CreateLink("../HomeVisitor", LinkUtil.GetPeerID());
@@ -82,6 +92,14 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         callback();
     }
 
+
+    public VisibleSetting(isDisp: boolean) {
+        let header = document.getElementById("sbj-home-visitor-header");
+        let frame = document.getElementById('sbj-user-settings-frame') as HTMLFrameElement;
+
+        header.hidden = isDisp;
+        frame.hidden = !isDisp;
+    }
 
     /**
      * 連動サービスの選択時イベント設定

@@ -139,13 +139,31 @@ export default class LocalCache {
         return (value ? Number.parseInt(value) : 0);
     }
 
-    //  音声認識時の振舞い設定
+    //  チャットメッセージ送信時の動作
     public static set ChatMessageCopyMode(val: number) {
         localStorage.setItem('chat-message-copy-mode', val.toString());
     }
     public static get ChatMessageCopyMode(): number {
         let value = localStorage.getItem('chat-message-copy-mode');
         return (value ? Number.parseInt(value) : 0);
+    }
+
+    //  アクター機能の使用有無
+    public static set UseActors(val: boolean) {
+        localStorage.setItem('use-actors', (val ? "1" : "0"));
+    }
+    public static get UseActors(): boolean {
+        let value = localStorage.getItem('use-actors');
+        return (value === "1");
+    }
+
+    //  チャットボット機能の使用有無
+    public static set UseChatBot(val: boolean) {
+        localStorage.setItem('use-chatbot', (val ? "1" : "0"));
+    }
+    public static get UseChatBot(): boolean {
+        let value = localStorage.getItem('use-chatbot');
+        return (value === "1");
     }
 
 }

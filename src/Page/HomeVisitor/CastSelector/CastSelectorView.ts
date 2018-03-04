@@ -164,7 +164,7 @@ export default class CastSelectorView {
     private ChangeLayout() {
         this._isLayoutMode = !this._isLayoutMode;
         let isMenuHide = !this._isLayoutMode;
-        this._layoutButtonIcon.textContent = (this._isLayoutMode ? "fullscreen" : "settings");
+        this._layoutButtonIcon.textContent = (this._isLayoutMode ? "fullscreen" : "view_module");
 
         this._castSelectorElement.hidden = isMenuHide;
         this._layoutButton1.hidden = isMenuHide;

@@ -87,7 +87,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
                     </div>
                     {userProfileItem}
                     <div className="sbj-dashboard-profile-label-card">
-                        <h5 className="sbj-dashboard-profile-label">アクター／ボット</h5>
+                        <h5 className="sbj-dashboard-profile-label">アクター</h5>
                         <button className="sbj-dashboard-profile-button mdl-button mdl-button--raised mdl-button--colored" onClick={this.OnClick_AddActor.bind(this)}>
                             <i className='material-icons'>add</i>
                             &nbsp;追加&nbsp;

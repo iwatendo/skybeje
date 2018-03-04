@@ -45,7 +45,11 @@
 				<div class="mdl-layout-spacer"></div>
 				<button id='sbj-service-list-disp' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
 					<i class="material-icons">apps</i>
-					&nbsp; 連動サービスの起動 &nbsp;
+					&nbsp; 連動サービス &nbsp;
+				</button>
+				<button id='sbj-user-settings' class="mdl-button mdl-js-button mdl-button--colored">
+					<i class="material-icons">settings</i>
+					<div class="mdl-tooltip" data-mdl-for="sbj-user-settings">ユーザー設定</div>
 				</button>
 				<ul id="sbj-service-list" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="sbj-service-list-disp">
 					<div>
@@ -217,11 +221,11 @@
 
 			<div class="split-pane-component sbj-split-pane-component-right" id="sbj-home-visitor-gadget-component">
 
-				<button id="sbj-home-visitor-livecast-layout" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
-					<i id="sbj-home-visitor-livecast-layout-icon" class="material-icons">settings</i>
-				</button>
-
 				<div class="sbj-home-visitor-livecast-layout-pane">
+					<button id='sbj-home-visitor-livecast-layout'   class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="z-index:3;">
+						<i id="sbj-home-visitor-livecast-layout-icon" class="material-icons">view_module</i>
+						<div class="mdl-tooltip" data-mdl-for="sbj-home-visitor-livecast-layout">連動サービスの表示設定</div>
+					</button>
 					<button id='sbj-home-visitor-livecast-layout-1' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" hidden>
 						<i class="material-icons">looks_one</i>
 					</button>
@@ -307,6 +311,10 @@
 
 	<!-- Profile -->
 	<iframe id="sbj-profile-frame" class="sbj-profile-frame" hidden>
+	</iframe>
+
+	<!-- ユーザー設定 -->
+	<iframe id="sbj-user-settings-frame" class="sbj-user-settings-frame" hidden>
 	</iframe>
 
 	<!--Common Dialog-->

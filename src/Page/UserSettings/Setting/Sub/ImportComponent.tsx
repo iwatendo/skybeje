@@ -67,6 +67,8 @@ export default class ImportComponent extends React.Component<ImportProp, ImportS
                         <h5>
                             エクスポートファイルを読み込みます。<br />
                             現在のデータは上書きされる為、必要に応じてエクスポートでバックアップしてください。<br />
+                            <br />
+                            （注）チャットサーバー/クライアントの起動中はエクスポートを実行しないでください。<br />
                         </h5>
                     </div>
                     <div className="mdl-card__supporting-text">
