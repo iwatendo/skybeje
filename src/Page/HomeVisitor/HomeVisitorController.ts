@@ -29,7 +29,7 @@ import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
 import GetTimelineSender from "../../Contents/Sender/GetTimelineSender";
 import UpdateTimelineSender from "../../Contents/Sender/UpdateTimelineSender";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
-import CursorInfo from "../../Contents/Struct/CursorInfo";
+import CursorInfoSender from "../../Contents/Sender/CursorInfoSender";
 
 /**
  * 
@@ -92,6 +92,11 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
         this.Model = new HomeVisitorModel(this, () => {
             //  UI初期化
             this.View = new HomeVisitorView(this, () => {
+
+                MessageChannelUtil.SetOwner((sender) => {
+                    (this.Receiver as HomeVisitorReceiver).MessageChannelRecive(sender);
+                });
+                
             });
         });
 
@@ -320,12 +325,12 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * サーバント側に使用アクターを通知
      */
     public PostActorToServent(isDispChange: boolean = false) {
-        let info = new CursorInfo();
+        let info = new CursorInfoSender();
         info.peerid = this.PeerId;
         info.aid = this.CurrentAid;
         info.iid = this.CurrentActor.dispIid;
         info.isDispChange = isDispChange;
-        MessageChannelUtil.Post(JSON.stringify(info));
+        MessageChannelUtil.Post(info);
     }
 
 

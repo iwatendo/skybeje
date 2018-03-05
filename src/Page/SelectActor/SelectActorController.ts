@@ -3,7 +3,7 @@ import AbstractServiceController from "../../Base/AbstractServiceController";
 import SelectActorModel from "./SelectActorModel";
 import SelectActorView from "./SelectActorView";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
-import ProfileChangeInfo from "../../Contents/Struct/ProfileChangeInfo";
+import ProfileChangeSender from "../../Contents/Sender/ProfileChangeSender";
 
 
 export default class SelectActorController extends AbstractServiceController<SelectActorView, SelectActorModel> {
@@ -33,10 +33,10 @@ export default class SelectActorController extends AbstractServiceController<Sel
         MessageChannelUtil.SetChild(this, (msg) => { });
 
         //  Profileの親フレームである事を設定
-        MessageChannelUtil.SetOwner((msg) => {
+        MessageChannelUtil.SetOwner((sender) => {
 
             //  Profileフレームからの通知
-            let info = JSON.parse(msg) as ProfileChangeInfo;
+            let info = sender as ProfileChangeSender;
 
             if (info) {
 
@@ -62,11 +62,11 @@ export default class SelectActorController extends AbstractServiceController<Sel
      */
     public PostChangeActor(aid: string) {
 
-        let info = new ProfileChangeInfo();
-        info.updateAid = aid;
-        info.isClose = false;
+        let sender = new ProfileChangeSender();
+        sender.updateAid = aid;
+        sender.isClose = false;
 
-        MessageChannelUtil.PostOwner(JSON.stringify(info));
+        MessageChannelUtil.PostOwner(sender);
     }
 
 
@@ -75,11 +75,11 @@ export default class SelectActorController extends AbstractServiceController<Sel
      */
     public PostSelectClose(aid: string) {
 
-        let info = new ProfileChangeInfo();
-        info.selectAid = aid;
-        info.isClose = true;
+        let sender = new ProfileChangeSender();
+        sender.selectAid = aid;
+        sender.isClose = true;
 
-        MessageChannelUtil.PostOwner(JSON.stringify(info));
+        MessageChannelUtil.PostOwner(sender);
     }
 
 
@@ -87,9 +87,9 @@ export default class SelectActorController extends AbstractServiceController<Sel
      * 
      */
     public PostClose() {
-        let info = new ProfileChangeInfo();
+        let info = new ProfileChangeSender();
         info.isClose = true;
-        MessageChannelUtil.PostOwner(JSON.stringify(info));
+        MessageChannelUtil.PostOwner(info);
     }
 
 }

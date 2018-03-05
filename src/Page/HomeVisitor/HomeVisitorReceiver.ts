@@ -27,6 +27,8 @@ import VoiceChatMemberListSender from "../../Contents/Sender/VoiceChatMemberList
 import ProfileSender from "../../Contents/Sender/ProfileSender";
 import GuideSender from "../../Contents/Sender/GuideSender";
 import ChatInfoSender from "../../Contents/Sender/ChatInfoSender";
+import ProfileChangeSender from "../../Contents/Sender/ProfileChangeSender";
+import SettingsChangeSender from "../../Contents/Sender/SettingsChangeSender";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -150,6 +152,28 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
     }
 
+
+    /**
+     * 
+     * @param sender 
+     */
+    public MessageChannelRecive(sender: Sender) {
+
+        //  
+        if (sender.type === ProfileChangeSender.ID) {
+            let pcs = sender as ProfileChangeSender;
+            this.Controller.View.InputPane.ProfileChange(pcs);
+        }
+
+        //  
+        if (sender.type === SettingsChangeSender.ID) {
+            let scs = sender as SettingsChangeSender;
+            if (scs.isClose) {
+                this.Controller.View.VisibleSetting(false);
+            }
+        }
+
+    }
 
     /**
      * プロフィール情報の要求

@@ -26,7 +26,7 @@ import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberL
 import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
 import StyleCache from '../../../Contents/Cache/StyleCache';
 import MessageChannelUtil from '../../../Base/Util/MessageChannelUtil';
-import ProfileChangeInfo from '../../../Contents/Struct/ProfileChangeInfo';
+import ProfileChangeSender from '../../../Contents/Sender/ProfileChangeSender';
 
 export default class InputPaneController {
 
@@ -114,32 +114,6 @@ export default class InputPaneController {
         this._voiceMic.onclick = (e) => {
             this.IsMicMute = !this.IsMicMute;
         }
-
-        MessageChannelUtil.SetOwner((msg) => {
-
-            let info = JSON.parse(msg) as ProfileChangeInfo;
-
-            if (info) {
-
-                //  プロフィール更新画面からの通知
-                if (info.updateAid) {
-                    this._controller.ChagneActorInfo(info.updateAid);
-                    this.ChangeSelectionActorIcon(info.updateAid);
-                }
-
-                //  アクター選択画面からの通知
-                if (info.selectAid) {
-                    this._controller.ChangeCurrentActor(info.selectAid);
-                }
-
-                //  プロフィール更新画面を閉じる
-                if (info.isClose) {
-                    this._profileFrame.hidden = true;
-                    this._textareaElement.focus();
-                }
-            }
-
-        });
 
         this._isMicMute = true;
         this._voiceMic.hidden = true;
@@ -760,6 +734,33 @@ export default class InputPaneController {
     public ChnageDevice() {
         let options = LocalCache.VoiceChatOptions;
         this._voiceChat.disabled = !(options.SelectMic ? true : false);
+    }
+
+
+    /**
+     * プロフィール変更通知時処理
+     * @param pcs 
+     */
+    public ProfileChange(pcs: ProfileChangeSender) {
+        if (pcs) {
+
+            //  プロフィール更新画面からの通知
+            if (pcs.updateAid) {
+                this._controller.ChagneActorInfo(pcs.updateAid);
+                this.ChangeSelectionActorIcon(pcs.updateAid);
+            }
+
+            //  アクター選択画面からの通知
+            if (pcs.selectAid) {
+                this._controller.ChangeCurrentActor(pcs.selectAid);
+            }
+
+            //  プロフィール更新画面を閉じる
+            if (pcs.isClose) {
+                this._profileFrame.hidden = true;
+                this._textareaElement.focus();
+            }
+        }
     }
 
 }

@@ -8,7 +8,7 @@ import LogUtil from "../../../Base/Util/LogUtil";
 import IServiceController from '../../../Base/IServiceController';
 import GetIconSender from '../../../Contents/Sender/GetIconSender';
 import IconCursorSender from '../../../Contents/Sender/IconCursorSender';
-import CursorInfo from '../../../Contents/Struct/CursorInfo';
+import CursorInfoSender from '../../../Contents/Sender/CursorInfoSender';
 
 
 export class VideoDispOffset {
@@ -72,7 +72,7 @@ export class CursorController {
     private static _cursorOffsetY = 0;
     private static _mineCursor: IconCursorSender = null;
 
-    public CursorInfo: CursorInfo;
+    public CursorInfo: CursorInfoSender;
 
 
     /**

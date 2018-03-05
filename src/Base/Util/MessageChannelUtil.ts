@@ -1,6 +1,7 @@
+import Sender from "../Container/Sender";
 import IServiceController from "../IServiceController";
 
-interface OnMsg { (meg: string): void }
+interface OnMsg { (sender: Sender): void }
 
 
 export default class MessageChannelUtil {
@@ -23,7 +24,7 @@ export default class MessageChannelUtil {
                 this._ports.set(key, port);
                 port.postMessage(this._msg);
                 port.onmessage = (e) => {
-                    onmsg(e.data);
+                    onmsg(JSON.parse(e.data) as Sender);
                 }
             }
             else {
@@ -48,7 +49,7 @@ export default class MessageChannelUtil {
             key += controller.SwPeer.PeerId;
         }
         window.parent.postMessage(key, location.origin, [mc.port2]);
-        port.onmessage = (e) => { onmsg(e.data); }
+        port.onmessage = (e) => { onmsg(JSON.parse(e.data) as Sender); }
         this._ownerPort = port;
     }
 
@@ -66,10 +67,10 @@ export default class MessageChannelUtil {
     /**
      * 
      */
-    public static Post(value: string) {
-        this._msg = value;
+    public static Post(sender: Sender) {
+        this._msg = JSON.stringify(sender);
         this._ports.forEach((port, key) => {
-            port.postMessage(value);
+            port.postMessage(this._msg);
         });
     }
 
@@ -78,7 +79,8 @@ export default class MessageChannelUtil {
      * 
      * @param value 
      */
-    public static PostOwner(value: string) {
+    public static PostOwner(sender: Sender) {
+        let value = JSON.stringify(sender);
         this._ownerPort.postMessage(value);
     }
 

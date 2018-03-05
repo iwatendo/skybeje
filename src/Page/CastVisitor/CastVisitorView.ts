@@ -10,7 +10,7 @@ import { SubTitlesController } from "./SubTitles/SubTitlesController";
 import { DialogMode } from "../../Contents/AbstractDialogController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
-import CursorInfo from "../../Contents/Struct/CursorInfo";
+import CursorInfoSender from "../../Contents/Sender/CursorInfoSender";
 
 
 /**
@@ -96,15 +96,13 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         this.Cursor.DisplayAll();
 
 
-        MessageChannelUtil.SetChild(this.Controller, (msg) => {
+        MessageChannelUtil.SetChild(this.Controller, (sender) => {
 
-            if (msg) {
-                let curInfo = JSON.parse(msg) as CursorInfo;
-                if (curInfo) {
-                    this.Cursor.CursorInfo = curInfo;
-                    if (curInfo.isDispChange) {
-                        this.Cursor.SetLastChatActor(curInfo.aid, curInfo.iid);
-                    }
+            let curInfo = sender as CursorInfoSender;
+            if (sender) {
+                this.Cursor.CursorInfo = curInfo;
+                if (curInfo.isDispChange) {
+                    this.Cursor.SetLastChatActor(curInfo.aid, curInfo.iid);
                 }
             }
 

@@ -4,7 +4,7 @@ import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView"
 import UserSettingsController from "./UserSettingsController";
 import SettingController from "./Setting/SettingController";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
-import SettingsChangeInfo from "../../Contents/Struct/SettingsChangeInfo";
+import SettingsChangeSender from "../../Contents/Sender/SettingsChangeSender";
 
 
 export default class UserSettingsView extends AbstractServiceView<UserSettingsController> {
@@ -26,9 +26,9 @@ export default class UserSettingsView extends AbstractServiceView<UserSettingsCo
 
         window.addEventListener('beforeunload', (e) => {
             //  メッセージチャンネルを使って終了通知をする
-            let info = new SettingsChangeInfo();
-            info.isClose = true;
-            MessageChannelUtil.PostOwner(JSON.stringify(info));
+            let sender = new SettingsChangeSender();
+            sender.isClose = true;
+            MessageChannelUtil.PostOwner(sender);
         }, false);
 
         callback();

@@ -7,7 +7,7 @@ import { Order } from "../../Base/Container/Order";
 import ProfileModel from "./ProfileModel";
 import ProfileView from "./ProfileView";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
-import ProfileChangeInfo from "../../Contents/Struct/ProfileChangeInfo";
+import ProfileChangeSender from "../../Contents/Sender/ProfileChangeSender";
 
 
 export default class ProfileController extends AbstractServiceController<ProfileView, ProfileModel> {
@@ -61,11 +61,11 @@ export default class ProfileController extends AbstractServiceController<Profile
      */
     public PostChangeClose(aid: string) {
 
-        let info = new ProfileChangeInfo();
+        let info = new ProfileChangeSender();
         info.updateAid = aid;
         info.isClose = true;
 
-        MessageChannelUtil.PostOwner(JSON.stringify(info));
+        MessageChannelUtil.PostOwner(info);
     }
 
 };
