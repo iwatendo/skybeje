@@ -22,7 +22,6 @@ export interface UserSettingStat {
     voiceRecognitionMode: number,
     cahtMessageCopyMode: number,
     useActors: boolean,
-    useChatBot: boolean,
 }
 
 
@@ -45,8 +44,7 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
             actorChangeMode: LocalCache.ActorChangeKeyMode,
             voiceRecognitionMode: LocalCache.VoiceRecognitionMode,
             cahtMessageCopyMode: LocalCache.ChatMessageCopyMode,
-            useActors: LocalCache.UseActors,
-            useChatBot: LocalCache.UseChatBot,
+            useActors: LocalCache.UseActors
         };
     }
 
@@ -128,20 +126,6 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                             </div>
                         </h6>
                     </div>
-                    <div className="mdl-card__supporting-text">
-                        <h5>簡易チャットボット機能（β版）</h5>
-                        <h6>
-                            <div className="sbj-option" onClick={(e) => { this.OnChangeUseChatBot(false) }}>
-                                <input type="radio" name="sbj-options-usechatbot-key" checked={!this.state.useChatBot}></input>
-                                <span className={!this.state.useChatBot ? selectClass : noSelectClass}>使用しない</span>
-                            </div>
-                            <div className="sbj-option" onClick={(e) => { this.OnChangeUseChatBot(true) }}>
-                                <input type="radio" name="sbj-options-usechatbot-key" checked={this.state.useChatBot}></input>
-                                <span className={this.state.useChatBot ? selectClass : noSelectClass}>使用する</span>
-                            </div>
-                        </h6>
-                    </div>
-
                 </div>
             </div>
         );
@@ -210,19 +194,6 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
 
         this.setState({
             useActors: value,
-        });
-    }
-
-
-    /**
-     * 簡易チャットボット機能の使用有無
-     * @param actorChangeMode 
-     */
-    public OnChangeUseChatBot(value: boolean) {
-        LocalCache.UseChatBot = value;
-
-        this.setState({
-            useChatBot: value,
         });
     }
 

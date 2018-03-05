@@ -157,15 +157,6 @@ export default class LocalCache {
         return (value === "1");
     }
 
-    //  チャットボット機能の使用有無
-    public static set UseChatBot(val: boolean) {
-        localStorage.setItem('use-chatbot', (val ? "1" : "0"));
-    }
-    public static get UseChatBot(): boolean {
-        let value = localStorage.getItem('use-chatbot');
-        return (value === "1");
-    }
-
 }
 
 
