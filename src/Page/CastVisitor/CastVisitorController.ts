@@ -6,6 +6,7 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 import { CastVisitorView } from "./CastVisitorView";
 import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
+import LinkUtil from "../../Base/Util/LinkUtil";
 
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
@@ -109,11 +110,25 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     }
 
 
+    /** 
+     * 
+     */
+    public UseSFU(): boolean {
+        let arg = LinkUtil.GetArgs('sfu');
+        if (arg === "1") return true;
+        if (arg === "0") return false;
+        //  オプション未指定時はSFU使用と判定する
+        return true;
+    }
+
+
     /**
      * 
      */
     public OnRoomOpen() {
-        this.DummyJoin();
+        if (this.UseSFU()) {
+            this.DummyJoin();
+        }
     }
 
 
