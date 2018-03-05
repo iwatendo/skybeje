@@ -334,63 +334,6 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     }
 
 
-
-
-    /**
-     * ダッシュボードへライブキャスト／スクリーンシェアの起動通知
-     * @param peerid 
-     * @param isScreenShare 
-     */
-    public NotifyBootLiveCast(peerid: string, castType: CastTypeEnum) {
-
-        let elementName = "";
-
-        switch (castType) {
-            case CastTypeEnum.LiveCast: elementName = "sbj-main-home-livecast-id"; break;
-            case CastTypeEnum.ScreenShare: elementName = "sbj-main-home-livecast-screenshare-id"; break;
-            case CastTypeEnum.Gadget: elementName = "sbj-main-home-livecast-gadget-id"; break;
-            default: return;
-        }
-
-        let element = window.parent.document.getElementById(elementName);
-        if (element) {
-            element.textContent = peerid;
-            element.click();
-        }
-    }
-
-
-    /**
-     * ダッシュボードへ、ライブキャスト／スクリーンシェアのハイド通知
-     */
-    public NotifyHideLiveCast(castType: CastTypeEnum) {
-
-        let elementName = "";
-
-        switch (castType) {
-            case CastTypeEnum.LiveCast: elementName = "sbj-main-home-livecast-hide"; break;
-            case CastTypeEnum.ScreenShare: elementName = "sbj-main-home-livecast-screenshare-hide"; break;
-            case CastTypeEnum.Gadget: elementName = "sbj-main-home-livecast-gadget-hide"; break;
-            default: return;
-        }
-
-        let element = window.parent.document.getElementById(elementName);
-        if (element) {
-            element.click();
-        }
-    }
-
-
-    /**
-     *　ダッシュボードへ、前回分のライブキャスト情報が残らないようにクリア情報を通知する
-     */
-    public NotifyClearLiveCast() {
-        this.NotifyBootLiveCast("", CastTypeEnum.LiveCast);
-        this.NotifyBootLiveCast("", CastTypeEnum.ScreenShare);
-        this.NotifyBootLiveCast("", CastTypeEnum.Gadget);
-    }
-
-
     /*-----------------------------------------------------------
      * ボイスチャット用
      *----------------------------------------------------------*/

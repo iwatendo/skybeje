@@ -170,6 +170,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             let scs = sender as SettingsChangeSender;
             if (scs.isClose) {
                 this.Controller.View.VisibleSetting(false);
+                this.Controller.View.InputPane.UserSettingChange();
             }
         }
 
@@ -244,16 +245,6 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
     private SendCastInstance(conn: PeerJs.DataConnection, cib: CastStatusSender) {
 
         let serventPid = conn.peer;
-
-        //  自身のダッシュボードへの通知
-        if (cib.isClose) {
-            //  ダッシュボード側のフレームを閉じる
-            this.Controller.NotifyBootLiveCast("", cib.castType);
-        }
-        else if (cib.isHide) {
-            //  ダッシュボード側からフレームをハイド状態にする
-            this.Controller.NotifyHideLiveCast(cib.castType);
-        }
 
         //
         this.Controller.ServentCache.GetMyServent(serventPid, cib, (serventSender) => {

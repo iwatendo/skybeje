@@ -73,15 +73,15 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                         </h6>
                     </div>
                     <div className="mdl-card__supporting-text">
-                        <h5>アイコン変更（アクター変更）のショートカットキー</h5>
+                        <h5>アイコン変更のショートカットキー</h5>
                         <h6>
                             <div className="sbj-option" onClick={(e) => { this.OnActorChangeModeSelect(0) }}>
                                 <input type="radio" name="sbj-options-actorchange-key" checked={this.state.actorChangeMode === 0}></input>
-                                <span className={this.state.actorChangeMode === 0 ? selectClass : noSelectClass}>Ctrl + [方向キー]（上下でアイコン、左右でアクターを変更）</span>
+                                <span className={this.state.actorChangeMode === 0 ? selectClass : noSelectClass}>Ctrl + [方向キー]（左右でアイコン、上下でアクターを変更）</span>
                             </div>
                             <div className="sbj-option" onClick={(e) => { this.OnActorChangeModeSelect(1) }}>
                                 <input type="radio" name="sbj-options-actorchange-key" checked={this.state.actorChangeMode === 1}></input>
-                                <span className={this.state.actorChangeMode === 1 ? selectClass : noSelectClass}>Sihft + Alt + [方向キー]（上下でアイコン、左右でアクターを変更）</span>
+                                <span className={this.state.actorChangeMode === 1 ? selectClass : noSelectClass}>Sihft + Alt + [方向キー]（左右でアイコン、上下でアクターを変更）</span>
                             </div>
                         </h6>
                     </div>

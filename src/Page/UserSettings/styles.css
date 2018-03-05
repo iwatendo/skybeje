@@ -93,3 +93,19 @@
 .sbj-option-noselect{
 	font-weight: 400;
 }
+
+.sbj-list-item:hover{
+	cursor: pointer;
+}
+
+.sbj-option-select:hover{
+	cursor: pointer;
+}
+
+.sbj-option-noselect:hover{
+	cursor: pointer;
+}
+
+.sbj-list-item-spacer{
+	margin: 64px;
+}

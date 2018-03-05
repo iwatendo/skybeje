@@ -164,6 +164,10 @@
 						<div class="sbj-inputpanel-icontext">
 							<div class='sbj-inputpanel-actor-icon' id='sbj-inputpanel-actor-icon'>
 							</div>
+							<div class="mdl-tooltip" data-mdl-for="sbj-inputpanel-actor-icon">
+								複数アイコン登録時
+								<br/>クリックでアイコン変更
+							</div>
 							<textarea class='sbj-inputpanel-text' id='sbj-inputpanel-text' maxLength=1024 rows=3 spellCheck='false'>
 							</textarea>
 						</div>
@@ -171,7 +175,7 @@
 							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-actor-edit-button">
 								<i class="material-icons">account_box</i>プロフィール
 							</button>
-							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-select-actor-button">
+							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-select-actor-button" hidden>
 								<i class="material-icons">recent_actors</i>アクター
 							</button>
 							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-speech" hidden>
@@ -222,7 +226,7 @@
 			<div class="split-pane-component sbj-split-pane-component-right" id="sbj-home-visitor-gadget-component">
 
 				<div class="sbj-home-visitor-livecast-layout-pane">
-					<button id='sbj-home-visitor-livecast-layout'   class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="z-index:3;">
+					<button id='sbj-home-visitor-livecast-layout' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="z-index:3;">
 						<i id="sbj-home-visitor-livecast-layout-icon" class="material-icons">view_module</i>
 						<div class="mdl-tooltip" data-mdl-for="sbj-home-visitor-livecast-layout">連動サービスの表示設定</div>
 					</button>

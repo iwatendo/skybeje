@@ -91,7 +91,7 @@ export default class InputPaneController {
         this._textareaElement.onkeydown = (e) => { this.OnKeyDown(e); };
         this._textareaElement.onkeyup = (e) => { this.OnTextChange(); }
         this._actorEditButton.onclick = (e) => { this.DoShowProfileEditDialog(); };
-        this._actorIconElement.ondblclick = (e) => { this.DoShowProfileEditDialog(); };
+        this._actorIconElement.onclick = (e) => { this.MoveSelectionIcon(1); };
         this._selectActorButton.onclick = (e) => { this.DoShowActorSelectPanel(); };
         this._sendMessageButton.onclick = (e) => { this.SendInputMessage(); };
 
@@ -120,6 +120,7 @@ export default class InputPaneController {
         this._textareaElement.value = "";
         this.SetMediaDevice();
         this.DisplayActor();
+        this.UserSettingChange();
     }
 
 
@@ -207,28 +208,28 @@ export default class InputPaneController {
 
         if (isCtrlAltShift) {
 
-            if (LocalCache.ActorChangeKeyMode === 0) {
-                if (!e.ctrlKey) return;
+            if (LocalCache.ActorChangeKeyMode === 1) {
+                if (!e.altKey || !e.shiftKey) return;
             }
             else {
-                if (!e.altKey || !e.shiftKey) return;
+                if (!e.ctrlKey) return;
             }
 
             switch (e.keyCode) {
                 case 37: // [←]
-                    this.MoveSelectionActor(-1);
-                    e.preventDefault();
-                    return;
-                case 39: // [→]
-                    this.MoveSelectionActor(1);
-                    e.preventDefault();
-                    return;
-                case 38: // [↑]
                     this.MoveSelectionIcon(-1);
                     e.preventDefault();
                     return;
-                case 40: // [↓]
+                case 39: // [→]
                     this.MoveSelectionIcon(1);
+                    e.preventDefault();
+                    return;
+                case 38: // [↑]
+                    this.MoveSelectionActor(-1);
+                    e.preventDefault();
+                    return;
+                case 40: // [↓]
+                    this.MoveSelectionActor(1);
                     e.preventDefault();
                     return;
             }
@@ -761,6 +762,14 @@ export default class InputPaneController {
                 this._textareaElement.focus();
             }
         }
+    }
+
+
+    /**
+     * 
+     */
+    public UserSettingChange(){
+        this._selectActorButton.hidden = (!LocalCache.UseActors);
     }
 
 }

@@ -138,19 +138,8 @@ export default class BotController {
                     this.Controller.SwPeer.SendToOwner(sender);
                 }
 
-                //  ガジェット登録されていた場合
-                if (guide.url.length > 0) {
-
-                    let guideSender = new GuideSender();
-                    guideSender.guide = guide;
-                    this.Controller.SwPeer.SendAll(guideSender);
-
-                    this._guideQuere = guide;
-                    let peerid = this.Controller.PeerId;
-                    this.Controller.NotifyBootLiveCast(peerid, CastTypeEnum.Gadget);
-                }
-
             });
+
         }
 
     }

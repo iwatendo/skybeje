@@ -40,9 +40,6 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     protected Initialize(callback: OnViewLoad) {
 
-        //  ライブキャストは前回分が残らないようにクリア通知
-        this.Controller.NotifyClearLiveCast();
-
         this.SetSplitPane();
         this.CastSelector = new CastSelectorController(this.Controller);
 
@@ -166,7 +163,6 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     public DisConnect() {
         if (!this._isBooting && !this.Controller.HasError) {
-            this.Controller.NotifyClearLiveCast();
             this._mainElement.hidden = true;
             this._headElement.hidden = true;
             this._bootElement.hidden = true;

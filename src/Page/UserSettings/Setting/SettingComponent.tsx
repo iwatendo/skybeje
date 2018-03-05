@@ -15,7 +15,8 @@ enum MenuEnum {
     Menu_UserSetting = 0,
     Menu_Export = 1,
     Menu_Import = 2,
-    Menu_Initialize = 9,
+    Menu_Initialize = 8,
+    Menu_Exit = 9,
 }
 
 
@@ -66,13 +67,14 @@ export default class SettingComponent extends React.Component<SettingProp, Setti
             backgroundColor: "initial",
         };
 
-        let baseClass = "mdl-list__item mdl-list__item--two-line";
+        let baseClass = "mdl-list__item mdl-list__item--two-line sbj-list-item";
         let selectClass = " mdl-card mdl-shadow--3dp";
 
         let liclass_usersetting = baseClass;
         let liclass_export = baseClass;
         let liclass_import = baseClass;
         let liclass_initialize = baseClass;
+        let liclass_exit = baseClass + " mdl-color--cyan-50";
         let subpanel: any;
 
         switch (this.state.select) {
@@ -100,6 +102,18 @@ export default class SettingComponent extends React.Component<SettingProp, Setti
                 <div className="sbj-split-left">
                     <div className="mdl-card__supporting-text">
                         <ul className="mdl-list">
+
+                            <li className={liclass_exit} onClick={this.onClickExit.bind(this)}>
+                                <span className="mdl-list__item-primary-content">
+                                    <i className="material-icons mdl-list__item-avatar" style={avatarstyle}>backspace</i>
+                                    <span>設定終了</span>
+                                    <span className="mdl-list__item-sub-title">前画面に戻ります</span>
+                                </span>
+                            </li>
+
+                            <li className="sbj-list-item-spacer">
+                            </li>
+
                             <li className={liclass_usersetting} onClick={this.OnClickUserSetting.bind(this)}>
                                 <span className="mdl-list__item-primary-content">
                                     <i className="material-icons mdl-list__item-avatar" style={avatarstyle}>settings_applications</i>
@@ -154,6 +168,10 @@ export default class SettingComponent extends React.Component<SettingProp, Setti
 
     public OnClickInitialize(ev) {
         this.setState({ select: MenuEnum.Menu_Initialize });
+    }
+
+    public onClickExit(ev) {
+        window.open('about:blank', '_self').close();
     }
 
 }

@@ -274,6 +274,10 @@
     float: left;
 }
 
+.sbj-inputpanel-actor-icon:hover{
+    cursor: pointer;
+}
+
 textarea.sbj-inputpanel-text {
     width: calc(100% - 128px);
     height:58px;
