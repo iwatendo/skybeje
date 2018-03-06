@@ -2,6 +2,7 @@ import Sender from "../Container/Sender";
 import LogUtil from "../Util/LogUtil";
 import SWConnectionCache from "./SWConnectionCache";
 import IServiceController from "../IServiceController";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 
 interface OnSWPeerOpen { (): void }
@@ -63,7 +64,9 @@ export default class SWPeer {
         window.document.addEventListener("visibilitychange", () => { this.CheckPeer(); });
 
         SWPeer.GetApiKey((apikey) => {
-            let peer = new Peer({ key: apikey, debug: 1 });
+
+            let debugMode = (LocalCache.DebugMode > 1 ? 3 : 1);
+            let peer = new Peer({ key: apikey, debug: debugMode });
 
             window.onunload = window.onbeforeunload = () => {
                 if (peer && !peer.destroyed) {

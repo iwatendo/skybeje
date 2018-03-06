@@ -1,8 +1,9 @@
 ﻿import Sender from "../Container/Sender";
 import IServiceController from "../IServiceController";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
-export enum LogType {
-    Message = 0,
+export enum LogLevel {
+    Info = 0,
     Warning = 1,
     Error = 2,
 }
@@ -18,7 +19,7 @@ export class Log {
      * @param msg
      * @param logtype
      */
-    constructor(msg: string, logtype: LogType = LogType.Message) {
+    constructor(msg: string, logtype: LogLevel = LogLevel.Info) {
         this.Date = Date.now();
         this.Message = msg;
         this.LogType = logtype;
@@ -26,7 +27,7 @@ export class Log {
 
     Date: number;
     Message: string;
-    LogType: LogType
+    LogType: LogLevel;
 
 
     /**
@@ -64,6 +65,9 @@ export default class LogUtil {
     //  リスナー管理
     private static _listener: Array<ILogListener>;
 
+
+    //  ログ出力レベル設定
+    public static LogLevel: LogLevel = LogLevel.Error;
 
     /**
      * リスナー追加
@@ -111,6 +115,10 @@ export default class LogUtil {
      */
     public static Info(service: IServiceController, value: string) {
 
+        if (this.LogLevel > LogLevel.Info) {
+            return;
+        }
+
         const maxlen = 512;
         let consoleLog: string;
 
@@ -137,9 +145,13 @@ export default class LogUtil {
      */
     public static Warning(service: IServiceController, value: string) {
 
+        if (this.LogLevel > LogLevel.Warning) {
+            return;
+        }
+
         console.warn(this.LogHeader(service) + value);
 
-        let log = new Log(value, LogType.Warning);
+        let log = new Log(value, LogLevel.Warning);
 
         if (this._listener)
             this._listener.forEach(n => n.Write(log));
@@ -154,7 +166,7 @@ export default class LogUtil {
 
         console.error(this.LogHeader(service) + value);
 
-        let log = new Log(value, LogType.Error);
+        let log = new Log(value, LogLevel.Error);
 
         if (this._listener)
             this._listener.forEach(n => n.Write(log));

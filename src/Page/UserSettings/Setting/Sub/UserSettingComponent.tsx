@@ -22,6 +22,7 @@ export interface UserSettingStat {
     voiceRecognitionMode: number,
     cahtMessageCopyMode: number,
     useActors: boolean,
+    debugMode: number,
 }
 
 
@@ -44,7 +45,8 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
             actorChangeMode: LocalCache.ActorChangeKeyMode,
             voiceRecognitionMode: LocalCache.VoiceRecognitionMode,
             cahtMessageCopyMode: LocalCache.ChatMessageCopyMode,
-            useActors: LocalCache.UseActors
+            useActors: LocalCache.UseActors,
+            debugMode: LocalCache.DebugMode,
         };
     }
 
@@ -126,6 +128,23 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                             </div>
                         </h6>
                     </div>
+                    <div className="mdl-card__supporting-text">
+                        <h5>デバックモード</h5>
+                        <h6>
+                            <div className="sbj-option" onClick={(e) => { this.OnDebugModeSelect(0) }}>
+                                <input type="radio" name="sbj-options-debugmode-key" checked={this.state.debugMode === 0}></input>
+                                <span className={this.state.debugMode === 0 ? selectClass : noSelectClass}>無効</span>
+                            </div>
+                            <div className="sbj-option" onClick={(e) => { this.OnDebugModeSelect(1) }}>
+                                <input type="radio" name="sbj-options-debugmode-key" checked={this.state.debugMode === 1}></input>
+                                <span className={this.state.debugMode === 1 ? selectClass : noSelectClass}>コンソールにログ出力</span>
+                            </div>
+                            <div className="sbj-option" onClick={(e) => { this.OnDebugModeSelect(2) }}>
+                                <input type="radio" name="sbj-options-debugmode-key" checked={this.state.debugMode === 2}></input>
+                                <span className={this.state.debugMode === 2 ? selectClass : noSelectClass}>コンソールにログ出力（SkyWayのログを含む）</span>
+                            </div>
+                        </h6>
+                    </div>
                 </div>
             </div>
         );
@@ -196,5 +215,19 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
             useActors: value,
         });
     }
+
+
+    /**
+     * デバックモードの設定
+     * @param actorChangeMode 
+     */
+    public OnDebugModeSelect(mode: number) {
+        LocalCache.DebugMode = mode;
+
+        this.setState({
+            debugMode: mode,
+        });
+    }
+    
 
 }

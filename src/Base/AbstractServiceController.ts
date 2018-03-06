@@ -1,5 +1,5 @@
 ﻿import Sender from "./Container/Sender";
-import LogUtil from "./Util/LogUtil";
+import LogUtil, { LogLevel } from "./Util/LogUtil";
 import LinkUtil from "./Util/LinkUtil";
 import ISWRoom from "./WebRTC/ISWRoom";
 import SWPeer from "./WebRTC/SWPeer";
@@ -8,6 +8,7 @@ import IServiceController from "./IServiceController";
 import IServiceReceiver from "./IServiceReceiver";
 import IServiceView from "./IServiceView";
 import IServiceModel from "./IServiceModel";
+import LocalCache from "../Contents/Cache/LocalCache";
 
 /**
  * Peerサービスコントローラーの抽象化クラス
@@ -29,6 +30,8 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * 
      */
     constructor() {
+        //  出力ログレベルの設定
+        LogUtil.LogLevel = (LocalCache.DebugMode > 0 ? LogLevel.Info : LogLevel.Error);
     }
 
 

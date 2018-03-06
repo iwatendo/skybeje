@@ -157,6 +157,15 @@ export default class LocalCache {
         return (value === "1");
     }
 
+    //  デバックモード
+    public static set DebugMode(val: number) {
+        localStorage.setItem('debug-mode', val.toString());
+    }
+    public static get DebugMode(): number {
+        let value = localStorage.getItem('debug-mode');
+        return (value ? Number.parseInt(value) : 0);
+    }
+    
 }
 
 
