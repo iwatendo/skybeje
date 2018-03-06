@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+    <title>Skybeje-Initialize</title>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="../../image/favicon.ico">
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel="stylesheet" href="styles.css?v={version}">
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+    <div class="sbj-error-page-body">
+        <div class="sbj-error-page-layout mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-shadow--2dp">
+            <main class="mdl-layout__content mdl-color--grey-100">
+                <div class="mdl-card__supporting-text">
+                    <h5 id="sbj-initialize-boot-error" hidden>
+                        データ初期化処理は、ユーザー設定画面から実行してください。
+                    </h5>
+                    <h5 id="sbj-initialize-execute" hidden>
+                        Skybejeのデータを全て削除しています。
+                    </h5>
+                    <h5 id="sbj-initialize-done" hidden>
+                        データ削除が完了しました。
+                    </h5>
+                    <h5 id="sbj-initialize-timeout" hidden>
+                        データ削除に失敗しました。
+                        <br/>
+                        <br/>・他のタブでSkybejeが起動していない事を確認して、再実行してください。
+                        <br/>
+                        <br/>
+                        <a href="" onclick="location.reload()">再実行</a>
+                    </h5>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="bundle.js?v={version}"></script>
+
+</body>
+
+</html>

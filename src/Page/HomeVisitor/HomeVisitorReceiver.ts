@@ -29,6 +29,8 @@ import GuideSender from "../../Contents/Sender/GuideSender";
 import ChatInfoSender from "../../Contents/Sender/ChatInfoSender";
 import ProfileChangeSender from "../../Contents/Sender/ProfileChangeSender";
 import SettingsChangeSender from "../../Contents/Sender/SettingsChangeSender";
+import InitializeSender from "../../Contents/Sender/InitializeSender";
+import LinkUtil from "../../Base/Util/LinkUtil";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -172,6 +174,10 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 this.Controller.View.VisibleSetting(false);
                 this.Controller.View.InputPane.UserSettingChange();
             }
+        }
+
+        if (sender.type === InitializeSender.ID) {
+            location.href = LinkUtil.CreateLink("../Initialize");
         }
 
     }

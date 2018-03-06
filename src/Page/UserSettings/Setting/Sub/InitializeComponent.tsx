@@ -30,6 +30,8 @@ export default class InitializeComponent extends React.Component<InitializeProp,
                             このブラウザに保存している IndexedDB({location.host}) を全て削除します。<br />
                             削除したデータは復元できませんので注意してください。<br />
                         </h5>
+                        <br />
+                        （注意）チャットサーバー/クライアント等は終了させた状態で実行してください<br />
                     </div>
                     <div className="mdl-card__supporting-text">
                         <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.OnClick.bind(this)}>

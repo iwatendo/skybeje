@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    boot: './src/Page/Boot/Script.ts',
+    initialize: './src/Page/Initialize/Script.ts',
     errorpage: './src/Page/ErrorPage/Script.ts',
     profile: './src/Page/Profile/Script.ts',
     room: './src/Page/Room/Script.ts',

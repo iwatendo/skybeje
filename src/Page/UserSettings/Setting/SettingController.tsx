@@ -12,6 +12,8 @@ import SettingComponent from "./SettingComponent";
 import UserSettingsModel from "../UserSettingsModel";
 import LocalCache from '../../../Contents/Cache/LocalCache';
 import StdUtil from '../../../Base/Util/StdUtil';
+import MessageChannelUtil from '../../../Base/Util/MessageChannelUtil';
+import InitializeSender from '../../../Contents/Sender/InitializeSender';
 
 
 export enum DBEnum {
@@ -108,9 +110,13 @@ export default class SettingController {
      * 全データの初期化
      */
     public InitializeDBAll() {
-        LocalCache.InitializedSkybeje = false;
-        LocalCache.Clear();
-        location.href = LinkUtil.CreateLink("/");
+        LocalCache.Initialize = true;
+
+        //  親フレームがあれば親側で初期化ページに遷移
+        MessageChannelUtil.PostOwner(new InitializeSender());
+
+        //  親フレームが無い場合はそのまま遷移
+        location.href = LinkUtil.CreateLink("../Initialize");
     }
 
 }
