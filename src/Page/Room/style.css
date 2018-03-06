@@ -95,3 +95,14 @@
 #sbj-room-edit-image{
     margin: 16px;
 }
+
+
+.sbj-image-card.mdl-card {
+    padding: 10px;
+    width: 462px;
+    height: 572px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -286px 0 0 -231px;
+}
