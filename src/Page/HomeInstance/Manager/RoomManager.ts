@@ -55,7 +55,7 @@ export default class RoomManager {
 
         this.GetDefaultRoomID((defaultRoomId) => {
             //  ルームアクター情報の更新
-            this.RoomActorMerge(conn.peer, useActor, defaultRoomId);
+            this.RoomActorMerge(conn.remoteId, useActor, defaultRoomId);
         });
     }
 

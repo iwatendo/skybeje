@@ -127,7 +127,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
-        this.CursorCache.Remove(conn.peer);
+        this.CursorCache.Remove(conn.remoteId);
     }
 
 

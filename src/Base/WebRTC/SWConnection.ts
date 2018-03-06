@@ -72,7 +72,7 @@ export default class SWConnection {
      */
     private OnConnectionOpen(conn: PeerJs.DataConnection) {
         this._isOpen = true;
-        LogUtil.Info(this._service, "data connection [" + this._swpeer.PeerId + "] <-> [" + conn.peer + "]");
+        LogUtil.Info(this._service, "data connection [" + this._swpeer.PeerId + "] <-> [" + conn.remoteId + "]");
         this._sendQueue.forEach((data) => { conn.send(encodeURIComponent(data)); });
         this._sendQueue = new Array<any>();
         this._service.OnChildConnection(conn);

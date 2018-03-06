@@ -30,7 +30,7 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
 
         //  アイコン取得
         if (sender.type === IconSender.ID) {
-            this.Controller.View.Cursor.SetIcon(conn.peer, (sender as IconSender).icon);
+            this.Controller.View.Cursor.SetIcon(conn.remoteId, (sender as IconSender).icon);
         }
 
         //  字幕表示

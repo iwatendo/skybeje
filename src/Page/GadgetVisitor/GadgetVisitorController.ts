@@ -56,7 +56,7 @@ export default class GadgetVisitorController extends AbstractServiceController<G
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         if (this.View.Cursor) {
-            this.View.Cursor.Remove(conn.peer);
+            this.View.Cursor.Remove(conn.remoteId);
         }
     }
 

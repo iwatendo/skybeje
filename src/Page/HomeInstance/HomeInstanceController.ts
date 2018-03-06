@@ -105,10 +105,10 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
-        this.Manager.Chat.RemoveConnection(conn.peer);
-        this.Manager.Room.RemoveConnection(conn.peer);
-        this.Manager.Servent.CloseServentOwner(conn.peer);
-        this.Manager.VoiceChat.RemoveConnection(conn.peer);
+        this.Manager.Chat.RemoveConnection(conn.remoteId);
+        this.Manager.Room.RemoveConnection(conn.remoteId);
+        this.Manager.Servent.CloseServentOwner(conn.remoteId);
+        this.Manager.VoiceChat.RemoveConnection(conn.remoteId);
     }
 
 

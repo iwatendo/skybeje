@@ -36,7 +36,10 @@ declare namespace PeerJs{
         metadata: any;
         open: boolean;
         peerConnection: any;
-        peer: string;
+        //  以下の警告が発生する為、peerを削除してremoteIdを追加
+        //  SkyWay:  t.peer is deprecated and may be removed from a future version. Please use t.remoteId instead.
+        remoteId: string        
+        //  peer: string;
         reliable: boolean;
         serialization: string;
         type: string;

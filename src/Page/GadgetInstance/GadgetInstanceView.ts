@@ -323,7 +323,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             case YT.PlayerState.CUED:
                 if (YouTubeUtil.IsCreatePlayer) {
                     if (YouTubeUtil.Player.getPlayerState() === YT.PlayerState.CUED) {
-                        this.SetCueMap(conn.peer);
+                        this.SetCueMap(conn.remoteId);
                     }
                     else {
                         this.Controller.SwPeer.SendTo(conn, this.CreateYouTubeStatus());

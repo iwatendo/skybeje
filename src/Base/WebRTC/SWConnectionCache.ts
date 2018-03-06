@@ -31,7 +31,7 @@ export default class SWConnectionCache {
      * @param conn 
      */
     public Set(conn: PeerJs.DataConnection) {
-        let pp = this.GetConnection(conn.peer);
+        let pp = this.GetConnection(conn.remoteId);
         pp.Set(conn);
     }
 
@@ -41,7 +41,7 @@ export default class SWConnectionCache {
      * @param conn 
      */
     public SetOwner(conn: PeerJs.DataConnection) {
-        this._owner = new SWConnection(this._swpeer, conn.peer);
+        this._owner = new SWConnection(this._swpeer, conn.remoteId);
     }
 
 

@@ -155,7 +155,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public OnChildClose(conn: PeerJs.DataConnection) {
 
         let sender = new ServentCloseSender();
-        sender.serventPeerId = conn.peer;
+        sender.serventPeerId = conn.remoteId;
         sender.ownerPeerid = this.PeerId;
         this.SwPeer.SendToOwner(sender);
 

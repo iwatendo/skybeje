@@ -106,7 +106,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.SendPeerCount(this.SwPeer.GetAliveConnectionCount());
-        this.CursorCache.Remove(conn.peer);
+        this.CursorCache.Remove(conn.remoteId);
     }
 
 

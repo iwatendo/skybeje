@@ -111,7 +111,7 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             let preConn = this._userConnMap.get(uid);
 
             if (preConn.open) {
-                if (preConn.peer === conn.peer) {
+                if (preConn.remoteId === conn.remoteId) {
                     return false;
                 }
                 else {

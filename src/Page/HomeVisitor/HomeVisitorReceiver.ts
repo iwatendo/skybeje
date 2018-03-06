@@ -122,12 +122,12 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
         //  アクター取得
         if (sender.type === ActorInfoSender.ID) {
-            this.Controller.ActorCache.SetActor(conn.peer, (sender as ActorInfoSender).actorInfo);
+            this.Controller.ActorCache.SetActor(conn.remoteId, (sender as ActorInfoSender).actorInfo);
         }
 
         //  アイコン取得
         if (sender.type === IconSender.ID) {
-            this.Controller.IconCache.SetOtherUserIcon(conn.peer, (sender as IconSender).icon);
+            this.Controller.IconCache.SetOtherUserIcon(conn.remoteId, (sender as IconSender).icon);
         }
 
         //  ライブキャストからの、起動通知 及び 設定変更通知
@@ -244,7 +244,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
      */
     private SendCastInstance(conn: PeerJs.DataConnection, cib: CastStatusSender) {
 
-        let serventPid = conn.peer;
+        let serventPid = conn.remoteId;
 
         //
         this.Controller.ServentCache.GetMyServent(serventPid, cib, (serventSender) => {

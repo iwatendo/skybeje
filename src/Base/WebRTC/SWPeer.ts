@@ -32,7 +32,7 @@ export default class SWPeer {
      * 
      */
     public get OwnerPeerId(): string {
-        return (this._owner ? this._owner.peer : "");
+        return (this._owner ? this._owner.remoteId : "");
     }
 
 
@@ -222,7 +222,7 @@ export default class SWPeer {
 
         let peerid = "";
         let dc = peer as PeerJs.DataConnection;
-        if (dc) { peerid = dc.peer; }
+        if (dc) { peerid = dc.remoteId; }
         if (!peerid) { peerid = peer.toString(); }
 
         this._connCache.Send(peerid, data);
