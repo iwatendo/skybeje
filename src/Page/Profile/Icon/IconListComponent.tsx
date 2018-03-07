@@ -55,7 +55,7 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
         let canEdit = (this.state.selectIid);
         (document.getElementById('sbj-profile-edit-icon') as HTMLInputElement).disabled = !canEdit;
         (document.getElementById('sbj-profile-delete-icon') as HTMLInputElement).disabled = !canEdit;
-        
+
         let iconNodes = this.state.icons.map((icon) => {
 
             let isSelect = (icon.iid === this.state.selectIid);
@@ -106,15 +106,11 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
         icons.forEach((icon) => {
             actor.iconIds.push(icon.iid);
         });
-
-        this.props.controller.Model.UpdateActor(actor, () => { });
+        this.props.controller.Model.UpdateActorIcon(actor, icons);
 
         this.setState({
             icons: icons,
         }, () => {
-            icons.forEach(cur => {
-                controller.Model.UpdateIcon(cur);
-            });
         });
     }
 

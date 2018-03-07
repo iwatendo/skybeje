@@ -129,22 +129,8 @@ export default class IconListView {
         let model = view._owner.Model;
         let actor = view._owner.Actor;
 
-        //  アイコンデータ作成
-        model.GetIconList(actor, (icons) => {
-
-            icon.iid = StdUtil.CreateUuid();
-            icon.order = Order.New(icons);
-
-            model.UpdateIcon(icon, () => {
-
-                //  プロフィールにアイコン追加して更新
-                actor.iconIds.push(icon.iid);
-                actor.dispIid = icon.iid;
-
-                model.UpdateActor(actor, () => {
-                    view.Refresh();
-                });
-            });
+        model.UpdateActorAddIcon(actor, icon, () => {
+            view.Refresh();
         });
     }
 
@@ -161,29 +147,8 @@ export default class IconListView {
         let model = view._owner.Model;
         let actor = view._owner.Actor;
 
-        //  アイコンデータ作成
-        model.GetIconList(actor, (icons) => {
-
-            newIcon.iid = StdUtil.CreateUuid();
-
-            model.UpdateIcon(newIcon, () => {
-
-                //  アイコンデータの差替え
-                icons = icons.filter(n => n.iid !== preIcon.iid);
-                icons.push(newIcon);
-                Order.Sort(icons);
-                actor.iconIds = new Array<string>();
-                icons.forEach((icon) => actor.iconIds.push(icon.iid));
-                actor.dispIid = newIcon.iid;
-
-                //  プロフィール更新
-                model.UpdateActor(actor, () => {
-                    //  旧アイコンを削除
-                    model.DeleteIcon(preIcon, () => {
-                        view.Refresh();
-                    });
-                });
-            });
+        model.UpdateActorChangeIcon(actor, preIcon, newIcon, () => {
+            view.Refresh();
         });
     }
 
@@ -198,14 +163,9 @@ export default class IconListView {
         let owner = view._owner;
         let actor = owner.Actor;
 
-        actor.iconIds = actor.iconIds.filter((n) => n !== icon.iid);
-        if (actor.dispIid === icon.iid) {
-            actor.dispIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
-        }
-        owner.Model.UpdateActor(actor);
-        owner.Model.DeleteIcon(icon);
-
-        view.Refresh();
+        owner.Model.UpdateActorDeleteIcon(actor, icon, () => {
+            view.Refresh();
+        });
     }
 
 }

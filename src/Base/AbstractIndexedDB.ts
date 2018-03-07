@@ -120,15 +120,20 @@ export default abstract class AbstractIndexedDB<D> {
      * @param storeName 
      * @param mode 
      */
-    private CreateTransaction(storeName: string, mode: IDBTransactionMode): IDBTransaction {
+    public CreateTransaction(storeName: string | string[], mode: IDBTransactionMode): IDBTransaction {
+
         let trans = this._db.transaction(storeName, mode);
 
-        trans.onabort = () => {
+        trans.onabort = (ev) => {
             let msg = "IndexedDB Transaction Abort\n";
             if (trans.error) {
                 msg += trans.error.toString();
             }
             alert(msg);
+        }
+
+        trans.oncomplete = (ev) => {
+            console.info("complete : " + storeName + ":" + mode.toString());
         }
 
         trans.onerror = (e) => {
@@ -150,9 +155,11 @@ export default abstract class AbstractIndexedDB<D> {
      * @param data 登録データ
      * @param callback 登録成功時のコールバック
      */
-    public Write<T>(storeName: string, key: IDBKeyRange | IDBValidKey, data: T, callback: OnWriteDB<T> = null) {
+    public Write<T>(storeName: string, key: IDBKeyRange | IDBValidKey, data: T, callback: OnWriteDB<T>, trans: IDBTransaction = null) {
 
-        let trans = this.CreateTransaction(storeName, 'readwrite');
+        if (!trans) {
+            trans = this.CreateTransaction(storeName, 'readwrite');
+        }
         let store = trans.objectStore(storeName);
 
         if (key) {
@@ -179,8 +186,11 @@ export default abstract class AbstractIndexedDB<D> {
      * @param key 削除対象のデータキー
      * @param callback 削除成功時のコールバック
      */
-    public Delete<T>(storeName: string, key: IDBKeyRange | IDBValidKey, callback: OnDeleteObject<T> = null) {
-        let trans = this.CreateTransaction(storeName, 'readwrite');
+    public Delete<T>(storeName: string, key: IDBKeyRange | IDBValidKey, callback: OnDeleteObject<T>, trans: IDBTransaction = null) {
+
+        if (!trans) {
+            trans = this.CreateTransaction(storeName, 'readwrite');
+        }
         let store = trans.objectStore(storeName);
         let req = store.delete(key);
 
@@ -199,7 +209,13 @@ export default abstract class AbstractIndexedDB<D> {
      * @param datalist データリスト
      * @param callback データ登録成功時のコールバック
      */
-    public WriteAll<T>(storeName: string, getkey: ObtainWritekey<T>, datalist: Array<T>, callback: OnWriteDB<T> = null) {
+    public WriteAll<T>(storeName: string, getkey: ObtainWritekey<T>, datalist: Array<T>, callback: OnWriteDB<T>, trans: IDBTransaction = null) {
+
+        if (!trans) {
+            trans = this.CreateTransaction(storeName, 'readwrite');
+        }
+
+        let worklist = datalist.concat();
 
         let writefunc = (data) => {
 
@@ -209,12 +225,13 @@ export default abstract class AbstractIndexedDB<D> {
             }
             else {
                 this.Write(storeName, getkey(data), data, () => {
-                    writefunc(datalist.pop());
-                });
+                    writefunc(worklist.pop());
+                }, trans);
             }
         };
 
-        writefunc(datalist.pop());
+        writefunc(worklist.pop());
+
     }
 
 
@@ -224,9 +241,11 @@ export default abstract class AbstractIndexedDB<D> {
      * @param key 読込データキー 
      * @param callback 読込成功時のコールバック
      */
-    public Read<T, K>(storeName: string, key: K, callback: OnReadObject<T>) {
+    public Read<T, K>(storeName: string, key: K, callback: OnReadObject<T>, trans: IDBTransaction = null) {
 
-        let trans = this.CreateTransaction(storeName, 'readonly');
+        if (!trans) {
+            trans = this.CreateTransaction(storeName, 'readonly');
+        }
         let store = trans.objectStore(storeName);
         let req = store.get(key);
 
@@ -240,12 +259,14 @@ export default abstract class AbstractIndexedDB<D> {
      * @param storeName ストア名
      * @param callback 読込成功時のコールバック
      */
-    public ReadAll<T>(storeName: string, callback: OnReadObject<Array<T>>) {
+    public ReadAll<T>(storeName: string, callback: OnReadObject<Array<T>>, trans: IDBTransaction = null) {
 
         this._db.onerror = (e) => {
             alert(e.target)
         }
-        let trans = this.CreateTransaction(storeName, 'readonly');
+        if (!trans) {
+            trans = this.CreateTransaction(storeName, 'readonly');
+        }
         let store = trans.objectStore(storeName);
         let req = store.openCursor();
 

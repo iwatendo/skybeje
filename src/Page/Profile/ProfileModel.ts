@@ -26,6 +26,16 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
         });
     }
 
+
+    /** 
+     * アクターとアイコンを同時更新する為のトランザクション生成
+     */
+    private CreateTransaction_ActorIcon(): IDBTransaction {
+        let stores: string[] = [Personal.DB.ACTOR, Personal.DB.ICON];
+        return this._personalDB.CreateTransaction(stores, 'readwrite');
+    }
+
+
     /**
      * プロフィール情報取得
      * @param callback 
@@ -99,22 +109,18 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
 
 
     /**
-     * アクターの削除（付随するアイコンも削除）
+     * アクターとアイコンの更新
      * @param actor 
+     * @param icons 
      * @param callback 
      */
-    public DeleteActorIcon(actor: Personal.Actor, callback: OnWrite = null) {
+    public UpdateActorIcon(actor: Personal.Actor, icons: Array<Personal.Icon>, callback: OnWrite = null) {
 
-        this._personalDB.Delete<Personal.Actor>(Personal.DB.ACTOR, actor.aid, () => {
+        let trnc = this.CreateTransaction_ActorIcon();
 
-            //  削除されたアクターが保持するアイコンも削除
-            this.GetIconList(actor, (icons) => {
-                icons.map(icon => {
-                    this.DeleteIcon(icon);
-                });
-            });
-        });
-
+        this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, () => {
+            this._personalDB.WriteAll(Personal.DB.ICON, (icon) => { return icon.iid }, icons, callback, trnc);
+        }, trnc);
     }
 
 
@@ -130,6 +136,8 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
         }
         let result = new Array<Personal.Icon>();
 
+        let trans = this._personalDB.CreateTransaction(Personal.DB.ICON, 'readonly');
+
         let icons = actor.iconIds;
         let loop: number = 0;
         let max: number = icons.length;
@@ -138,7 +146,9 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
             result.push(icon);
             loop += 1;
             if (loop < max) {
-                this.GetIcon(icons[loop], loopCall);
+                this._personalDB.Read(Personal.DB.ICON, icons[loop], (icon) => {
+                    loopCall(icon);
+                }, trans);
             }
             else {
                 callback(result);
@@ -149,43 +159,102 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
             callback(result);
         }
         else {
-            this.GetIcon(icons[0], loopCall)
+            this._personalDB.Read(Personal.DB.ICON, icons[0], (icon) => {
+                loopCall(icon);
+            }, trans);
         }
     }
 
 
     /**
-     * アイコンの取得
-     * @param iid 
-     * @param callback 
+     * アイコンの追加処理
+     * @param actor
+     * @param newIcon
+     * @param callback
      */
-    public GetIcon(iid: string, callback: OnRead<Personal.Icon>) {
-        this._personalDB.Read(Personal.DB.ICON, iid, callback);
-    }
+    public UpdateActorAddIcon(actor: Personal.Actor, newIcon: Personal.Icon, callback: OnWrite = null) {
 
+        //  アイコンデータ作成
+        this.GetIconList(actor, (icons) => {
 
-    /**
-     * アイコンの更新
-     * @param icon 
-     * @param callback 
-     */
-    public UpdateIcon(icon: Personal.Icon, callback: OnWrite = null) {
-        this._personalDB.Write<Personal.Icon>(Personal.DB.ICON, icon.iid, icon, () => {
-            if (callback) {
-                callback();
-            }
-            ImageInfo.SetCss(icon.iid, icon.img);
+            newIcon.iid = StdUtil.CreateUuid();
+            newIcon.order = Order.New(icons);
+            let trans = this.CreateTransaction_ActorIcon();
+
+            this._personalDB.Write<Personal.Icon>(Personal.DB.ICON, newIcon.iid, newIcon, () => {
+
+                //  プロフィールにアイコン追加して更新
+                actor.iconIds.push(newIcon.iid);
+                actor.dispIid = newIcon.iid;
+
+                //  プロフィール更新
+                this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, () => {
+                    callback();
+                }, trans);
+            }, trans);
         });
     }
 
 
     /**
-     * アイコンの削除
-     * @param icon 
+     * アイコンの更新処理
+     * キャッシュの問題もあるため、Iidを変更して別画像として更新する
+     * @param view 
+     * @param preIcon 
+     * @param imgRec 
+     */
+    public UpdateActorChangeIcon(actor: Personal.Actor, preIcon: Personal.Icon, newIcon: Personal.Icon, callback: OnWrite = null) {
+
+        //  アイコンデータ作成
+        this.GetIconList(actor, (icons) => {
+
+            newIcon.iid = StdUtil.CreateUuid();
+            let trans = this.CreateTransaction_ActorIcon();
+
+            this._personalDB.Write<Personal.Icon>(Personal.DB.ICON, newIcon.iid, newIcon, () => {
+
+                //  アイコンデータの差替え
+                icons = icons.filter(n => n.iid !== preIcon.iid);
+                icons.push(newIcon);
+                Order.Sort(icons);
+                actor.iconIds = new Array<string>();
+                icons.forEach((icon) => actor.iconIds.push(icon.iid));
+                actor.dispIid = newIcon.iid;
+
+                //  プロフィール更新
+                this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, () => {
+                    //  旧アイコンを削除
+                    this._personalDB.Delete<Personal.Icon>(Personal.DB.ICON, preIcon.iid, () => {
+                        callback();
+                    }, trans);
+                }, trans);
+            }, trans);
+        });
+    }
+
+
+    /**
+     * アクターに付随するアイコンを削除
+     * @param actor
+     * @param delIcon 
      * @param callback 
      */
-    public DeleteIcon(icon: Personal.Icon, callback: OnWrite = null) {
-        this._personalDB.Delete<Personal.Icon>(Personal.DB.ICON, icon.iid, callback);
+    public UpdateActorDeleteIcon(actor: Personal.Actor, delIcon: Personal.Icon, callback: OnWrite = null) {
+
+        actor.iconIds = actor.iconIds.filter((n) => n !== delIcon.iid);
+        if (actor.dispIid === delIcon.iid) {
+            actor.dispIid = (actor.iconIds.length === 0 ? "" : actor.iconIds[0]);
+        }
+
+        let trans = this.CreateTransaction_ActorIcon();
+
+        //  プロフィール更新
+        this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, () => {
+            //  旧アイコンを削除
+            this._personalDB.Delete<Personal.Icon>(Personal.DB.ICON, delIcon.iid, () => {
+                callback();
+            }, trans);
+        }, trans);
     }
 
 
