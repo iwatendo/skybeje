@@ -49,7 +49,11 @@ export default class MessageChannelUtil {
             key += controller.SwPeer.PeerId;
         }
         window.parent.postMessage(key, location.origin, [mc.port2]);
-        port.onmessage = (e) => { onmsg(JSON.parse(e.data) as Sender); }
+        port.onmessage = (e) => {
+            if (e && e.data) {
+                onmsg(JSON.parse(e.data) as Sender);
+            }
+        }
         this._ownerPort = port;
     }
 

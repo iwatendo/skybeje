@@ -78,7 +78,7 @@ export default class ImportComponent extends React.Component<ImportProp, ImportS
                         </button>
                         {reslutMessage}
                         <h6 hidden={!isBootServent}>
-                            ※ホームインスタンスまたはクライアントの起動中はインポート処理できません。
+                            ※チャットサーバーまたはクライアントの起動中はインポート処理できません。
                         </h6>
                     </div>
                 </div>
