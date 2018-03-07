@@ -43,7 +43,7 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
 
         //
         let room1 = new Home.Room();
-        room1.name = "エントランス";
+        room1.name = "チャットルーム１（エントランス）";
         room1.hid = StdUtil.CreateUuid();
         room1.order = 1;
         room1.tag = "Default";
@@ -54,11 +54,11 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
 
         //  
         let room2 = new Home.Room();
-        room2.name = "リビング";
+        room2.name = "チャットルーム２（リビング）";
         room2.hid = StdUtil.CreateUuid();
         room2.order = 2;
         room2.tag = "Default";
-        room2.note = "ホームインスタンスのオーナーの操作で入れる部屋です";
+        room2.note = "チャットルームインスタンスのオーナーの操作で入れる部屋です";
         room2.isDefault = false;
         room2.background = new ImageInfo();
         room2.background.src = "/image/default-room2.jpg";

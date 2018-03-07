@@ -66,6 +66,7 @@
 
 .sbj-home-instance-room-panel{
     background-color: var(--sbj-color-room-default-background);
+    height: 280px;
 }
 
 .sbj-home-instance-room-header{

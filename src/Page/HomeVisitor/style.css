@@ -30,10 +30,10 @@
 
  .sbj-profile-frame{
      position: absolute;
-     top: 64px;
+     top: 57px;
      right: 0;
      width: 100%;
-     height: calc(100% - 64px);
+     height: calc(100% - 57px);
  }
 
  .sbj-user-settings-frame{
