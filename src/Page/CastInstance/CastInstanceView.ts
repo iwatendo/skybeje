@@ -12,7 +12,6 @@ import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Contents/AbstractDialogController";
-import SettingDialogController from "./SettingDialog/SettingDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
@@ -32,7 +31,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let startButton = document.getElementById('sbj-cast-instance-start');
         let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let settingButton = document.getElementById('sbj-cast-instance-settings');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
@@ -63,13 +61,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             this.Controller.ServerSend(false, false);
             location.href = "";
         };
-
-        //  配信設定ボタン（※モバイル配信画面には無いボタン）
-        if (settingButton) {
-            settingButton.onclick = (e) => {
-                SettingDialogController.Show();
-            }
-        }
 
         let options = LocalCache.LiveCastOptions;
 
@@ -103,7 +94,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let settingButton = document.getElementById('sbj-cast-instance-settings');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
@@ -118,8 +108,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         micElement.hidden = isLiveCasting;
         camElement.hidden = isLiveCasting;
         linkElement.hidden = !isLiveCasting;
-
-        settingButton.hidden = isLiveCasting;
         sfuElement.disabled = isLiveCasting;
     }
 

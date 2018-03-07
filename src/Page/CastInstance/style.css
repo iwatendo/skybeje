@@ -38,11 +38,12 @@
 }
 
 .sbj-cast-instance-device{
-    padding: 16px;
+    padding: 0px 0px 16px 0px;
 }
 
 .sbj-cast-instance-device-select{
     outline: 0;
+    width: 420px;
 }
 
 .sbj-cast-instance--header-row{
@@ -65,12 +66,6 @@
     width: 480px;
     height: 360px;
     background-color: var(--sbj-color-edge-background);
-}
-
-.sbj-dialog-close{
-	min-width: 36px;
-    width: 36px;
-    padding: 0px;
 }
 
 .sbj-cast-instance-setting-card.mdl-card {

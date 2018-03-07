@@ -46,10 +46,29 @@
                                 <i class="material-icons">stop</i>
                                 &nbsp;停止&nbsp;
                             </button>
-                            <button id="sbj-cast-instance-settings" class="mdl-button mdl-js-button mdl-button--colored">
-                                <i class="material-icons">settings</i>
-                                &nbsp;配信設定&nbsp;
-                            </button>
+                        </div>
+
+                        <div class="sbj-cast-instance-device">
+                            <!-- Mic -->
+                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
+                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
+                                <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
+                                <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
+                                    <li class="mdl-menu__item"></li>
+                                </ul>
+                            </div>
+                            <!-- Camera -->
+                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
+                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
+                                <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
+                                <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
+                                    <li class="mdl-menu__item" onclick=""></li>
+                                </ul>
+                            </div>
+                            <!-- トラブルシュート -->
+                            <div>
+                                <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">ライブキャストができない場合</a>
+                            </div>
                         </div>
 
                         <div class="mdl-list__item-primary-content">
@@ -87,55 +106,6 @@
         </div>
     </div>
 
-    <!--sbj-cast-instance-setting Dialog-->
-    <dialog id='sbj-cast-instance-setting-dialog' class='sbj-dialog'>
-        <div id="sbj-cast-instance-setting-background" class="sbj-dialog-background">
-
-            <div class="sbj-cast-instance-setting-card mdl-card mdl-shadow--2dp flexiblebox">
-
-                <!-- 上部ボタン郡 -->
-                <div class="mdl-card__actions">
-
-                    <div class="sbj-dialog-attach-action-left mdl-card__subtitle-text">
-                        <h4 class="sbj-dialog-title">
-                            <span id="sbj-dialog-title-value">配信設定</span>
-                        </h4>
-                    </div>
-                    <div class="sbj-dialog-attach-action-right">
-                        <button id='sbj-cast-instance-setting-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
-                            <i class="material-icons">close</i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="sbj-cast-instance-device">
-                    <!-- Mic -->
-                    <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
-                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
-                        <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
-                        <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
-                            <li class="mdl-menu__item"></li>
-                        </ul>
-                    </div>
-
-                    <!-- Camera -->
-                    <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
-                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
-                        <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
-                        <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
-                            <li class="mdl-menu__item" onclick=""></li>
-                        </ul>
-                    </div>
-
-                    <!-- トラブルシュート -->
-                    <div>
-                        <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">ライブキャストができない場合</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </dialog>
 
 
     <script src="/lib/react.min.js"></script>
