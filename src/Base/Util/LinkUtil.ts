@@ -117,14 +117,12 @@ export default class LinkUtil {
                     StdUtil.ClipBoardCopy(link);
                     linkCopyBtn.textContent = " 接続URLをクリップボードにコピーしました ";
                     linkCopyBtn.classList.remove('mdl-button--colored');
-                    linkCopyBtn.classList.add('mdl-button--raised');
-                    linkCopyBtn.disabled = true;
+                    linkCopyBtn.classList.add('mdl-button--accent');
                     window.setTimeout(() => {
                         linkCopyBtn.textContent = " 接続URLのコピー ";
+                        linkCopyBtn.classList.remove('mdl-button--accent');
                         linkCopyBtn.classList.add('mdl-button--colored');
-                        linkCopyBtn.classList.remove('mdl-button--raised');
-                        linkCopyBtn.disabled = false;
-                    }, 2000);
+                    }, 2500);
                 };
             }
 
