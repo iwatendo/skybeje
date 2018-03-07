@@ -60,6 +60,8 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     public CurrentHid: string;
     public HasError: boolean;
 
+    public IsFirstBoot: boolean;
+
     /**
      *
      */
@@ -96,7 +98,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
                 MessageChannelUtil.SetOwner((sender) => {
                     (this.Receiver as HomeVisitorReceiver).MessageChannelRecive(sender);
                 });
-                
+
             });
         });
 
@@ -180,11 +182,13 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
         this.Model.GetActors((actors) => {
             if (actors && actors.length > 0) {
+                this.IsFirstBoot = false;
                 func(actors);
             }
             else {
                 this.Model.CreateDefaultData(() => {
                     this.Model.GetActors((actors) => {
+                        this.IsFirstBoot = true;
                         func(actors);
                     });
                 });

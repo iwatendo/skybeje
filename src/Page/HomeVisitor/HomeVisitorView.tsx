@@ -183,6 +183,12 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
             this._mainElement.hidden = false;
             this.InputPane = new InputPaneController(this.Controller);
             this._isBooting = false;
+
+            //  初回起動時はプロフィール画面を開く
+            if (this.Controller.IsFirstBoot) {
+                this.InputPane.DoShowProfileEditDialog();
+            }            
+
         }
 
         if (this.Controller.CurrentHid === room.hid) {

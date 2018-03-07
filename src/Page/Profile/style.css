@@ -9,13 +9,13 @@
 }
 
 .sbj-profile-layout{
-    width: calc(100% - 512px);
+    width: 960px;
     height: calc(100% - 64px);
-    min-width: 720px;
     min-height: 540px;
     position: absolute;
-    top: 32px;
-    left: 432px;
+    top: 34px;
+    left: 50%;
+    margin-left: -480px;
 }
 
 .sbj-profile-layout_content{

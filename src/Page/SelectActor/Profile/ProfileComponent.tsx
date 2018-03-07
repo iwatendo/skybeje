@@ -128,7 +128,7 @@ export default class ProfileComponent extends React.Component<ProfileProp, Profi
 
 
     /**
-     * プロフィールの編集
+     * プロフィールを編集
      * @param actor 
      */
     public EditProfile(aid: string) {

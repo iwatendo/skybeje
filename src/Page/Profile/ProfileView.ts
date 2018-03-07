@@ -21,7 +21,7 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
     public Initialize(callback: OnViewLoad) {
 
         let isNew = this.Controller.IsNew;
-        document.getElementById('sbj-profile-title').textContent = (isNew ? "アクターの追加" : "プロフィールの編集");
+        document.getElementById('sbj-profile-title').textContent = (isNew ? "アクターの追加" : "プロフィールを編集");
         document.getElementById('sbj-profile-append').hidden = !isNew;
         document.getElementById('sbj-profile-update').hidden = isNew;
 

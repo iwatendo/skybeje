@@ -378,7 +378,7 @@ export default class InputPaneController {
     /**
      * プロフィール編集ダイアログの表示
      */
-    private DoShowProfileEditDialog() {
+    public DoShowProfileEditDialog() {
 
         let controller = this._controller;
         let useActors = controller.UseActors;
