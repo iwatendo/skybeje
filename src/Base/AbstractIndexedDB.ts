@@ -132,10 +132,6 @@ export default abstract class AbstractIndexedDB<D> {
             alert(msg);
         }
 
-        trans.oncomplete = (ev) => {
-            console.info("complete : " + storeName + ":" + mode.toString());
-        }
-
         trans.onerror = (e) => {
             let msg = "IndexedDB Transaction Error\n";
             if (trans.error) {
@@ -310,7 +306,7 @@ export default abstract class AbstractIndexedDB<D> {
     public abstract GetName(): string;
 
     public abstract GetNote(): string;
-    
+
     public abstract ReadAllData(onload: OnLoadComplete<D>);
 
     public abstract WriteAllData(data: D, callback: OnWriteComplete);
