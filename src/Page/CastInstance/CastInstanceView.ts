@@ -26,7 +26,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     public Initialize() {
 
         StdUtil.StopPropagation();
-        StdUtil.StopTouchmove();
+        StdUtil.StopTouchMove();
         let backpanel = document.getElementById('sbj-cast-instance');
         let startButton = document.getElementById('sbj-cast-instance-start');
         let cancelButton = document.getElementById('sbj-cast-instance-cancel');

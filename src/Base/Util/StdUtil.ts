@@ -286,7 +286,7 @@ export default class StdUtil {
     /**
      * タッチパネルイベントの抑制（スライドでのページ遷移の抑制）
      */
-    public static StopTouchmove() {
+    public static StopTouchMove() {
 
         if (!(window as any).TouchEvent) {
             return;

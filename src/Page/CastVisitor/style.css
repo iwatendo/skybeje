@@ -52,7 +52,17 @@ body {
     background-color: var(--sbj-color-cast-background);
 }
 
-#sbj-cact-visitor-item-port #sbj-cact-visitor-cursor-port {
+#sbj-cact-visitor-item-port{
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#sbj-cact-visitor-cursor-port{
     position: absolute;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -82,8 +92,15 @@ body {
     right: 0px;
     bottom : 0px;
     height: 52px;
-    background-color: var(--sbj-color-default-text);
-    opacity: 0.0;
+    background-color: var(--sbj-color-edge-background);
+    opacity: 0.5;
+}
+
+#sbj-cast-visitor-submenu-mobile{
+    position: absolute;
+    left: 24px;
+    bottom : 24px;
+    right: 0px;
 }
 
 .sbj-cact-visitor-button {
@@ -110,4 +127,9 @@ body {
     text-align: center;
     top: calc(50% - 20px);
     left: calc(50% - 120px);
+}
+
+.sbj-cact-visitor-mobile-button{
+    height: 48px;
+    width: 48px;
 }

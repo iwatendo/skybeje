@@ -26,7 +26,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
     public Initialize(callback: OnViewLoad) {
 
         StdUtil.StopPropagation();
-        StdUtil.StopTouchmove();
+        StdUtil.StopTouchMove();
         let backpanel = document.getElementById('sbj-gadget-instance');
         let mainpanel = document.getElementById('sbj-gadget-instance-layout');
         let startButton = document.getElementById('sbj-gadget-instance-start') as HTMLInputElement;

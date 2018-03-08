@@ -30,7 +30,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
 
         (window as any).AudioContext = (window as any).AudioContext || (window as any).webkitAudioContext;
         StdUtil.StopPropagation();
-        StdUtil.StopTouchmove();
+        StdUtil.StopTouchMove();
         StdUtil.StopTouchZoom();
 
         let audioElement = document.getElementById('audio') as HTMLAudioElement;

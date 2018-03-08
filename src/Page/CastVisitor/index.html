@@ -3,6 +3,7 @@
 <head>
     <title>Skybeje-CastViewer</title>
     <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
     <script src='/lib/forcedtimer.js'></script>
     <script src='/lib/skyway.min.js'></script>
@@ -14,17 +15,23 @@
 </head>
 
 <body>
-    <div class='sbj-cact-visitor-contents'>
 
-        <video id='sbj-video' autoplay="true" playsinline="true"></video>
+    <div class="mdl-layout mdl-js-layout">
+        <main class="sbj-cact-visitor-contents mdl-layout__content">
 
-        <div id="sbj-cact-visitor-item-port">
-            <h2 id="sbj-cact-visitor-voice-only" hidden>Voice only</h2>
-            <div id="sbj-cact-visitor-cursor-port">
-                <!-- React -->
+            <video id='sbj-video' autoplay="true" playsinline="true"></video>
+
+            <div id="sbj-cact-visitor-item-port">
+                <div id="sbj-cact-visitor-cursor-port">
+                    <!-- React -->
+                </div>
             </div>
-            <div id="sbj-cast-visitor-subtitles-text"></div>
-            <div id="sbj-cast-visitor-submenu">
+
+            <h2 id="sbj-cact-visitor-voice-only" hidden>Voice only</h2>
+
+            <div id="sbj-cast-visitor-subtitles-text" hidden></div>
+
+            <div id="sbj-cast-visitor-submenu" hidden>
                 <div id="sbj-cast-visitor-volume-slider">
                     <input id="sbj-cast-visitor-volume-value" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="100" tabindex="0">
                 </div>
@@ -33,11 +40,19 @@
                     <i id="sbj-cact-visitor-volume-off" hidden class="material-icons">volume_off</i>
                 </button>
             </div>
-        </div>
 
-        <div id="sbj-cast-visitor-message-port" hidden>
-            <h2 id="sbj-cast-visitor-message"></h2>
-        </div>
+            <div id="sbj-cast-visitor-submenu-mobile" hidden>
+                <button id="sbj-cact-visitor-volume-mobile" class="sbj-cact-visitor-mobile-button mdl-button mdl-js-button mdl-button--icon mdl-button--raised mdl-button--colored">
+                    <i id="sbj-cact-visitor-volume-mobile-on" class="sbj-cact-visitor-mobile-button-icon material-icons">volume_up</i>
+                    <i id="sbj-cact-visitor-volume-mobile-off" class="sbj-cact-visitor-mobile-button-icon material-icons" hidden>volume_off</i>
+                </button>
+            </div>
+
+            <div id="sbj-cast-visitor-message-port" hidden>
+                <h2 id="sbj-cast-visitor-message"></h2>
+            </div>
+
+        </main>
 
     </div>
 

@@ -16,7 +16,7 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
     /**
      * 
      */
-    public Receive(conn: PeerJs.DataConnection, sender: Sender){
+    public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
         //  カーソル表示
         if (sender.type === IconCursorSender.ID) {

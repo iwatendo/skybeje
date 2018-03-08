@@ -9,6 +9,7 @@ import IServiceController from '../../../Base/IServiceController';
 import GetIconSender from '../../../Contents/Sender/GetIconSender';
 import IconCursorSender from '../../../Contents/Sender/IconCursorSender';
 import CursorInfoSender from '../../../Contents/Sender/CursorInfoSender';
+import LocalCache from '../../../Contents/Cache/LocalCache';
 
 
 export class VideoDispOffset {
@@ -102,11 +103,13 @@ export class CursorController {
             }
         };
 
-        itemDivElement.oncontextmenu = (pv: PointerEvent) => {
-            //  右クリック時カーソルを消す。
-            this.CastCursorSend(this._video, itemDivElement, 0, 0, false);
-            //  コンテキストメニューのキャンセル
-            return false;
+        if (LocalCache.DebugMode === 0) {
+            itemDivElement.oncontextmenu = (pv: PointerEvent) => {
+                //  右クリック時カーソルを消す。
+                this.CastCursorSend(this._video, itemDivElement, 0, 0, false);
+                //  コンテキストメニューのキャンセル
+                return false;
+            }
         }
 
         window.onresize = ((ev) => { this.DisplayAll(); });
@@ -469,7 +472,7 @@ export class CursorController {
                 element.style.margin = "-" + mergin.toString() + "px";
 
                 //  自分自身のアイコンの場合はクリックイベントを追加する
-                if (icon.iid === this.CursorInfo.iid) {
+                if (this.CursorInfo && icon.iid === this.CursorInfo.iid) {
 
                     element.onmousedown = (e) => {
                         CursorController._cursorOffsetX = e.offsetX - mergin;

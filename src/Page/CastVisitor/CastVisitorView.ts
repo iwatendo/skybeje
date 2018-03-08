@@ -1,17 +1,12 @@
-﻿
-import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
-import LogUtil from "../../Base/Util/LogUtil";
+﻿import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
+import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
+import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import CursorInfoSender from "../../Contents/Sender/CursorInfoSender";
+import { SubTitlesController } from "./SubTitles/SubTitlesController";
 import CastVisitorController from "./CastVisitorController";
 import { CastCursor, CursorController } from "./Cursor/CurosrController";
-import { Icon } from "../../Contents/IndexedDB/Personal";
-import { SubTitlesController } from "./SubTitles/SubTitlesController";
-import { DialogMode } from "../../Contents/AbstractDialogController";
-import CastSettingSender from "../../Contents/Sender/CastSettingSender";
-import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
-import CursorInfoSender from "../../Contents/Sender/CursorInfoSender";
-
 
 /**
  * 
@@ -20,46 +15,53 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
     public Cursor: CursorController;
     public SubTitles: SubTitlesController;
+    
+
+    public IsMobile: boolean;
 
 
     //
     public Initialize(callback: OnViewLoad) {
 
-        this.SubTitles = new SubTitlesController();
-
+        this.SubTitles = new SubTitlesController();       
+        this.IsMobile = StdUtil.IsMobile();
         StdUtil.StopPropagation();
-
-        let submenuMain = document.getElementById('sbj-cast-visitor-submenu');
-        submenuMain.onmouseover = (e) => {
-            submenuMain.style.opacity = "1.0";
-        }
-
-        submenuMain.onmouseout = (e) => {
-            submenuMain.style.opacity = "0.0";
-        }
+        StdUtil.StopTouchMove();
+        StdUtil.StopTouchZoom();
 
         //  Video
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
 
-        //  ミュート設定
-        let mute = LinkUtil.GetArgs("mute");
-        if (mute != null && mute.length > 0) {
-            video.muted = true;
-            this.ChangeDispMuteButton(true);
+        if (this.IsMobile) {
+
+            //  モバイル端末の場合
+            document.getElementById('sbj-cast-visitor-submenu-mobile').hidden = false;
+            document.getElementById('sbj-cact-visitor-volume-mobile').onclick = (e) => { this.SetMute(!video.muted); };
+            this.SetMute(true);
+
         }
+        else {
 
-        //  ミュートボタン押下時処理
-        document.getElementById('sbj-cact-visitor-volume').onclick = (e) => {
-            video.muted = !video.muted;
-            this.ChangeDispMuteButton(video.muted);
-        };
+            //  ＰＣの場合
+            let submenu = document.getElementById('sbj-cast-visitor-submenu');
+            submenu.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
+            submenu.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
+            submenu.hidden = false;
 
-        //  ボリューム設定処理
-        let valumeRange = document.getElementById('sbj-cast-visitor-volume-value') as HTMLInputElement;
-        valumeRange.onchange = (e) => {
-            let value = Number.parseInt(valumeRange.value);
-            video.volume = (value / 100);
-        };
+            document.getElementById('sbj-cact-visitor-volume').onclick = (e) => { this.SetMute(!video.muted); };
+
+            //  ミュート初期設定
+            let muteArg = LinkUtil.GetArgs("mute");
+            this.SetMute(muteArg && muteArg.length > 0);
+
+            //  ボリューム設定
+            let valumeRange = document.getElementById('sbj-cast-visitor-volume-value') as HTMLInputElement;
+            valumeRange.onchange = (e) => {
+                let value = Number.parseInt(valumeRange.value);
+                video.volume = (value / 100);
+            };
+
+        }
 
         video.oncanplay = (ev) => {
             let voiceOnly = (video.videoHeight === 0 || video.videoWidth === 0);
@@ -78,9 +80,18 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
      * ミュートボタンの設定
      * @param isMute 
      */
-    public ChangeDispMuteButton(isMute: boolean) {
-        document.getElementById('sbj-cact-visitor-volume-on').hidden = isMute;
-        document.getElementById('sbj-cact-visitor-volume-off').hidden = !isMute;
+    public SetMute(isMute: boolean) {
+
+        (document.getElementById('sbj-video') as HTMLVideoElement).muted = isMute;
+
+        if (this.IsMobile) {
+            document.getElementById('sbj-cact-visitor-volume-mobile-on').hidden = isMute;
+            document.getElementById('sbj-cact-visitor-volume-mobile-off').hidden = !isMute;
+        }
+        else {
+            document.getElementById('sbj-cact-visitor-volume-on').hidden = isMute;
+            document.getElementById('sbj-cact-visitor-volume-off').hidden = !isMute;
+        }
     }
 
 
@@ -95,9 +106,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         this.Cursor = new CursorController(this.Controller, video, itemport, curport);
         this.Cursor.DisplayAll();
 
-
         MessageChannelUtil.SetChild(this.Controller, (sender) => {
-
             let curInfo = sender as CursorInfoSender;
             if (sender) {
                 this.Cursor.CursorInfo = curInfo;
@@ -105,7 +114,6 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
                     this.Cursor.SetLastChatActor(curInfo.aid, curInfo.iid);
                 }
             }
-
         });
     }
 
