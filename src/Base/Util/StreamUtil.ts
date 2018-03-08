@@ -91,7 +91,7 @@ export default class StreamUtil {
         }
         catch (err) {
             error_callback(err.name);
-            LogUtil.Error(null, err);
+            LogUtil.Error(null, err.name);
         }
     }
 

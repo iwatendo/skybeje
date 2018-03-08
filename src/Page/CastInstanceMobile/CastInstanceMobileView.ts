@@ -245,11 +245,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
             (stream) => {
                 controller.Stream = stream;
 
-                if (stream === null) {
-                    this.StreamErrorClose();
-                    return;
-                }
-
                 if (stream && videoElement) {
                     videoElement.onplaying = (e) => { callback(); }
                     StreamUtil.StartPreview(videoElement, stream);
@@ -259,6 +254,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
                 }
             },
             (error) => {
+                this.StreamErrorClose();
                 alert(error);
             }
         );
