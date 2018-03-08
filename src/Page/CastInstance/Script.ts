@@ -5,7 +5,7 @@ import SWPeer from "../../Base/WebRTC/SWPeer";
 import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 import LocalCache from "../../Contents/Cache/LocalCache";
 
-if (StdUtil.IsExecute(true)) {
+if (StdUtil.IsSupoortPlatform(true)) {
 
     if (!LocalCache.IsCheckDevicePermision) {
         let reload = () => {

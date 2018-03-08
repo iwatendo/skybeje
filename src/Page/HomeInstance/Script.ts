@@ -3,7 +3,7 @@ import SWPeer from "../../Base/WebRTC/SWPeer";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import HomeInstanceController from "./HomeInstanceController";
 
-if (StdUtil.IsExecute()) {
+if (StdUtil.IsSupoortPlatform()) {
 
     let bootid = LocalCache.BootHomeInstancePeerID;
 

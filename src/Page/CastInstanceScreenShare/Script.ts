@@ -4,7 +4,7 @@ import CastInstanceScreenShareController from "./CastInstanceScreenShareControll
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 
-if (StdUtil.IsExecute()) {
+if (StdUtil.IsSupoortPlatform()) {
 
     let controller = new CastInstanceScreenShareController();
     controller.SwPeer = new SWPeer(controller, LinkUtil.GetPeerID(), () => {

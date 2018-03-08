@@ -1,4 +1,5 @@
-﻿import LogUtil from "./LogUtil";
+﻿import "platform";
+import LogUtil from "./LogUtil";
 import LinkUtil from "./LinkUtil";
 
 interface OnGetMobleDeviceId { (deviceId: string): void }
@@ -23,16 +24,45 @@ export default class StdUtil {
 
 
     /**
-     * mobile端末か判定
+     * サポートブラウザか？
+     * @param isGeneral 
      */
-    public static IsMobile() {
-        let ua = navigator.userAgent;
-        if (ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || (ua.indexOf('Android') > 0) && (ua.indexOf('Mobile') > 0) || ua.indexOf('Windows Phone') > 0) {
-            return true;
-        } else if (ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
+    public static IsSupoortPlatform(isGeneral: boolean = false): boolean {
+
+        //  対応ブラウザかチェック
+        let name = platform.name.toLocaleLowerCase();
+
+        if (name === 'chrome') {
             return true;
         }
-        return false;
+
+        let errmsg = "";
+
+        if (isGeneral) {
+            if (name === 'firefox') {
+                return true;
+            }
+            else if (name === 'safari') {
+                if (platform.version >= '10.2') {
+                    return true;
+                }
+                else {
+                    errmsg = '未対応のブラウザバージョンです。\niOS11.2以降に対応しています';
+                }
+            }
+            errmsg = "未対応のブラウザです\n";
+            errmsg += "このページは以下のブラウザに対応しています\n"
+            errmsg += "\n";
+            errmsg += "・FireFox\n";
+            errmsg += "・Google Chrome\n";
+            errmsg += "・Safari\n";
+        }
+        else {
+            errmsg = "未対応のブラウザです。\n";
+            errmsg = "このページは Google Chrome にのみ対応しています"
+        }
+
+        alert(errmsg);
     }
 
 
@@ -43,26 +73,13 @@ export default class StdUtil {
     public static IsSupportBrowser(isLiveCast: boolean): boolean {
 
         //  対応ブラウザかチェック
-        let ua = window.navigator.userAgent.toLowerCase();
+        let name = platform.name.toLocaleLowerCase();
 
-        if (ua.indexOf('safari') >= 0) {
-
-            let vers = this.GetIOSVer();
-            if (vers) {
-                //  iOS 11.2 以前は対象外とする
-                //  ※WebRTCがiOS11から対応で、iOS11.1迄はフリーズする不具合があった為対象外とする
-                if (vers[0] > 11 || (vers[0] == 11 && vers[1] >= 2)) {
-                    return true;
-                }
-            }
+        if (name === 'chrome') return true;
+        if (name === 'firefox') return true;
+        if (name === 'safari') {
+            return (platform.version >= '10.2');
         }
-
-        if (ua.indexOf('chrome') >= 0) {
-            if ((ua.indexOf('msie') < 0) && (ua.indexOf('trident/7') < 0) && (ua.indexOf('edge') < 0)) {
-                return true;
-            }
-        }
-
         return false;
     }
 
@@ -72,54 +89,26 @@ export default class StdUtil {
      */
     public static IsSafari(ua: string = window.navigator.userAgent) {
 
-        ua = ua.toLocaleLowerCase();
-
-        if (ua.indexOf('chrome') >= 0) {
-            return false;
-        }
-
-        if (ua.indexOf('safari') >= 0) {
-            return true;
+        if (platform) {
+            return (platform.name.toLowerCase() === "safari");
         }
         else {
             return false;
         }
-
-    }
-
-
-
-
-    /**
-     * 以下のサイトを参考にした
-     * https://qiita.com/gurigurico/items/bd19ed121bfdf77fced6
-     * @param pf platform
-     * @param ap appVersion
-     */
-    public static GetIOSVer(pf: string = navigator.platform, ap: string = navigator.appVersion): number[] {
-        if (/iP(hone|od|ad)/.test(pf)) {
-            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
-            var versions = [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || "0", 10)];
-            return versions;
-        }
-        else return null;
     }
 
 
     /**
-     * ブラウザチェック
+     * mobile端末か判定
      */
-    public static IsExecute(isLiveCast: boolean = false): boolean {
-
-        if (this.IsSupportBrowser(isLiveCast)) {
+    public static IsMobile() {
+        let ua = navigator.userAgent;
+        if (ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || (ua.indexOf('Android') > 0) && (ua.indexOf('Mobile') > 0) || ua.indexOf('Windows Phone') > 0) {
+            return true;
+        } else if (ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
             return true;
         }
-        else {
-            //  未対応ブラウザで実行された場合、エラーページを表示
-            window.location.href = LinkUtil.CreateLink("../ErrorPage/");
-            return false;
-        }
-
+        return false;
     }
 
 

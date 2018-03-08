@@ -4,7 +4,7 @@ import CastVisitorController from "./CastVisitorController";
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 
-if (StdUtil.IsExecute()) {
+if (StdUtil.IsSupoortPlatform(true)) {
 
     let controller = new CastVisitorController();
 

@@ -4,7 +4,7 @@ import SWPeer from "../../Base/WebRTC/SWPeer";
 import CastInstanceMobileQRController from "./CastInstanceMobileQRController";
 
 
-if (StdUtil.IsExecute(true)) {
+if (StdUtil.IsSupoortPlatform(true)) {
 
     let controller = new CastInstanceMobileQRController();
     let ownerId = LinkUtil.GetPeerID();

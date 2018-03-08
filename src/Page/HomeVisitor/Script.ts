@@ -8,7 +8,7 @@ import HomeVisitorController from "./HomeVisitorController";
 import SWPeer from "../../Base/WebRTC/SWPeer";
 
 
-if (StdUtil.IsExecute()) {
+if (StdUtil.IsSupoortPlatform()) {
 
     let db = new Home.DB();
 

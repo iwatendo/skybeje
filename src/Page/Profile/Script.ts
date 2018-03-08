@@ -2,7 +2,7 @@
 import LinkUtil from "../../Base/Util/LinkUtil";
 import ProfileController from "./ProfileController";
 
-if (StdUtil.IsExecute()) {
+if (StdUtil.IsSupoortPlatform()) {
 
     let aid = LinkUtil.GetArgs('aid');
     let controller = new ProfileController(aid);

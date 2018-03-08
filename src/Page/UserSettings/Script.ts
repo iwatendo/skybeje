@@ -2,6 +2,6 @@
 import StdUtil from "../../Base/Util/StdUtil";
 import UserSettingsController from "./UserSettingsController";
 
-if (StdUtil.IsExecute()) {
+if (StdUtil.IsSupoortPlatform()) {
     let controller = new UserSettingsController();
 }
