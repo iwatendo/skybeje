@@ -32,14 +32,14 @@ export default class StdUtil {
         //  対応ブラウザかチェック
         let name = platform.name.toLocaleLowerCase();
 
-        if (name === 'chrome') {
+        if (name === 'chrome' || name === 'chrome mobile') {
             return true;
         }
 
         let errmsg = "";
 
         if (isGeneral) {
-            if (name === 'firefox') {
+            if (name === 'firefox' || name === 'firefox for ios') {
                 return true;
             }
             else if (name === 'safari') {
@@ -61,6 +61,8 @@ export default class StdUtil {
             errmsg = "未対応のブラウザです。\n";
             errmsg = "このページは Google Chrome にのみ対応しています"
         }
+
+        errmsg += "\n\nお使いのブラウザは\n" + name + " です";
 
         alert(errmsg);
     }

@@ -47,11 +47,18 @@
                         </button>
                     </div>
                     <div class="mdl-card__supporting-text">
-                        ・起動するとチャットサーバーへの接続する為のURLが発行されます
-                        <br/> ・接続URLは毎回変わります
+                        ・対応ブラウザは Google Chrome のみです
+                        <br/>・起動するとチャットサーバーへの接続URLが発行されます
                         <br/> ・ブラウザを閉じればチャットサーバーは停止します
-                        <br/> ・データは全て、ブラウザ内DB(IndexedDB)に保存されます
-                        <br/> ・プロフィール情報は各ユーザー側のブラウザに保存されます
+                        <br/> ・接続URLは起動する度に変わります
+                        <br/> ・データは全て、ブラウザ内(IndexedDB)に保存されます
+                        <br/> ・プロフィール情報は、接続した各ユーザーのブラウザに保存されます
+                        <br/> ・タイムラインの情報はチャットーサーバーのブラウザに保存されます
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <span class="sbj-text-warning">旧バージョン(β版)を試していた方は、エラーが発生して起動できない場合があります</span>
+                        <br/>
+                        <span class="sbj-text-warning">その場合、右の各種設定からデータの初期化を実行してください</span>
                     </div>
                 </div>
                 <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
@@ -70,11 +77,12 @@
 
                 <div class="mdl-cell mdl-cell--12-col">
                     <h4>
-                        Skybejeはさまざまな機能と連動させることができます。
+                        通常のチャット機能のほかに、以下の機能も利用できます
                     </h4>
                     <h6>
-                        以下のサービスは単独でも動作しますが、チャットクライアントと連動させる事もできます。
-                        <br/>連動させる場合は、チャットクライアントの「連動サービス」から起動してください。
+                        ・チャットクライアントの「連動サービス」から起動できます
+                        <br/>・以下のリンクから起動すると、それぞれの機能を単体でも利用できます
+                        <br/>・単体の場合は、スクリーンシェア機能を除き、Firefox / Google Chrome / Safari で利用できます
                     </h6>
                 </div>
 
@@ -86,7 +94,7 @@
                         </button>
                     </div>
                     <div class="mdl-card__supporting-text">
-                        &nbsp;&nbsp; 一般的なビデオ通話で利用されるWebRTCを利用した低遅延のライブキャスト機能です。
+                        &nbsp;&nbsp; 一般的なビデオ通話で利用されているWebRTCを利用した、低遅延のライブキャスト機能です。
                     </div>
                 </div>
 
@@ -159,7 +167,7 @@
 
                 <div class="mdl-cell mdl-cell--12-col">
                     <h5>
-                        外部のWebサービスやWebAPIと連動
+                        外部のWebサービスやWebAPIとの連動
                     </h5>
                 </div>
 
