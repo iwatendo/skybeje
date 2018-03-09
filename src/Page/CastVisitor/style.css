@@ -93,7 +93,7 @@ body {
     bottom : 0px;
     height: 52px;
     background-color: var(--sbj-color-edge-background);
-    opacity: 0.5;
+    opacity: 0;
 }
 
 #sbj-cast-visitor-submenu-mobile{
