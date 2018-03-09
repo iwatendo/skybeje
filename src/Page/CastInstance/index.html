@@ -9,7 +9,6 @@
     <link rel='stylesheet' href='/lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
-    <link rel='stylesheet' href='../common.dialog.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
     <script src="/lib/material.min.js"></script>
 </head>
@@ -64,10 +63,6 @@
                                 <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
                                     <li class="mdl-menu__item" onclick=""></li>
                                 </ul>
-                            </div>
-                            <!-- トラブルシュート -->
-                            <div>
-                                <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">ライブキャストができない場合</a>
                             </div>
                         </div>
 
@@ -148,12 +143,19 @@
                         </h4>
                         WebRTCは V8/V9/H264 等の映像コーディックが使用されます。
                         <br/> 配信する側と受信する側で、一致する利用可能な映像コーディクが無い場合、ライブキャストできません。
-                        <br/> SafariがH264のみ対応で、Androidの場合H264に対応していない端末が多いです。
+                        <br/> 現在、SafariがH264のみ対応しています。
+                        <br/> Androidの場合、H264に対応していない端末が存在します。
                         <br/>
-                        <br/> 一例として、以下のような組合せではライブキャストができません。
-                        <br/> ・iPhone(iOS) と H264未対応のAndroid端末
-                        <br/> ・Safari(MacOS) と H264未対応のAndroid端末
+                        <br/> そのため、以下のような組合せではライブキャストができません。
+                        <br/> ・H264未対応のAndroid端末 と iPhoneまたはiPad
+                        <br/> ・H264未対応のAndroid端末 と MacOSでSafariを使用（※Chromeの場合は大丈夫です）
                         <br/>
+                        <h4 class="mdl-color-text--grey-800">
+                            その他の理由で接続できない場合
+                        </h4>
+                        以下のページも参照してみてください
+                        <br/>
+                        <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">トラブルシュート</a>
                         <br/>
                     </div>
 

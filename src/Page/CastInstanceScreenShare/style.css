@@ -14,7 +14,6 @@
 }
 
 #sbj-cast-instance-main{
-    overflow: hidden;
     padding: 16px 32px
 }
 
@@ -63,7 +62,7 @@
 
 .sbj-split-right {
     float: right;
-    width: calc(100% - 354px);
+    width: calc(100% - 410px);
 }
 
 .sbj-screenshare-resolution{
