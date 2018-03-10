@@ -129,13 +129,13 @@ export class CursorController {
     public IsCursorPort(ev: MouseEvent) {
 
         let targetId = (ev.target as any).id;
-        if (targetId === "sbj-cact-visitor-cursor-port") {
+        if (targetId === "sbj-cact-cursor-port") {
             return true;
         }
 
         let targetClassName: string = (ev.target as any).className;
 
-        if (targetClassName.indexOf("sbj-cact-visitor-cursor") >= 0) {
+        if (targetClassName.indexOf("sbj-cact-cursor") >= 0) {
             return true;
         }
 
@@ -447,7 +447,7 @@ export class CursorController {
             return;
         }
 
-        let imgclassName = "sbj-cact-visitor-cursor-image-" + icon.iid.toString();
+        let imgclassName = "sbj-cact-cursor-image-" + icon.iid.toString();
         let elements = document.getElementsByClassName(imgclassName);
 
         for (var i = 0; i < elements.length; i++) {

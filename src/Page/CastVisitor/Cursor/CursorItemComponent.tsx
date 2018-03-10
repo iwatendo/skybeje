@@ -24,11 +24,11 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
 
         if (cursor.isDisp){
 
-            let imgClassName = 'sbj-cact-visitor-cursor-image-' + cursor.iid.toString();
+            let imgClassName = 'sbj-cact-cursor-image-' + cursor.iid.toString();
 
             return (
                 <div>
-                    <div className='sbj-cact-visitor-cursor' style={this.PosStyle()}>
+                    <div className='sbj-cact-cursor' style={this.PosStyle()}>
                         <div className={imgClassName} style={this.ImageStyle()}>
                         </div>
                     </div>

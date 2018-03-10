@@ -52,7 +52,7 @@ body {
     background-color: var(--sbj-color-cast-background);
 }
 
-#sbj-cact-visitor-item-port{
+#sbj-cact-item-port{
     position: absolute;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -62,7 +62,7 @@ body {
     width: 100%;
 }
 
-#sbj-cact-visitor-cursor-port{
+#sbj-cact-cursor-port{
     position: absolute;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -72,12 +72,12 @@ body {
     width: 100%;
 }
 
-.sbj-cact-visitor-cursor {
+.sbj-cact-cursor {
     position: absolute;
     overflow: visible;
 }
 
-.sbj-cact-visitor-cursor-pointer {
+.sbj-cact-cursor-pointer {
     position: absolute;
     top: 0;
     left: 0;

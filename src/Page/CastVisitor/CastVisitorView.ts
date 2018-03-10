@@ -44,7 +44,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
             //  ＰＣの場合
             let submenu = document.getElementById('sbj-cast-visitor-submenu') as HTMLElement;
-            let panel = document.getElementById('sbj-cact-visitor-cursor-port') as HTMLElement;
+            let panel = document.getElementById('sbj-cact-cursor-port') as HTMLElement;
             panel.onmouseenter = (e) => { submenu.style.opacity = "1.0"; }
             panel.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
             panel.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
@@ -105,8 +105,8 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
     public InitializeCursor() {
 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
-        let itemport = document.getElementById('sbj-cact-visitor-item-port') as HTMLElement;
-        let curport = document.getElementById('sbj-cact-visitor-cursor-port') as HTMLElement;
+        let itemport = document.getElementById('sbj-cact-item-port') as HTMLElement;
+        let curport = document.getElementById('sbj-cact-cursor-port') as HTMLElement;
         this.Cursor = new CursorController(this.Controller, video, itemport, curport);
         this.Cursor.DisplayAll();
 
