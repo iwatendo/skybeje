@@ -89,10 +89,27 @@ export default class StdUtil {
     /**
      * 
      */
-    public static IsSafari(ua: string = window.navigator.userAgent) {
+    public static IsSafari() {
 
         if (platform) {
             return (platform.name.toLowerCase() === "safari");
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    /**
+     * 
+     * @param ua 
+     */
+    public static IsIOS(ua: string) {
+        let pf = platform.parse(ua);
+
+        if (pf && pf.os) {
+            let osname = pf.os.toString().toLowerCase();
+            return (osname.indexOf("ios ") === 0);
         }
         else {
             return false;
