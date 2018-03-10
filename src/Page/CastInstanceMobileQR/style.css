@@ -1,4 +1,11 @@
 
+.sbj-container {
+    max-width: 1600px;
+    min-width: 900px;
+    width: calc(100% - 16px);
+    margin: 0 auto;
+}
+
 .sbj-header{
     padding-left: 40px;
 }

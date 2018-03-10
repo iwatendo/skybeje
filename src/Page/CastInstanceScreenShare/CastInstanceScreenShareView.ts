@@ -18,7 +18,6 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
 
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
-        let backpanel = document.getElementById('sbj-cast-instance');
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let roomName = document.getElementById('sbj-livecast-room-name');
@@ -45,14 +44,6 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
                 noExtElement.hidden = false;
             }
         }
-
-        //
-        backpanel.onclick = (e: MouseEvent) => {
-            let targetClassName = (e.target as any).className;
-            if (targetClassName === "mdl-layout__container") {
-                this.Close();
-            }
-        };
 
         window.onfocus = (ev) => {
             this.Controller.CastStatus.isHide = false;

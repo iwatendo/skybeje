@@ -27,7 +27,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
-        let backpanel = document.getElementById('sbj-cast-instance');
         let startButton = document.getElementById('sbj-cast-instance-start');
         let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
@@ -35,14 +34,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
-
-        //
-        backpanel.onclick = (e: MouseEvent) => {
-            let targetClassName = (e.target as any).className;
-            if (targetClassName === "mdl-layout__container") {
-                this.Close();
-            }
-        };
 
         window.onfocus = (ev) => {
             if (this.Controller && this.Controller.CastStatus) {
