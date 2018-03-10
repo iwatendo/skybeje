@@ -13,8 +13,12 @@ import CastInstanceController from "./CastInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Contents/AbstractDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import { CursorController } from "../CastCursor/CurosrController";
+import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
+
+    public Cursor: CursorController;
 
     private _micDeviceView: DeviceView;
     private _camDeviceView: DeviceView;
@@ -63,6 +67,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         cursorDispElement.onchange = (e) => { this.SendOption(); }
 
         this.SetMediaDevice();
+
+        this.InitializeCursor();
     }
 
 
@@ -174,7 +180,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         DeviceUtil.GetVideoDevice((devices) => {
 
-            let previewElement = document.getElementById('video') as HTMLVideoElement;
+            let previewElement = document.getElementById('sbj-video') as HTMLVideoElement;
             let textElement = document.getElementById('webcam-select') as HTMLInputElement;
             var listElement = document.getElementById('webcam-list') as HTMLElement;
 
@@ -228,5 +234,35 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         this.Controller.CastStatus.isClose = !this.Controller.CastStatus.isCasting;
         this.Controller.SendCastInfo();
     }
+
+
+    /**
+     * カーソル表示設定
+     */
+    public InitializeCursor() {
+        let video = document.getElementById('sbj-video') as HTMLVideoElement;
+        let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
+        let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
+        this.Cursor = new CursorController(this.Controller, video, itemport, curport);
+        this.Cursor.DisplayAll();
+    }
+
+
+    /**
+     * ライブキャストの設定変更
+     * @param sender
+     */
+    public SetCastSetting(sender: CastSettingSender) {
+
+        if (this.Cursor) {
+            if (sender.dispUserCursor) {
+                this.Cursor.ClearQueue();
+            }
+            else {
+                this.Cursor.Clear();
+            }
+        }
+    }
+    
 
 }

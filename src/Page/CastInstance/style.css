@@ -55,12 +55,6 @@
     margin: 20px 4px 0px 0px;
 }
 
-#video {
-    width: 480px;
-    height: 360px;
-    background-color: var(--sbj-color-edge-background);
-}
-
 .sbj-cast-instance-setting-card.mdl-card {
     padding: 10px;
     width: 400px;
@@ -69,6 +63,37 @@
     top: 72px;
     left: 256px;
 }
+
+
+/*-----------------------------
+ *
+ *---------------------------*/
+
+.sbj-video-content{
+    position: relative;
+    width: 480px;
+    height: 360px;
+    overflow: hidden;
+}
+
+#sbj-video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-cast-item-port{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#sbj-cast-cursor-port{
+    height: 100%;
+    width: 100%;
+}
+
 
 /*-----------------------------
  *

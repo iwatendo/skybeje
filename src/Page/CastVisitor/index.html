@@ -10,24 +10,26 @@
     <link rel='stylesheet' href='/lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='../common.liveitem.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
+    
     <script src="/lib/material.min.js"></script>
 </head>
 
 <body>
 
     <div class="mdl-layout mdl-js-layout">
-        <main class="sbj-cact-visitor-contents mdl-layout__content">
+        <main class="sbj-cast-visitor-contents mdl-layout__content">
 
             <video id='sbj-video' autoplay="true" playsinline="true"></video>
 
-            <div id="sbj-cact-item-port">
-                <div id="sbj-cact-cursor-port">
+            <div id="sbj-cast-item-port">
+                <div id="sbj-cast-cursor-port">
                     <!-- React -->
                 </div>
             </div>
 
-            <h2 id="sbj-cact-visitor-voice-only" hidden>Voice only</h2>
+            <h2 id="sbj-cast-visitor-voice-only" hidden>Voice only</h2>
 
             <div id="sbj-cast-visitor-subtitles-text" hidden></div>
 
@@ -35,16 +37,16 @@
                 <div id="sbj-cast-visitor-volume-slider">
                     <input id="sbj-cast-visitor-volume-value" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="100" tabindex="0">
                 </div>
-                <button id="sbj-cact-visitor-volume" class="sbj-cact-visitor-button mdl-button mdl-js-button mdl-button--icon">
-                    <i id="sbj-cact-visitor-volume-on" class="material-icons">volume_up</i>
-                    <i id="sbj-cact-visitor-volume-off" hidden class="material-icons">volume_off</i>
+                <button id="sbj-cast-visitor-volume" class="sbj-cast-visitor-button mdl-button mdl-js-button mdl-button--icon">
+                    <i id="sbj-cast-visitor-volume-on" class="material-icons">volume_up</i>
+                    <i id="sbj-cast-visitor-volume-off" hidden class="material-icons">volume_off</i>
                 </button>
             </div>
 
             <div id="sbj-cast-visitor-submenu-mobile" hidden>
-                <button id="sbj-cact-visitor-volume-mobile" class="sbj-cact-visitor-mobile-button mdl-button mdl-js-button mdl-button--icon mdl-button--raised mdl-button--colored">
-                    <i id="sbj-cact-visitor-volume-mobile-on" class="sbj-cact-visitor-mobile-button-icon material-icons">volume_up</i>
-                    <i id="sbj-cact-visitor-volume-mobile-off" class="sbj-cact-visitor-mobile-button-icon material-icons" hidden>volume_off</i>
+                <button id="sbj-cast-visitor-volume-mobile" class="sbj-cast-visitor-mobile-button mdl-button mdl-js-button mdl-button--icon mdl-button--raised mdl-button--colored">
+                    <i id="sbj-cast-visitor-volume-mobile-on" class="sbj-cast-visitor-mobile-button-icon material-icons">volume_up</i>
+                    <i id="sbj-cast-visitor-volume-mobile-off" class="sbj-cast-visitor-mobile-button-icon material-icons" hidden>volume_off</i>
                 </button>
             </div>
 

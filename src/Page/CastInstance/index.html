@@ -9,6 +9,7 @@
     <link rel='stylesheet' href='/lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='../common.liveitem.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
     <script src="/lib/material.min.js"></script>
 </head>
@@ -63,8 +64,14 @@
                             </div>
                         </div>
 
-                        <div class="mdl-list__item-primary-content">
-                            <video id='video' autoplay="true"></video>
+                        <div class="mdl-list__item-primary-content sbj-video-content">
+                            <video id='sbj-video' autoplay="true">
+                            </video>
+                            <div id="sbj-cast-item-port">
+                                <div id="sbj-cast-cursor-port">
+                                    <!-- React -->
+                                </div>
+                            </div>
                         </div>
                         <label id="sbj-check-sfu-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu">
                             <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input">
@@ -117,7 +124,8 @@
                         <h4 class="mdl-color-text--grey-800">
                             SFUについて
                         </h4>
-                        本サービスはNTT Communicationsの<a href="https://webrtc.ecl.ntt.com/" target="_blunk">SkyWay</a>を使用しています。
+                        本サービスはNTT Communicationsの
+                        <a href="https://webrtc.ecl.ntt.com/" target="_blunk">SkyWay</a>を使用しています。
                         <br/>多人数への配信を安定させる為に、SkyWayのSFUを利用できます。
                         <br/>詳細については
                         <a href="https://webrtc.ecl.ntt.com/sfu.html" target="_blunk">SFUについて</a>を参照してください。

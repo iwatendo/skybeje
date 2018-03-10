@@ -10,6 +10,7 @@ import CastInstanceView from "./CastInstanceView";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
+import IconSender from "../../Contents/Sender/IconSender";
 
 
 export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceController> {
@@ -26,7 +27,13 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
                 let cursor = sender as IconCursorSender;
                 this.Controller.CursorCache.Set(cursor);
                 this.Controller.SwPeer.SendAll(sender);
+                this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
             }
+        }
+
+        //  アイコン取得
+        if (sender.type === IconSender.ID) {
+            this.Controller.View.Cursor.SetIcon(conn.remoteId, (sender as IconSender).icon);
         }
 
         if (sender.type === RoomSender.ID) {

@@ -98,3 +98,24 @@ body {
 .sbj-cast-visitor-mobile-label{
     margin: 0px;
 }
+
+#sbj-cast-item-port{
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#sbj-cast-cursor-port{
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+

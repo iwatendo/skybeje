@@ -1,15 +1,15 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as Personal from "../../../Contents/IndexedDB/Personal";
+import * as Personal from "../../Contents/IndexedDB/Personal";
 import { CursorComponent } from "./CursorComponent";
-import LinkUtil from "../../../Base/Util/LinkUtil";
-import ImageInfo from "../../../Base/Container/ImageInfo";
-import LogUtil from "../../../Base/Util/LogUtil";
-import IServiceController from '../../../Base/IServiceController';
-import GetIconSender from '../../../Contents/Sender/GetIconSender';
-import IconCursorSender from '../../../Contents/Sender/IconCursorSender';
-import CursorInfoSender from '../../../Contents/Sender/CursorInfoSender';
-import LocalCache from '../../../Contents/Cache/LocalCache';
+import LinkUtil from "../../Base/Util/LinkUtil";
+import ImageInfo from "../../Base/Container/ImageInfo";
+import LogUtil from "../../Base/Util/LogUtil";
+import IServiceController from '../../Base/IServiceController';
+import GetIconSender from '../../Contents/Sender/GetIconSender';
+import IconCursorSender from '../../Contents/Sender/IconCursorSender';
+import CursorInfoSender from '../../Contents/Sender/CursorInfoSender';
+import LocalCache from '../../Contents/Cache/LocalCache';
 
 
 export class VideoDispOffset {
@@ -129,13 +129,13 @@ export class CursorController {
     public IsCursorPort(ev: MouseEvent) {
 
         let targetId = (ev.target as any).id;
-        if (targetId === "sbj-cact-cursor-port") {
+        if (targetId === "sbj-cast-cursor-port") {
             return true;
         }
 
         let targetClassName: string = (ev.target as any).className;
 
-        if (targetClassName.indexOf("sbj-cact-cursor") >= 0) {
+        if (targetClassName.indexOf("sbj-cast-cursor") >= 0) {
             return true;
         }
 
@@ -447,7 +447,7 @@ export class CursorController {
             return;
         }
 
-        let imgclassName = "sbj-cact-cursor-image-" + icon.iid.toString();
+        let imgclassName = "sbj-cast-cursor-image-" + icon.iid.toString();
         let elements = document.getElementsByClassName(imgclassName);
 
         for (var i = 0; i < elements.length; i++) {

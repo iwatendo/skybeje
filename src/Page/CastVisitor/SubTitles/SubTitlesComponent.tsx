@@ -26,7 +26,7 @@ export class SubTitlesComponent extends React.Component<SubTitlesProp, any>{
         }
         else {
             return (
-                <div className='sbj-cact-visitor-subtitles'>
+                <div className='sbj-cast-visitor-subtitles'>
                     <div className='sbj-cast-visitor-subtitles-text'>
                         {msg}
                     </div>

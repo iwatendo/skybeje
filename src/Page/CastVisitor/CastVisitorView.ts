@@ -6,7 +6,7 @@ import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import CursorInfoSender from "../../Contents/Sender/CursorInfoSender";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";
 import CastVisitorController from "./CastVisitorController";
-import { CastCursor, CursorController } from "./Cursor/CurosrController";
+import { CastCursor, CursorController } from "../CastCursor/CurosrController";
 
 /**
  * 
@@ -36,7 +36,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
             //  モバイル端末の場合
             document.getElementById('sbj-cast-visitor-submenu-mobile').hidden = false;
-            document.getElementById('sbj-cact-visitor-volume-mobile').onclick = (e) => { this.SetMute(!video.muted); };
+            document.getElementById('sbj-cast-visitor-volume-mobile').onclick = (e) => { this.SetMute(!video.muted); };
             this.SetMute(true);
 
         }
@@ -44,7 +44,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
             //  ＰＣの場合
             let submenu = document.getElementById('sbj-cast-visitor-submenu') as HTMLElement;
-            let panel = document.getElementById('sbj-cact-cursor-port') as HTMLElement;
+            let panel = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
             panel.onmouseenter = (e) => { submenu.style.opacity = "1.0"; }
             panel.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
             panel.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
@@ -52,7 +52,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             submenu.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
             submenu.hidden = false;
 
-            document.getElementById('sbj-cact-visitor-volume').onclick = (e) => { this.SetMute(!video.muted); };
+            document.getElementById('sbj-cast-visitor-volume').onclick = (e) => { this.SetMute(!video.muted); };
 
             //  ミュート初期設定
             let muteArg = LinkUtil.GetArgs("mute");
@@ -69,7 +69,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
         video.oncanplay = (ev) => {
             let voiceOnly = (video.videoHeight === 0 || video.videoWidth === 0);
-            let element = document.getElementById('sbj-cact-visitor-voice-only');
+            let element = document.getElementById('sbj-cast-visitor-voice-only');
             if (element) {
                 element.hidden = !voiceOnly;
             }
@@ -89,12 +89,12 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         (document.getElementById('sbj-video') as HTMLVideoElement).muted = isMute;
 
         if (this.IsMobile) {
-            document.getElementById('sbj-cact-visitor-volume-mobile-on').hidden = isMute;
-            document.getElementById('sbj-cact-visitor-volume-mobile-off').hidden = !isMute;
+            document.getElementById('sbj-cast-visitor-volume-mobile-on').hidden = isMute;
+            document.getElementById('sbj-cast-visitor-volume-mobile-off').hidden = !isMute;
         }
         else {
-            document.getElementById('sbj-cact-visitor-volume-on').hidden = isMute;
-            document.getElementById('sbj-cact-visitor-volume-off').hidden = !isMute;
+            document.getElementById('sbj-cast-visitor-volume-on').hidden = isMute;
+            document.getElementById('sbj-cast-visitor-volume-off').hidden = !isMute;
         }
     }
 
@@ -105,8 +105,8 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
     public InitializeCursor() {
 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
-        let itemport = document.getElementById('sbj-cact-item-port') as HTMLElement;
-        let curport = document.getElementById('sbj-cact-cursor-port') as HTMLElement;
+        let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
+        let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
         this.Cursor = new CursorController(this.Controller, video, itemport, curport);
         this.Cursor.DisplayAll();
 

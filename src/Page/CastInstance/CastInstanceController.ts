@@ -108,6 +108,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         super.OnChildClose(conn);
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
         this.CursorCache.Remove(conn.remoteId);
+        this.View.Cursor.Remove(conn.remoteId);
     }
 
 
@@ -165,6 +166,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
         //  クライアントへの通知
         this.SwPeer.SendAll(this.CastSetting);
+        this.View.SetCastSetting(this.CastSetting);
 
         //  オーナー側への通知
         if (this.CastStatus) {
