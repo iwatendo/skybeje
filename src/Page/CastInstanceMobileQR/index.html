@@ -41,7 +41,7 @@
                         <br/>・iPhone/iPadの場合、標準カメラでQRコードを読取ってください。
                         <br/>・Androidの場合、ブラウザはChromeを選択してください。
                         <br/>
-                        <br/>モバイル端末側で配信を開始すると、受信用のリンクが表示されます
+                        <br/>モバイル端末側で配信を開始すると、視聴用ページのリンクが表示されます
                         <br/>
                         <br/>
                         <div class="mdl-shadow--3dp sbj-mobile-qrcode-box">
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="sbj-split-right">
-                    <div id="sbj-client-link" class="sbj-client-link" hidden>
+                    <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
                         <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                             &nbsp; 接続ページ起動 &nbsp;
                         </button>
@@ -88,72 +88,74 @@
                         </div>
 
                         <h4 class="mdl-color-text--grey-800">
-                            ライブキャストの接続URLについて
-                        </h4>
-                        単体でライブキャストを起動した場合、上記の接続URLのコピーしライブキャストを見せたい人に伝えてください。
-                        <br/>
-                        <br/>チャットクライアントから起動した場合、自動的にチャットルームのメンバーに配信されます。
-                        <br/>チャットのタブに戻ると配信が表示されている事が確認できます。
-                        <br/>チャットルームの接続メンバー以外にも、上記のURLを伝える事で配信できます。
-                        <h4 class="mdl-color-text--grey-800">
                             モバイル端末での接続について
                         </h4>
-                        上記の接続QRコードを読みとる事で、モバイル端末でもライブキャストを見る事ができます。
-                        <br/>モバイル端末の標準ブラウザ（Android端末の場合はChrome / iPhoneの場合はSafari）で開いてください。
-                        <br/>iPhoneの場合は、外部アプリでQRコードを読むのではなく、標準カメラでQRコードを読みとることをお勧めします。
+                        接続QRコードを読みとる事で、モバイル端末でもライブキャストが視聴できます。
+                        <br/>・iPhoneの場合、標準カメラでQRコードを読取ってください。
+                        <br/>・Android端末の場合、QRコード読みとり後、Chromeで開いてください。
+                        <br/>※アプリ内ブラウザ(WebView)から接続した場合、正常に動作しないケースがあります。
                         <br/>
-                        <br/>アプリ内ブラウザ(WebView)から接続した場合、正常に動作しないケースがあります。
-                        <br/>一例として、LINEのQRリーダーから起動した場合、LINEアプリ内のブラウザで起動しますが
-                        <br/>カメラ及びマイクへのアクセス権限が与えられていない為、アプリ内のブラウザから配信はできません。
-                        <br/>※ライブキャストの受信は問題ないようです。
                         <br/>
                     </div>
                     <div class="mdl-color-text--grey-600" id="sbj-livecast-note">
                         <h4 class="mdl-color-text--grey-800">
-                            ライブキャスト機能について
+                            モバイル端末でのライブキャストについて
                         </h4>
-                        <a href="https://webrtc.ecl.ntt.com/" target="_blunk">SkyWay</a>
-                        を使用したP2Pでのライブキャストであり、基本的には少人数向けの配信機能です。
-                        <br/> 単方向のビデオ通話（グループ通話）のイメージの機能です。
-                        <br/> SFUを使用する事により、ある程度の人数への配信は可能となりますが大規模配信はできません。
-                        <br/> どの程度の人数にまでの配信に耐えれるか未検証ですが、本サービスでは10人以下での利用を想定しています。
+                        アカウント登録や外部アプリ不用で、ブラウザのみで配信できます。
+                        <br/>
+                        <br/>モバイル端末側で「開始」ボタンを押すとライブキャストが開始されます。
+                        <br/>チャットクライアントから呼出した場合、自動的にチャットルームで視聴ページが開きます。
+                        <br/>単体で起動した場合は、接続URLをコピーするためのボタンが表示されますので、視聴して欲しい人にURLを伝えてください。
+                        <br/>
+                        <br/>一般的なビデオ通話に使用されるWebRTC(P2P)を使用した配信であり、大規模配信には利用できません。
+                        <br/>本サービスは、10人以下での利用を想定しています。
+                        <br/>
                         <br/>
                         <h4 class="mdl-color-text--grey-800">
                             SFUについて
                         </h4>
-                        SFUについての詳細は
-                        <a href="https://webrtc.ecl.ntt.com/sfu.html" target="_blunk">SkyWayの説明ページ</a>を参照してください。
-                        <br/> PCや回線の性能に依存しますが、2～3以下の接続の場合はSFUは不用です。
-                        <br/> SkyWayのSFUサーバーは東京にあり、SFUを使用する場合は一度東京にあるサーバーを経由します。
-                        <br/> 環境にもよりますが、2～3人で利用する場合はSFUを使用しない方が安定するようです。
+                        本サービスはNTT Communicationsの
+                        <a href="https://webrtc.ecl.ntt.com/" target="_blunk">SkyWay</a>を使用しています。
+                        <br/>
+                        <br/>多人数への配信を安定させる為に、SkyWayのSFUを利用できます。
+                        <br/>詳細については
+                        <a href="https://webrtc.ecl.ntt.com/sfu.html" target="_blunk">SFUについて</a>を参照してください。
+                        <br/>
+                        <br/> 1～2人への配信する場合は基本的にSFUは不用です。
+                        <br/> 3～4人以上の場合で、配信が安定しない場合はSFUを使用してください。
+                        <br/>
+                        <br/> SkyWayのSFUサーバーは東京にあります。その為SFUを使用した場合、東京のサーバーを経由します。
+                        <br/> 環境にもよりますが、SFUを使用しない方が安定するケースもあるようです。
                         <br/>
                         <br/> 2018年3月時点で SkyWayのSFUは「Safari」及び「iOS」に未対応です。
-                        <br/> よって iPhone/iPad ではSFUを使った配信および受信ができません。
+                        <br/> そのため、iPhone/iPad ではSFUを使った配信および視聴ができません。
+                        <br/>
                         <br/> MacOSの場合、Google Chromeを使用すればSFUを使用できます。
-                        <br/> iPhone/iPadの場合、iOS版のGoogle Chrome を使用してもSFUを使用できません。
+                        <br/> 但しiPhone/iPadの場合、iOS版のGoogle Chromeを使用してもSFUは使用できません。
+                        <br/>
                         <br/>
                         <h4 class="mdl-color-text--grey-800">
                             ライブキャストができない組合せについて
                         </h4>
                         WebRTCは V8/V9/H264 等の映像コーディックが使用されます。
-                        <br/> 配信する側と受信する側で、一致する利用可能な映像コーディクが無い場合、ライブキャストできません。
-                        <br/> 現在、SafariがH264のみ対応しています。
-                        <br/> Androidの場合、H264に対応していない端末が存在します。
+                        <br/> ブラウザや端末によって利用できる映像コーディックに差異があります。
+                        <br/> 配信側と視聴側で、利用できる映像コーディクで一致するものが無い場合、視聴できません。
                         <br/>
-                        <br/> そのため、以下のような組合せではライブキャストができません。
+                        <br/> 現在、SafariがH264のみ対応で、Androidの場合H264に対応していない端末が存在します。
+                        <br/> そのため、以下のような組合せではライブキャストの視聴ができません。
                         <br/> ・H264未対応のAndroid端末 と iPhoneまたはiPad
-                        <br/> ・H264未対応のAndroid端末 と MacOSでSafariを使用（※Chromeの場合は大丈夫です）
+                        <br/> ・H264未対応のAndroid端末 と MacOSでSafari（※MacOSでもChromeの場合は大丈夫です）
+                        <br/>
                         <br/>
                         <h4 class="mdl-color-text--grey-800">
-                            その他の理由で接続できない場合
+                            上記以外で配信または視聴ができない場合
                         </h4>
-                        以下のページも参照してみてください
-                        <br/>
-                        <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">トラブルシュート</a>
+                        <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">トラブルシュート</a>を確認してみてください。
                         <br/>
                         <br/>
                         <br/>
                     </div>
+
                 </div>
             </div>
         </main>

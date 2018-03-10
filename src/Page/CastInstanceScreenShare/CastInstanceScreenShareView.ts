@@ -21,7 +21,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let roomName = document.getElementById('sbj-livecast-room-name');
-        let note = document.getElementById('sbj-screenshare-note');
+        let note = document.getElementById('sbj-livecast-note');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let framerateRange = document.getElementById('sbj-screenshare-framerate') as HTMLInputElement;
         let framerateTip = document.getElementById('sbj-screenshare-framerate-tip');
