@@ -24,13 +24,9 @@ export default class StreamUtil {
      * @param stream メディアストリーム
      */
     public static StartPreview(element: HTMLVideoElement, stream: MediaStream) {
-        element.src = null;
-
-        if (StdUtil.IsSafari()) {
+        if (element) {
+            element.src = null;
             element.srcObject = stream;
-        }
-        else {
-            element.src = URL.createObjectURL(stream);
         }
     }
 
