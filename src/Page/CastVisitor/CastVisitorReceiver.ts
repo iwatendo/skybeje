@@ -8,6 +8,7 @@ import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import IconSender from "../../Contents/Sender/IconSender";
 import CastSpeechRecognitionSender from "../../Contents/Sender/CastSpeechRecognitionSender";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
+import CursorClearSender from "../../Contents/Sender/CursorClearSender";
 
 
 export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorController> {
@@ -21,6 +22,11 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
         //  カーソル表示
         if (sender.type === IconCursorSender.ID) {
             this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
+        }
+
+        //  カーソルクリア
+        if (sender.type === CursorClearSender.ID) {
+            this.Controller.View.Cursor.Clear();
         }
 
         //  キャスト情報の通知

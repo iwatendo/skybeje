@@ -10,6 +10,7 @@
     <link rel='stylesheet' href='../lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='../common.liveitem.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
     <script src='../lib/material.min.js'></script>
 </head>
@@ -20,8 +21,17 @@
         <main id="sbj-cast-instance-main" class="mdl-layout__content">
 
             <audio id='audio' autoplay="true" hidden></audio>
-            <video id='video-preview' autoplay="true" playsinline="true" muted></video>
-            <video id='video-receiver' autoplay="true" playsinline="true" muted></video>
+
+            <div class="sbj-video-content">
+                <video id='video-preview' autoplay="true" playsinline="true" muted></video>
+                <video id='video-receiver' autoplay="true" playsinline="true" muted></video>
+                <div id="sbj-cast-item-port">
+                    <div id="sbj-cast-cursor-port">
+                        <!-- React -->
+                    </div>
+                </div>
+            </div>
+
 
             <div id="sbj-actions" class="sbj-actions mdl-card__actions">
                 <button id="sbj-volume-button-on" class="sbj-volume-button mdl-button mdl-js-button mdl-button--raised mdl-button--icon mdl-button--colored"

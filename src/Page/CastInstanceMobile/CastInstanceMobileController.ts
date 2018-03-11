@@ -15,6 +15,7 @@ import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import TerminalInfoSender from "../../Contents/Sender/TerminalInfoSender";
 import ConnCountSender from "../../Contents/Sender/ConnCountSender";
+import CursorClearSender from "../../Contents/Sender/CursorClearSender";
 
 export default class CastInstanceMobileController extends AbstractServiceController<CastInstanceMobileView, CastInstanceMobileModel> {
 
@@ -107,6 +108,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
         super.OnChildClose(conn);
         this.SendPeerCount(this.SwPeer.GetAliveConnectionCount());
         this.CursorCache.Remove(conn.remoteId);
+        this.View.Cursor.Remove(conn.remoteId);
     }
 
 
@@ -157,10 +159,20 @@ export default class CastInstanceMobileController extends AbstractServiceControl
         this.CastStatus.isClose = isClose;
         this.CastStatus.isHide = false;
         this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid) + "&sfu=" + (this.CastSetting.isSFU ? 1 : 0);
+        this.CastStatus.isOrientationChange = false;
 
         this.SendCastInfo();
     }
 
+
+    /**
+     * 
+     */
+    public SendOrientationChange() {
+        this.CastStatus.isOrientationChange = true;
+        this.SendCastInfo();
+        this.SwPeer.SendAll(new CursorClearSender());
+    }
 
     /**
      * ストリーミングの開始/停止の通知
@@ -175,6 +187,8 @@ export default class CastInstanceMobileController extends AbstractServiceControl
             this.SwPeer.SendToOwner(this.CastStatus);
         }
     }
+
+
 
 
     /**

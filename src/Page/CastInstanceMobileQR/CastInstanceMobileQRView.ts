@@ -52,10 +52,19 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     }
 
 
-    public SendOption() {
+    /**
+     * 
+     */
+    public GetOption(): CastSettingSender {
         let sender = new CastSettingSender();
         sender.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
         sender.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
+        return sender;
+    }
+
+
+    public SendOption() {
+        let sender = this.GetOption();
         this.Controller.SwPeer.SendAll(sender);
     }
 
@@ -75,6 +84,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
 
             document.getElementById('sbj-client-link').hidden = false;
         }
+
     }
 
 

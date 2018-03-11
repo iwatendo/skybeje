@@ -26,6 +26,7 @@ export default class CastStatusSender extends Sender {
         this.isCasting = false;
         this.isClose = false;
         this.isHide = false;
+        this.isOrientationChange = false;
     }
 
     /**
@@ -59,6 +60,13 @@ export default class CastStatusSender extends Sender {
      * ※ダッシュボードの画面遷移用
      */
     isHide: boolean;
+
+
+    /**
+     * モバイル端末の画面回転通知
+     */
+    isOrientationChange: boolean;
+
 }
 
 

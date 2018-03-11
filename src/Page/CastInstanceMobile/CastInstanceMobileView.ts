@@ -13,8 +13,12 @@ import CastInstanceMobileController from "./CastInstanceMobileController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Contents/AbstractDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import { CursorController } from "../CastCursor/CurosrController";
+import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 
 export default class CastInstanceMobileView extends AbstractServiceView<CastInstanceMobileController> {
+
+    public Cursor: CursorController;
 
     private _isAudioInit = false;
     private _preVolumeValue: string = "70";
@@ -113,8 +117,15 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
             }, 200);
         };
 
+        //  スマホ画面の回転時イベント
+        let controller = this.Controller;
+        document.addEventListener("DOMContentLoaded", () => { this.SendOrientationChange(controller); });
+        window.addEventListener('orientationchange', () => { this.SendOrientationChange(controller); }, false);
+
         //  起動時はリアカメラでプレビュー表示する
         startPreviewFunc(MobileCam.REAR);
+
+        this.InitializeCursor();
 
         callback();
     }
@@ -304,6 +315,45 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         document.getElementById('video-receiver').hidden = true;
         document.getElementById('sbj-cast-instance-stream-error').hidden = false;
         this.Controller.SwPeer.Close();
+    }
+
+
+    /**
+     * カーソル表示設定
+     */
+    public InitializeCursor() {
+        let video = document.getElementById('video-preview') as HTMLVideoElement;
+        let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
+        let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
+        this.Cursor = new CursorController(this.Controller, video, itemport, curport);
+        this.Cursor.DisplayAll();
+    }
+
+
+    /**
+     * ライブキャストの設定変更
+     * @param sender
+     */
+    public SetCastSetting(sender: CastSettingSender) {
+
+        if (this.Cursor) {
+            if (sender.dispUserCursor) {
+                this.Cursor.ClearQueue();
+            }
+            else {
+                this.Cursor.Clear();
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param controller 
+     */
+    public SendOrientationChange(controller: CastInstanceMobileController) {
+        controller.SendOrientationChange();
+        controller.View.Cursor.Clear();
+
     }
 
 }

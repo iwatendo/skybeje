@@ -11,6 +11,7 @@ import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import IconSender from "../../Contents/Sender/IconSender";
 
 
 export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInstanceMobileController> {
@@ -27,7 +28,13 @@ export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInst
                 let cursor = sender as IconCursorSender;
                 this.Controller.CursorCache.Set(cursor);
                 this.Controller.SwPeer.SendAll(sender);
+                this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
             }
+        }
+
+        //  アイコン取得
+        if (sender.type === IconSender.ID) {
+            this.Controller.View.Cursor.SetIcon(conn.remoteId, (sender as IconSender).icon);
         }
 
         if (sender.type === RoomSender.ID) {
@@ -43,6 +50,7 @@ export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInst
         if (sender.type === CastSettingSender.ID) {
             let mcs = sender as CastSettingSender;
             this.Controller.SetCastSetting(mcs);
+            this.Controller.View.SetCastSetting(mcs);
         }
 
     }
