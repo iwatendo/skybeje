@@ -1,16 +1,16 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Message } from "../../../Contents/IndexedDB/Timeline";
-import { SubTitlesComponent } from "./SubTitlesComponent";
+import SubTitlesComponent from "./SubTitlesComponent";
 import CastSpeechRecognitionSender from '../../../Contents/Sender/CastSpeechRecognitionSender';
 
 
 /**
  * 字幕表示
  */
-export class SubTitlesController {
+export default class SubTitlesController {
 
-    private _subtitleElement = document.getElementById('sbj-cast-visitor-subtitles-text') as HTMLElement;
+    private _subtitleElement = document.getElementById('sbj-cast-subtitles-text') as HTMLElement;
 
 
     public constructor() {

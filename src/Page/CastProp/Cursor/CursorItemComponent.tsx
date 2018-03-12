@@ -2,7 +2,7 @@
 import * as ReactDOM from 'react-dom';
 import CastCursor from './CastCursor';
 import CursorController from "./CurosrController";
-import StyleCache from '../../Contents/Cache/StyleCache';
+import StyleCache from '../../../Contents/Cache/StyleCache';
 
 
 interface CursorItemrProp {

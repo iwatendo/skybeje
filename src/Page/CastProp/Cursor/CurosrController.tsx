@@ -1,13 +1,13 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as Personal from "../../Contents/IndexedDB/Personal";
+import * as Personal from "../../../Contents/IndexedDB/Personal";
 import CursorComponent from "./CursorComponent";
-import IServiceController from '../../Base/IServiceController';
-import GetIconSender from '../../Contents/Sender/GetIconSender';
-import IconCursorSender from '../../Contents/Sender/IconCursorSender';
-import ChatStatusSender from '../../Contents/Sender/ChatStatusSender';
-import LocalCache from '../../Contents/Cache/LocalCache';
-import StyleCache from '../../Contents/Cache/StyleCache';
+import IServiceController from '../../../Base/IServiceController';
+import GetIconSender from '../../../Contents/Sender/GetIconSender';
+import IconCursorSender from '../../../Contents/Sender/IconCursorSender';
+import ChatStatusSender from '../../../Contents/Sender/ChatStatusSender';
+import LocalCache from '../../../Contents/Cache/LocalCache';
+import StyleCache from '../../../Contents/Cache/StyleCache';
 import CastCursor from './CastCursor';
 
 

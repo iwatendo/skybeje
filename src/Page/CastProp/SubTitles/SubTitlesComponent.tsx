@@ -11,7 +11,7 @@ interface SubTitlesProp {
 /**
  * 字幕表示メイン
  */
-export class SubTitlesComponent extends React.Component<SubTitlesProp, any>{
+export default class SubTitlesComponent extends React.Component<SubTitlesProp, any>{
 
 
     /**
@@ -26,8 +26,8 @@ export class SubTitlesComponent extends React.Component<SubTitlesProp, any>{
         }
         else {
             return (
-                <div className='sbj-cast-visitor-subtitles'>
-                    <div className='sbj-cast-visitor-subtitles-text'>
+                <div className='sbj-cast-subtitles'>
+                    <div className='sbj-cast-subtitles-text'>
                         {msg}
                     </div>
                 </div>
