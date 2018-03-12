@@ -48,7 +48,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             panel.onmouseenter = (e) => { submenu.style.opacity = "1.0"; }
             panel.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
             panel.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
-            submenu.onmouseover= (e) => { submenu.style.opacity = "1.0"; }
+            submenu.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
             submenu.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
             submenu.hidden = false;
 
@@ -111,13 +111,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         this.Cursor.DisplayAll();
 
         MessageChannelUtil.SetChild(this.Controller, (sender) => {
-            let curInfo = sender as CursorInfoSender;
-            if (sender) {
-                this.Cursor.CursorInfo = curInfo;
-                if (curInfo.isDispChange) {
-                    this.Cursor.SetLastChatActor(curInfo.aid, curInfo.iid);
-                }
-            }
+            this.Cursor.SetChatActor(sender as CursorInfoSender);
         });
     }
 

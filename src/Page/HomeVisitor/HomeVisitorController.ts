@@ -328,12 +328,14 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
     /**
      * サーバント側に使用アクターを通知
      */
-    public PostActorToServent(isDispChange: boolean = false) {
+    public PostActorToServent(message: string = "", isDispChange: boolean = false) {
         let info = new CursorInfoSender();
         info.peerid = this.PeerId;
         info.aid = this.CurrentAid;
         info.iid = this.CurrentActor.dispIid;
         info.isDispChange = isDispChange;
+        info.message = message;
+
         MessageChannelUtil.Post(info);
     }
 

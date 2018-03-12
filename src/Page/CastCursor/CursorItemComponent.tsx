@@ -72,9 +72,7 @@ export default class CursorItemComponent extends React.Component<CursorItemrProp
      */
     private onMouseDown(e: MouseEvent) {
 
-        let cursorInfo = this.props.controller.CursorInfo;
-
-        if (cursorInfo) {
+        if (this.props.controller.IconCursor) {
             if (e.buttons === 1) {
                 let clientX = e.clientX;
                 let clientY = e.clientY;

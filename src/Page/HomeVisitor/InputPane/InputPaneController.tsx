@@ -326,10 +326,9 @@ export default class InputPaneController {
                 }
         }
 
-        //  最終発言アクターをライブキャスト側に通知
-        if (this._controller.CurrentActor.actorType === Personal.ActorType.Live) {
-            this._controller.PostActorToServent(true);
-        }
+        //  最終発言をサーバント側に通知
+        let isDispChange = (this._controller.CurrentActor.actorType === Personal.ActorType.Live);
+        this._controller.PostActorToServent(text, isDispChange);
     }
 
 
@@ -768,7 +767,7 @@ export default class InputPaneController {
     /**
      * 
      */
-    public UserSettingChange(){
+    public UserSettingChange() {
         this._selectActorButton.hidden = (!LocalCache.UseActors);
     }
 

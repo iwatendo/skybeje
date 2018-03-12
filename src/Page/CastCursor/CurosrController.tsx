@@ -32,9 +32,9 @@ export default class CursorController {
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
 
     private static _videoHeight = 0;
-    private static _mineCursor: IconCursorSender = null;
 
-    public CursorInfo: CursorInfoSender;
+    public IconCursor: IconCursorSender;
+    public DispIid: string;
 
 
     /**
@@ -183,27 +183,26 @@ export default class CursorController {
      * @param sender 
      */
     private SendCursorToOwner(sender: IconCursorSender) {
-        CursorController._mineCursor = sender;
+        this.DispIid = sender.iid;
         this._service.SwPeer.SendToOwner(sender);
     }
 
 
-    /**
-     * 最終発言をしたアクター情報をセット
-     * @param aid 
-     * @param iid 
-     */
-    public SetLastChatActor(aid: string, iid: string) {
-        let sender = CursorController._mineCursor;
 
-        if (sender && sender.isDisp) {
+    public SetChatActor(cur: CursorInfoSender) {
 
-            //  発言アクターに変更があった場合、表示を差替える
-            if (sender.aid !== aid || sender.iid !== iid) {
-                sender.aid = aid;
-                sender.iid = iid;
-                this.SendCursorToOwner(sender);
-            }
+        if (!this.IconCursor) {
+            this.IconCursor = new IconCursorSender();
+            this.IconCursor.homePeerId = cur.peerid;
+            this.IconCursor.visitorPeerId = this._service.SwPeer.PeerId;
+        }
+        this.IconCursor.aid = cur.aid;
+        this.IconCursor.iid = cur.iid;
+
+        //「発言時にカーソルアイコンを切替える」にチェックが入っている場合で
+        // アイコン（またはアクター）が変更されていた場合は表示を自身のアイコン表示を切替える 
+        if (cur.isDispChange && cur.message.length > 0 && cur.iid !== this.DispIid) {
+            this.SendCursorToOwner(this.IconCursor);
         }
     }
 
@@ -253,34 +252,24 @@ export default class CursorController {
      */
     public CastCursorSend(clientX: number, clientY: number, isDisp: boolean) {
 
-        if (!this.CursorInfo) {
-            return;
-        }
+        let sender = this.IconCursor;
 
-        //  座標のオフセット取得
-        let vdo = this.GetVideoDispOffset(this._video);
+        if (sender) {
 
-        //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
-        let posRx: number = (clientX - vdo.offsetRight) / vdo.dispWidth;
-        let posRy: number = (clientY - vdo.offsetTop) / vdo.dispHeight;
+            //  座標のオフセット取得
+            let vdo = this.GetVideoDispOffset(this._video);
+            //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
+            sender.posRx = (clientX - vdo.offsetRight) / vdo.dispWidth;
+            sender.posRy = (clientY - vdo.offsetTop) / vdo.dispHeight;
+            sender.isDisp = isDisp;
 
-
-        let sender = new IconCursorSender();
-        sender.homePeerId = this.CursorInfo.peerid;
-        sender.visitorPeerId = this._service.SwPeer.PeerId;
-        sender.aid = this.CursorInfo.aid;
-        sender.iid = this.CursorInfo.iid;
-
-        sender.posRx = posRx;
-        sender.posRy = posRy;
-        sender.isDisp = isDisp;
-
-        if (this._busy) {
-            this._queue = sender;
-        }
-        else {
-            this._busy = true;
-            this.SendCursorToOwner(sender);
+            if (this._busy) {
+                this._queue = sender;
+            }
+            else {
+                this._busy = true;
+                this.SendCursorToOwner(sender);
+            }
         }
     }
 

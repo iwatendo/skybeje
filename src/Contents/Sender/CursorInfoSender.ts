@@ -10,10 +10,12 @@ export default class CursorInfoSender extends Sender {
         this.aid = "";
         this.iid = "";
         this.isDispChange = false;
+        this.message = "";
     }
 
     peerid: string;
     aid: string;
     iid: string;
     isDispChange: boolean;
+    message: string;
 }
