@@ -83,22 +83,55 @@ export default class StyleCache {
 
     /**
      * アイコンのCSS指定取得
-     * @param key 
+     * @param key
+     * @param isSetSize
      */
-    public static GetIconStyle(key: string): any {
+    public static GetIconStyle(key: string, isSetSize: boolean = false): any {
 
         //  デフォルト設定
         if (!StyleCache._imgCssMap.has(key)) {
             document.documentElement.style.setProperty('--sbj-bgc-' + key, 'rgba(0,0,0,.3)');
+            if (isSetSize) this.SetIconSize(key, 48);
         }
 
-        return {
-            background: 'var(--sbj-imgbg-' + key + ')',
-            backgroundSize: 'var(--sbj-imgbgs-' + key + ')',
-            backgroundRepeat: 'var(--sbj-imgbgr-' + key + ')',
-            backgroundPosition: 'var(--sbj-imgbgp-' + key + ')',
-            backgroundColor: 'var(--sbj-bgc-' + key + ')'
-        };
+        if (isSetSize) {
+
+            return {
+                width: 'var(--sbj-imgw-' + key + ')',
+                height: 'var(--sbj-imgh-' + key + ')',
+                margin: 'var(--sbj-imgm-' + key + ')',
+                background: 'var(--sbj-imgbg-' + key + ')',
+                backgroundSize: 'var(--sbj-imgbgs-' + key + ')',
+                backgroundRepeat: 'var(--sbj-imgbgr-' + key + ')',
+                backgroundPosition: 'var(--sbj-imgbgp-' + key + ')',
+                backgroundColor: 'var(--sbj-bgc-' + key + ')',
+                userselect: 'none',
+            };
+        }
+        else {
+            return {
+                background: 'var(--sbj-imgbg-' + key + ')',
+                backgroundSize: 'var(--sbj-imgbgs-' + key + ')',
+                backgroundRepeat: 'var(--sbj-imgbgr-' + key + ')',
+                backgroundPosition: 'var(--sbj-imgbgp-' + key + ')',
+                backgroundColor: 'var(--sbj-bgc-' + key + ')',
+                userselect: 'none',
+            };
+        }
+    }
+
+
+    /**
+     * 画像サイズ指定
+     * @param key 
+     * @param iconSizePx 
+     */
+    public static SetIconSize(key: string, iconSizePx: number) {
+        let iconsize = iconSizePx.toString() + "px";
+        let mergin = "-" + Math.round(iconSizePx / 2) + "px";
+        document.documentElement.style.setProperty('--sbj-imgw-' + key, iconsize);
+        document.documentElement.style.setProperty('--sbj-imgh-' + key, iconsize);
+        document.documentElement.style.setProperty('--sbj-imgm-' + key, mergin);
     }
 
 
@@ -118,7 +151,6 @@ export default class StyleCache {
                 document.documentElement.style.setProperty('--sbj-imgbgs-' + key, StyleCache.SizeEnumToString(rec.backgroundsize));
                 document.documentElement.style.setProperty('--sbj-imgbgr-' + key, StyleCache.RepeatEnumToString(rec.backgroundrepeat));
                 document.documentElement.style.setProperty('--sbj-imgbgp-' + key, StyleCache.PosEnumToString(rec.backgroundposition));
-                document.documentElement.style.setProperty('--sbj-imgbg-' + key, 'url(' + rec.src + ')');
             }
             StyleCache._imgCssMap.set(key, key);
         }

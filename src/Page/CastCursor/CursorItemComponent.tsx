@@ -1,10 +1,12 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { CastCursor } from "./CurosrController";
+import { CastCursor, CursorController } from "./CurosrController";
+import StyleCache from '../../Contents/Cache/StyleCache';
 
 
 
 interface CursorItemrProp {
+    controller: CursorController;
     cursor: CastCursor;
 }
 
@@ -14,7 +16,6 @@ interface CursorItemrProp {
  */
 export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
 
-
     /**
      * 
      */
@@ -22,14 +23,15 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
 
         let cursor = this.props.cursor;
 
-        if (cursor.isDisp){
+        if (cursor.isDisp) {
 
-            let imgClassName = 'sbj-cast-cursor-image-' + cursor.iid.toString();
+            let key = cursor.peerid + cursor.iid;
+            let imgStyle = StyleCache.GetIconStyle(key, true);
 
             return (
                 <div>
                     <div className='sbj-cast-cursor' style={this.PosStyle()}>
-                        <div className={imgClassName} style={this.ImageStyle()}>
+                        <div style={imgStyle} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseDown.bind(this)} onDragStart={this.onSelect.bind(this)} onSelect={this.onSelect.bind(this)}>
                         </div>
                     </div>
                 </div>
@@ -56,29 +58,31 @@ export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
 
 
     /**
-     * アイコン画像表示する為のスタイル情報
+     * 
+     * @param e 
      */
-    private ImageStyle() {
+    private onSelect(e: MouseEvent) {
+        e.preventDefault();
+    }
 
-        if (this.props.cursor.iid.length === 0) {
-            return {
-                background: "url(/image/cursor.png)",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                height: "100%",
-                width: "100%",
-                userselect: "none",
+
+    /**
+     * 
+     * @param e 
+     */
+    private onMouseDown(e: MouseEvent) {
+
+        let cursorInfo = this.props.controller.CursorInfo;
+
+        if (cursorInfo) {
+            if (e.buttons === 1) {
+                let clientX = e.clientX;
+                let clientY = e.clientY;
+                this.props.controller.CastCursorSend(clientX, clientY, true);
             }
         }
-        else {
-            return {
-                height: "100%",
-                width: "100%",
-                borderRadius: "8px",
-                userselect: "none",
-            };
-        }
+
+        return false;
     }
 
 }

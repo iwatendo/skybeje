@@ -10,6 +10,7 @@ import GetIconSender from '../../Contents/Sender/GetIconSender';
 import IconCursorSender from '../../Contents/Sender/IconCursorSender';
 import CursorInfoSender from '../../Contents/Sender/CursorInfoSender';
 import LocalCache from '../../Contents/Cache/LocalCache';
+import StyleCache from '../../Contents/Cache/StyleCache';
 
 
 export class VideoDispOffset {
@@ -66,11 +67,8 @@ export class CursorController {
     private _queue: IconCursorSender = null;
     private _baseCursorList = new Array<IconCursorSender>();   //  送られて来たカーソル情報の保持（相対座標）
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
-    private _iconCache = new Map<string, Map<string, Personal.Icon>>();
 
     private static _videoHeight = 0;
-    private static _cursorOffsetX = 0;
-    private static _cursorOffsetY = 0;
     private static _mineCursor: IconCursorSender = null;
 
     public CursorInfo: CursorInfoSender;
@@ -93,20 +91,20 @@ export class CursorController {
         itemDivElement.onmousedown = (ev: MouseEvent) => {
 
             if (ev.buttons === 1 && this.IsCursorPort(ev)) {
-                this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY, true);
+                this.CastCursorSend(ev.clientX, ev.clientY, true);
             }
         };
 
         itemDivElement.onmousemove = (ev: MouseEvent) => {
             if (ev.buttons === 1 && this.IsCursorPort(ev)) {
-                this.CastCursorSend(this._video, itemDivElement, ev.clientX, ev.clientY, true);
+                this.CastCursorSend(ev.clientX, ev.clientY, true);
             }
         };
 
         if (LocalCache.DebugMode === 0) {
             itemDivElement.oncontextmenu = (pv: PointerEvent) => {
                 //  右クリック時カーソルを消す。
-                this.CastCursorSend(this._video, itemDivElement, 0, 0, false);
+                this.CastCursorSend(0, 0, false);
                 //  コンテキストメニューのキャンセル
                 return false;
             }
@@ -116,7 +114,7 @@ export class CursorController {
 
         window.onbeforeunload = (ev) => {
             //  接続が切れた場合、カーソルを非表示にする
-            this.CastCursorSend(this._video, itemDivElement, 0, 0, false);
+            this.CastCursorSend(0, 0, false);
         }
 
     }
@@ -154,7 +152,7 @@ export class CursorController {
         this._cursorList = new Array<CastCursor>();
 
         //  カーソル表示があればクリア
-        ReactDOM.render(<CursorComponent CursorList={this._cursorList} />, this._cursorDispElement, (el) => {
+        ReactDOM.render(<CursorComponent controller={this} CursorList={this._cursorList} />, this._cursorDispElement, (el) => {
             this.SetCursorIcon(this._cursorList);
         });
     };
@@ -264,10 +262,9 @@ export class CursorController {
         CursorController._videoHeight = vdo.dispHeight;
 
         //  描画処理
-        ReactDOM.render(<CursorComponent CursorList={this._cursorList} />, this._cursorDispElement, (el) => {
+        ReactDOM.render(<CursorComponent controller={this} CursorList={this._cursorList} />, this._cursorDispElement, (el) => {
             //  描画後、カーソルのCSSを設定する
             this.SetCursorIcon(this._cursorList);
-
         });
 
         setTimeout(() => {
@@ -287,23 +284,22 @@ export class CursorController {
      * ビデオ上のマウスカーソルの動作を検出し、CastInstanceに送信
      * 自身のキャスト上だとしても CastInstance 経由でカーソルを表示させる
      * @param video 
-     * @param cursorpost 
      * @param clientX 
      * @param clientY 
      * @param isDisp
      */
-    private CastCursorSend(video: HTMLVideoElement, cursorpost: HTMLElement, clientX: number, clientY: number, isDisp: boolean) {
+    public CastCursorSend(clientX: number, clientY: number, isDisp: boolean) {
 
         if (!this.CursorInfo) {
             return;
         }
 
-        //  座標オフセットの取得
-        let vdo = this.GetVideoDispOffset(video);
+        //  座標のオフセット取得
+        let vdo = this.GetVideoDispOffset(this._video);
 
         //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
-        let posRx: number = (clientX - vdo.offsetRight - CursorController._cursorOffsetX) / vdo.dispWidth;
-        let posRy: number = (clientY - vdo.offsetTop - CursorController._cursorOffsetY) / vdo.dispHeight;
+        let posRx: number = (clientX - vdo.offsetRight) / vdo.dispWidth;
+        let posRy: number = (clientY - vdo.offsetTop) / vdo.dispHeight;
 
 
         let sender = new IconCursorSender();
@@ -361,62 +357,39 @@ export class CursorController {
     }
 
 
+    private _requestMap = new Map<string, string>();
+
     /**
      * アイコン表示処理
      * @param cursors 
      */
     public SetCursorIcon(cursors: Array<CastCursor>) {
 
-        let iidmap = new Map<string, Array<string>>();
-
         cursors.forEach((cur) => {
 
-            let iid = cur.iid;
-            let peerid = cur.peerid;
+            if (cur) {
+                let key = cur.peerid + cur.iid;
 
-            if (!iid) {
-                return;
-            }
-
-            if (this._iconCache.has(peerid)) {
-
-                let iconMap = this._iconCache.get(peerid);
-
-                //  キャッシュ済みの場合、キャッシュアイコンを表示
-                if (iconMap.has(iid)) {
-                    let icon = iconMap.get(iid);
-                    this.DispIcon(icon);
-                    return;
+                if (!this._requestMap.has(key) && !StyleCache.HasIconStyle(key)) {
+                    //  アイコンが、未キャッシュ/未リクエストの場合、他ユーザーにアイコンを要求
+                    let sender = new GetIconSender();
+                    sender.iid = cur.iid;
+                    this._service.SwPeer.SendTo(cur.peerid, sender);
+                    this._requestMap.set(key, key);
+                }
+                else {
+                    //  キャッシュ済みの場合はサイズ調整のみ実施
+                    if (this._iconDispratioCache.has(key)) {
+                        let dispratio = this._iconDispratioCache.get(key);
+                        this.SetIconSize(key, dispratio);
+                    }
                 }
             }
-
-            //  キャッシュされていない場合は
-            //  発言者にIconデータを要求
-            this.GetIcon(peerid, iid);
-
         });
     }
 
 
-    /**
-     * 他ユーザーへのアイコン要求
-     * @param peerid 
-     * @param iids 
-     */
-    private GetIcon(peerid: string, iid: string) {
-
-        //  他ユーザーへ接続しアイコンの要求
-        let sender = new GetIconSender();
-        sender.iid = iid;
-        this._service.SwPeer.SendTo(peerid, sender);
-
-        //  アイコンが取得できるまで、再要求しないように空アイコンをキャッシュ
-        let emptyIcon = new Personal.Icon();
-        emptyIcon.iid = iid;
-        this.SetIcon(peerid, emptyIcon);
-
-    }
-
+    private _iconDispratioCache = new Map<string, number>();
 
     /**
      * アイコン画像の表示及びキャッシュ
@@ -425,76 +398,33 @@ export class CursorController {
      */
     public SetIcon(peerid: string, icon: Personal.Icon) {
 
-        //  キャッシュ登録
-        if (!this._iconCache.has(peerid)) {
-            this._iconCache.set(peerid, (new Map<string, Personal.Icon>()));
-        }
-        let map = this._iconCache.get(peerid);
-        map.set(icon.iid, icon);
+        let key = peerid + icon.iid;
 
-        //  アイコン表示処理
-        this.DispIcon(icon);
+        //  CSS変数として登録
+        StyleCache.SetIconStyle(key, icon.img);
+
+        this._iconDispratioCache.set(key, icon.dispratio);
+        this.SetIconSize(key, icon.dispratio);
     }
 
 
     /**
-     * カーソルのアイコン描画処理(CSS設定)
-     * @param icon 
+     * アイコンサイズの調整
+     * @param key 
+     * @param dispratio 
      */
-    private DispIcon(icon: Personal.Icon) {
+    public SetIconSize(key: string, dispratio: number) {
 
-        if (!icon) {
-            return;
+        //  アイコンのサイズ調整
+        let size: number;
+        if (dispratio && dispratio > 0) {
+            size = Math.round(CursorController._videoHeight * dispratio / 100);
         }
-
-        let imgclassName = "sbj-cast-cursor-image-" + icon.iid.toString();
-        let elements = document.getElementsByClassName(imgclassName);
-
-        for (var i = 0; i < elements.length; i++) {
-            let element = elements[i] as HTMLElement;
-            if (element.style) {
-                ImageInfo.SetElementCss(element, icon.img);
-
-                let size: number;
-
-                if (icon.dispratio && icon.dispratio > 0) {
-                    size = Math.round(CursorController._videoHeight * icon.dispratio / 100);
-                }
-                else {
-                    //  デフォルトは高さに対して 8% とする
-                    size = Math.round(CursorController._videoHeight * 8 / 100);
-                }
-
-                let iconsize = size.toString() + "px";
-                let mergin = Math.round(size / 2);
-                element.style.width = iconsize;
-                element.style.height = iconsize;
-                element.style.margin = "-" + mergin.toString() + "px";
-
-                //  自分自身のアイコンの場合はクリックイベントを追加する
-                if (this.CursorInfo && icon.iid === this.CursorInfo.iid) {
-
-                    element.onmousedown = (e) => {
-                        CursorController._cursorOffsetX = e.offsetX - mergin;
-                        CursorController._cursorOffsetY = e.offsetY - mergin;
-                        element.style.cursor = "-webkit-grabbing";
-                    }
-
-                    let clearOffsset = () => {
-                        CursorController._cursorOffsetX = 0;
-                        CursorController._cursorOffsetY = 0;
-                        element.style.cursor = "default";
-                    }
-
-                    element.onmouseout = (e) => clearOffsset();
-                    element.onmouseup = (e) => clearOffsset();
-
-                    //  イメージ画像として掴んでしまい、うまく動かせないケースの対策
-                    element.onselectstart = (e) => { return false; }
-                    element.onmousemove = (e) => { return false; }
-                }
-            }
+        else {
+            //  デフォルトは高さに対して 8% とする
+            size = Math.round(CursorController._videoHeight * 8 / 100);
         }
+        StyleCache.SetIconSize(key, size);
     }
 
 }
