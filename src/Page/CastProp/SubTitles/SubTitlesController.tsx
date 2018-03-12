@@ -2,7 +2,7 @@
 import * as ReactDOM from 'react-dom';
 import { Message } from "../../../Contents/IndexedDB/Timeline";
 import SubTitlesComponent from "./SubTitlesComponent";
-import CastSpeechRecognitionSender from '../../../Contents/Sender/CastSpeechRecognitionSender';
+import CastSubTitlesSender from '../../../Contents/Sender/CastSubTitlesSender';
 
 
 /**
@@ -21,13 +21,13 @@ export default class SubTitlesController {
      * 字幕表示
      * @param csr 
      */
-    public SetMessage(csr: CastSpeechRecognitionSender) {
+    public SetMessage(csr: CastSubTitlesSender) {
         ReactDOM.render(<SubTitlesComponent csr={csr} />, this._subtitleElement);
     }
 
 
     public Clear() {
-        let csr = new CastSpeechRecognitionSender("");
+        let csr = new CastSubTitlesSender("");
         ReactDOM.render(<SubTitlesComponent csr={csr} />, this._subtitleElement);
     }
 

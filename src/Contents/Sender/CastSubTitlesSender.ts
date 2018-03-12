@@ -1,14 +1,14 @@
 import Sender from "../../Base/Container/Sender";
 
 /**
- *  音声認識からのメッセージ通知
+ *  字幕表示通知用処理
  */
-export default class CastSpeechRecognitionSender extends Sender {
+export default class CastSubTitlesSender extends Sender {
 
     public static ID = "CastSpeechRecognition";
 
     constructor(message: string) {
-        super(CastSpeechRecognitionSender.ID)
+        super(CastSubTitlesSender.ID)
         this.message = message;
     }
 

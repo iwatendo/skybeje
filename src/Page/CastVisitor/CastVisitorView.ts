@@ -7,7 +7,7 @@ import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 import CursorController from "../CastProp/Cursor/CurosrController";
 import SubTitlesController from "../CastProp/SubTitles/SubTitlesController";
 import CastVisitorController from "./CastVisitorController";
-import CastSpeechRecognitionSender from "../../Contents/Sender/CastSpeechRecognitionSender";
+import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 
 /**
  * 

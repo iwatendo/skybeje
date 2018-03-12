@@ -1,10 +1,10 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import CastSpeechRecognitionSender from '../../../Contents/Sender/CastSpeechRecognitionSender';
+import CastSubTitlesSender from '../../../Contents/Sender/CastSubTitlesSender';
 
 
 interface SubTitlesProp {
-    csr: CastSpeechRecognitionSender;
+    csr: CastSubTitlesSender;
 }
 
 

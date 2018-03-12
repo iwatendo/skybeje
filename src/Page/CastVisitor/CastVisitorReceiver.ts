@@ -6,7 +6,7 @@ import CastVisitorController from "./CastVisitorController";
 import { CastVisitorView } from "./CastVisitorView";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import IconSender from "../../Contents/Sender/IconSender";
-import CastSpeechRecognitionSender from "../../Contents/Sender/CastSpeechRecognitionSender";
+import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CursorClearSender from "../../Contents/Sender/CursorClearSender";
 
@@ -40,8 +40,8 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
         }
 
         //  字幕表示
-        if(sender.type === CastSpeechRecognitionSender.ID){
-            this.Controller.View.SubTitles.SetMessage(sender as CastSpeechRecognitionSender);
+        if(sender.type === CastSubTitlesSender.ID){
+            this.Controller.View.SubTitles.SetMessage(sender as CastSubTitlesSender);
         }
     }
 
