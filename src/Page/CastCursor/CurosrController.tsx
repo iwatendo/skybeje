@@ -1,16 +1,14 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as Personal from "../../Contents/IndexedDB/Personal";
-import { CursorComponent } from "./CursorComponent";
-import LinkUtil from "../../Base/Util/LinkUtil";
-import ImageInfo from "../../Base/Container/ImageInfo";
-import LogUtil from "../../Base/Util/LogUtil";
+import CursorComponent from "./CursorComponent";
 import IServiceController from '../../Base/IServiceController';
 import GetIconSender from '../../Contents/Sender/GetIconSender';
 import IconCursorSender from '../../Contents/Sender/IconCursorSender';
 import CursorInfoSender from '../../Contents/Sender/CursorInfoSender';
 import LocalCache from '../../Contents/Cache/LocalCache';
 import StyleCache from '../../Contents/Cache/StyleCache';
+import CastCursor from './CastCursor';
 
 
 export class VideoDispOffset {
@@ -23,42 +21,7 @@ export class VideoDispOffset {
 /**
  * 
  */
-export class CastCursor {
-
-    /**
-     * 
-     * @param peerid 
-     * @param aid 
-     * @param iid 
-     * @param name 
-     * @param x 
-     * @param y 
-     * @param isDisp
-     */
-    constructor(peerid: string, aid: string, iid: string, name: string, x: number, y: number, isDisp: boolean) {
-        this.peerid = peerid;
-        this.aid = aid;
-        this.iid = iid;
-        this.name = name;
-        this.posX = x;
-        this.posY = y;
-        this.isDisp = isDisp;
-    }
-
-    peerid: string = "";
-    aid: string = "";
-    iid: string = "";
-    posX: number = 0;
-    posY: number = 0;
-    name: string = null;
-    isDisp: boolean = false;
-}
-
-
-/**
- * 
- */
-export class CursorController {
+export default class CursorController {
 
     private _service: IServiceController;
     private _video: HTMLVideoElement;

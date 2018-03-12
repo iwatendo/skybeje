@@ -7,7 +7,7 @@ import YouTubeUtil, { YouTubeOption, OnCreateYouTubePlayer } from "../../Content
 import GadgetVisitorController from "./GadgetVisitorController";
 import { Icon } from "../../Contents/IndexedDB/Personal";
 import { DialogMode } from "../../Contents/AbstractDialogController";
-import { CursorController } from "../CastCursor/CurosrController";
+import CursorController from "../CastCursor/CurosrController";
 import GadgetCastSettingSender from "../../Contents/Sender/GadgetCastSettingSender";
 import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
 

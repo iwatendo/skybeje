@@ -1,8 +1,8 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { CastCursor, CursorController } from "./CurosrController";
+import CastCursor from './CastCursor';
+import CursorController from "./CurosrController";
 import StyleCache from '../../Contents/Cache/StyleCache';
-
 
 
 interface CursorItemrProp {
@@ -14,7 +14,7 @@ interface CursorItemrProp {
 /**
  * カーソル表示
  */
-export class CursorItemComponent extends React.Component<CursorItemrProp, any>{
+export default class CursorItemComponent extends React.Component<CursorItemrProp, any>{
 
     /**
      * 

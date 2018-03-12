@@ -6,7 +6,7 @@ import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import CursorInfoSender from "../../Contents/Sender/CursorInfoSender";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";
 import CastVisitorController from "./CastVisitorController";
-import { CastCursor, CursorController } from "../CastCursor/CurosrController";
+import CursorController from "../CastCursor/CurosrController";
 
 /**
  * 

@@ -13,7 +13,7 @@ import CastInstanceMobileController from "./CastInstanceMobileController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Contents/AbstractDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
-import { CursorController } from "../CastCursor/CurosrController";
+import CursorController from "../CastCursor/CurosrController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 
 export default class CastInstanceMobileView extends AbstractServiceView<CastInstanceMobileController> {
