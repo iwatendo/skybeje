@@ -5,7 +5,7 @@ import CursorComponent from "./CursorComponent";
 import IServiceController from '../../Base/IServiceController';
 import GetIconSender from '../../Contents/Sender/GetIconSender';
 import IconCursorSender from '../../Contents/Sender/IconCursorSender';
-import CursorInfoSender from '../../Contents/Sender/CursorInfoSender';
+import ChatStatusSender from '../../Contents/Sender/ChatStatusSender';
 import LocalCache from '../../Contents/Cache/LocalCache';
 import StyleCache from '../../Contents/Cache/StyleCache';
 import CastCursor from './CastCursor';
@@ -189,7 +189,7 @@ export default class CursorController {
 
 
 
-    public SetChatActor(cur: CursorInfoSender) {
+    public SetChatStatus(cur: ChatStatusSender) {
 
         if (!this.IconCursor) {
             this.IconCursor = new IconCursorSender();

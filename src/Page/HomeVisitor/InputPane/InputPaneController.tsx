@@ -328,7 +328,7 @@ export default class InputPaneController {
 
         //  最終発言をサーバント側に通知
         let isDispChange = (this._controller.CurrentActor.actorType === Personal.ActorType.Live);
-        this._controller.PostActorToServent(text, isDispChange);
+        this._controller.PostChatStatus(text, isDispChange);
     }
 
 
@@ -449,7 +449,7 @@ export default class InputPaneController {
     public ChangeSelectionIcon(iid: string) {
         let controller = this._controller;
         let aid = controller.CurrentAid;
-        controller.PostActorToServent();
+        controller.PostChatStatus();
         this.DisplayActor();
     }
 

@@ -3,7 +3,7 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
-import CursorInfoSender from "../../Contents/Sender/CursorInfoSender";
+import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 import { SubTitlesController } from "./SubTitles/SubTitlesController";
 import CastVisitorController from "./CastVisitorController";
 import CursorController from "../CastCursor/CurosrController";
@@ -111,7 +111,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         this.Cursor.DisplayAll();
 
         MessageChannelUtil.SetChild(this.Controller, (sender) => {
-            this.Cursor.SetChatActor(sender as CursorInfoSender);
+            this.Cursor.SetChatStatus(sender as ChatStatusSender);
         });
     }
 

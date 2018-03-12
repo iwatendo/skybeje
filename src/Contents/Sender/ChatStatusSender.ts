@@ -1,11 +1,14 @@
 import Sender from "../../Base/Container/Sender";
 
-export default class CursorInfoSender extends Sender {
+/**
+ * チャットクライアントからサーバント側にチャット情報を送る為のクラス
+ */
+export default class ChatStatusSender extends Sender {
 
     public static ID = "CursorInfo";
 
     constructor() {
-        super(CursorInfoSender.ID);
+        super(ChatStatusSender.ID);
         this.peerid = "";
         this.aid = "";
         this.iid = "";
