@@ -12,6 +12,7 @@ import CastSubTitlesSender from '../../Contents/Sender/CastSubTitlesSender';
 import CastCursor from './Cursor/CastCursor';
 import SubTitlesComponent from './SubTitles/SubTitlesComponent';
 import CastPropComponent from './CastPropComponent';
+import IntervalSend from '../../Base/Util/IntervalSend';
 
 
 export class VideoDispOffset {
@@ -37,6 +38,7 @@ export default class CastPropController {
 
     public IconCursor: IconCursorSender;
     public DispIid: string;
+    private _intervalSend = new IntervalSend<IconCursorSender>(20);
 
 
     /**
@@ -124,33 +126,9 @@ export default class CastPropController {
             sender.posRy = (clientY - vdo.offsetTop) / vdo.dispHeight;
             sender.isDisp = isDisp;
 
-            this.StartSendLoop(sender);
+            this._intervalSend.Send(sender, (s) => { this.SendCursorToOwner(s) });
         }
     }
-
-    private _queue: IconCursorSender;
-    private _sendInterval: number;
-
-    /**
-     * 
-     * @param sender 
-     */
-    private StartSendLoop(sender: IconCursorSender) {
-        this._queue = sender;
-        if (!this._sendInterval) {
-            this._sendInterval = setInterval(() => {
-                if (this._queue) {
-                    this.SendCursorToOwner(this._queue);
-                    this._queue = null;
-                }
-                else {
-                    clearInterval(this._sendInterval);
-                    this._sendInterval = undefined;
-                }
-            }, 20);
-        }
-    }
-
 
 
     /**

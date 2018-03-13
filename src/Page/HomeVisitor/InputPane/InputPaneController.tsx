@@ -27,6 +27,7 @@ import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
 import StyleCache from '../../../Contents/Cache/StyleCache';
 import MessageChannelUtil from '../../../Base/Util/MessageChannelUtil';
 import ProfileChangeSender from '../../../Contents/Sender/ProfileChangeSender';
+import IntervalSend from '../../../Base/Util/IntervalSend';
 
 export default class InputPaneController {
 
@@ -332,8 +333,7 @@ export default class InputPaneController {
     }
 
 
-    private _preInput: ChatInfoSender;
-
+    private _intervalSend = new IntervalSend<ChatInfoSender>(200);
 
     /**
      * 入力途中有無
@@ -349,8 +349,7 @@ export default class InputPaneController {
         chm.iid = actor.dispIid;
         chm.isInputing = this.IsInput();
 
-        this._controller.SwPeer.SendToOwner(chm);
-        this._preInput = chm;
+        this._intervalSend.Send(chm, (s) => { this._controller.SwPeer.SendToOwner(s); });
     }
 
 
