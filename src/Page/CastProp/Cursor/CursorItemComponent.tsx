@@ -25,7 +25,7 @@ export default class CursorItemComponent extends React.Component<CursorItemrProp
 
         if (cursor.isDisp) {
 
-            let key = cursor.peerid + cursor.iid;
+            let key = cursor.iid;
             let imgStyle = StyleCache.GetIconStyle(key, true);
 
             return (

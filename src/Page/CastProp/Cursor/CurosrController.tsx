@@ -204,7 +204,7 @@ export default class CursorController {
         // アイコン（またはアクター）が変更されていた場合は表示を自身のアイコン表示を切替える 
         let isIconDispChange = Personal.Actor.IsIconDispChange(cur.actorType);
         let isDispSubtitles = Personal.Actor.IsDispSubtitles(cur.actorType);
-        
+
 
         if (isIconDispChange && cur.message.length > 0 && cur.iid !== this.DispIid) {
             this.SendCursorToOwner(this.IconCursor);
@@ -321,7 +321,35 @@ export default class CursorController {
     }
 
 
-    private _requestMap = new Map<string, string>();
+    //  Key: peerid / Value : ( Key: iid / Value: dispratio )
+    private _requestMap = new Map<string, Map<string, number>>();
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param iid 
+     */
+    private IsRequest(peerid: string, iid: string): boolean {
+
+        let subMap: Map<string, number>;
+
+        if (this._requestMap.has(peerid)) {
+            subMap = this._requestMap.get(peerid);
+        }
+        else {
+            subMap = new Map<string, number>();
+            this._requestMap.set(peerid, subMap);
+        }
+
+        if (subMap.has(iid)) {
+            return true;
+        }
+        else {
+            subMap.set(iid, null);
+            return false;
+        }
+    }
 
     /**
      * アイコン表示処理
@@ -332,28 +360,23 @@ export default class CursorController {
         cursors.forEach((cur) => {
 
             if (cur) {
-                let key = cur.peerid + cur.iid;
-
-                if (!this._requestMap.has(key) && !StyleCache.HasIconStyle(key)) {
-                    //  アイコンが、未キャッシュ/未リクエストの場合、他ユーザーにアイコンを要求
+                if (this.IsRequest(cur.peerid, cur.iid)) {
+                    let map = this._requestMap.get(cur.peerid);
+                    let dispratio = map.get(cur.iid);
+                    if (dispratio) {
+                        this.SetIconSize(cur.iid, dispratio);
+                    }
+                }
+                else {
+                    //  アイコンが未キャッシュの場合、接続ユーザーにアイコン要求
                     let sender = new GetIconSender();
                     sender.iid = cur.iid;
                     this._service.SwPeer.SendTo(cur.peerid, sender);
-                    this._requestMap.set(key, key);
-                }
-                else {
-                    //  キャッシュ済みの場合はサイズ調整のみ実施
-                    if (this._iconDispratioCache.has(key)) {
-                        let dispratio = this._iconDispratioCache.get(key);
-                        this.SetIconSize(key, dispratio);
-                    }
                 }
             }
         });
     }
 
-
-    private _iconDispratioCache = new Map<string, number>();
 
     /**
      * アイコン画像の表示及びキャッシュ
@@ -362,22 +385,24 @@ export default class CursorController {
      */
     public SetIcon(peerid: string, icon: Personal.Icon) {
 
-        let key = peerid + icon.iid;
-
         //  CSS変数として登録
-        StyleCache.SetIconStyle(key, icon.img);
+        StyleCache.SetIconStyle(icon.iid, icon.img);
 
-        this._iconDispratioCache.set(key, icon.dispratio);
-        this.SetIconSize(key, icon.dispratio);
+        //  アイコンサイズの指定
+        this.SetIconSize(icon.iid, icon.dispratio);
+
+        //  アイコンのサイズ情報キャッシュ
+        let map = this._requestMap.get(peerid);
+        map.set(icon.iid, icon.dispratio);
     }
 
 
     /**
      * アイコンサイズの調整
-     * @param key 
+     * @param iid 
      * @param dispratio 
      */
-    public SetIconSize(key: string, dispratio: number) {
+    public SetIconSize(iid: string, dispratio: number) {
 
         //  アイコンのサイズ調整
         let size: number;
@@ -388,7 +413,7 @@ export default class CursorController {
             //  デフォルトは高さに対して 8% とする
             size = Math.round(CursorController._videoHeight * 8 / 100);
         }
-        StyleCache.SetIconSize(key, size);
+        StyleCache.SetIconSize(iid, size);
     }
 
 }
