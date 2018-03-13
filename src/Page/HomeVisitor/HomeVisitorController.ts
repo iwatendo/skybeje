@@ -327,13 +327,15 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
 
     /**
      * サーバント側に使用アクターを通知
+     * @param actorType 
+     * @param message 
      */
-    public PostChatStatus(message: string = "", isDispChange: boolean = false) {
+    public PostChatStatus(actorType: Personal.ActorType = Personal.ActorType.Default, message: string = "") {
         let info = new ChatStatusSender();
         info.peerid = this.PeerId;
         info.aid = this.CurrentAid;
         info.iid = this.CurrentActor.dispIid;
-        info.isDispChange = isDispChange;
+        info.actorType = actorType;
         info.message = message;
 
         MessageChannelUtil.Post(info);

@@ -327,8 +327,8 @@ export default class InputPaneController {
         }
 
         //  最終発言をサーバント側に通知
-        let isDispChange = (this._controller.CurrentActor.actorType === Personal.ActorType.Live);
-        this._controller.PostChatStatus(text, isDispChange);
+        let actorType = this._controller.CurrentActor.actorType;
+        this._controller.PostChatStatus(actorType, text);
     }
 
 

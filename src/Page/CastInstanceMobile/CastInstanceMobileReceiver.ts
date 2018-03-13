@@ -25,7 +25,7 @@ export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInst
 
         //  カーソル表示
         if (sender.type === IconCursorSender.ID) {
-            if (this.Controller.CastSetting.dispUserCursor) {
+            if (this.Controller.CastSetting.useCastProp) {
                 let cursor = sender as IconCursorSender;
                 this.Controller.CursorCache.Set(cursor);
                 this.Controller.SwPeer.SendAll(sender);

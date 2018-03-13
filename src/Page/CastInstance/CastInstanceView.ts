@@ -84,7 +84,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
     public SendOption() {
         this.Controller.CastSetting.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
-        this.Controller.CastSetting.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
+        this.Controller.CastSetting.useCastProp = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
         this.Controller.SendCastInfo();
     }
 
@@ -260,11 +260,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     public SetCastSetting(sender: CastSettingSender) {
 
         if (this.Cursor) {
-            if (sender.dispUserCursor) {
+            if (sender.useCastProp) {
                 this.Cursor.ClearQueue();
             }
             else {
                 this.Cursor.Clear();
+                this.SubTitles.Clear();
             }
         }
     }

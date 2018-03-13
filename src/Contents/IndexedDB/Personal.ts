@@ -8,7 +8,9 @@ import LocalCache from "../Cache/LocalCache";
 
 export enum ActorType {
     Default = 0,
-    Live = 1,
+    Caster = 1,
+    Narrator = 2,
+    CastNarrator = 3,
 }
 
 
@@ -50,6 +52,33 @@ export class Actor implements IOrder {
         let value = act.name + "/n" + act.tag + "/n" + act.profile + "/n" + act.dispIid;
         return StdUtil.ToHashCode(value).toString();
     }
+
+
+    /**
+     * 
+     * @param actType 
+     */
+    public static IsIconDispChange(actType: ActorType) {
+        switch (actType) {
+            case ActorType.Caster: return true;
+            case ActorType.CastNarrator: return true;
+            default: return false;
+        }
+    }
+
+
+    /**
+     * 
+     * @param actType 
+     */
+    public static IsDispSubtitles(actType: ActorType) {
+        switch (actType) {
+            case ActorType.Narrator: return true;
+            case ActorType.CastNarrator: return true;
+            default: return false;
+        }
+    }
+
 }
 
 

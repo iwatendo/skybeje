@@ -126,11 +126,12 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
     public SetCastSetting(sender: CastSettingSender) {
 
         if (this.Cursor) {
-            if (sender.dispUserCursor) {
+            if (sender.useCastProp) {
                 this.Cursor.ClearQueue();
             }
             else {
                 this.Cursor.Clear();
+                this.SubTitles.Clear();
             }
         }
     }

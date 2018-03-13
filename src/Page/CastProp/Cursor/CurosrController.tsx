@@ -202,12 +202,16 @@ export default class CursorController {
 
         //「発言時にカーソルアイコンを切替える」にチェックが入っている場合で
         // アイコン（またはアクター）が変更されていた場合は表示を自身のアイコン表示を切替える 
-        if (cur.isDispChange && cur.message.length > 0 && cur.iid !== this.DispIid) {
+        let isIconDispChange = Personal.Actor.IsIconDispChange(cur.actorType);
+        let isDispSubtitles = Personal.Actor.IsDispSubtitles(cur.actorType);
+        
+
+        if (isIconDispChange && cur.message.length > 0 && cur.iid !== this.DispIid) {
             this.SendCursorToOwner(this.IconCursor);
         }
 
         //  メッセージ送信された場合に字幕表示をする
-        if (cur.isDispChange && cur.message.length > 0) {
+        if (isDispSubtitles && cur.message.length > 0) {
             let msg = new CastSubTitlesSender(cur.message);
             this._service.SwPeer.SendToOwner(msg);
         }

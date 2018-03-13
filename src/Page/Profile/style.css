@@ -61,6 +61,13 @@
     color: var(--sbj-color-default-text)
 }
 
+.sbj-profile-details-content{
+    margin: 24px;
+}
+
+.sbj-profile-checkbox{
+    margin: 12px;
+}
 
 .sbj-profile-text-left{
     float: left;
@@ -212,8 +219,7 @@
     width: 120px;
 }
 
-.sbj-message-color-lable{
+.sbj-message-color-label{
     color: #3f51b5;
     font-size: 12px;
-    top: 4px;
 }

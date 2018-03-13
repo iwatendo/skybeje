@@ -140,7 +140,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
      */
     public SendOption() {
         this.Controller.CastSetting.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
-        this.Controller.CastSetting.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
+        this.Controller.CastSetting.useCastProp = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
         this.Controller.SendCastInfo();
     }
 

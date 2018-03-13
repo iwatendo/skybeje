@@ -350,7 +350,7 @@ export default class IconDialogController {
 
 
     /**
-     * 立絵サイズのセット
+     * カーソルの表示サイズのセット
      * @param scale 
      */
     private SetDispratio(scale: number) {
@@ -364,7 +364,7 @@ export default class IconDialogController {
 
 
     /**
-     * 立絵サイズの取得
+     * カーソルの表示サイズのセット
      */
     private GetDispratio(): number {
         return Number.parseInt(this._scaleValueElement.value);

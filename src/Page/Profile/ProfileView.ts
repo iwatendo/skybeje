@@ -101,14 +101,23 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         (document.getElementById('sbj-profile-tag') as HTMLInputElement).value = actor.tag;
         (document.getElementById('sbj-profile-note') as HTMLInputElement).value = actor.profile;
 
-        let isIconChnageMode = (actor.actorType == Personal.ActorType.Live);
-        if (isIconChnageMode) {
-            document.getElementById('sbj-profile-liveicon-label').classList.add('is-checked');
+        let isIconDispChange = Personal.Actor.IsIconDispChange(actor.actorType);
+        (document.getElementById('sbj-profile-caster') as HTMLInputElement).checked = isIconDispChange;
+        if (isIconDispChange) {
+            document.getElementById('sbj-profile-caster-label').classList.add('is-checked');
         }
         else {
-            document.getElementById('sbj-profile-liveicon-label').classList.remove('is-checked');
+            document.getElementById('sbj-profile-caster-label').classList.remove('is-checked');
         }
-        (document.getElementById('sbj-profile-liveicon') as HTMLInputElement).checked = isIconChnageMode;
+
+        let isDispSubtitles = Personal.Actor.IsDispSubtitles(actor.actorType);
+        (document.getElementById('sbj-profile-narrator') as HTMLInputElement).checked = isDispSubtitles;
+        if (isDispSubtitles) {
+            document.getElementById('sbj-profile-narrator-label').classList.add('is-checked');
+        }
+        else {
+            document.getElementById('sbj-profile-narrator-label').classList.remove('is-checked');
+        }
 
         this._iconListView = new IconListView(this.Controller, document.getElementById('sbj-profile-icons-list'));
         this._guideListView = new GuideListView(this.Controller, document.getElementById('sbj-profile-guides-list'))
@@ -173,13 +182,22 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         let nameElement = document.getElementById('sbj-profile-name') as HTMLInputElement;
         let tagElement = document.getElementById('sbj-profile-tag') as HTMLInputElement;
         let noteElement = document.getElementById('sbj-profile-note') as HTMLInputElement;
-        let actorTypeElement = document.getElementById('sbj-profile-liveicon') as HTMLInputElement;
+        let actorTypeElement1 = document.getElementById('sbj-profile-caster') as HTMLInputElement;
+        let actorTypeElement2 = document.getElementById('sbj-profile-narrator') as HTMLInputElement;
 
 
         actor.name = nameElement.value;
         actor.tag = tagElement.value;
         actor.profile = noteElement.value;
-        actor.actorType = (actorTypeElement.checked ? Personal.ActorType.Live : Personal.ActorType.Default);
+
+        if (actorTypeElement1.checked) {
+            if (actorTypeElement2.checked) actor.actorType = Personal.ActorType.CastNarrator;
+            else actor.actorType = Personal.ActorType.Caster;
+        }
+        else {
+            if (actorTypeElement2.checked) actor.actorType = Personal.ActorType.Narrator;
+            else actor.actorType = Personal.ActorType.Default;
+        }
 
         controller.Model.UpdateActor(actor, () => {
             controller.PostChangeClose(actor.aid);

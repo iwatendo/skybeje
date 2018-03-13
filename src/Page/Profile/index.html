@@ -41,25 +41,17 @@
                     <div>
                         <div class="sbj-profile-text-left">
                             <div id="sbj-profile-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="sbj-profile-name" spellcheck=false maxlength="16" autocomplete="off" required></input>
+                                <input class="mdl-textfield__input" type="text" id="sbj-profile-name" spellcheck=false maxlength="16" autocomplete="off"
+                                    required></input>
                                 <label class="mdl-textfield__label" for="sbj-profile-name">表示名</label>
                                 <span class="mdl-textfield__error">表示名を入力してください</span>
                             </div>
-                            <div id="sbj-profile-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="sbj-profile-tag" spellcheck=false maxlength="64"></input>
-                                <label class="mdl-textfield__label" for="sbj-profile-tag">タグ</label>
-                            </div>
-                        </div>
-                        <div class="sbj-profile-text-right">
-                            <div id="sbj-profile-note-field" class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <textarea class="mdl-textfield__input" type="text" rows="4" id="sbj-profile-note" spellcheck=false maxlength="2048"></textarea>
-                                <label class="mdl-textfield__label" for="sbj-profile-note">プロフィール</label>
-                            </div>
                         </div>
                     </div>
-
                     <div class="sbj-profilie-tab-bar mdl-layout__tab-bar mdl-js-ripple-effect">
                         <a href="#sbj-profile-icons" class="mdl-layout__tab is-active" draggable="false">アイコン／発言設定</a>
+                        <a href="#sbj-profile-details" class="mdl-layout__tab" draggable="false">プロフィール詳細</a>
+                        <a href="#sbj-profile-castlink" class="mdl-layout__tab" draggable="false">配信連動設定</a>
                         <a href="#sbj-profile-guide" class="mdl-layout__tab" draggable="false">簡易チャットボット</a>
                     </div>
                 </header>
@@ -86,8 +78,35 @@
                             <div class="sbj-profile-sub-list" id="sbj-profile-icons-list">
                                 <!-- React -->
                             </div>
-                        <div>
+                        </div>
                     </section>
+
+                    <section class="mdl-layout__tab-panel" id="sbj-profile-details">
+                        <div class="sbj-profile-details-content mdl-color-text--grey-600">
+                            <div id="sbj-profile-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="sbj-profile-tag" spellcheck=false maxlength="64"></input>
+                                <label class="mdl-textfield__label" for="sbj-profile-tag">タグ</label>
+                            </div>
+                            <div id="sbj-profile-note-field" class="sbj-profile-note mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <textarea class="mdl-textfield__input" type="text" rows="6" id="sbj-profile-note" spellcheck=false maxlength="2048"></textarea>
+                                <label class="mdl-textfield__label" for="sbj-profile-note">プロフィール詳細</label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mdl-layout__tab-panel" id="sbj-profile-castlink">
+                        <div class="sbj-profile-details-content mdl-color-text--grey-600">
+                            <label id="sbj-profile-caster-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect sbj-profile-checkbox" for="sbj-profile-caster">
+                                <input type="checkbox" id="sbj-profile-caster" class="mdl-switch__input">
+                                <span class="mdl-switch__label">チャット発言時に配信画面のアイコンを自動的に切替える</span>
+                            </label>
+                            <label id="sbj-profile-narrator-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect sbj-profile-checkbox" for="sbj-profile-narrator">
+                                <input type="checkbox" id="sbj-profile-narrator" class="mdl-switch__input">
+                                <span class="mdl-switch__label">配信画面上にチャットの発言内容を字幕で表示する</span>
+                            </label>
+                        </div>
+                    </section>
+
                     <section class="mdl-layout__tab-panel" id="sbj-profile-guide">
                         <div class="sbj-profile-page-content">
                             <div class="sbj-profile-sub-menu">
@@ -107,17 +126,13 @@
                             <div class="sbj-profile-sub-list" id="sbj-profile-guides-list">
                                 <!-- React -->
                             </div>
-                        <div>
+                        </div>
                     </section>
                 </main>
 
                 <footer class="sbj-profile-footer mdl-mini-footer">
                     <div class="sbj-profile-footer-panel">
                         <div class="sbj-profile-footer-left">
-                            <label id="sbj-profile-liveicon-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-profile-liveicon">
-                                <input type="checkbox" id="sbj-profile-liveicon" class="mdl-switch__input">
-                                <span class="mdl-switch__label">発言時にカーソルアイコンを切替える</span>
-                            </label>                            
                         </div>
                         <div class="sbj-profile-footer-right">
                             <button id='sbj-profile-append' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
@@ -153,7 +168,7 @@
                             <i class="material-icons">photo_camera</i>
                             &nbsp;カメラ&nbsp;
                         </button>
-                   </div>
+                    </div>
 
                     <div class="sbj-dialog-attach-action-right">
                         <button id='sbj-image-close' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect sbj-dialog-close">
@@ -173,17 +188,17 @@
                     <div class="sbj-image-setting">
 
                         <div class="sbj-message-color-box">
-                            <span class="sbj-message-color-lable">メッセージの文字色&nbsp;</span>
-                            <input class="sbj-message-color" id="sbj-message-color-value" type="color" value="#ffffff"/>
+                            <span class="sbj-message-color-label">メッセージの文字色&nbsp;</span>
+                            <input class="sbj-message-color" id="sbj-message-color-value" type="color" value="#ffffff" />
                         </div>
                         <div class="sbj-message-color-box">
-                            <span class="sbj-message-color-lable">メッセージの背景色&nbsp;</span>
-                            <input class="sbj-message-color" id="sbj-message-balloon-color-value" type="color" value="#ffffff"/>
+                            <span class="sbj-message-color-label">メッセージの背景色&nbsp;</span>
+                            <input class="sbj-message-color" id="sbj-message-balloon-color-value" type="color" value="#ffffff" />
                         </div>
                         <div class="sbj-message-color-box">
                         </div>
                         <div id="sbj-image-dispratio" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-image-dispratio-value"/>
+                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-image-dispratio-value" />
                             <label class="mdl-textfield__label" for="sbj-image-dispratio-value">配信画面の高さに対する表示比率(％)</label>
                             <span class="mdl-textfield__error">数値を入力してください</span>
                         </div>
@@ -284,7 +299,7 @@
                         <div class="sbj-guide-options">
                             <span>比較：</span>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-match-options-0">
-                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-match-options" id="sbj-gaide-match-options-0"  value="0" checked>
+                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-match-options" id="sbj-gaide-match-options-0" value="0" checked>
                                 <span class="mdl-radio__label">部分一致</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-match-options-1">
@@ -295,7 +310,8 @@
                         <div class="sbj-guide-options">
                             <span>対象：</span>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-0">
-                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-0" value="0" checked>
+                                <input type="radio" class="mdl-radio__button" name="sbj-gaide-rescheck-options" id="sbj-gaide-rescheck-options-0" value="0"
+                                    checked>
                                 <span class="mdl-radio__label">全員</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-gaide-rescheck-options-1">

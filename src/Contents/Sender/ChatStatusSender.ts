@@ -1,4 +1,5 @@
 import Sender from "../../Base/Container/Sender";
+import { ActorType } from "../IndexedDB/Personal";
 
 /**
  * チャットクライアントからサーバント側にチャット情報を送る為のクラス
@@ -12,13 +13,13 @@ export default class ChatStatusSender extends Sender {
         this.peerid = "";
         this.aid = "";
         this.iid = "";
-        this.isDispChange = false;
+        this.actorType = ActorType.Default;
         this.message = "";
     }
 
     peerid: string;
     aid: string;
     iid: string;
-    isDispChange: boolean;
+    actorType: ActorType;
     message: string;
 }

@@ -58,7 +58,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     public GetOption(): CastSettingSender {
         let sender = new CastSettingSender();
         sender.isSFU = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
-        sender.dispUserCursor = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
+        sender.useCastProp = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
         return sender;
     }
 

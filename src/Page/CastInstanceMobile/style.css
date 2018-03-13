@@ -43,7 +43,7 @@
 .sbj-actions{
     position: absolute;
     width: 100%;
-    bottom: 32px;
+    bottom: 16px;
     text-align: center;
     z-index: 4;
 }
