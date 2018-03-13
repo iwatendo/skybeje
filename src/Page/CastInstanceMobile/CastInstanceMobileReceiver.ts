@@ -42,7 +42,7 @@ export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInst
         if (sender.type === CastSubTitlesSender.ID) {
             let cst = sender as CastSubTitlesSender;
             this.Controller.SwPeer.SendAll(cst);
-            this.Controller.View.SubTitles.SetMessage(cst)
+            this.Controller.View.Cursor.SetMessage(cst)
         }
 
         if (sender.type === RoomSender.ID) {

@@ -7,7 +7,7 @@ import YouTubeUtil, { YouTubeOption, OnCreateYouTubePlayer } from "../../Content
 import GadgetVisitorController from "./GadgetVisitorController";
 import { Icon } from "../../Contents/IndexedDB/Personal";
 import { DialogMode } from "../../Contents/AbstractDialogController";
-import CursorController from "../CastProp/Cursor/CurosrController";
+import CastPropController from "../CastProp/CastPropController";
 import GadgetCastSettingSender from "../../Contents/Sender/GadgetCastSettingSender";
 import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
 
@@ -17,7 +17,7 @@ import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
  */
 export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorController> {
 
-    public Cursor: CursorController;
+    public Cursor: CastPropController;
 
 
     //
@@ -49,7 +49,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
         let itemport = document.getElementById('sbj-gadget-visitor-item-port') as HTMLElement;
 
         //  let curport = document.getElementById('sbj-gadget-visitor-cursor-port') as HTMLElement;
-        //  this.Cursor = new CursorController(this.Controller.ConnCache, video, itemport, curport);
+        //  this.Cursor = new CastPropController(this.Controller.ConnCache, video, itemport, curport);
         //  this.Cursor.DisplayAll();
     }
 
@@ -61,10 +61,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
     public SetGadgetSetting(sender: GadgetCastSettingSender) {
 
         if (this.Cursor) {
-            if (sender.dispUserCursor) {
-                this.Cursor.ClearQueue();
-            }
-            else {
+            if (!sender.dispUserCursor) {
                 this.Cursor.Clear();
             }
         }

@@ -1,12 +1,12 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import CastCursor from './CastCursor';
-import CursorController from "./CurosrController";
+import CastPropController from "../CastPropController";
 import StyleCache from '../../../Contents/Cache/StyleCache';
 
 
 interface CursorItemrProp {
-    controller: CursorController;
+    controller: CastPropController;
     cursor: CastCursor;
 }
 
@@ -76,7 +76,7 @@ export default class CursorItemComponent extends React.Component<CursorItemrProp
             if (e.buttons === 1) {
                 let clientX = e.clientX;
                 let clientY = e.clientY;
-                this.props.controller.CastCursorSend(clientX, clientY, true);
+                this.props.controller.SendCastCursor(clientX, clientY, true);
             }
         }
 

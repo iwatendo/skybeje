@@ -4,8 +4,7 @@ import StdUtil from "../../Base/Util/StdUtil";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
-import CursorController from "../CastProp/Cursor/CurosrController";
-import SubTitlesController from "../CastProp/SubTitles/SubTitlesController";
+import CastPropController from "../CastProp/CastPropController";
 import CastVisitorController from "./CastVisitorController";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 
@@ -14,8 +13,7 @@ import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
  */
 export class CastVisitorView extends AbstractServiceView<CastVisitorController> {
 
-    public Cursor: CursorController;
-    public SubTitles: SubTitlesController;
+    public Cursor: CastPropController;
 
 
     public IsMobile: boolean;
@@ -24,8 +22,6 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
     //
     public Initialize(callback: OnViewLoad) {
 
-        let subtitleElement = document.getElementById('sbj-cast-subtitles-text') as HTMLElement;        
-        this.SubTitles = new SubTitlesController(subtitleElement);
         this.IsMobile = StdUtil.IsMobile();
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
@@ -109,7 +105,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
-        this.Cursor = new CursorController(this.Controller, video, itemport, curport);
+        this.Cursor = new CastPropController(this.Controller, video, itemport, curport);
         this.Cursor.DisplayAll();
 
         MessageChannelUtil.SetChild(this.Controller, (sender) => {
@@ -126,12 +122,8 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
     public SetCastSetting(sender: CastSettingSender) {
 
         if (this.Cursor) {
-            if (sender.useCastProp) {
-                this.Cursor.ClearQueue();
-            }
-            else {
+            if (!sender.useCastProp) {
                 this.Cursor.Clear();
-                this.SubTitles.Clear();
             }
         }
     }

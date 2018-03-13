@@ -40,8 +40,8 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
         }
 
         //  字幕表示
-        if(sender.type === CastSubTitlesSender.ID){
-            this.Controller.View.SubTitles.SetMessage(sender as CastSubTitlesSender);
+        if (sender.type === CastSubTitlesSender.ID) {
+            this.Controller.View.Cursor.SetMessage(sender as CastSubTitlesSender);
         }
     }
 

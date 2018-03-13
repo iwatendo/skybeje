@@ -1,15 +1,17 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as Personal from "../../../Contents/IndexedDB/Personal";
-import CursorComponent from "./CursorComponent";
-import IServiceController from '../../../Base/IServiceController';
-import GetIconSender from '../../../Contents/Sender/GetIconSender';
-import IconCursorSender from '../../../Contents/Sender/IconCursorSender';
-import ChatStatusSender from '../../../Contents/Sender/ChatStatusSender';
-import LocalCache from '../../../Contents/Cache/LocalCache';
-import StyleCache from '../../../Contents/Cache/StyleCache';
-import CastCursor from './CastCursor';
-import CastSubTitlesSender from '../../../Contents/Sender/CastSubTitlesSender';
+import * as Personal from "../../Contents/IndexedDB/Personal";
+import IServiceController from '../../Base/IServiceController';
+import GetIconSender from '../../Contents/Sender/GetIconSender';
+import IconCursorSender from '../../Contents/Sender/IconCursorSender';
+import ChatStatusSender from '../../Contents/Sender/ChatStatusSender';
+import LocalCache from '../../Contents/Cache/LocalCache';
+import StyleCache from '../../Contents/Cache/StyleCache';
+import CastSubTitlesSender from '../../Contents/Sender/CastSubTitlesSender';
+
+import CastCursor from './Cursor/CastCursor';
+import SubTitlesComponent from './SubTitles/SubTitlesComponent';
+import CastPropComponent from './CastPropComponent';
 
 
 export class VideoDispOffset {
@@ -22,17 +24,16 @@ export class VideoDispOffset {
 /**
  * 
  */
-export default class CursorController {
+export default class CastPropController {
 
     private _service: IServiceController;
     private _video: HTMLVideoElement;
     private _cursorDispElement: HTMLElement;
-    private _busy: boolean = false;
-    private _queue: IconCursorSender = null;
     private _baseCursorList = new Array<IconCursorSender>();   //  送られて来たカーソル情報の保持（相対座標）
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
+    private _subtitles = new CastSubTitlesSender("");
 
-    private static _videoHeight = 0;
+    private static _vdo: VideoDispOffset;
 
     public IconCursor: IconCursorSender;
     public DispIid: string;
@@ -53,22 +54,21 @@ export default class CursorController {
         this._cursorDispElement = cursorDivElement;
 
         itemDivElement.onmousedown = (ev: MouseEvent) => {
-
             if (ev.buttons === 1 && this.IsCursorPort(ev)) {
-                this.CastCursorSend(ev.clientX, ev.clientY, true);
+                this.SendCastCursor(ev.clientX, ev.clientY, true);
             }
         };
 
         itemDivElement.onmousemove = (ev: MouseEvent) => {
             if (ev.buttons === 1 && this.IsCursorPort(ev)) {
-                this.CastCursorSend(ev.clientX, ev.clientY, true);
+                this.SendCastCursor(ev.clientX, ev.clientY, true);
             }
         };
 
         if (LocalCache.DebugMode === 0) {
             itemDivElement.oncontextmenu = (pv: PointerEvent) => {
                 //  右クリック時カーソルを消す。
-                this.CastCursorSend(0, 0, false);
+                this.SendCastCursor(0, 0, false);
                 //  コンテキストメニューのキャンセル
                 return false;
             }
@@ -78,10 +78,79 @@ export default class CursorController {
 
         window.onbeforeunload = (ev) => {
             //  接続が切れた場合、カーソルを非表示にする
-            this.CastCursorSend(0, 0, false);
+            this.SendCastCursor(0, 0, false);
         }
 
     }
+
+
+    /**
+     * 字幕表示
+     * @param csr 
+     */
+    public SetMessage(csr: CastSubTitlesSender) {
+        this._subtitles = csr;
+        this.DoRender();
+    }
+
+
+    /**
+     * 描画処理
+     */
+    private DoRender() {
+        ReactDOM.render(<CastPropComponent controller={this} cursorList={this._cursorList} subtitles={this._subtitles} />, this._cursorDispElement, (el) => {
+            this.SetCursorIcon(this._cursorList);
+        });
+    }
+
+    /**
+     * ビデオ上のマウスカーソルの動作を検出し、CastInstanceに送信
+     * ※自身のキャスト上だとしても CastInstance 経由でカーソルを表示する
+     * @param video 
+     * @param clientX 
+     * @param clientY 
+     * @param isDisp
+     */
+    public SendCastCursor(clientX: number, clientY: number, isDisp: boolean) {
+
+        let sender = this.IconCursor;
+
+        if (sender) {
+
+            //  座標のオフセット取得
+            let vdo = this.GetVideoDispOffset(this._video);
+            //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
+            sender.posRx = (clientX - vdo.offsetRight) / vdo.dispWidth;
+            sender.posRy = (clientY - vdo.offsetTop) / vdo.dispHeight;
+            sender.isDisp = isDisp;
+
+            this.StartSendLoop(sender);
+        }
+    }
+
+    private _queue: IconCursorSender;
+    private _sendInterval: number;
+
+    /**
+     * 
+     * @param sender 
+     */
+    private StartSendLoop(sender: IconCursorSender) {
+        this._queue = sender;
+        if (!this._sendInterval) {
+            this._sendInterval = setInterval(() => {
+                if (this._queue) {
+                    this.SendCursorToOwner(this._queue);
+                    this._queue = null;
+                }
+                else {
+                    clearInterval(this._sendInterval);
+                    this._sendInterval = undefined;
+                }
+            }, 20);
+        }
+    }
+
 
 
     /**
@@ -110,25 +179,11 @@ export default class CursorController {
      * 表示のクリア処理
      */
     public Clear() {
-
-        this.ClearQueue();
         this._baseCursorList = new Array<IconCursorSender>();
         this._cursorList = new Array<CastCursor>();
-
-        //  カーソル表示があればクリア
-        ReactDOM.render(<CursorComponent controller={this} CursorList={this._cursorList} />, this._cursorDispElement, (el) => {
-            this.SetCursorIcon(this._cursorList);
-        });
+        this._subtitles = new CastSubTitlesSender("");
+        this.DoRender();
     };
-
-
-    /**
-     * カーソルのキュー情報をクリア
-     */
-    public ClearQueue() {
-        this._queue = null;
-        this._busy = false;
-    }
 
 
     /**
@@ -146,9 +201,9 @@ export default class CursorController {
      * 
      */
     public DisplayAll() {
-        this.ClearQueue();
-        let vdo = this.GetVideoDispOffset(this._video);
-        this._baseCursorList.forEach((cur, key) => { this.Display(cur); });
+        CastPropController._vdo = this.GetVideoDispOffset(this._video);
+        this._baseCursorList.forEach((cur, key) => { this.SetCursorList(cur); });
+        this.DoRender();
     }
 
 
@@ -158,25 +213,33 @@ export default class CursorController {
      */
     public SetCursor(cursor: IconCursorSender) {
 
-        //  前回の情報は削除
+        //  前回の情報は削除して最後尾に追加
         this._baseCursorList = this._baseCursorList.filter((c) => c.homePeerId !== cursor.homePeerId);
-
-        //  最後尾に追加する
         this._baseCursorList.push(cursor);
-        this.Display(cursor);
+
+        CastPropController._vdo = this.GetVideoDispOffset(this._video);
+        this.SetCursorList(cursor);
+        this.DoRender();
     }
 
 
     /**
-     * Sendされてきたカーソルデータを保持する
+     * カーソルをリストに追加
      * @param cursor
      */
-    public SetDispCursor(cursor: CastCursor) {
+    private SetCursorList(cursor: IconCursorSender) {
+
+        let vdo = CastPropController._vdo;
+        let cursorX = Math.round(cursor.posRx * vdo.dispWidth + vdo.offsetRight);
+        let cursorY = Math.round(cursor.posRy * vdo.dispHeight + vdo.offsetTop);
+
+        let dispCursor = new CastCursor(cursor.homePeerId, cursor.aid, cursor.iid, "", cursorX, cursorY, cursor.isDisp);
 
         //  前回情報は削除して最後尾に追加する
-        this._cursorList = this._cursorList.filter((c) => c.peerid !== cursor.peerid);
-        this._cursorList.push(cursor);
+        this._cursorList = this._cursorList.filter((c) => c.peerid !== dispCursor.peerid);
+        this._cursorList.push(dispCursor);
     }
+
 
 
     /**
@@ -189,7 +252,10 @@ export default class CursorController {
     }
 
 
-
+    /**
+     * 
+     * @param cur 
+     */
     public SetChatStatus(cur: ChatStatusSender) {
 
         if (!this.IconCursor) {
@@ -216,73 +282,6 @@ export default class CursorController {
             this._service.SwPeer.SendToOwner(msg);
         }
 
-    }
-
-
-    /**
-     * マウスカーソルの表示処理
-     * @param cursor
-     */
-    private Display(cursor: IconCursorSender) {
-
-        let vdo = this.GetVideoDispOffset(this._video);
-
-        let cursorX = Math.round(cursor.posRx * vdo.dispWidth + vdo.offsetRight);
-        let cursorY = Math.round(cursor.posRy * vdo.dispHeight + vdo.offsetTop);
-
-        let dispCursor = new CastCursor(cursor.homePeerId, cursor.aid, cursor.iid, "", cursorX, cursorY, cursor.isDisp);
-        this.SetDispCursor(dispCursor);
-
-        CursorController._videoHeight = vdo.dispHeight;
-
-        //  描画処理
-        ReactDOM.render(<CursorComponent controller={this} CursorList={this._cursorList} />, this._cursorDispElement, (el) => {
-            //  描画後、カーソルのCSSを設定する
-            this.SetCursorIcon(this._cursorList);
-        });
-
-        setTimeout(() => {
-            //  queueがある場合、最後に送信する
-            if (this._queue !== null && this._queue.aid === cursor.aid) {
-                this.SendCursorToOwner(this._queue);
-                this._queue = null;
-            }
-            else {
-                this._busy = false;
-            }
-        }, 10);
-    }
-
-
-    /**
-     * ビデオ上のマウスカーソルの動作を検出し、CastInstanceに送信
-     * 自身のキャスト上だとしても CastInstance 経由でカーソルを表示させる
-     * @param video 
-     * @param clientX 
-     * @param clientY 
-     * @param isDisp
-     */
-    public CastCursorSend(clientX: number, clientY: number, isDisp: boolean) {
-
-        let sender = this.IconCursor;
-
-        if (sender) {
-
-            //  座標のオフセット取得
-            let vdo = this.GetVideoDispOffset(this._video);
-            //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
-            sender.posRx = (clientX - vdo.offsetRight) / vdo.dispWidth;
-            sender.posRy = (clientY - vdo.offsetTop) / vdo.dispHeight;
-            sender.isDisp = isDisp;
-
-            if (this._busy) {
-                this._queue = sender;
-            }
-            else {
-                this._busy = true;
-                this.SendCursorToOwner(sender);
-            }
-        }
     }
 
 
@@ -407,11 +406,11 @@ export default class CursorController {
         //  アイコンのサイズ調整
         let size: number;
         if (dispratio && dispratio > 0) {
-            size = Math.round(CursorController._videoHeight * dispratio / 100);
+            size = Math.round(CastPropController._vdo.dispHeight * dispratio / 100);
         }
         else {
             //  デフォルトは高さに対して 8% とする
-            size = Math.round(CursorController._videoHeight * 8 / 100);
+            size = Math.round(CastPropController._vdo.dispHeight * 8 / 100);
         }
         StyleCache.SetIconSize(iid, size);
     }

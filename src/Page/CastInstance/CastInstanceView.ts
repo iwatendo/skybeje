@@ -13,14 +13,12 @@ import CastInstanceController from "./CastInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import { DialogMode } from "../../Contents/AbstractDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
-import CursorController from "../CastProp/Cursor/CurosrController";
+import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
-import SubTitlesController from "../CastProp/SubTitles/SubTitlesController";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
-    public SubTitles: SubTitlesController;
-    public Cursor: CursorController;
+    public Cursor: CastPropController;
 
     private _micDeviceView: DeviceView;
     private _camDeviceView: DeviceView;
@@ -30,9 +28,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      * 初期化処理
      */
     public Initialize() {
-
-        let subtitleElement = document.getElementById('sbj-cast-subtitles-text') as HTMLElement;
-        this.SubTitles = new SubTitlesController(subtitleElement);
 
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
@@ -248,7 +243,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
-        this.Cursor = new CursorController(this.Controller, video, itemport, curport);
+        this.Cursor = new CastPropController(this.Controller, video, itemport, curport);
         this.Cursor.DisplayAll();
     }
 
@@ -260,12 +255,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     public SetCastSetting(sender: CastSettingSender) {
 
         if (this.Cursor) {
-            if (sender.useCastProp) {
-                this.Cursor.ClearQueue();
-            }
-            else {
+            if (!sender.useCastProp) {
                 this.Cursor.Clear();
-                this.SubTitles.Clear();
             }
         }
     }
