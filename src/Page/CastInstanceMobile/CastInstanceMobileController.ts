@@ -30,6 +30,8 @@ export default class CastInstanceMobileController extends AbstractServiceControl
     public CursorCache: CursorCache;
     public Stream: MediaStream;
 
+    private _roomPeerMap = new Map<string, string>();
+
     /**
      *
      */
@@ -95,8 +97,6 @@ export default class CastInstanceMobileController extends AbstractServiceControl
         this.CursorCache.forEach((cursor) => {
             this.SwPeer.SendTo(conn, cursor);
         });
-
-        this.SendPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
 
@@ -106,9 +106,26 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.SendPeerCount(this.SwPeer.GetAliveConnectionCount());
         this.CursorCache.Remove(conn.remoteId);
         this.View.Cursor.Remove(conn.remoteId);
+    }
+
+
+    /**
+     * 
+     */
+    public OnRoomPeerJoin(peerid: string) {
+        this._roomPeerMap.set(peerid, peerid);
+        this.SendPeerCount(this._roomPeerMap.size);
+    }
+
+
+    /**
+     * 
+     */
+    public OnRoomPeerLeave(peerid: string) {
+        this._roomPeerMap.delete(peerid);
+        this.SendPeerCount(this._roomPeerMap.size);
     }
 
 
