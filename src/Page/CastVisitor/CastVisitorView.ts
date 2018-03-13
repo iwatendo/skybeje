@@ -24,7 +24,8 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
     //
     public Initialize(callback: OnViewLoad) {
 
-        this.SubTitles = new SubTitlesController();
+        let subtitleElement = document.getElementById('sbj-cast-subtitles-text') as HTMLElement;        
+        this.SubTitles = new SubTitlesController(subtitleElement);
         this.IsMobile = StdUtil.IsMobile();
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();

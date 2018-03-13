@@ -9,6 +9,7 @@ import ChatStatusSender from '../../../Contents/Sender/ChatStatusSender';
 import LocalCache from '../../../Contents/Cache/LocalCache';
 import StyleCache from '../../../Contents/Cache/StyleCache';
 import CastCursor from './CastCursor';
+import CastSubTitlesSender from '../../../Contents/Sender/CastSubTitlesSender';
 
 
 export class VideoDispOffset {
@@ -204,6 +205,13 @@ export default class CursorController {
         if (cur.isDispChange && cur.message.length > 0 && cur.iid !== this.DispIid) {
             this.SendCursorToOwner(this.IconCursor);
         }
+
+        //  メッセージ送信された場合に字幕表示をする
+        if (cur.isDispChange && cur.message.length > 0) {
+            let msg = new CastSubTitlesSender(cur.message);
+            this._service.SwPeer.SendToOwner(msg);
+        }
+
     }
 
 

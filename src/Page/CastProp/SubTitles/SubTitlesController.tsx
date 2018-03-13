@@ -10,10 +10,11 @@ import CastSubTitlesSender from '../../../Contents/Sender/CastSubTitlesSender';
  */
 export default class SubTitlesController {
 
-    private _subtitleElement = document.getElementById('sbj-cast-subtitles-text') as HTMLElement;
+    private _subtitleElement: HTMLElement;
 
 
-    public constructor() {
+    public constructor(element: HTMLElement) {
+        this._subtitleElement = element;
     }
 
 

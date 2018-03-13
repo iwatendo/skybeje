@@ -12,6 +12,7 @@ import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import IconSender from "../../Contents/Sender/IconSender";
+import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 
 
 export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInstanceMobileController> {
@@ -35,6 +36,13 @@ export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInst
         //  アイコン取得
         if (sender.type === IconSender.ID) {
             this.Controller.View.Cursor.SetIcon(conn.remoteId, (sender as IconSender).icon);
+        }
+
+        //  字幕表示
+        if (sender.type === CastSubTitlesSender.ID) {
+            let cst = sender as CastSubTitlesSender;
+            this.Controller.SwPeer.SendAll(cst);
+            this.Controller.View.SubTitles.SetMessage(cst)
         }
 
         if (sender.type === RoomSender.ID) {

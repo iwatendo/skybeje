@@ -15,9 +15,11 @@ import { DialogMode } from "../../Contents/AbstractDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import CursorController from "../CastProp/Cursor/CurosrController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import SubTitlesController from "../CastProp/SubTitles/SubTitlesController";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
+    public SubTitles: SubTitlesController;
     public Cursor: CursorController;
 
     private _micDeviceView: DeviceView;
@@ -28,6 +30,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      * 初期化処理
      */
     public Initialize() {
+
+        let subtitleElement = document.getElementById('sbj-cast-subtitles-text') as HTMLElement;
+        this.SubTitles = new SubTitlesController(subtitleElement);
 
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
@@ -263,6 +268,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             }
         }
     }
-    
+
 
 }
