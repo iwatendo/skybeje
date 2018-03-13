@@ -15,7 +15,7 @@ export default class IconCursorSender extends Sender {
         this.iid = "";
         this.posRx = 0;
         this.posRy = 0;
-        this.isDisp = true;
+        this.isDisp = false;
     }
 
     /**
