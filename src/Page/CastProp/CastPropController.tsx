@@ -173,6 +173,7 @@ export default class CastPropController {
      */
     public Remove(peerid: string) {
         this._baseCursorList = this._baseCursorList.filter(cur => cur.homePeerId !== peerid);
+        this._baseCursorList = this._baseCursorList.filter(cur => cur.visitorPeerId !== peerid);
         this._cursorList = this._cursorList.filter(cur => cur.peerid !== peerid);
         this.DisplayAll();
     }
@@ -183,6 +184,7 @@ export default class CastPropController {
      */
     public DisplayAll() {
         CastPropController._vdo = this.GetVideoDispOffset(this._video);
+        this._cursorList = new Array<CastCursor>();
         this._baseCursorList.forEach((cur, key) => { this.SetCursorList(cur); });
         this.DoRender();
     }

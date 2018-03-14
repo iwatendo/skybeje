@@ -70,8 +70,12 @@ export default class CursorItemComponent extends React.Component<CursorItemrProp
      */
     private onMouseDown(e: MouseEvent) {
         if (this.props.controller.IconCursor) {
-            CastPropController.OffsetX = this.props.cursor.posX - e.clientX;
-            CastPropController.OffsetY = this.props.cursor.posY - e.clientY;
+
+            if (this.props.controller.IconCursor.iid === this.props.cursor.iid) {
+                CastPropController.OffsetX = this.props.cursor.posX - e.clientX;
+                CastPropController.OffsetY = this.props.cursor.posY - e.clientY;
+            }
+
             if (e.buttons === 1) {
                 this.props.controller.SendCastCursor(e.clientX, e.clientY, true);
             }
@@ -91,8 +95,15 @@ export default class CursorItemComponent extends React.Component<CursorItemrProp
         }
     }
 
+
+    /**
+     * 
+     * @param e 
+     */
     private onMouseUp(e: MouseEvent) {
-        CastPropController.OffsetX = 0;
-        CastPropController.OffsetY = 0;
+        if (this.props.controller.IconCursor) {
+            CastPropController.OffsetX = 0;
+            CastPropController.OffsetY = 0;
+        }
     }
 }

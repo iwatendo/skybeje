@@ -24,6 +24,20 @@ export default class CursorCache {
         }
     }
 
+
+    /**
+     * カーソル情報の取得
+     * @param peerid 
+     */
+    public Get(peerid: string): IconCursorSender {
+        if (this._map.has(peerid)) {
+            return this._map.get(peerid);
+        }
+        else {
+            return null;
+        }
+    }
+
     /**
      * ピアの切断等によるカーソルの削除
      * @param peerid 

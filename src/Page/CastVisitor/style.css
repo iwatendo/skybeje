@@ -66,6 +66,12 @@ body {
     left:24px;
 }
 
+#sbj-cast-visitor-reload{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
 #sbj-cast-visitor-voice-only{
     position: absolute;
     margin: 0px;

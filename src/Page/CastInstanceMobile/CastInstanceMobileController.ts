@@ -106,6 +106,12 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
+        let cursor = this.CursorCache.Get(conn.remoteId);
+        if (cursor) {
+            //  切断が発生した場合、全クライアントでカーソルが消えた事を通知
+            cursor.isDisp = false;
+            this.SwPeer.SendAll(cursor);
+        }
         this.CursorCache.Remove(conn.remoteId);
         this.View.Cursor.Remove(conn.remoteId);
     }

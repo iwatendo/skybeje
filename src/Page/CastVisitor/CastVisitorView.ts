@@ -63,6 +63,11 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
                 video.volume = (value / 100);
             };
 
+            //  リロード処理
+            document.getElementById('sbj-cast-visitor-reload').onclick = (e) => {
+                location.reload();
+            }
+
         }
 
         video.oncanplay = (ev) => {
