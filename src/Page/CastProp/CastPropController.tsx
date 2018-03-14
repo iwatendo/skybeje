@@ -16,6 +16,8 @@ import IntervalSend from '../../Base/Util/IntervalSend';
 
 
 export class VideoDispOffset {
+    clientWidth: number = 0;
+    clientHeight: number = 0;
     dispWidth: number = 0;
     dispHeight: number = 0;
     offsetRight: number = 0;
@@ -103,7 +105,8 @@ export default class CastPropController {
      * 描画処理
      */
     private DoRender() {
-        ReactDOM.render(<CastPropComponent controller={this} cursorList={this._cursorList} subtitles={this._subtitles} />, this._cursorDispElement, (el) => {
+        let vdo = this.GetVideoDispOffset(this._video);
+        ReactDOM.render(<CastPropComponent controller={this} cursorList={this._cursorList} subtitles={this._subtitles} offset={vdo} />, this._cursorDispElement, (el) => {
             this.SetCursorIcon(this._cursorList);
         });
     }
@@ -283,6 +286,9 @@ export default class CastPropController {
         let divAscpet: number = divWidth / divHeight;
 
         let result = new VideoDispOffset();
+
+        result.clientWidth = video.clientWidth;
+        result.clientHeight = video.clientHeight;
 
         if (divAscpet > videoAspect) {
             //  divが横に長い場合・・・

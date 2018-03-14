@@ -17,18 +17,12 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 96px;
     text-align: center;
-}
-
-.sbj-cast-subtitles-text {
-    margin: 8px;
-    padding: 8px;
-    border: 8px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
     color: var(--sbj-color-highlight-text);
     text-shadow: -1px -1px 0 var(--sbj-color-default-text);
     font-size: 32px;
     background-color: var(--sbj-color-edge-background);
 }
-
-
