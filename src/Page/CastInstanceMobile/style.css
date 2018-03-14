@@ -6,64 +6,20 @@
     overflow: hidden;
 }
 
-#video-preview {
+.sbj-video-preview {
     width: 100%;
     height: 100%; 
     background-color: var(--sbj-color-edge-background);
     position: absolute;
 }
 
-#video-receiver{
-    width: 30%;
-    height: 30%;
-    position: absolute;
-    top : 5%;
-    right : 5%;
-    z-index: 2;
-}
-
 #sbj-cast-item-port{
     position: absolute;
     height: 100%;
     width: 100%;
-    z-index: 3;
 }
 
 #sbj-cast-cursor-port{
     height: 100%;
     width: 100%;
-    z-index: 3;
 }
-
-
-.device{
-    padding: 12px;
-}
-
-.sbj-actions{
-    position: absolute;
-    width: 100%;
-    bottom: 16px;
-    text-align: center;
-    z-index: 4;
-}
-
-.sbj-volume-button {
-    border-radius: 6px;
-    width: 64px;
-}
-
-.sbj-volume{
-    display: inline-block;
-    width: 160px;
-    margin: 0px 0px 0px -5px;
-}
-
-#sbj-cast-visitor-error{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-}
-

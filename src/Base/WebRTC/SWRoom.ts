@@ -33,7 +33,12 @@ export default class SWRoom {
     /**
      * 
      */
-    public Refresh() {
+    public Refresh(stream: MediaStream = null) {
+
+        if (stream) {
+            this._stream = stream;
+        }
+
         if (this._stream) {
             this._room.replaceStream(this._stream);
         }

@@ -7,78 +7,54 @@
     <link rel="icon" type="image/vnd.microsoft.icon" href='../image/favicon.ico'>
     <script src='/lib/forcedtimer.js'></script>
     <script src='/lib/skyway.min.js'></script>
-    <link rel='stylesheet' href='../lib/material.min.css' />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='../common.castprop.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
-    <script src='../lib/material.min.js'></script>
 </head>
 
 <body>
 
-    <div class="mdl-layout mdl-js-layout">
-        <main id="sbj-cast-instance-main" class="mdl-layout__content">
-
-            <audio id='audio' autoplay="true" hidden></audio>
-
-            <div class="sbj-video-content">
-                <video id='video-preview' autoplay="true" playsinline="true" muted></video>
-                <video id='video-receiver' autoplay="true" playsinline="true" muted></video>
-                <div id="sbj-cast-item-port">
-                    <div id="sbj-cast-cursor-port">
-                        <!-- React -->
-                    </div>
-                </div>
+    <div class="sbj-video-content">
+        <video id='sbj-video-preview' class='sbj-video-preview' autoplay="true" playsinline="true" muted></video>
+        <div id="sbj-cast-item-port">
+            <div id="sbj-cast-cursor-port">
+                <!-- React -->
             </div>
-
-            <div id="sbj-actions" class="sbj-actions mdl-card__actions">
-                <button id="sbj-volume-button-on" class="sbj-volume-button mdl-button mdl-js-button mdl-button--raised mdl-button--icon mdl-button--colored"
-                    hidden disabled>
-                    <i class="material-icons">volume_up</i>
-                </button>
-                <button id="sbj-volume-button-off" class="sbj-volume-button mdl-button mdl-js-button mdl-button--raised mdl-button--icon mdl-button--accent"
-                    hidden disabled>
-                    <i class="material-icons">volume_off</i>
-                </button>
-                <div id="sbj-volume" class="sbj-volume" hidden>
-                    <input id="sbj-volume-slider" type="range" min="0" max="100" value="0" tabindex="0" disabled>
-                </div>
-                <button id="sbj-camchange" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
-                    <i class="material-icons">cached</i>
-                    &nbsp;カメラ&nbsp;
-                </button>
-                <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
-                    <i class="material-icons">videocam</i>
-                    &nbsp;開始&nbsp;
-                </button>
-                <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
-                    <i class="material-icons">videocam_off</i>
-                    &nbsp;終了&nbsp;
-                </button>
-            </div>
-
-            <div id="sbj-cast-instance-stream-error" class="mdl-card__supporting-text" hidden>
-                <h5>
-                    &nbsp;&nbsp;カメラ及びマイクへの接続に失敗しました。
-                    <br/>
-                    <br/>&nbsp;&nbsp;LINE等のアプリから開いた場合、アプリ内のブラウザから標準ブラウザ（iPhoneの場合 Safari / Androidの場合 Chrome)を開いてください。
-                </h5>
-            </div>
-
-        </main>
-
-        <main id="sbj-cast-instance-disconnect" class="sbj-cast-instance-disconnect mdl-color-text--grey-600" hidden>
-            <div class="mdl-card__supporting-text">
-                <h4 id="error-message">
-                </h4>
-            </div>
-        </main>
-
+        </div>
     </div>
 
-    <script src='../lib/react.min.js'></script>
-    <script src='../lib/react-dom.min.js'></script>
+    <audio id='audio' autoplay="true" hidden></audio>
+
+    <section id="sbj-bottom-toolbar">
+        <ons-bottom-toolbar>
+            <ons-button id="sbj-cast-instance-start" modifier="large">配信開始</ons-button>
+        </ons-bottom-toolbar>
+    </section>
+
+    <ons-splitter>
+        <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+            <ons-page>
+                <ons-list>
+                    <ons-list-item id="sbj-camchange" tappable>
+                        <ons-icon size="30px" icon="md-switch-camera"></ons-icon>
+                        カメラ切替
+                    </ons-list-item>
+                    <ons-list-item id="sbj-cast-instance-stop" tappable>
+                        <ons-icon size="30px" icon="md-exit-to-app"></ons-icon>
+                        終了
+                    </ons-list-item>
+                </ons-list>
+            </ons-page>
+        </ons-splitter-side>
+        <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
+    </ons-splitter>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
     <script src="./bundle.js?v={version}"></script>
 
 </body>

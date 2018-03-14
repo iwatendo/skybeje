@@ -1,18 +1,8 @@
-﻿
-import * as Home from "../../Contents/IndexedDB/Home";
-
-import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
+﻿import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
-import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
-import SpeechUtil from "../../Base/Util/SpeechUtil";
-import LogUtil from "../../Base/Util/LogUtil";
 import StreamUtil, { MobileCam } from "../../Base/Util/StreamUtil";
 
-import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceMobileController from "./CastInstanceMobileController";
-import LinkUtil from "../../Base/Util/LinkUtil";
-import { DialogMode } from "../../Contents/AbstractDialogController";
-import LocalCache from "../../Contents/Cache/LocalCache";
 import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 
@@ -41,57 +31,43 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         let startBotton = document.getElementById('sbj-cast-instance-start') as HTMLInputElement;
         let stopBotton = document.getElementById('sbj-cast-instance-stop');
         let camchangeBotton = document.getElementById('sbj-camchange') as HTMLInputElement;
-        let volumeOn = document.getElementById("sbj-volume-button-on");
-        let volumeOff = document.getElementById("sbj-volume-button-off");
-        let sliderDiv = document.getElementById("sbj-volume");
+        //  let volumeOn = document.getElementById("sbj-volume-button-on");
+        //  let volumeOff = document.getElementById("sbj-volume-button-off");
+        //  let sliderDiv = document.getElementById("sbj-volume");
         let volumeSlider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
 
-        //  ストリーミング開始ボタン
-        startBotton.onclick = (e) => {
+        //  ストリーミング開始
+        document.getElementById('sbj-cast-instance-start').onclick = (e) => {
             this.Controller.StartStreaming();
-            startBotton.hidden = true;
+            document.getElementById('sbj-bottom-toolbar').hidden = true;
             stopBotton.hidden = false;
             camchangeBotton.hidden = true;
-
-            //  volumeOff.hidden = false;
-            //  sliderDiv.hidden = false;
         }
 
         //  ストリーミング停止ボタン
         stopBotton.onclick = (e) => {
-
             this.Controller.StopStreaming();
-            //  ページごと閉じてしまう。
+            this.Controller.SwPeer.Close();
+            //  ページごと閉じる。
             this.PageClose();
         };
 
         let isSafari = StdUtil.IsSafari();
         let isInit = false;
 
-        //  ミュート状態解除
-        volumeOff.onclick = (e) => {
-            volumeOn.hidden = false;
-            volumeOff.hidden = true;
-            this.SetMute(false, isSafari);
-        }
+        // //  ミュート状態解除
+        // volumeOff.onclick = (e) => {
+        //     volumeOn.hidden = false;
+        //     volumeOff.hidden = true;
+        //     this.SetMute(false, isSafari);
+        // }
 
-        //  ミュートにする
-        volumeOn.onclick = (e) => {
-            volumeOn.hidden = true;
-            volumeOff.hidden = false;
-            this.SetMute(true, isSafari);
-        }
-
-        //  音量調整
-        volumeSlider.oninput = (e) => {
-            let volumeStr = volumeSlider.value;
-
-            let isMute = (volumeStr === "0");
-            volumeOn.hidden = isMute;
-            volumeOff.hidden = !isMute;
-
-            this.SetVolume(volumeStr, isSafari);
-        }
+        // //  ミュートにする
+        // volumeOn.onclick = (e) => {
+        //     volumeOn.hidden = true;
+        //     volumeOff.hidden = false;
+        //     this.SetMute(true, isSafari);
+        // }
 
         let cam = MobileCam.REAR;
 
@@ -114,6 +90,11 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
                 //  リアとフロントのカメラを切替えプレビュー表示
                 cam = (cam === MobileCam.REAR ? MobileCam.FRONT : MobileCam.REAR);
                 startPreviewFunc(cam);
+
+                if (this.Controller.SwRoom) {
+                    this.Controller.SwRoom.Refresh(CastInstanceMobileView._mediaStream);
+                }
+
             }, 200);
         };
 
@@ -225,7 +206,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
 
     public StopStreamPreview() {
 
-        let videoElement = document.getElementById('video-preview') as HTMLVideoElement;
+        let videoElement = document.getElementById('sbj-video-preview') as HTMLVideoElement;
         if (videoElement) videoElement.srcObject = null;
 
         if (this.Controller.Stream) {
@@ -240,7 +221,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
     public SetStreamPreview(cam: MobileCam, callback) {
 
         let controller = this.Controller;
-        let videoElement = document.getElementById('video-preview') as HTMLVideoElement;
+        let videoElement = document.getElementById('sbj-video-preview') as HTMLVideoElement;
 
         let msc: MediaStreamConstraints;
         let isDebug = false;
@@ -279,7 +260,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
     public SetMediaStream(peerid: string, stream: MediaStream, isAlive: boolean) {
         CastInstanceMobileView._mediaStream = stream;
 
-        let videoRecv = document.getElementById('video-receiver') as HTMLVideoElement;
+        let videoRecv = document.getElementById('sbj-video-receiver') as HTMLVideoElement;
         videoRecv.srcObject = stream;
 
         (document.getElementById("sbj-volume-button-on") as HTMLInputElement).disabled = false;
@@ -289,31 +270,14 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
 
 
     /**
-     * エラーメッセージを表示します
-     * @param message 
-     */
-    public SetError(message: string) {
-
-        document.getElementById('sbj-cast-instance-main').hidden = true;
-
-        let disconnect = document.getElementById('sbj-cast-instance-disconnect');
-
-        if (disconnect) {
-            disconnect.hidden = false;
-            let errorEelement = document.getElementById('error-message');
-            errorEelement.innerText = message;
-        }
-
-    }
-
-
-    /**
      * ストリームが取得できなかった場合、メッセージ表示して終了する
      */
     public StreamErrorClose() {
-        document.getElementById('video-preview').hidden = true;
-        document.getElementById('video-receiver').hidden = true;
-        document.getElementById('sbj-cast-instance-stream-error').hidden = false;
+        document.getElementById('sbj-video-preview').hidden = true;
+
+        let msg = "カメラ及びマイクへの接続に失敗しました\n";
+        msg += "LINE等のアプリから開いた場合、アプリ内のブラウザから標準ブラウザ（iPhoneの場合 Safari / Androidの場合 Chrome)を開いてください。";
+        alert(msg);
         this.Controller.SwPeer.Close();
     }
 
@@ -322,7 +286,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
      * カーソル表示設定
      */
     public InitializeCursor() {
-        let video = document.getElementById('video-preview') as HTMLVideoElement;
+        let video = document.getElementById('sbj-video-preview') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
         this.Cursor = new CastPropController(this.Controller, video, itemport, curport);

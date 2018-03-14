@@ -2,7 +2,6 @@
 import AbstractServiceController from "../../Base/AbstractServiceController";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import LogUtil from "../../Base/Util/LogUtil";
 import CastStatusSender, { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 
 import CastInstanceMobileModel from "./CastInstanceMobileModel";
@@ -162,9 +161,11 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      * ストリーミングの停止
      */
     public StopStreaming() {
-        this.SwRoom.Close();
-        StreamUtil.Stop(this.Stream);
-        this.ServerSend(false, false);
+        if (this.SwRoom) {
+            this.SwRoom.Close();
+            StreamUtil.Stop(this.Stream);
+            this.ServerSend(false, false);
+        }
     }
 
 
