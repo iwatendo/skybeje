@@ -34,7 +34,7 @@ export default class ExportComponent extends React.Component<ExportProp, any> {
                 <div className="mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__supporting-text">
                         <h5>
-                            このブラウザに保存してあるデータをファイルにエクスポートします。<br />
+                            このブラウザに保存してあるデータをファイルに出力します。<br />
                             エクスポートしたファイルをインポートする事により、設定を復元できます。<br />
                         </h5>
                     </div>
@@ -43,21 +43,21 @@ export default class ExportComponent extends React.Component<ExportProp, any> {
                             <i className='material-icons'>archive</i>
                             &nbsp;エクスポート&nbsp;
                         </button>
-                        <h6 className="sbj-export-type">プロフィール／アクター</h6>
+                        <h6 className="sbj-export-type">プロフィール情報</h6>
                     </div>
                     <div className="sbj-export mdl-card__supporting-text">
                         <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={this.OnExportHomeClick.bind(this)}>
                             <i className='material-icons'>archive</i>
                             &nbsp;エクスポート&nbsp;
                         </button>
-                        <h6 className="sbj-export-type">ルーム</h6>
+                        <h6 className="sbj-export-type">チャットルーム設定</h6>
                     </div>
                     <div className="sbj-export mdl-card__supporting-text">
                         <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={this.OnExportTimelineClick.bind(this)}>
                             <i className='material-icons'>archive</i>
                             &nbsp;エクスポート&nbsp;
                         </button>
-                        <h6 className="sbj-export-type">タイムライン</h6>
+                        <h6 className="sbj-export-type">タイムライン情報</h6>
                     </div>
                     <div className="sbj-export mdl-card__supporting-text">
                         <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={this.OnExportTimelineTextClick.bind(this)}>

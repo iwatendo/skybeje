@@ -65,10 +65,10 @@ export default class ImportComponent extends React.Component<ImportProp, ImportS
                 <div className="mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__supporting-text">
                         <h5>
-                            エクスポートファイルを読み込みます。<br />
-                            現在のデータは上書きされる為、必要に応じてエクスポートでバックアップしてください。<br />
+                            エクスポートしたファイルを読み込みます。<br />
+                            現在のデータは上書きされる為、必要に応じて事前にエクスポートでバックアップしてください。<br />
                             <br />
-                            （注意）チャットサーバー/クライアントの起動中はエクスポートを実行しないでください。<br />
+                            （注意）チャットサーバー/クライアントの起動中はインポートは実行しないでください。<br />
                         </h5>
                     </div>
                     <div className="mdl-card__supporting-text">
