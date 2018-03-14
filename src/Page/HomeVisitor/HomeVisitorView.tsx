@@ -85,6 +85,9 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         this.SetServiceListEvent(this.Controller.SwPeer.PeerId);
 
+        //  カーソルのCSSキャッシュエレメント指定
+        StyleCache.SetCacheElement(document.getElementById('sbj-home-visitor-main'));
+
         //  
         callback();
     }

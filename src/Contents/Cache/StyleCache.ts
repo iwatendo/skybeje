@@ -10,6 +10,12 @@ export default class StyleCache {
 
     private static _msgCssMap = new Map<string, string>();
 
+    private static _element: HTMLElement = document.documentElement;
+
+    public static SetCacheElement(element: HTMLElement) {
+        this._element = element;
+    }
+
     /**
      * タイムラインのCSS指定取得
      * @param key 
@@ -18,8 +24,8 @@ export default class StyleCache {
 
         if (!StyleCache._msgCssMap.has(key)) {
             //  デフォルト設定
-            document.documentElement.style.setProperty('--sbj-msgc-' + key, "var(--sbj-color-timeline-message)");
-            document.documentElement.style.setProperty('--sbj-msgbc-' + key, "var(--sbj-color-timeline-ballon)");
+            this._element.style.setProperty('--sbj-msgc-' + key, "var(--sbj-color-timeline-message)");
+            this._element.style.setProperty('--sbj-msgbc-' + key, "var(--sbj-color-timeline-ballon)");
         }
 
         return {
@@ -42,8 +48,8 @@ export default class StyleCache {
                 return;
             }
             else {
-                document.documentElement.style.setProperty('--sbj-msgc-' + key, icon.msgcolor);
-                document.documentElement.style.setProperty('--sbj-msgbc-' + key, icon.msgbackcolor);
+                this._element.style.setProperty('--sbj-msgc-' + key, icon.msgcolor);
+                this._element.style.setProperty('--sbj-msgbc-' + key, icon.msgbackcolor);
                 StyleCache._msgCssMap.set(key, key);
             }
         }
@@ -90,7 +96,7 @@ export default class StyleCache {
 
         //  デフォルト設定
         if (!StyleCache._imgCssMap.has(key)) {
-            document.documentElement.style.setProperty('--sbj-bgc-' + key, 'rgba(0,0,0,.3)');
+            this._element.style.setProperty('--sbj-bgc-' + key, 'rgba(0,0,0,.3)');
             if (isSetSize) this.SetIconSize(key, 48);
         }
 
@@ -129,9 +135,9 @@ export default class StyleCache {
     public static SetIconSize(key: string, iconSizePx: number) {
         let iconsize = iconSizePx.toString() + "px";
         let mergin = "-" + Math.round(iconSizePx / 2) + "px";
-        document.documentElement.style.setProperty('--sbj-imgw-' + key, iconsize);
-        document.documentElement.style.setProperty('--sbj-imgh-' + key, iconsize);
-        document.documentElement.style.setProperty('--sbj-imgm-' + key, mergin);
+        this._element.style.setProperty('--sbj-imgw-' + key, iconsize);
+        this._element.style.setProperty('--sbj-imgh-' + key, iconsize);
+        this._element.style.setProperty('--sbj-imgm-' + key, mergin);
     }
 
 
@@ -145,15 +151,42 @@ export default class StyleCache {
             return;
         }
         else {
+
+            let bgurl: string;
+
+            if (rec.src.indexOf("data:image") === 0) {
+                //  base64形式の場合は、blob形式にして格納
+                window.URL = window.URL || (window as any).webkitURL;
+                let blob = this.ToBlob(rec.src);
+                bgurl = window.URL.createObjectURL(blob);
+            }
+            else {
+                bgurl = rec.src;
+            }
+
             if (rec) {
-                document.documentElement.style.setProperty('--sbj-bgc-' + key, "");
-                document.documentElement.style.setProperty('--sbj-imgbg-' + key, 'url(' + rec.src + ')');
-                document.documentElement.style.setProperty('--sbj-imgbgs-' + key, StyleCache.SizeEnumToString(rec.backgroundsize));
-                document.documentElement.style.setProperty('--sbj-imgbgr-' + key, StyleCache.RepeatEnumToString(rec.backgroundrepeat));
-                document.documentElement.style.setProperty('--sbj-imgbgp-' + key, StyleCache.PosEnumToString(rec.backgroundposition));
+                this._element.style.setProperty('--sbj-bgc-' + key, "");
+                this._element.style.setProperty('--sbj-imgbg-' + key, "url(" + bgurl + ")");
+                this._element.style.setProperty('--sbj-imgbgs-' + key, StyleCache.SizeEnumToString(rec.backgroundsize));
+                this._element.style.setProperty('--sbj-imgbgr-' + key, StyleCache.RepeatEnumToString(rec.backgroundrepeat));
+                this._element.style.setProperty('--sbj-imgbgp-' + key, StyleCache.PosEnumToString(rec.backgroundposition));
             }
             StyleCache._imgCssMap.set(key, key);
         }
+    }
+
+
+    /**
+     * base64形式のデータをBlob形式変換
+     * @param src 
+     */
+    private static ToBlob(src: string): Blob {
+        var bin = atob(src.replace(/^.*,/, ''));
+        var buffer = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) {
+            buffer[i] = bin.charCodeAt(i);
+        }
+        return new Blob([buffer.buffer]);
     }
 
 

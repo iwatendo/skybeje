@@ -29,10 +29,8 @@ export default class CursorItemComponent extends React.Component<CursorItemrProp
             let imgStyle = StyleCache.GetIconStyle(key, true);
 
             return (
-                <div>
-                    <div className='sbj-cast-cursor' style={this.PosStyle()}>
-                        <div style={imgStyle} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseDown.bind(this)} onDragStart={this.onSelect.bind(this)} onSelect={this.onSelect.bind(this)}>
-                        </div>
+                <div className='sbj-cast-cursor' style={this.PosStyle()}>
+                    <div style={imgStyle} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseDown.bind(this)} onDragStart={this.onSelect.bind(this)} onSelect={this.onSelect.bind(this)}>
                     </div>
                 </div>
             );
