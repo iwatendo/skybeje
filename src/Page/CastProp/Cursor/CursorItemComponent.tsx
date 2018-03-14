@@ -30,7 +30,7 @@ export default class CursorItemComponent extends React.Component<CursorItemrProp
 
             return (
                 <div className='sbj-cast-cursor' style={this.PosStyle()}>
-                    <div style={imgStyle} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseDown.bind(this)} onDragStart={this.onSelect.bind(this)} onSelect={this.onSelect.bind(this)}>
+                    <div style={imgStyle} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseMove.bind(this)} onMouseUp={this.onMouseUp.bind(this)} onDragStart={this.onSelect.bind(this)} onSelect={this.onSelect.bind(this)}>
                     </div>
                 </div>
             );
@@ -69,16 +69,30 @@ export default class CursorItemComponent extends React.Component<CursorItemrProp
      * @param e 
      */
     private onMouseDown(e: MouseEvent) {
-
         if (this.props.controller.IconCursor) {
+            CastPropController.OffsetX = this.props.cursor.posX - e.clientX;
+            CastPropController.OffsetY = this.props.cursor.posY - e.clientY;
             if (e.buttons === 1) {
-                let clientX = e.clientX;
-                let clientY = e.clientY;
-                this.props.controller.SendCastCursor(clientX, clientY, true);
+                this.props.controller.SendCastCursor(e.clientX, e.clientY, true);
             }
         }
-
-        return false;
     }
 
+
+    /**
+     * 
+     * @param e 
+     */
+    private onMouseMove(e: MouseEvent) {
+        if (this.props.controller.IconCursor) {
+            if (e.buttons === 1) {
+                this.props.controller.SendCastCursor(e.clientX, e.clientY, true);
+            }
+        }
+    }
+
+    private onMouseUp(e: MouseEvent) {
+        CastPropController.OffsetX = 0;
+        CastPropController.OffsetY = 0;
+    }
 }
