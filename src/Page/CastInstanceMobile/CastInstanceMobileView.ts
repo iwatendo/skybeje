@@ -10,13 +10,8 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
 
     public Cursor: CastPropController;
 
-    private _isAudioInit = false;
-    private _preVolumeValue: string = "70";
     private static _mediaStream: MediaStream = null;
-    private _audioContext: AudioContext = null;
-    private _mediaStreamNode: MediaStreamAudioSourceNode = null;
-    private _gainNode: GainNode = null;
-    private _micMute : boolean = false;
+    private _micMute: boolean = false;
 
     /**
      * 初期化処理
@@ -32,9 +27,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         let startBotton = document.getElementById('sbj-cast-instance-start') as HTMLInputElement;
         let stopBotton = document.getElementById('sbj-cast-instance-stop');
         let camchangeBotton = document.getElementById('sbj-camchange') as HTMLInputElement;
-        //  let volumeOn = document.getElementById("sbj-volume-button-on");
-        //  let volumeOff = document.getElementById("sbj-volume-button-off");
-        //  let sliderDiv = document.getElementById("sbj-volume");
         let volumeSlider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
 
         //  ストリーミング開始ボタン
@@ -54,27 +46,13 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         };
 
         //  マイクボタン
-        document.getElementById('sbj-mic').onclick = (e)=>{
+        document.getElementById('sbj-mic').onclick = (e) => {
             this._micMute = !this._micMute;
             document.getElementById('sbj-mic-on').hidden = this._micMute;
             document.getElementById('sbj-mic-off').hidden = !this._micMute;
 
             this.Controller.SwRoom.Mute = this._micMute;
         }
-
-        // //  ミュート状態解除
-        // volumeOff.onclick = (e) => {
-        //     volumeOn.hidden = false;
-        //     volumeOff.hidden = true;
-        //     this.SetMute(false, isSafari);
-        // }
-
-        // //  ミュートにする
-        // volumeOn.onclick = (e) => {
-        //     volumeOn.hidden = true;
-        //     volumeOff.hidden = false;
-        //     this.SetMute(true, isSafari);
-        // }
 
         let cam = MobileCam.REAR;
 
@@ -125,90 +103,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
     public PageClose() {
         window.open('about:blank', '_self').close();
     }
-
-
-    /**
-     * ボリューム設定
-     * @param volume 
-     * @param isSafari 
-     */
-    private SetVolume(volumeStr: string, isSafari: boolean) {
-
-        let volume = (Number.parseInt(volumeStr) / 100.0);
-
-        if (!this._isAudioInit && volume > 0) {
-            this.InitilizeAudio(isSafari);
-            this._isAudioInit = true;
-        }
-
-        if (isSafari) {
-            this._gainNode.gain.value = volume;
-        }
-        else {
-            (document.getElementById('audio') as HTMLAudioElement).volume = volume;
-        }
-    }
-
-
-    /**
-     * 
-     * @param isMute 
-     * @param isSafari 
-     */
-    private SetMute(isMute: boolean, isSafari: boolean) {
-        let slider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
-        if (isMute) {
-            this._preVolumeValue = slider.value;
-            slider.value = "0";
-        }
-        else {
-            slider.value = this._preVolumeValue;
-        }
-        this.SetVolume(slider.value, isSafari);
-    }
-
-
-    /**
-     * 
-     * @param isSafari 
-     */
-    private InitilizeAudio(isSafari: boolean) {
-        if (isSafari) {
-            this.SetStream_WebAudio();
-        }
-        else {
-            let audioElement = document.getElementById('audio') as HTMLAudioElement;
-            this.SetStream_AudioElement(audioElement);
-        }
-    }
-
-    /**
-     * 
-     * @param audioElement 
-     */
-    private SetStream_AudioElement(audioElement: HTMLAudioElement) {
-        audioElement.volume = 0;
-        audioElement.srcObject = CastInstanceMobileView._mediaStream;
-        audioElement.play();
-    }
-
-
-    /**
-     * 
-     * @param isMute 
-     */
-    private SetStream_WebAudio() {
-
-        if (CastInstanceMobileView._mediaStream) {
-            this._audioContext = new AudioContext();
-            this._mediaStreamNode = this._audioContext.createMediaStreamSource(CastInstanceMobileView._mediaStream);
-            this._gainNode = this._audioContext.createGain();
-            this._mediaStreamNode.connect(this._gainNode);
-            this._gainNode.gain.value = 0;
-            this._gainNode.connect(this._audioContext.destination);
-        }
-    }
-
 
 
     public StopStreamPreview() {
