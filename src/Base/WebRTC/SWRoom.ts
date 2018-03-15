@@ -3,6 +3,7 @@ import IServiceController from "../IServiceController";
 import SWPeer from "./SWPeer";
 import Sender from "../Container/Sender";
 import ISWRoom from "./ISWRoom";
+import StreamUtil from "../Util/StreamUtil";
 
 
 export enum SWRoomMode {
@@ -174,6 +175,14 @@ export default class SWRoom {
         });
 
         return room;
+    }
+
+
+    /**
+     * 
+     */
+    public set Mute(isMute: boolean) {
+        StreamUtil.SetMute(this._stream, isMute);
     }
 
 }

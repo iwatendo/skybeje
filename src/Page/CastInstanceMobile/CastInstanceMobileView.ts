@@ -16,6 +16,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
     private _audioContext: AudioContext = null;
     private _mediaStreamNode: MediaStreamAudioSourceNode = null;
     private _gainNode: GainNode = null;
+    private _micMute : boolean = false;
 
     /**
      * 初期化処理
@@ -36,12 +37,12 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         //  let sliderDiv = document.getElementById("sbj-volume");
         let volumeSlider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
 
-        //  ストリーミング開始
+        //  ストリーミング開始ボタン
         document.getElementById('sbj-cast-instance-start').onclick = (e) => {
             this.Controller.StartStreaming();
             document.getElementById('sbj-bottom-toolbar').hidden = true;
-            stopBotton.hidden = false;
-            camchangeBotton.hidden = true;
+            let setting = document.getElementById('sbj-on-air-setting');
+            setting.hidden = false;
         }
 
         //  ストリーミング停止ボタン
@@ -52,8 +53,14 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
             this.PageClose();
         };
 
-        let isSafari = StdUtil.IsSafari();
-        let isInit = false;
+        //  マイクボタン
+        document.getElementById('sbj-mic').onclick = (e)=>{
+            this._micMute = !this._micMute;
+            document.getElementById('sbj-mic-on').hidden = this._micMute;
+            document.getElementById('sbj-mic-off').hidden = !this._micMute;
+
+            this.Controller.SwRoom.Mute = this._micMute;
+        }
 
         // //  ミュート状態解除
         // volumeOff.onclick = (e) => {
