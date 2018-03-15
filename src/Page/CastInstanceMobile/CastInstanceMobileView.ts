@@ -10,7 +10,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
 
     public Cursor: CastPropController;
 
-    private static _mediaStream: MediaStream = null;
     private _micMute: boolean = false;
 
     /**
@@ -75,11 +74,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
                 //  リアとフロントのカメラを切替えプレビュー表示
                 cam = (cam === MobileCam.REAR ? MobileCam.FRONT : MobileCam.REAR);
                 startPreviewFunc(cam);
-
-                if (this.Controller.SwRoom) {
-                    this.Controller.SwRoom.Refresh(CastInstanceMobileView._mediaStream);
-                }
-
             }, 200);
         };
 
@@ -136,6 +130,10 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
 
         StreamUtil.GetStreaming(msc,
             (stream) => {
+                if (this.Controller.SwRoom) {
+                    this.Controller.SwRoom.Refresh(stream);
+                }
+
                 controller.Stream = stream;
 
                 if (stream && videoElement) {
@@ -151,22 +149,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
                 alert(error);
             }
         );
-    }
-
-
-    /**
-     * 他のユーザーからのストリーム接続時イベント
-     * @param peerid 
-     */
-    public SetMediaStream(peerid: string, stream: MediaStream, isAlive: boolean) {
-        CastInstanceMobileView._mediaStream = stream;
-
-        let videoRecv = document.getElementById('sbj-video-receiver') as HTMLVideoElement;
-        videoRecv.srcObject = stream;
-
-        (document.getElementById("sbj-volume-button-on") as HTMLInputElement).disabled = false;
-        (document.getElementById("sbj-volume-button-off") as HTMLInputElement).disabled = false;
-        (document.getElementById("sbj-volume-slider") as HTMLInputElement).disabled = false;
     }
 
 
