@@ -101,7 +101,9 @@ export default class SWConnectionCache {
         }
 
         this._map.forEach((peerPair, key) => {
-            peerPair.CheckAlive();
+            if (!peerPair.CheckAlive()) {
+                this._map.delete(key);
+            }
         });
     }
 
@@ -132,28 +134,28 @@ export default class SWConnectionCache {
 
         return result;
     }
-    
+
 
     /**
      * 接続情報を取得
      * @param peerid 
      */
-    private GetConnection(peerid: string): SWConnection {
+    private GetConnection(remoteId: string): SWConnection {
 
         let map = this._map;
 
-        if (map.has(peerid)) {
-            return map.get(peerid);
+        if (map.has(remoteId)) {
+            return map.get(remoteId);
         }
         else {
             if (this._owner) {
-                if (this._owner.peerid === peerid) {
+                if (this._owner.remoteId === remoteId) {
                     return this._owner;
                 }
             }
 
-            let pp = new SWConnection(this._swpeer, peerid);
-            map.set(peerid, pp);
+            let pp = new SWConnection(this._swpeer, remoteId);
+            map.set(remoteId, pp);
             return pp;
         }
     }

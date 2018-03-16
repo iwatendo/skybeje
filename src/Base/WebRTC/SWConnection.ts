@@ -5,7 +5,7 @@ import SWPeer from "./SWPeer";
 
 export default class SWConnection {
 
-    public peerid: string;
+    public remoteId: string;
 
     private _swpeer: SWPeer
     private _service: IServiceController;
@@ -13,16 +13,17 @@ export default class SWConnection {
     private _sendQueue = new Array<any>();
     private _isOpen = false;
     private _isCreate = false;
+    private _isClose = false;
 
 
     /**
      * 
      * @param service 
      * @param swpeer 
-     * @param peerid 
+     * @param remoteId 
      */
-    constructor(swpeer: SWPeer, peerid: string) {
-        this.peerid = peerid;
+    constructor(swpeer: SWPeer, remoteId: string) {
+        this.remoteId = remoteId;
         this._swpeer = swpeer;
         this._service = swpeer.Service;
         this._conn = null;
@@ -39,7 +40,12 @@ export default class SWConnection {
         conn.on('open', () => { this.OnConnectionOpen(this._conn); });
         conn.on("data", (data) => { this._service.Recv(this._conn, data); });
         conn.on('error', (e) => { this._service.OnChildError(e); });
-        conn.on("close", () => { this._service.OnChildClose(this._conn); });
+        conn.on("close", () => {
+            if (!this._isClose) {
+                this._isClose = true;
+                this._service.OnChildClose(this._conn);
+            }
+        });
     }
 
 
@@ -58,7 +64,7 @@ export default class SWConnection {
         else {
             if (!this._isCreate) {
                 this._isCreate = true;
-                this.Set(this._swpeer.Peer.connect(this.peerid));
+                this.Set(this._swpeer.Peer.connect(this.remoteId));
             }
 
             this._sendQueue.push(data);
@@ -110,7 +116,12 @@ export default class SWConnection {
                 return true;
             }
             else {
-                this._service.OnChildClose(this._conn);
+                //  想定外の切断が発生した場合、DataConnectionのCloseイベントが発生しないケースがある
+                //  Closeイベントが発生しない状態で切断を検知した場合、ServiceControllerのCloseイベントを呼ぶ
+                if (!this._isClose) {
+                    this._isClose = true;
+                    this._service.OnChildClose(this._conn);
+                }
                 return false;
             }
         }
