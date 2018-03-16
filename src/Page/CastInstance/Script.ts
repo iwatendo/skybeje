@@ -15,9 +15,10 @@ if (StdUtil.IsSupoortPlatform(true)) {
         navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
         navigator.getUserMedia({ video: true, audio: true }, (stream) => { reload(); }, (err) => { reload(); });
     }
-
-    let controller = new CastInstanceController();
-    let ownerId = LinkUtil.GetPeerID();
-    controller.SwPeer = new SWPeer(controller, ownerId, () => {
-    });
+    else {
+        let controller = new CastInstanceController();
+        let ownerId = LinkUtil.GetPeerID();
+        controller.SwPeer = new SWPeer(controller, ownerId, () => {
+        });
+    }
 }
