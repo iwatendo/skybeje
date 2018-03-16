@@ -29,9 +29,9 @@ export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastIn
 
         //  配信ステータスはオーナー側にも送信
         if (sender.type === CastStatusSender.ID) {
-            let castStatus = sender as CastStatusSender;
-            this.Controller.SwPeer.SendToOwner(castStatus);
-            this.Controller.View.SetCastStauts(castStatus);
+            this.Controller.CastStatus = sender as CastStatusSender;
+            this.Controller.SwPeer.SendToOwner(this.Controller.CastStatus);
+            this.Controller.View.SetCastStauts(this.Controller.CastStatus);
         }
 
         if (sender.type === TerminalInfoSender.ID) {

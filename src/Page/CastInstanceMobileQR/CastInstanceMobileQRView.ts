@@ -16,7 +16,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     public Initialize(callback: OnViewLoad) {
 
         StdUtil.StopPropagation();
-        this.SetQRCode();
+        this.SetLiveCastQRCode();
 
         (document.getElementById('sbj-check-sfu') as HTMLInputElement).onchange = (e) => { this.SendOption() }
         (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).onchange = (e) => { this.SendOption() }
@@ -33,7 +33,9 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     /**
      * 
      */
-    public SetQRCode() {
+    public SetLiveCastQRCode() {
+
+        this.ChangeDisplay(false, false);
         let peerid = LinkUtil.GetPeerID();
         let linkurl = LinkUtil.CreateLink("../CastInstanceMobile/", this.Controller.SwPeer.PeerId);
 
@@ -82,11 +84,25 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
             let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
             LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn, clientopenbtn, qrcode);
 
-            document.getElementById('sbj-client-link').hidden = false;
+            this.ChangeDisplay(true, true);
         }
 
     }
 
+
+    /**
+     * 画面の表示制御
+     * @param isMobileConnect 
+     * @param isLiveCast 
+     */
+    public ChangeDisplay(isMobileConnect: boolean, isLiveCast: boolean) {
+        document.getElementById('sbj-cast-instance-account-count').hidden = !(isMobileConnect && isLiveCast);
+        document.getElementById("sbj-terminal-info").hidden = !isMobileConnect;
+        document.getElementById("sbj-cast-setting").hidden = isMobileConnect;
+        document.getElementById('sbj-livecast-note').hidden = isMobileConnect;
+        (document.getElementById("sbj-check-sfu") as HTMLInputElement).disabled = isMobileConnect;
+        document.getElementById('sbj-client-link').hidden = !isLiveCast;
+    }
 
     /**
      * 
@@ -94,9 +110,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
      */
     public SetTerminalInfo(info: TerminalInfoSender) {
 
-        document.getElementById('sbj-cast-instance-account-count').hidden = false;
-        document.getElementById("sbj-cast-setting").hidden = true;
-        document.getElementById('sbj-livecast-note').hidden = true;
+        this.ChangeDisplay(true, false);
 
         let sfuElement = document.getElementById("sbj-check-sfu") as HTMLInputElement;
 
@@ -108,9 +122,6 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
             //  同時接続数の警告を表示
             document.getElementById('sbj-ios-warning').hidden = false;
         }
-
-        sfuElement.disabled = true;
-        document.getElementById("sbj-terminal-info").hidden = false;
 
         document.getElementById('sbj-platform').textContent = info.platform;
         document.getElementById('sbj-appversion').textContent = info.appVersion;
