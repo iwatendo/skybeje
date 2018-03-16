@@ -32,8 +32,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         document.getElementById('sbj-cast-instance-start').onclick = (e) => {
             this.Controller.StartStreaming();
             document.getElementById('sbj-bottom-toolbar').hidden = true;
-            let setting = document.getElementById('sbj-on-air-setting');
-            setting.hidden = false;
         }
 
         //  ストリーミング停止ボタン
@@ -49,8 +47,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
             this._micMute = !this._micMute;
             document.getElementById('sbj-mic-on').hidden = this._micMute;
             document.getElementById('sbj-mic-off').hidden = !this._micMute;
-
-            this.Controller.SwRoom.Mute = this._micMute;
+            StreamUtil.SetMute(this.Controller.Stream,this._micMute);
         }
 
         let cam = MobileCam.REAR;
@@ -74,6 +71,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
                 //  リアとフロントのカメラを切替えプレビュー表示
                 cam = (cam === MobileCam.REAR ? MobileCam.FRONT : MobileCam.REAR);
                 startPreviewFunc(cam);
+                this.MenuClose();
             }, 200);
         };
 
@@ -88,6 +86,15 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         this.InitializeCursor();
 
         callback();
+    }
+
+
+    /**
+     * メニューを閉じる
+     */
+    public MenuClose() {
+        var menu = document.getElementById('menu') as any;
+        menu.close();
     }
 
 

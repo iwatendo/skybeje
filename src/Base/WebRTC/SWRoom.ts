@@ -177,12 +177,4 @@ export default class SWRoom {
         return room;
     }
 
-
-    /**
-     * 
-     */
-    public set Mute(isMute: boolean) {
-        StreamUtil.SetMute(this._stream, isMute);
-    }
-
 }

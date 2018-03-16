@@ -29,17 +29,6 @@
 
     <audio id='audio' autoplay="true" hidden></audio>
 
-    <section id="sbj-on-air-setting" hidden>
-        <ons-fab position="bottom left" id="sbj-mic">
-            <span id="sbj-mic-on">
-                <ons-icon icon="md-mic"></ons-icon>
-            </span>
-            <span id="sbj-mic-off" hidden>
-                <ons-icon icon="md-mic-off"></ons-icon>
-            </span>
-        </ons-fab>
-    </section>
-
     <section id="sbj-bottom-toolbar">
         <ons-bottom-toolbar>
             <ons-button modifier="large" id="sbj-cast-instance-start">配信開始</ons-button>
@@ -49,14 +38,35 @@
     <ons-splitter>
         <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
             <ons-page>
+                <ons-list-title>Skybeje</ons-list-title>
+                <ons-list>
+                    <ons-list-item id="sbj-cast-instance-stop" tappable>
+                        <ons-icon size="30px" icon="md-close"></ons-icon>
+                        &nbsp;&nbsp;終了
+                    </ons-list-item>
+                </ons-list>
+                <ons-list-title>Device</ons-list-title>
                 <ons-list>
                     <ons-list-item id="sbj-camchange" tappable>
                         <ons-icon size="30px" icon="md-camera"></ons-icon>
-                        カメラ切替
+                        &nbsp;&nbsp;カメラ切替
                     </ons-list-item>
-                    <ons-list-item id="sbj-cast-instance-stop" tappable>
-                        <ons-icon size="30px" icon="md-exit-to-app"></ons-icon>
-                        終了
+                    <ons-list-item id="sbj-mic" tappable>
+                        <span id="sbj-mic-on">
+                            <ons-icon size="30px" icon="md-mic"></ons-icon>
+                            &nbsp;&nbsp;マイクはONです
+                        </span>
+                        <span id="sbj-mic-off" hidden>
+                            <ons-icon size="30px" icon="md-mic-off"></ons-icon>
+                            &nbsp;&nbsp;マイクOFFです
+                        </span>
+                        </ons-fab>
+                </ons-list>
+                <ons-list-title>Data</ons-list-title>
+                <ons-list>
+                    <ons-list-item id="sbj-location" tappable>
+                        <ons-icon size="30px" icon="md-my-location"></ons-icon>
+                        &nbsp;&nbsp;位置情報通知
                     </ons-list-item>
                 </ons-list>
             </ons-page>
