@@ -23,3 +23,11 @@
     height: 100%;
     width: 100%;
 }
+
+#sbj-bottom-toolbar{
+    position: absolute;
+    width: 80%;
+    bottom: 10%;
+    left: 10%;
+    z-index: 3;
+}

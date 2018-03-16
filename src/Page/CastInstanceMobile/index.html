@@ -18,61 +18,63 @@
 
 <body>
 
-    <div class="sbj-video-content">
-        <video id='sbj-video-preview' class='sbj-video-preview' autoplay="true" playsinline="true" muted></video>
-        <div id="sbj-cast-item-port">
-            <div id="sbj-cast-cursor-port">
-                <!-- React -->
-            </div>
-        </div>
-    </div>
-
-    <audio id='audio' autoplay="true" hidden></audio>
-
-    <section id="sbj-bottom-toolbar">
-        <ons-bottom-toolbar>
-            <ons-button modifier="large" id="sbj-cast-instance-start">配信開始</ons-button>
-        </ons-bottom-toolbar>
-    </section>
-
     <ons-splitter>
         <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
             <ons-page>
                 <ons-list-title>Skybeje</ons-list-title>
                 <ons-list>
                     <ons-list-item id="sbj-cast-instance-stop" tappable>
-                        <ons-icon size="30px" icon="md-close"></ons-icon>
-                        &nbsp;&nbsp;終了
+                        <ons-icon class="list-item__icon" icon="md-close"></ons-icon>
+                        終了
                     </ons-list-item>
                 </ons-list>
                 <ons-list-title>Device</ons-list-title>
                 <ons-list>
                     <ons-list-item id="sbj-camchange" tappable>
-                        <ons-icon size="30px" icon="md-camera"></ons-icon>
-                        &nbsp;&nbsp;カメラ切替
+                        <ons-icon class="list-item__icon" icon="md-videocam-switch"></ons-icon>
+                        カメラ切替
                     </ons-list-item>
-                    <ons-list-item id="sbj-mic" tappable>
+                    <ons-list-item>
                         <span id="sbj-mic-on">
-                            <ons-icon size="30px" icon="md-mic"></ons-icon>
-                            &nbsp;&nbsp;マイクはONです
+                            <ons-icon class="list-item__icon" icon="md-mic"></ons-icon>
                         </span>
                         <span id="sbj-mic-off" hidden>
-                            <ons-icon size="30px" icon="md-mic-off"></ons-icon>
-                            &nbsp;&nbsp;マイクOFFです
+                            <ons-icon class="list-item__icon" icon="md-mic-off"></ons-icon>
                         </span>
-                        </ons-fab>
+                        マイク
+                        <div class="right">
+                            <ons-switch id="sbj-mic" checked></ons-switch>
+                        </div>
+                    </ons-list-item>
                 </ons-list>
                 <ons-list-title>Data</ons-list-title>
                 <ons-list>
                     <ons-list-item id="sbj-location" tappable>
-                        <ons-icon size="30px" icon="md-my-location"></ons-icon>
-                        &nbsp;&nbsp;位置情報通知
+                        <ons-icon class="list-item__icon" icon="md-my-location"></ons-icon>
+                        位置情報通知
                     </ons-list-item>
                 </ons-list>
             </ons-page>
         </ons-splitter-side>
         <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
     </ons-splitter>
+
+    <template id="home.html">
+        <ons-page>
+
+            <section id="sbj-bottom-toolbar">
+                <ons-button modifier="large" id="sbj-cast-instance-start">配信開始</ons-button>
+            </section>
+            <div class="sbj-video-content">
+                <video id='sbj-video-preview' class='sbj-video-preview' autoplay="true" playsinline="true" muted></video>
+                <div id="sbj-cast-item-port">
+                    <div id="sbj-cast-cursor-port">
+                        <!-- React -->
+                    </div>
+                </div>
+            </div>
+        </ons-page>
+    </template>
 
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>
