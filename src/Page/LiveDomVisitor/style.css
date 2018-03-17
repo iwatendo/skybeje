@@ -1,0 +1,65 @@
+﻿
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.sbj-livedom-visitor-contents {
+    width: 100%;
+    height: 100%;
+}
+
+#sbj-livedom-visitor-message-port{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-livedom-visitor-message{
+    position: absolute;
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+    top: calc(50% - 20px);
+    color: var(--sbj-color-default-text);
+}
+
+#sbj-video {
+    height: 100%;
+    width: 100%;
+    background-color: var(--sbj-color-livedom-background);
+}
+
+.sbj-livedom-visitor-button {
+    position: absolute;
+    background-color: var(--sbj-color-timeline-panel);
+    border-radius: 6px;
+}
+
+.sbj-livedom-visitor-mobile-button{
+    height: 48px;
+    width: 48px;
+}
+
+#sbj-livedom-item-port{
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#sbj-livedom-cursor-port{
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}

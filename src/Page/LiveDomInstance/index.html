@@ -1,0 +1,71 @@
+<html>
+
+<head>
+    <title>Skybeje-LiveDom</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <script src='/lib/forcedtimer.js'></script>
+    <script src='/lib/skyway.min.js'></script>
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='../common.castprop.css?v={version}' />
+    <link rel='stylesheet' href='style.css?v={version}' />
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+
+    <div id="sbj-livedom-instance-layout" class="sbj-livedom-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+
+        <header class="sbj-livedom-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+            <div class="sbj-livedom-instance--header-row mdl-layout__header-row">
+                <span id="sbj-livedom-instance-title" class="mdl-layout-title">
+                    LiveDOM
+                </span>
+                <div id="sbj-livedom-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
+                <div class="mdl-tooltip" data-mdl-for="sbj-livedom-instance-account-count">この配信への接続数</div>
+                <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
+            </div>
+        </header>
+
+        <main class="mdl-layout__content">
+            <div class="sbj-container">
+                <div class="sbj-split-left">
+                    <div class="mdl-color-text--grey-600" id="sbj-livedom-instance-main">
+                        <div class="mdl-list__item-primary-content sbj-video-content">
+                            <video id='sbj-video' autoplay="true">
+                            </video>
+                            <div id="sbj-livedom-item-port">
+                                <div id="sbj-livedom-cursor-port">
+                                    <!-- React -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sbj-split-right">
+                    <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600">
+                        <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            &nbsp; 接続ページ起動 &nbsp;
+                        </button>
+                        <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
+                            &nbsp; 接続URLのコピー &nbsp;
+                        </button>
+                        <div class="mdl-shadow--3dp sbj-client-link-qrcode-box">
+                            <iframe id="sbj-link-qrcode" class="sbj-client-link-qrcode-frame" src=""></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
+    <script src="bundle.js?v={version}"></script>
+
+</body>
+
+</html>

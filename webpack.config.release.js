@@ -14,6 +14,8 @@ module.exports = {
     castvisitor: './src/Page/CastVisitor/Script.ts',
     gadgetinstance: './src/Page/GadgetInstance/Script.ts',
     gadgetvisitor: './src/Page/GadgetVisitor/Script.ts',
+    livedominstance: './src/Page/LiveDomInstance/Script.ts',
+    livedomvisitor: './src/Page/LiveDomVisitor/Script.ts',
     qrcode: './src/Page/QrCode/Script.ts',
     selectactor: './src/Page/SelectActor/Script.ts',
     usersettings: './src/Page/UserSettings/Script.ts',

@@ -1,0 +1,48 @@
+<html>
+
+<head>
+    <title>Skybeje-LiveDomView</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <script src='/lib/forcedtimer.js'></script>
+    <script src='/lib/skyway.min.js'></script>
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='../common.castprop.css?v={version}' />
+    <link rel='stylesheet' href='style.css?v={version}' />
+
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+
+    <div class="mdl-layout mdl-js-layout">
+        <main class="sbj-livedom-visitor-contents mdl-layout__content">
+
+            <video id='sbj-video' autoplay="true" playsinline="true"></video>
+
+            <div id="sbj-livedom-item-port">
+                <div id="sbj-livedom-cursor-port">
+                    <!-- React -->
+                </div>
+            </div>
+
+            <h2 id="sbj-livedom-visitor-voice-only" hidden>Voice only</h2>
+
+            <div id="sbj-livedom-visitor-message-port" hidden>
+                <h2 id="sbj-livedom-visitor-message"></h2>
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
+    <script src="bundle.js?v={version}"></script>
+
+</body>
+
+</html>
