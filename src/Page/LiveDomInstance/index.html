@@ -25,7 +25,7 @@
                 </span>
                 <div id="sbj-livedom-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-livedom-instance-account-count">この配信への接続数</div>
-                <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
+                <h5 id="sbj-livedom-room-name" class="mdl-color-text--pink" hidden></h5>
             </div>
         </header>
 
@@ -33,6 +33,19 @@
             <div class="sbj-container">
                 <div class="sbj-split-left">
                     <div class="mdl-color-text--grey-600" id="sbj-livedom-instance-main">
+
+                        <div class="sbj-livedom-instance-actions mdl-list__item-primary-content">
+                            <button id="sbj-livedom-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                <i class="material-icons">play_arrow</i>
+                                &nbsp;開始&nbsp;
+                            </button>
+                            <button id="sbj-livedom-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                                <i class="material-icons">stop</i>
+                                &nbsp;停止&nbsp;
+                            </button>
+                        </div>
+
+
                         <div class="mdl-list__item-primary-content sbj-video-content">
                             <video id='sbj-video' autoplay="true">
                             </video>
@@ -42,11 +55,18 @@
                                 </div>
                             </div>
                         </div>
+
+                        <label id="sbj-check-cursor-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                            for="sbj-check-cursor-disp" hidden>
+                            <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
+                        </label>
+
                     </div>
                 </div>
 
                 <div class="sbj-split-right">
-                    <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600">
+                    <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
                         <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                             &nbsp; 接続ページ起動 &nbsp;
                         </button>
@@ -58,6 +78,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>

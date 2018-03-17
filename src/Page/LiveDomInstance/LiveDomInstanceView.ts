@@ -22,8 +22,26 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
 
+        let startButton = document.getElementById('sbj-livedom-instance-start');
+        let stopButton = document.getElementById('sbj-livedom-instance-stop');
+
+        //  ストリーミング開始ボタン
+        startButton.onclick = (e) => {
+            this.ChangeDisplayMode(true);
+            this.StartLiveDom();
+        }
+
+        //  ストリーミング停止ボタン
+        stopButton.onclick = (e) => {
+            this.Controller.ServerSend(false, false);
+            location.href = "";
+        };
+
+        let cursorDispElement = document.getElementById('sbj-check-cursor-disp') as HTMLInputElement;
+        cursorDispElement.onchange = (e) => { this.SendOption(); }
+
+
         this.InitializeCursor();
-        this.StartLiveDom();
     }
 
 
@@ -47,7 +65,7 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      */
     public SetRoom(room: Home.Room) {
         let message = "「" + room.name + "」に配信中";
-        document.getElementById("sbj-livecast-room-name").innerText = message;
+        document.getElementById("sbj-livedom-room-name").innerText = message;
     }
 
 
@@ -89,6 +107,31 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     }
 
 
+    public SendOption() {
+        this.Controller.CastSetting.isSFU = false;
+        this.Controller.CastSetting.useCastProp = (document.getElementById('sbj-check-cursor-disp') as HTMLInputElement).checked;
+        this.Controller.SendCastInfo();
+    }
+
+
+    /**
+     * 
+     * @param isLive 
+     */
+    public ChangeDisplayMode(isLive: boolean) {
+        let startButton = document.getElementById('sbj-livedom-instance-start');
+        let stopButton = document.getElementById('sbj-livedom-instance-stop');
+        let roomName = document.getElementById('sbj-livedom-room-name');
+        let linkElement = document.getElementById('sbj-client-link');
+
+        startButton.hidden = isLive;
+        stopButton.hidden = !isLive;
+
+        roomName.hidden = !isLive;
+        linkElement.hidden = !isLive;
+    }
+
+
     /** 
      * 
      */
@@ -98,6 +141,8 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
         LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn, clientopenbtn, qrcode);
+
+        this.Controller.ServerSend(true, false);
     }
 
 }

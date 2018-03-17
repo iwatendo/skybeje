@@ -56,9 +56,9 @@ export default class LiveDomInstanceController extends AbstractServiceController
      * オーナー接続時イベント
      */
     public OnOwnerConnection() {
-        this.CastStatus = new CastStatusSender(CastTypeEnum.LiveCast);
+        this.CastStatus = new CastStatusSender(CastTypeEnum.LiveDom);
         this.CastStatus.instanceUrl = location.href;
-        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this.SwPeer.PeerId);
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../LiveDomVisitor/index.html', this.SwPeer.PeerId);
         this.SwPeer.SendToOwner(this.CastStatus);
 
         this.View.InitializeChatLink();

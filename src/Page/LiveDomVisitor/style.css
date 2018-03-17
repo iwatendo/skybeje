@@ -7,6 +7,7 @@ body {
 .sbj-livedom-visitor-contents {
     width: 100%;
     height: 100%;
+    background-color: var(--sbj-color-cast-background);
 }
 
 #sbj-livedom-visitor-message-port{
