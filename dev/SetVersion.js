@@ -7,14 +7,17 @@ var path = require('path');
  * @param {*} filepath 
  * @param {*} modified 
  * @param {*} version 
+ * @param {*} apikey 
  */
-function replace_version(filepath, modified, version) {
+function SetVersionAndApiKey(filepath, modified, version, apikey) {
 
-    console.info("set version " + version + " : " + filepath);
+    console.info("Set VersionAndApiKey " + version + " : " + filepath);
 
     fs.readFile(filepath, 'utf8', function (err, data) {
         if (err) throw err;
-        var result = data.replace(/{version}/g, version).replace(/{modified}/g, modified);
+        var result = data.replace(/{version}/g, version)
+                         .replace(/{modified}/g, modified)
+                         .replace(/{googlemap}/g, apikey.googlemap);
         fs.writeFile(filepath, result, 'utf8', function (err) {
             if (err) throw err;
         });
@@ -27,8 +30,9 @@ function replace_version(filepath, modified, version) {
  * @param {*} folder 
  * @param {*} modified 
  * @param {*} version 
+ * @param {*} apikey 
  */
-function replace_indexhtml_version(folder, modified, version) {
+function SetVersionAndApiKey_ToIndexHtml(folder, modified, version, apikey) {
 
     fs.readdir(folder, function (err, files) {
 
@@ -39,11 +43,11 @@ function replace_indexhtml_version(folder, modified, version) {
             let filepath = path.join(folder, file);
 
             if (file.indexOf("index.html") === 0) {
-                replace_version(filepath, modified, version);
+                SetVersionAndApiKey(filepath, modified, version, apikey);
             }
             else {
                 if (fs.statSync(filepath).isDirectory()) {
-                    replace_indexhtml_version(filepath, modified, version);
+                    SetVersionAndApiKey_ToIndexHtml(filepath, modified, version, apikey);
                 }
             }
         });
@@ -65,8 +69,10 @@ function build_date() {
 
 let modified = new Date().toUTCString();
 let version = build_date();
+let apikey = require('../src/Page/apikey.json');
 
 console.info(modified);
 
-replace_indexhtml_version("dist", modified, version);
+
+SetVersionAndApiKey_ToIndexHtml("dist", modified, version, apikey);
 

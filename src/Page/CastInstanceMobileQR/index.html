@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
+    <script src="https://maps.google.com/maps/api/js?key={googlemap}"></script>
+    <script src='../lib/gmaps.min.js'></script>
     <script src="../lib/material.min.js"></script>
     <script src='../lib/jquery-2.2.3.min.js'></script>
 </head>
@@ -68,6 +70,14 @@
                         <span id="sbj-appversion"></span>
                         <h5 class="sbj-mobile-label">UserArgent</h5>
                         <span id="sbj-useragent"></span>
+                        <div id="sbj-location-info" hidden>
+                            <h4>位置情報</h4>
+                            <h5 class="sbj-mobile-label">Location</h5>
+                            <span id="sbj-location"></span>
+                            <a id="sbj-googlemap-link" href="" target="_blank">(GoogleMapで表示）</a>
+                            <h5 class="sbj-mobile-label">Address</h5>
+                            <span id="sbj-geocode-address"></span>
+                        </div>
                     </div>
 
                     <h6 class="mdl-color-text--pink" id="sbj-ios-warning" hidden>

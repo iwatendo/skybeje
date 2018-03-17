@@ -5,6 +5,8 @@ import CastInstanceMobileQRController from "./CastInstanceMobileQRController";
 import CastStatusSender from "../../Base/Container/CastStatusSender";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import TerminalInfoSender from "../../Contents/Sender/TerminalInfoSender";
+import MapLocationSender from "../../Contents/Sender/MapLocationSender";
+import GMapsUtil from "../../Contents/Util/GMapsUtil";
 
 export default class CastInstanceMobileQRView extends AbstractServiceView<CastInstanceMobileQRController> {
 
@@ -104,6 +106,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         document.getElementById('sbj-client-link').hidden = !isLiveCast;
     }
 
+
     /**
      * 
      * @param info 
@@ -126,6 +129,28 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         document.getElementById('sbj-platform').textContent = info.platform;
         document.getElementById('sbj-appversion').textContent = info.appVersion;
         document.getElementById('sbj-useragent').textContent = info.userAgent;
+
+        document.getElementById('sbj-location-info').hidden = true;
+    }
+
+
+    /**
+     * 
+     * @param map 
+     */
+    public SetMapLocation(map: MapLocationSender) {
+
+        let pos = map.Location.latitude + "," + map.Location.longitude;
+        let url = "https://maps.google.com/maps?q=" + pos;
+        document.getElementById('sbj-location').textContent = pos;
+        document.getElementById('sbj-googlemap-link').setAttribute("href", url);
+
+        if (map.Location) {
+            GMapsUtil.GetAddress(map.Location, (address) => {
+                document.getElementById('sbj-geocode-address').textContent = address;
+            });
+        }
+        document.getElementById('sbj-location-info').hidden = false;
     }
 
 }

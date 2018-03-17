@@ -13,6 +13,7 @@ import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CastStatusSender from "../../Base/Container/CastStatusSender";
 import TerminalInfoSender from "../../Contents/Sender/TerminalInfoSender";
 import ConnCountSender from "../../Contents/Sender/ConnCountSender";
+import MapLocationSender from "../../Contents/Sender/MapLocationSender";
 
 
 export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastInstanceMobileQRController> {
@@ -42,6 +43,11 @@ export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastIn
         if (sender.type === ConnCountSender.ID) {
             let cc = sender as ConnCountSender;
             this.Controller.View.SetPeerCount(cc.count);
+        }
+
+        if (sender.type === MapLocationSender.ID) {
+            let mls = sender as MapLocationSender;
+            this.Controller.View.SetMapLocation(mls);
         }
 
     }

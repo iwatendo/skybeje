@@ -5,6 +5,8 @@ import StreamUtil, { MobileCam } from "../../Base/Util/StreamUtil";
 import CastInstanceMobileController from "./CastInstanceMobileController";
 import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import GMapsUtil from "../../Contents/Util/GMapsUtil";
+import MapLocationSender from "../../Contents/Sender/MapLocationSender";
 
 export default class CastInstanceMobileView extends AbstractServiceView<CastInstanceMobileController> {
 
@@ -47,7 +49,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
             this._micMute = !this._micMute;
             document.getElementById('sbj-mic-on').hidden = this._micMute;
             document.getElementById('sbj-mic-off').hidden = !this._micMute;
-            StreamUtil.SetMute(this.Controller.Stream,this._micMute);
+            StreamUtil.SetMute(this.Controller.Stream, this._micMute);
         }
 
         let cam = MobileCam.REAR;
@@ -74,6 +76,17 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
                 this.MenuClose();
             }, 200);
         };
+
+
+        document.getElementById('sbj-location').onclick = (e) => {
+            GMapsUtil.GetLocate((gpos) => {
+                let sender = new MapLocationSender();
+                sender.Location = gpos;
+                this.Controller.SwPeer.SendToOwner(sender);
+                alert("現在位置を通知しました");
+            });
+        }
+
 
         //  スマホ画面の回転時イベント
         let controller = this.Controller;
