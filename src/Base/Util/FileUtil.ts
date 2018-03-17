@@ -91,7 +91,7 @@ export default class FileUtil {
 
 
     /**
-     * 画像ファイルの選択ダイアログ表示　※※動作未検証※※
+     * 画像ファイルの選択ダイアログ表示
      * @param callback 
      */
     public static SelectImageCamera(callback: OnFileSelect) {

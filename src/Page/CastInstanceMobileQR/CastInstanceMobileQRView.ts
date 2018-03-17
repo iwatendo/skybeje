@@ -7,6 +7,7 @@ import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import TerminalInfoSender from "../../Contents/Sender/TerminalInfoSender";
 import MapLocationSender from "../../Contents/Sender/MapLocationSender";
 import GMapsUtil from "../../Contents/Util/GMapsUtil";
+import PictureSender from "../../Contents/Sender/PictureSender";
 
 export default class CastInstanceMobileQRView extends AbstractServiceView<CastInstanceMobileQRController> {
 
@@ -131,6 +132,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         document.getElementById('sbj-useragent').textContent = info.userAgent;
 
         document.getElementById('sbj-location-info').hidden = true;
+        document.getElementById('sbj-picture-info').hidden = true;
     }
 
 
@@ -151,6 +153,17 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
             });
         }
         document.getElementById('sbj-location-info').hidden = false;
+    }
+
+
+    /**
+     * 写真の表示
+     * @param pic 
+     */
+    public SetPicture(pic: PictureSender) {
+        document.getElementById('sbj-picture-info').hidden = false;
+        let element = document.getElementById('sbj-picture') as HTMLImageElement;
+        element.src = pic.src;
     }
 
 }

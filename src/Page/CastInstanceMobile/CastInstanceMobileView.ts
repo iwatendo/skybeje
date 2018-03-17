@@ -7,6 +7,9 @@ import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import GMapsUtil from "../../Contents/Util/GMapsUtil";
 import MapLocationSender from "../../Contents/Sender/MapLocationSender";
+import FileUtil from "../../Base/Util/FileUtil";
+import FileAttachUtil from "../../Base/Util/FileAttachUtil";
+import PictureSender from "../../Contents/Sender/PictureSender";
 
 export default class CastInstanceMobileView extends AbstractServiceView<CastInstanceMobileController> {
 
@@ -28,6 +31,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         let startBotton = document.getElementById('sbj-cast-instance-start') as HTMLInputElement;
         let stopBotton = document.getElementById('sbj-cast-instance-stop');
         let camchangeBotton = document.getElementById('sbj-camchange') as HTMLInputElement;
+        let cameraBotton = document.getElementById('sbj-camera') as HTMLInputElement;
         let volumeSlider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
 
         //  ストリーミング開始ボタン
@@ -77,7 +81,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
             }, 200);
         };
 
-
+        //  位置情報通知
         document.getElementById('sbj-location').onclick = (e) => {
             GMapsUtil.GetLocate((gpos) => {
                 let sender = new MapLocationSender();
@@ -87,6 +91,16 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
             });
         }
 
+        //  カメラ起動ボタン
+        cameraBotton.onclick = (e) => {
+            FileUtil.SelectImageCamera((file) => {
+                FileAttachUtil.FileToBase64(file, (f, src) => {
+                    let sender = new PictureSender(src);
+                    this.Controller.SwPeer.SendToOwner(sender);
+                    alert("写真を送信しました");
+                })
+            });
+        }
 
         //  スマホ画面の回転時イベント
         let controller = this.Controller;

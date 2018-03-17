@@ -53,7 +53,7 @@ export default class FileAttachUtil {
      * 指定されたファイルを Base64 形式に変換する
      * @param files
      */
-    private static FileToBase64(file: File, callback: OnDropFile) {
+    public static FileToBase64(file: File, callback: OnDropFile) {
 
         let owner = FileAttachUtil;
 
