@@ -30,6 +30,11 @@ export class LiveDomVisitorReceiver extends AbstractServiceReceiver<LiveDomVisit
             this.Controller.View.Cursor.Clear();
         }
 
+        //  キャスト情報の通知
+        if (sender.type === CastSettingSender.ID) {
+            this.Controller.View.SetCastSetting(sender as CastSettingSender);
+        }
+
         //  アイコン取得
         if (sender.type === IconSender.ID) {
             this.Controller.View.Cursor.SetIcon(conn.remoteId, (sender as IconSender).icon);

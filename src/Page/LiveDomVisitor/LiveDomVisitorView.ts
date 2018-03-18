@@ -8,6 +8,7 @@ import LiveDomVisitorController from "./LiveDomVisitorController";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import LiveDomSender from "../../Contents/Sender/LiveDomSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
+import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 
 /**
  * 
@@ -56,7 +57,7 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
         let contents = document.getElementById('sbj-livedom-visitor-contents') as HTMLElement;
         let liveDomBack = document.getElementById('sbj-livedom-back');
         let liveDomFront = document.getElementById('sbj-livedom-front');
-        let aspect: number = 8 / 5;
+        let aspect: number = 4 / 3;
 
         LiveDomVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
         CursorDispOffset.SetOffsetDiv(liveDomBack, LiveDomVisitorView.Offset, false);
@@ -82,5 +83,18 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
 
     }
 
+
+    /**
+     * ライブキャストの設定変更
+     * @param sender
+     */
+    public SetCastSetting(sender: CastSettingSender) {
+
+        if (this.Cursor) {
+            if (!sender.useCastProp) {
+                this.Cursor.Clear();
+            }
+        }
+    }
 
 }

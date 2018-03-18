@@ -11,6 +11,7 @@ import { LiveDomInstanceReceiver } from "./LiveDomInstanceReceiver";
 import CursorCache from "../../Contents/Cache/CursorCache";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
+import CursorClearSender from "../../Contents/Sender/CursorClearSender";
 
 export default class LiveDomInstanceController extends AbstractServiceController<LiveDomInstanceView, LiveDomInstanceModel> {
 
@@ -128,6 +129,16 @@ export default class LiveDomInstanceController extends AbstractServiceController
         this.SendCastInfo();
     }
 
+
+    /**
+     * 
+     */
+    public SendOrientationChange() {
+        this.CastStatus.isOrientationChange = true;
+        this.SendCastInfo();
+        this.SwPeer.SendAll(new CursorClearSender());
+    }
+        
 
     /**
      * ストリーミングの開始/停止の通知
