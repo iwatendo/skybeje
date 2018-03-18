@@ -7,6 +7,7 @@ import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 import CastPropController from "../CastProp/CastPropController";
 import CastVisitorController from "./CastVisitorController";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
+import CursorDispOffset from "../CastProp/CursorDispOffset";
 
 /**
  * 
@@ -110,7 +111,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
-        this.Cursor = new CastPropController(this.Controller, video, itemport, curport);
+        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return CursorDispOffset.GetVideoDispOffset(video); });
         this.Cursor.DisplayAll();
 
         MessageChannelUtil.SetChild(this.Controller, (sender) => {

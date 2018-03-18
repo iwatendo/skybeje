@@ -2,17 +2,18 @@
 import * as ReactDOM from 'react-dom';
 
 import CastCursor from './Cursor/CastCursor';
-import CastPropController, { VideoDispOffset } from "./CastPropController";
+import CastPropController from "./CastPropController";
 import CursorItemComponent from "./Cursor/CursorItemComponent";
 import SubTitlesComponent from './SubTitles/SubTitlesComponent';
 import CastSubTitlesSender from '../../Contents/Sender/CastSubTitlesSender';
+import CursorDispOffset from './CursorDispOffset';
 
 
 interface CursorProp {
     controller: CastPropController;
     cursorList: Array<CastCursor>;
     subtitles: CastSubTitlesSender;
-    offset: VideoDispOffset;
+    offset: CursorDispOffset;
 }
 
 

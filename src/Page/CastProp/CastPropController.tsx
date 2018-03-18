@@ -13,16 +13,9 @@ import CastCursor from './Cursor/CastCursor';
 import SubTitlesComponent from './SubTitles/SubTitlesComponent';
 import CastPropComponent from './CastPropComponent';
 import IntervalSend from '../../Base/Util/IntervalSend';
+import CursorDispOffset from './CursorDispOffset';
 
-
-export class VideoDispOffset {
-    clientWidth: number = 0;
-    clientHeight: number = 0;
-    dispWidth: number = 0;
-    dispHeight: number = 0;
-    offsetRight: number = 0;
-    offsetTop: number = 0;
-}
+interface GetDispOffset { (): CursorDispOffset }
 
 /**
  * 
@@ -30,13 +23,13 @@ export class VideoDispOffset {
 export default class CastPropController {
 
     private _service: IServiceController;
-    private _video: HTMLVideoElement;
     private _cursorDispElement: HTMLElement;
     private _baseCursorList = new Array<IconCursorSender>();   //  送られて来たカーソル情報の保持（相対座標）
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
     private _subtitles = new CastSubTitlesSender("");
 
-    private static _vdo: VideoDispOffset;
+    private static _vdo: CursorDispOffset;
+    private static _getOffset: GetDispOffset;
 
     public IconCursor: IconCursorSender;
     public DispIid: string;
@@ -50,14 +43,13 @@ export default class CastPropController {
      * 初期化処理
      * @param service
      * @param connCache 
-     * @param video 
      * @param itemDivElement 
      * @param cursorDivElement 
      */
-    public constructor(service: IServiceController, video: HTMLVideoElement, itemDivElement: HTMLElement, cursorDivElement: HTMLElement) {
+    public constructor(service: IServiceController, itemDivElement: HTMLElement, cursorDivElement: HTMLElement, getOffset: GetDispOffset, onrisize = null) {
 
         this._service = service;
-        this._video = video;
+        CastPropController._getOffset = getOffset;
         this._cursorDispElement = cursorDivElement;
 
         itemDivElement.onmousedown = (ev: MouseEvent) => {
@@ -81,7 +73,12 @@ export default class CastPropController {
             }
         }
 
-        window.onresize = ((ev) => { this.DisplayAll(); });
+        window.onresize = ((ev) => {
+            if(onrisize){
+                onrisize();
+            }
+            this.DisplayAll(); 
+        });
 
         window.onbeforeunload = (ev) => {
             //  接続が切れた場合、カーソルを非表示にする
@@ -105,7 +102,7 @@ export default class CastPropController {
      * 描画処理
      */
     private DoRender() {
-        let vdo = this.GetVideoDispOffset(this._video);
+        let vdo = CastPropController._getOffset();
         ReactDOM.render(<CastPropComponent controller={this} cursorList={this._cursorList} subtitles={this._subtitles} offset={vdo} />, this._cursorDispElement, (el) => {
             this.SetCursorIcon(this._cursorList);
         });
@@ -126,7 +123,7 @@ export default class CastPropController {
         if (sender) {
 
             //  座標のオフセット取得
-            let vdo = this.GetVideoDispOffset(this._video);
+            let vdo = CastPropController._getOffset();
             //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
             sender.posRx = (clientX - vdo.offsetRight + CastPropController.OffsetX) / vdo.dispWidth;
             sender.posRy = (clientY - vdo.offsetTop + CastPropController.OffsetY) / vdo.dispHeight;
@@ -186,7 +183,7 @@ export default class CastPropController {
      * 
      */
     public DisplayAll() {
-        CastPropController._vdo = this.GetVideoDispOffset(this._video);
+        CastPropController._vdo = CastPropController._getOffset();
         this._cursorList = new Array<CastCursor>();
         this._baseCursorList.forEach((cur, key) => { this.SetCursorList(cur); });
         this.DoRender();
@@ -203,7 +200,7 @@ export default class CastPropController {
         this._baseCursorList = this._baseCursorList.filter((c) => c.homePeerId !== cursor.homePeerId);
         this._baseCursorList.push(cursor);
 
-        CastPropController._vdo = this.GetVideoDispOffset(this._video);
+        CastPropController._vdo = CastPropController._getOffset();
         this.SetCursorList(cursor);
         this.DoRender();
     }
@@ -268,44 +265,6 @@ export default class CastPropController {
             this._service.SwPeer.SendToOwner(msg);
         }
 
-    }
-
-
-    /**
-     * Videoの表示エリアのオフセット値計算（送信時/受信時共通処理）
-     * @param video
-     */
-    private GetVideoDispOffset(video: HTMLVideoElement): VideoDispOffset {
-
-        let videoWidth: number = video.videoWidth;
-        let videoHeight: number = video.videoHeight;
-        let videoAspect: number = videoWidth / videoHeight;
-
-        let divWidth: number = video.clientWidth;
-        let divHeight: number = video.clientHeight;
-        let divAscpet: number = divWidth / divHeight;
-
-        let result = new VideoDispOffset();
-
-        result.clientWidth = video.clientWidth;
-        result.clientHeight = video.clientHeight;
-
-        if (divAscpet > videoAspect) {
-            //  divが横に長い場合・・・
-            result.dispHeight = divHeight;
-            result.dispWidth = result.dispHeight * videoAspect;
-            result.offsetTop = 0;
-            result.offsetRight = (divWidth - result.dispWidth) / 2;
-        }
-        else {
-            //  divが縦に長い場合
-            result.dispWidth = divWidth;
-            result.dispHeight = result.dispWidth / videoAspect;
-            result.offsetRight = 0;
-            result.offsetTop = (divHeight - result.dispHeight) / 2;
-        }
-
-        return result;
     }
 
 

@@ -1,12 +1,12 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import CastSubTitlesSender from '../../../Contents/Sender/CastSubTitlesSender';
-import { VideoDispOffset } from '../CastPropController';
+import CursorDispOffset from '../CursorDispOffset';
 
 
 interface SubTitlesProp {
     csr: CastSubTitlesSender;
-    offset: VideoDispOffset;
+    offset: CursorDispOffset;
 }
 
 

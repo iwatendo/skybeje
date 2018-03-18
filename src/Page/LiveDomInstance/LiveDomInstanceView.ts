@@ -10,6 +10,7 @@ import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import { Room } from "../../Contents/IndexedDB/Home";
 import LiveDomSender from "../../Contents/Sender/LiveDomSender";
+import CursorDispOffset from "../CastProp/CursorDispOffset";
 
 export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInstanceController> {
 
@@ -100,10 +101,17 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      * カーソル表示設定
      */
     public InitializeCursor() {
-        let video = document.getElementById('sbj-livedom-back') as HTMLVideoElement;
-        let itemport = document.getElementById('sbj-livedom-item-port') as HTMLElement;
-        let curport = document.getElementById('sbj-livedom-cursor-port') as HTMLElement;
-        this.Cursor = new CastPropController(this.Controller, video, itemport, curport);
+        let content = document.getElementById('sbj-video-content') as HTMLVideoElement;
+
+        let offset = new CursorDispOffset();
+        offset.clientWidth = content.clientWidth;
+        offset.clientHeight = content.clientHeight;
+        offset.dispWidth = content.clientWidth;
+        offset.dispHeight = content.clientHeight;
+
+        let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
+        let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
+        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return offset; });
         this.Cursor.DisplayAll();
     }
 

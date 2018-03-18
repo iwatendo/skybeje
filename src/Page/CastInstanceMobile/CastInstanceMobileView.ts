@@ -10,6 +10,7 @@ import MapLocationSender from "../../Contents/Sender/MapLocationSender";
 import FileUtil from "../../Base/Util/FileUtil";
 import FileAttachUtil from "../../Base/Util/FileAttachUtil";
 import PictureSender from "../../Contents/Sender/PictureSender";
+import CursorDispOffset from "../CastProp/CursorDispOffset";
 
 export default class CastInstanceMobileView extends AbstractServiceView<CastInstanceMobileController> {
 
@@ -206,7 +207,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         let video = document.getElementById('sbj-video-preview') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
-        this.Cursor = new CastPropController(this.Controller, video, itemport, curport);
+        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return CursorDispOffset.GetVideoDispOffset(video); });
         this.Cursor.DisplayAll();
     }
 

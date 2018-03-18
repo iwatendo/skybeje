@@ -15,6 +15,7 @@ import { DialogMode } from "../../Contents/AbstractDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import CursorDispOffset from "../CastProp/CursorDispOffset";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -243,7 +244,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
-        this.Cursor = new CastPropController(this.Controller, video, itemport, curport);
+        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return CursorDispOffset.GetVideoDispOffset(video); });
         this.Cursor.DisplayAll();
     }
 
