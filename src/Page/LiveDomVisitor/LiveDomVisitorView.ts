@@ -6,6 +6,7 @@ import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 import CastPropController from "../CastProp/CastPropController";
 import LiveDomVisitorController from "./LiveDomVisitorController";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
+import LiveDomSender from "../../Contents/Sender/LiveDomSender";
 
 /**
  * 
@@ -13,6 +14,7 @@ import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorController> {
 
     public Cursor: CastPropController;
+    public LiveDom = new LiveDomSender();
 
     //
     public Initialize(callback: OnViewLoad) {
@@ -41,5 +43,25 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
             this.Cursor.SetChatStatus(cst);
         });
     }
+
+
+    /**
+     * 埋込ページの変更
+     * @param dom 
+     */
+    public SetLiveDom(dom: LiveDomSender) {
+
+        if (this.LiveDom.backhtml !== dom.backhtml) {
+            $("#sbj-livedom-back").empty().append(dom.backhtml);
+        }
+
+        if (this.LiveDom.fronthtml !== dom.fronthtml) {
+            $("#sbj-livedom-front").empty().append(dom.fronthtml);
+        }
+
+        this.LiveDom = dom;
+
+    }
+
 
 }

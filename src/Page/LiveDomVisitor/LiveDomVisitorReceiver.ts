@@ -9,6 +9,7 @@ import IconSender from "../../Contents/Sender/IconSender";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CursorClearSender from "../../Contents/Sender/CursorClearSender";
+import LiveDomSender from "../../Contents/Sender/LiveDomSender";
 
 
 export class LiveDomVisitorReceiver extends AbstractServiceReceiver<LiveDomVisitorController> {
@@ -37,6 +38,11 @@ export class LiveDomVisitorReceiver extends AbstractServiceReceiver<LiveDomVisit
         //  字幕表示
         if (sender.type === CastSubTitlesSender.ID) {
             this.Controller.View.Cursor.SetMessage(sender as CastSubTitlesSender);
+        }
+
+        //  LiveDom
+        if(sender.type === LiveDomSender.ID){
+            this.Controller.View.SetLiveDom(sender as LiveDomSender);
         }
     }
 

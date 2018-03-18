@@ -9,6 +9,7 @@ import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import IconSender from "../../Contents/Sender/IconSender";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
+import GetLiveDomSender from "../../Contents/Sender/GetLiveDomSender";
 
 
 export class LiveDomInstanceReceiver extends AbstractServiceReceiver<LiveDomInstanceController> {
@@ -44,6 +45,11 @@ export class LiveDomInstanceReceiver extends AbstractServiceReceiver<LiveDomInst
         if (sender.type === RoomSender.ID) {
             this.Controller.CastRoom = sender as RoomSender;
             this.Controller.View.SetRoom(this.Controller.CastRoom.room);
+        }
+
+        //  LiveDom情報送信
+        if (sender.type === GetLiveDomSender.ID) {
+            conn.send(this.Controller.View.LiveDom);
         }
 
         //  キャスト情報の送信

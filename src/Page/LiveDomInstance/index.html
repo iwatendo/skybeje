@@ -11,6 +11,7 @@
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='../common.castprop.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
+    <script src='/lib/jquery-2.2.3.min.js'></script>
     <script src="/lib/material.min.js"></script>
 </head>
 
@@ -21,7 +22,7 @@
         <header class="sbj-livedom-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
             <div class="sbj-livedom-instance--header-row mdl-layout__header-row">
                 <span id="sbj-livedom-instance-title" class="mdl-layout-title">
-                    LiveDOM
+                    Skybeje LiveDOM
                 </span>
                 <div id="sbj-livedom-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-livedom-instance-account-count">この配信への接続数</div>
@@ -45,15 +46,24 @@
                             </button>
                         </div>
 
-
                         <div class="mdl-list__item-primary-content sbj-video-content">
-                            <video id='sbj-video' autoplay="true">
-                            </video>
+
+                            <div id='sbj-livedom-back'>
+                            </div>
+
                             <div id="sbj-livedom-item-port">
                                 <div id="sbj-livedom-cursor-port">
                                     <!-- React -->
                                 </div>
                             </div>
+
+                            <div id="sbj-livedom-visitor-message-port" hidden>
+                                <h2 id="sbj-livedom-visitor-message"></h2>
+                            </div>
+
+                            <div id='sbj-livedom-front'>
+                            </div>
+                            
                         </div>
 
                         <label id="sbj-check-cursor-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
@@ -75,6 +85,24 @@
                         </button>
                         <div class="mdl-shadow--3dp sbj-client-link-qrcode-box">
                             <iframe id="sbj-link-qrcode" class="sbj-client-link-qrcode-frame" src=""></iframe>
+                        </div>
+                    </div>
+                    <div class="sbj-embedded">
+                        <button id="sbj-livedom-preview" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                            <i class="material-icons">pageview</i>
+                            &nbsp;プレビュー&nbsp;
+                        </button>
+                        <button id="sbj-livedom-pushpage" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                            <i class="material-icons">restore_page</i>
+                            &nbsp;ページ更新&nbsp;
+                        </button>
+                        <div class="sbj-embedded-value-div">
+                            <h6>カーソルポートの背面（クリック不可）</h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-back" rows="12" cols="80" spellCheck='false'></textarea>
+                        </div>
+                        <div class="sbj-embedded-value-div">
+                            <h6>カーソルポートの前面（クリック可能）</h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-front" rows="12" cols="80" spellCheck='false'></textarea>
                         </div>
                     </div>
                 </div>

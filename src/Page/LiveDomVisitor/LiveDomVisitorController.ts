@@ -5,6 +5,8 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 import { LiveDomVisitorView } from "./LiveDomVisitorView";
 import LiveDomVisitorModel from "./LiveDomVisitorModel";
 import { LiveDomVisitorReceiver } from "./LiveDomVisitorReceiver";
+import GetLiveDomSender from "../../Contents/Sender/GetLiveDomSender";
+import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 
 
 export default class LiveDomVisitorController extends AbstractServiceController<LiveDomVisitorView, LiveDomVisitorModel> {
@@ -50,6 +52,10 @@ export default class LiveDomVisitorController extends AbstractServiceController<
      * オーナー接続時イベント
      */
     public OnOwnerConnection() {
+
+        //  キャスト情報の要求
+        this.SwPeer.SendToOwner(new GetCastSettingSedner());
+
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.InitializeCursor();
     }

@@ -12,7 +12,7 @@
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='../common.castprop.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
-
+    <script src='/lib/jquery-2.2.3.min.js'></script>
     <script src="/lib/material.min.js"></script>
 </head>
 
@@ -21,16 +21,22 @@
     <div class="mdl-layout mdl-js-layout">
         <main class="sbj-livedom-visitor-contents mdl-layout__content">
 
-            <video id='sbj-video' autoplay="true" playsinline="true"></video>
+            <video id='sbj-video' autoplay="true" playsinline="true" hidden></video>
+
+            <div id='sbj-livedom-back'>
+            </div>
 
             <div id="sbj-livedom-item-port">
                 <div id="sbj-livedom-cursor-port">
                     <!-- React -->
                 </div>
             </div>
-            
+
             <div id="sbj-livedom-visitor-message-port" hidden>
                 <h2 id="sbj-livedom-visitor-message"></h2>
+            </div>
+
+            <div id='sbj-livedom-front'>
             </div>
 
         </main>

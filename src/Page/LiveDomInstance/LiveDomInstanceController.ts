@@ -83,6 +83,9 @@ export default class LiveDomInstanceController extends AbstractServiceController
         super.OnChildConnection(conn);
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
 
+        //  LiveDom情報通知
+        this.SwPeer.SendTo(conn,this.View.LiveDom);
+
         //  配置済みカーソルの通知
         this.CursorCache.forEach((cursor) => {
             this.SwPeer.SendTo(conn, cursor);
