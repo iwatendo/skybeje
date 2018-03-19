@@ -15,7 +15,8 @@ import CursorDispOffset from "../CastProp/CursorDispOffset";
 export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInstanceController> {
 
     public Cursor: CastPropController;
-    public LiveDom = new LiveDomSender();
+    public LiveDom: LiveDomSender;
+    public PreViewLiveDom: LiveDomSender;
 
     /**
      * 初期化処理
@@ -25,38 +26,56 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
 
-        let startButton = document.getElementById('sbj-livedom-instance-start');
-        let stopButton = document.getElementById('sbj-livedom-instance-stop');
-
-        let previewButton = document.getElementById('sbj-livedom-preview');
-        let pushpageButton = document.getElementById('sbj-livedom-pushpage');
-
         //  ストリーミング開始ボタン
-        startButton.onclick = (e) => {
+        document.getElementById('sbj-livedom-instance-start').onclick = (e) => {
             this.ChangeDisplayMode(true);
             this.StartLiveDom();
         }
 
         //  ストリーミング停止ボタン
-        stopButton.onclick = (e) => {
+        document.getElementById('sbj-livedom-instance-stop').onclick = (e) => {
             this.Controller.ServerSend(false, false);
             location.href = "";
         };
 
-        //  プレビュー
-        previewButton.onclick = (e) => {
-            this.EmbededPageChange(true);
-        };
-
         //  ページ更新
-        pushpageButton.onclick = (e) => {
-            this.EmbededPageChange(false);
+        let pagepushElement = document.getElementById('sbj-livedom-pushpage');
+        pagepushElement.onclick = (e) => {
+            pagepushElement.hidden = true;
+            this.SendLiveDom();
         };
 
-        let cursorDispElement = document.getElementById('sbj-check-cursor-disp') as HTMLInputElement;
-        cursorDispElement.onchange = (e) => { this.SendOption(); }
+        //  プレビュー
+        document.getElementById('sbj-livedom-preview').onclick = (e) => {
+            this.ChangePreview(true);
+        };
 
+        //  プレビュー停止
+        document.getElementById('sbj-livedom-preview-stop').onclick = (e) => {
+            this.ChangePreview(false);
+        }
 
+        //  アスペクト比変更
+        document.getElementById('sbj-aspect-width').oninput = (e) => {
+            this.ChangeAspect();
+        }
+        document.getElementById('sbj-aspect-height').oninput = (e) => {
+            this.ChangeAspect();
+        }
+
+        //  ユーザーのカーソル表示可否の変更
+        document.getElementById('sbj-check-cursor-disp').onchange = (e) => {
+            this.SendOption();
+        }
+
+        //  レイヤー設定変更
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById('sbj-embedded-value-layer' + i.toString()).onchange = (ev) => {
+                this.ChangeLiveDomSetting();
+            }
+        }
+
+        this.ChangeAspect();
         this.InitializeCursor();
     }
 
@@ -101,19 +120,80 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      * カーソル表示設定
      */
     public InitializeCursor() {
-        let content = document.getElementById('sbj-video-content') as HTMLVideoElement;
-
-        let offset = new CursorDispOffset();
-        offset.clientWidth = content.clientWidth;
-        offset.clientHeight = content.clientHeight;
-        offset.dispWidth = content.clientWidth;
-        offset.dispHeight = content.clientHeight;
-
+        let content = document.getElementById('sbj-livedom-content') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
-        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return offset; });
+        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => {
+            let offset = new CursorDispOffset();
+            offset.clientWidth = content.clientWidth;
+            offset.clientHeight = content.clientHeight;
+            offset.dispWidth = content.clientWidth;
+            offset.dispHeight = content.clientHeight;
+            return offset;
+        });
         this.Cursor.DisplayAll();
     }
+
+
+
+    /**
+     * 
+     */
+    public GetLiveDomSender(): LiveDomSender {
+        let sender = new LiveDomSender();
+        sender.aspectW = Number.parseInt((document.getElementById('sbj-aspect-width') as HTMLInputElement).value);
+        sender.aspectH = Number.parseInt((document.getElementById('sbj-aspect-height') as HTMLInputElement).value);
+        sender.layerBackgroundB = (document.getElementById('sbj-embedded-value-layer1') as HTMLInputElement).value;
+        sender.layerBackgroundF = (document.getElementById('sbj-embedded-value-layer2') as HTMLInputElement).value;
+        sender.layerActive = (document.getElementById('sbj-embedded-value-layer3') as HTMLInputElement).value;
+        sender.layerControl = (document.getElementById('sbj-embedded-value-layer4') as HTMLInputElement).value;
+        return sender;
+    }
+
+
+    /**
+     * 
+     * @param sender 
+     */
+    public SetLiveDomSender(sender: LiveDomSender) {
+        (document.getElementById('sbj-aspect-width') as HTMLInputElement).value = sender.aspectW.toString();
+        (document.getElementById('sbj-aspect-height') as HTMLInputElement).value = sender.aspectH.toString();
+        (document.getElementById('sbj-embedded-value-layer1') as HTMLInputElement).value = sender.layerBackgroundB;
+        (document.getElementById('sbj-embedded-value-layer2') as HTMLInputElement).value = sender.layerBackgroundF;
+        (document.getElementById('sbj-embedded-value-layer3') as HTMLInputElement).value = sender.layerActive;
+        (document.getElementById('sbj-embedded-value-layer4') as HTMLInputElement).value = sender.layerControl;
+    }
+
+
+    /**
+     * アスペクト比の変更
+     */
+    public ChangeAspect() {
+        let sender = this.GetLiveDomSender();
+        document.getElementById('sbj-aspect-width-tip').textContent = sender.aspectW.toString();
+        document.getElementById('sbj-aspect-height-tip').textContent = sender.aspectH.toString();
+        let content = document.getElementById('sbj-livedom-content') as HTMLElement;
+
+        let aspect = sender.aspectW / sender.aspectH;
+
+        if (aspect === 1) {
+            content.style.width = "100%";
+            content.style.height = "100%";
+        }
+        else if (aspect < 1) {
+            let width = (480 * sender.aspectW / sender.aspectH);
+            content.style.width = width.toString(); + "px";
+            content.style.height = "100%";
+        }
+        else {
+            let height = (480 * sender.aspectH / sender.aspectW);
+            content.style.width = "100%";
+            content.style.height = height.toString() + "px";
+        }
+
+        this.ChangeLiveDomSetting();
+    }
+
 
 
     /**
@@ -159,6 +239,7 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      * 
      */
     public StartLiveDom() {
+
         let linkurl = LinkUtil.CreateLink("../LiveDomVisitor", this.Controller.SwPeer.PeerId);
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
@@ -166,6 +247,45 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn, clientopenbtn, qrcode);
 
         this.Controller.ServerSend(true, false);
+        this.SendLiveDom();
+    }
+
+
+    /**
+     * 
+     */
+    public SendLiveDom() {
+        this.LiveDom = this.GetLiveDomSender();
+        this.Controller.SwPeer.SendAll(this.LiveDom);
+    }
+
+
+    /**
+     * レイヤー情報の変更時イベント
+     */
+    public ChangeLiveDomSetting() {
+
+        let dom = this.GetLiveDomSender();
+
+        if (this.LiveDom) {
+            if (!LiveDomSender.Equals(dom, this.LiveDom)) {
+                document.getElementById('sbj-livedom-pushpage').hidden = false;
+            }
+        }
+
+        if (this.PreViewLiveDom) {
+            if (this.PreViewLiveDom.layerBackgroundB !== dom.layerBackgroundB) $("#sbj-livedom-layer1").empty().append(dom.layerBackgroundB);
+            if (this.PreViewLiveDom.layerBackgroundF !== dom.layerBackgroundF) $("#sbj-livedom-layer2").empty().append(dom.layerBackgroundF);
+            if (this.PreViewLiveDom.layerActive !== dom.layerActive) $("#sbj-livedom-layer3").empty().append(dom.layerActive);
+            if (this.PreViewLiveDom.layerControl !== dom.layerControl) $("#sbj-livedom-layer4").empty().append(dom.layerControl);
+            this.PreViewLiveDom = dom;
+        }
+        else {
+            $("#sbj-livedom-layer1").empty();
+            $("#sbj-livedom-layer2").empty();
+            $("#sbj-livedom-layer3").empty();
+            $("#sbj-livedom-layer4").empty();
+        }
     }
 
 
@@ -173,25 +293,18 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      * 埋め込みページの更新
      * @param isPreview 
      */
-    public EmbededPageChange(isPreview: boolean) {
+    public ChangePreview(dispPreview: boolean) {
 
-        let backHtml = (document.getElementById('sbj-embedded-value-back') as HTMLInputElement).value;
-        let frontHtml = (document.getElementById('sbj-embedded-value-front') as HTMLInputElement).value;
+        document.getElementById('sbj-livedom-preview').hidden = dispPreview;
+        document.getElementById('sbj-livedom-preview-stop').hidden = !dispPreview;
 
-        if (this.LiveDom.backhtml !== backHtml) {
-            $("#sbj-livedom-back").empty().append(backHtml);
-            this.LiveDom.backhtml = backHtml;
+        if (dispPreview) {
+            this.PreViewLiveDom = new LiveDomSender();
         }
-
-        if (this.LiveDom.fronthtml !== frontHtml) {
-            $("#sbj-livedom-front").empty().append(frontHtml);
-            this.LiveDom.fronthtml = frontHtml;
+        else {
+            this.PreViewLiveDom = null;
         }
-
-        if (!isPreview) {
-            this.Controller.SwPeer.SendAll(this.LiveDom);
-        }
-
+        this.ChangeLiveDomSetting();
     }
 
 }

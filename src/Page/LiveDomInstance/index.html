@@ -36,35 +36,61 @@
                     <div class="mdl-color-text--grey-600" id="sbj-livedom-instance-main">
 
                         <div class="sbj-livedom-instance-actions mdl-list__item-primary-content">
-                            <button id="sbj-livedom-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                            <button id="sbj-livedom-instance-start" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
                                 <i class="material-icons">play_arrow</i>
                                 &nbsp;開始&nbsp;
                             </button>
-                            <button id="sbj-livedom-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                            <button id="sbj-livedom-instance-stop" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
+                                hidden>
                                 <i class="material-icons">stop</i>
                                 &nbsp;停止&nbsp;
                             </button>
+                            <button id="sbj-livedom-pushpage" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored"
+                                hidden>
+                                <i class="material-icons">restore_page</i>
+                                &nbsp;ページ更新&nbsp;
+                            </button>
                         </div>
 
-                        <div id="sbj-video-content" class="mdl-list__item-primary-content sbj-video-content">
-
-                            <div id='sbj-livedom-back'>
-                            </div>
-
-                            <div id="sbj-cast-item-port">
-                                <div id="sbj-cast-cursor-port">
-                                    <!-- React -->
+                        <div class="sbj-livedom-content-box">
+                            <div id="sbj-livedom-content" class="mdl-list__item-primary-content sbj-livedom-content">
+                                <div id='sbj-livedom-layer1'>
+                                </div>
+                                <div id='sbj-livedom-layer2'>
+                                </div>
+                                <div id="sbj-cast-item-port">
+                                    <div id="sbj-cast-cursor-port">
+                                        <!-- React -->
+                                    </div>
+                                </div>
+                                <div id="sbj-livedom-visitor-message-port" hidden>
+                                    <h2 id="sbj-livedom-visitor-message"></h2>
+                                </div>
+                                <div id='sbj-livedom-layer3'>
+                                </div>
+                                <div id='sbj-livedom-layer4'>
                                 </div>
                             </div>
-
-                            <div id="sbj-livedom-visitor-message-port" hidden>
-                                <h2 id="sbj-livedom-visitor-message"></h2>
-                            </div>
-
-                            <div id='sbj-livedom-front'>
-                            </div>
-                            
                         </div>
+
+                        <div class="sbj-livedom-instance-actions mdl-list__item-primary-content">
+                            <button id="sbj-livedom-preview" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+                                <i class="material-icons">pageview</i>
+                                &nbsp;プレビュー開始&nbsp;
+                            </button>
+                            <button id="sbj-livedom-preview-stop" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
+                                hidden>
+                                <i class="material-icons">pageview</i>
+                                &nbsp;プレビュー停止&nbsp;
+                            </button>
+                        </div>
+
+                        <h6 class="sbj-livedom-label"> アスペクト比（横）</h6>
+                        <input id="sbj-aspect-width" class="mdl-slider mdl-js-slider" type="range" min="1" max="16" value="4" tabindex="0">
+                        <span id="sbj-aspect-width-tip" class="mdl-tooltip" for="sbj-aspect-width">4</span>
+                        <h6 class="sbj-livedom-label"> アスペクト比（縦）</h6>
+                        <input id="sbj-aspect-height" class="mdl-slider mdl-js-slider" type="range" min="1" max="16" value="3" tabindex="0">
+                        <span id="sbj-aspect-height-tip" class="mdl-tooltip" for="sbj-aspect-height">3</span>
 
                         <label id="sbj-check-cursor-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
                             for="sbj-check-cursor-disp" hidden>
@@ -76,6 +102,33 @@
                 </div>
 
                 <div class="sbj-split-right">
+                    <div class="sbj-embedded mdl-color-text--grey-600">
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> 背景レイヤー（後）
+                                <br/>このレイヤーに配置したエレメントはクリックできません
+                            </h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer1" rows="6" cols="80" spellCheck='false'></textarea>
+                        </div>
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> 背景レイヤー（前）
+                                <br/>このレイヤーに配置したエレメントはクリックできません
+                            </h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer2" rows="6" cols="80" spellCheck='false'></textarea>
+                        </div>
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> アクティブ・レイヤー
+                                <br/>このレイヤーに配置したエレメントはクリック可能です
+                                <br/>※ただし、ユーザーアイコンの配置／移動ができなくなります
+                            </h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="6" cols="80" spellCheck='false'></textarea>
+                        </div>
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> コントロール・レイヤー
+                                <br/>ページ下部にAudioタグ等を配置する為のレイヤーです
+                            </h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="6" cols="80" spellCheck='false'></textarea>
+                        </div>
+                    </div>
                     <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
                         <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                             &nbsp; 接続ページ起動 &nbsp;
@@ -85,24 +138,6 @@
                         </button>
                         <div class="mdl-shadow--3dp sbj-client-link-qrcode-box">
                             <iframe id="sbj-link-qrcode" class="sbj-client-link-qrcode-frame" src=""></iframe>
-                        </div>
-                    </div>
-                    <div class="sbj-embedded">
-                        <button id="sbj-livedom-preview" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                            <i class="material-icons">pageview</i>
-                            &nbsp;プレビュー&nbsp;
-                        </button>
-                        <button id="sbj-livedom-pushpage" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                            <i class="material-icons">restore_page</i>
-                            &nbsp;ページ更新&nbsp;
-                        </button>
-                        <div class="sbj-embedded-value-div">
-                            <h6>カーソルポートの背面（クリック不可）</h6>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-back" rows="12" cols="80" spellCheck='false'></textarea>
-                        </div>
-                        <div class="sbj-embedded-value-div">
-                            <h6>カーソルポートの前面（クリック可能）</h6>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-front" rows="12" cols="80" spellCheck='false'></textarea>
                         </div>
                     </div>
                 </div>

@@ -79,14 +79,19 @@ export default class CursorDispOffset {
      * 
      * @param element 
      * @param offset 
+     * @param isControllLayer 
      */
-    public static SetOffsetDiv(element: HTMLElement, offset: CursorDispOffset, isFront: boolean) {
+    public static SetOffsetDiv(element: HTMLElement, offset: CursorDispOffset, isControllLayer: boolean) {
         if (element) {
-            element.style.top = offset.offsetTop + "px";
-            element.style.right = offset.offsetRight + "px";
-            element.style.width = offset.dispWidth + "px";
-
-            if (!isFront) {
+            if (isControllLayer) {
+                element.style.bottom = "0px";
+                element.style.right = offset.offsetRight + "px";
+                element.style.width = offset.dispWidth + "px";
+            }
+            else {
+                element.style.top = offset.offsetTop + "px";
+                element.style.right = offset.offsetRight + "px";
+                element.style.width = offset.dispWidth + "px";
                 element.style.height = offset.dispHeight + "px";
             }
         }

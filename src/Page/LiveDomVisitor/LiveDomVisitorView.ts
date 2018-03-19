@@ -39,8 +39,7 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
 
-        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return LiveDomVisitorView.Offset; }, this.Risize);
-        this.Risize();
+        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return LiveDomVisitorView.Offset; }, () => { this.Risize(this.LiveDom); });
         this.Cursor.DisplayAll();
 
         MessageChannelUtil.SetChild(this.Controller, (sender) => {
@@ -53,15 +52,21 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
     /**
      * 
      */
-    public Risize() {
-        let contents = document.getElementById('sbj-livedom-visitor-contents') as HTMLElement;
-        let liveDomBack = document.getElementById('sbj-livedom-back');
-        let liveDomFront = document.getElementById('sbj-livedom-front');
-        let aspect: number = 4 / 3;
+    public Risize(livedom: LiveDomSender) {
+        if (livedom) {
+            let contents = document.getElementById('sbj-livedom-visitor-contents') as HTMLElement;
+            let liveDomLayer1 = document.getElementById('sbj-livedom-layer1');
+            let liveDomLayer2 = document.getElementById('sbj-livedom-layer2');
+            let liveDomLayer3 = document.getElementById('sbj-livedom-layer3');
+            let liveDomLayer4 = document.getElementById('sbj-livedom-layer4');
+            let aspect: number = livedom.aspectW / livedom.aspectH;
 
-        LiveDomVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
-        CursorDispOffset.SetOffsetDiv(liveDomBack, LiveDomVisitorView.Offset, false);
-        CursorDispOffset.SetOffsetDiv(liveDomFront, LiveDomVisitorView.Offset, true);
+            LiveDomVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
+            CursorDispOffset.SetOffsetDiv(liveDomLayer1, LiveDomVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveDomLayer2, LiveDomVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveDomLayer3, LiveDomVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveDomLayer4, LiveDomVisitorView.Offset, true);
+        }
     }
 
 
@@ -70,17 +75,29 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
      * @param dom 
      */
     public SetLiveDom(dom: LiveDomSender) {
-
-        if (this.LiveDom.backhtml !== dom.backhtml) {
-            $("#sbj-livedom-back").empty().append(dom.backhtml);
-        }
-
-        if (this.LiveDom.fronthtml !== dom.fronthtml) {
-            $("#sbj-livedom-front").empty().append(dom.fronthtml);
-        }
-
+        this.SetLiveDomElement($("#sbj-livedom-layer1"), this.LiveDom.layerBackgroundB, dom.layerBackgroundB);
+        this.SetLiveDomElement($("#sbj-livedom-layer2"), this.LiveDom.layerBackgroundF, dom.layerBackgroundF);
+        this.SetLiveDomElement($("#sbj-livedom-layer3"), this.LiveDom.layerActive, dom.layerActive);
+        this.SetLiveDomElement($("#sbj-livedom-layer4"), this.LiveDom.layerControl, dom.layerControl);
         this.LiveDom = dom;
+        this.Risize(dom);
+    }
 
+
+    /**
+     * 
+     * @param element 
+     * @param pre 
+     * @param cur 
+     */
+    public SetLiveDomElement(element: JQuery, pre: string, cur: string) {
+        if (pre !== cur) {
+            element.empty().show().append(cur);
+        }
+
+        if (cur.trim().length === 0) {
+            element.hide();
+        }
     }
 
 

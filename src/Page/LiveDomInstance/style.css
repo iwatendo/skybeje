@@ -26,6 +26,10 @@
     margin: 0px 20px;
 }
 
+.sbj-livedom-label{
+    margin: 12px 0px 0px;
+}
+
 .sbj-livedom-instance-actions{
     margin: 16px 0px;
 }
@@ -68,11 +72,18 @@
  *
  *---------------------------*/
 
-.sbj-video-content{
+ .sbj-livedom-content-box{
+     width: 480px;
+     height: 480px;
+     background-color: whitesmoke;
+ }
+
+.sbj-livedom-content{
     position: relative;
     width: 480px;
     height: 360px;
     overflow: hidden;
+    background-color: var(--sbj-color-edge-background);
 }
 
 #sbj-cast-item-port{
@@ -87,15 +98,15 @@
     user-select: none;
 }
 
-#sbj-livedom-back {
+#sbj-livedom-layer1 #sbj-livedom-layer2 #sbj-livedom-layey3{
     position: absolute;
     height: 100%;
     width: 100%;
-    background-color: var(--sbj-color-edge-background);
 }
 
-#sbj-livedom-front {
+#sbj-livedom-layer4 {
     position: absolute;
+    bottom: 0;
 }
 
 /*-----------------------------

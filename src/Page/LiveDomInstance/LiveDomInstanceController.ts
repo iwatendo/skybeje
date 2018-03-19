@@ -100,7 +100,6 @@ export default class LiveDomInstanceController extends AbstractServiceController
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
         let cursor = this.CursorCache.Get(conn.remoteId);
         if (cursor) {
             //  切断が発生した場合、全クライアントでカーソルが消えた事を通知
@@ -109,6 +108,9 @@ export default class LiveDomInstanceController extends AbstractServiceController
         }
         this.CursorCache.Remove(conn.remoteId);
         this.View.Cursor.Remove(conn.remoteId);
+
+        conn.close();
+        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
 
