@@ -50,6 +50,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             submenu.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
             submenu.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
             submenu.hidden = false;
+            submenu.style.opacity = "0.0";
 
             document.getElementById('sbj-cast-visitor-volume').onclick = (e) => { this.SetMute(!video.muted); };
 

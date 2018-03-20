@@ -81,12 +81,14 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         if (pre) {
             //  前回データがある場合は復元
             let setting = JSON.parse(pre) as LiveDomSender;
-            this.ChangeLayerDOM(setting);
-            this.ChangeAspect(setting);
             this.SetLiveDomSender(setting);
         }
         else {
-            this.PreViewLiveDom = new LiveDomSender();
+            //  前回データがない場合は初期値を設定
+            let dom = new LiveDomSender();
+            dom.aspectW = 4;
+            dom.aspectH = 3;
+            this.SetLiveDomSender(dom);
         }
 
         this.InitializeCursor();
@@ -94,6 +96,18 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     }
 
 
+    /**
+     * 
+     */
+    public InitializeDomSetting() {
+        this.ChangeAspect(this.LiveDom);
+        this.ChangeLayerDOM(this.LiveDom);
+    }
+
+
+    /**
+     * 
+     */
     public InitializeChatLink() {
         (document.getElementById('sbj-check-cursor-disp-label') as HTMLInputElement).hidden = false;
     }

@@ -41,6 +41,9 @@ export default class LiveDomInstanceController extends AbstractServiceController
      * @param peer
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
+        if (this.View) {
+            this.View.InitializeDomSetting();
+        }
     }
 
     /**
