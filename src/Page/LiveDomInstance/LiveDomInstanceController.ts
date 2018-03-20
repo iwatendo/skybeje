@@ -32,6 +32,7 @@ export default class LiveDomInstanceController extends AbstractServiceController
         super();
         this.Receiver = new LiveDomInstanceReceiver(this);
         this.CursorCache = new CursorCache();
+        this.View = new LiveDomInstanceView(this, () => { });
     };
 
 
@@ -40,7 +41,6 @@ export default class LiveDomInstanceController extends AbstractServiceController
      * @param peer
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
-        this.View = new LiveDomInstanceView(this, () => { });
     }
 
     /**
@@ -84,13 +84,16 @@ export default class LiveDomInstanceController extends AbstractServiceController
         super.OnChildConnection(conn);
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
 
-        //  LiveDom情報通知
-        this.SwPeer.SendTo(conn,this.View.LiveDom);
-
         //  配置済みカーソルの通知
         this.CursorCache.forEach((cursor) => {
             this.SwPeer.SendTo(conn, cursor);
         });
+
+        //  LiveDom情報通知
+        if (this.View.LiveDom) {
+            this.SwPeer.SendTo(conn, this.View.LiveDom);
+        }
+
     }
 
 
@@ -140,7 +143,7 @@ export default class LiveDomInstanceController extends AbstractServiceController
         this.SendCastInfo();
         this.SwPeer.SendAll(new CursorClearSender());
     }
-        
+
 
     /**
      * ストリーミングの開始/停止の通知

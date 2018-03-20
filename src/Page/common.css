@@ -94,3 +94,11 @@ h1, h2, h3, h4, h5, h6,
 .mdl-layout__container{
     overflow: hidden;
 }
+
+
+.fit{
+    position: absolute;
+    object-fit: contain;
+    height:100%;
+    width:100%;
+}

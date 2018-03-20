@@ -11,6 +11,7 @@ import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import { Room } from "../../Contents/IndexedDB/Home";
 import LiveDomSender from "../../Contents/Sender/LiveDomSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
+import LocalCache from "../../Contents/Cache/LocalCache";
 
 export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInstanceController> {
 
@@ -21,7 +22,7 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     /**
      * 初期化処理
      */
-    public Initialize() {
+    public Initialize(callback: OnViewLoad) {
 
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
@@ -57,10 +58,10 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
 
         //  アスペクト比変更
         document.getElementById('sbj-aspect-width').oninput = (e) => {
-            this.ChangeAspect();
+            if (this.IsChangeLiveDomSettings()) this.ChangeAspect(this.LiveDom);
         }
         document.getElementById('sbj-aspect-height').oninput = (e) => {
-            this.ChangeAspect();
+            if (this.IsChangeLiveDomSettings()) this.ChangeAspect(this.LiveDom);
         }
 
         //  ユーザーのカーソル表示可否の変更
@@ -71,12 +72,25 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         //  レイヤー設定変更
         for (let i = 1; i <= 4; i++) {
             document.getElementById('sbj-embedded-value-layer' + i.toString()).onchange = (ev) => {
-                this.ChangeLiveDomSetting();
+                if (this.IsChangeLiveDomSettings()) this.ChangeLayerDOM(this.LiveDom);
             }
         }
 
-        this.ChangeAspect();
+        this.PreViewLiveDom = new LiveDomSender();
+        let pre = LocalCache.LiveDomSetting;
+        if (pre) {
+            //  前回データがある場合は復元
+            let setting = JSON.parse(pre) as LiveDomSender;
+            this.ChangeLayerDOM(setting);
+            this.ChangeAspect(setting);
+            this.SetLiveDomSender(setting);
+        }
+        else {
+            this.PreViewLiveDom = new LiveDomSender();
+        }
+
         this.InitializeCursor();
+        callback();
     }
 
 
@@ -162,38 +176,8 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         (document.getElementById('sbj-embedded-value-layer2') as HTMLInputElement).value = sender.layerBackgroundF;
         (document.getElementById('sbj-embedded-value-layer3') as HTMLInputElement).value = sender.layerActive;
         (document.getElementById('sbj-embedded-value-layer4') as HTMLInputElement).value = sender.layerControl;
+        this.LiveDom = sender;
     }
-
-
-    /**
-     * アスペクト比の変更
-     */
-    public ChangeAspect() {
-        let sender = this.GetLiveDomSender();
-        document.getElementById('sbj-aspect-width-tip').textContent = sender.aspectW.toString();
-        document.getElementById('sbj-aspect-height-tip').textContent = sender.aspectH.toString();
-        let content = document.getElementById('sbj-livedom-content') as HTMLElement;
-
-        let aspect = sender.aspectW / sender.aspectH;
-
-        if (aspect === 1) {
-            content.style.width = "100%";
-            content.style.height = "100%";
-        }
-        else if (aspect < 1) {
-            let width = (480 * sender.aspectW / sender.aspectH);
-            content.style.width = width.toString(); + "px";
-            content.style.height = "100%";
-        }
-        else {
-            let height = (480 * sender.aspectH / sender.aspectW);
-            content.style.width = "100%";
-            content.style.height = height.toString() + "px";
-        }
-
-        this.ChangeLiveDomSetting();
-    }
-
 
 
     /**
@@ -261,17 +245,28 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
 
 
     /**
-     * レイヤー情報の変更時イベント
+     * 
      */
-    public ChangeLiveDomSetting() {
-
+    public IsChangeLiveDomSettings(): boolean {
         let dom = this.GetLiveDomSender();
-
-        if (this.LiveDom) {
-            if (!LiveDomSender.Equals(dom, this.LiveDom)) {
+        if (!LiveDomSender.Equals(dom, this.LiveDom)) {
+            if (this.Controller.CastStatus.isCasting) {
                 document.getElementById('sbj-livedom-pushpage').hidden = false;
             }
+            LocalCache.LiveDomSetting = JSON.stringify(dom);
+            this.LiveDom = dom;
+            return true;
         }
+        else {
+            return false;
+        }
+    }
+
+
+    /**
+     * レイヤー情報の変更時イベント
+     */
+    public ChangeLayerDOM(dom: LiveDomSender) {
 
         if (this.PreViewLiveDom) {
             if (this.PreViewLiveDom.layerBackgroundB !== dom.layerBackgroundB) $("#sbj-livedom-layer1").empty().append(dom.layerBackgroundB);
@@ -285,6 +280,33 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
             $("#sbj-livedom-layer2").empty();
             $("#sbj-livedom-layer3").empty();
             $("#sbj-livedom-layer4").empty();
+        }
+    }
+
+
+    /**
+     * アスペクト比の変更
+     */
+    public ChangeAspect(dom: LiveDomSender) {
+        document.getElementById('sbj-aspect-width-tip').textContent = dom.aspectW.toString();
+        document.getElementById('sbj-aspect-height-tip').textContent = dom.aspectH.toString();
+        let content = document.getElementById('sbj-livedom-content') as HTMLElement;
+
+        let aspect = dom.aspectW / dom.aspectH;
+
+        if (aspect === 1) {
+            content.style.width = "100%";
+            content.style.height = "100%";
+        }
+        else if (aspect < 1) {
+            let width = (480 * dom.aspectW / dom.aspectH);
+            content.style.width = width.toString(); + "px";
+            content.style.height = "100%";
+        }
+        else {
+            let height = (480 * dom.aspectH / dom.aspectW);
+            content.style.width = "100%";
+            content.style.height = height.toString() + "px";
         }
     }
 
@@ -304,7 +326,7 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         else {
             this.PreViewLiveDom = null;
         }
-        this.ChangeLiveDomSetting();
+        this.ChangeLayerDOM(this.GetLiveDomSender());
     }
 
 }
