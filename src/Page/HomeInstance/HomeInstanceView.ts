@@ -102,7 +102,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     public StartVisitor(isNewTab: boolean) {
 
         if (isNewTab) {
-            let url = LinkUtil.CreateLink("../HomeVisitor", LocalCache.BootHomeInstancePeerID);
+            let url = LinkUtil.CreateLink("../HomeVisitor/", LocalCache.BootHomeInstancePeerID);
             window.open(url, '_blank');
         } else {
             let element = window.parent.document.getElementById('sbj-main-home-visitor-start');

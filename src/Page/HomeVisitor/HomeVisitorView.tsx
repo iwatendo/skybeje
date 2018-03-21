@@ -55,7 +55,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         //  「ユーザー設定」
         document.getElementById('sbj-user-settings').onclick = (e) => {
-            userSettingsFrame.src = LinkUtil.CreateLink("../UserSettings");
+            userSettingsFrame.src = LinkUtil.CreateLink("../UserSettings/");
             userSettingsFrame.onload = (e) => {
                 this.VisibleSetting(true);
             }
