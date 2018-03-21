@@ -86,7 +86,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
 
     public SetLinkUrlEvent() {
         //  接続URLのコピー
-        let linkurl = LinkUtil.CreateLink("../GadgetVisitor", this.Controller.SwPeer.PeerId);
+        let linkurl = LinkUtil.CreateLink("../GadgetVisitor/", this.Controller.SwPeer.PeerId);
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
         LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn);
     }

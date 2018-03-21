@@ -177,7 +177,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         }
 
         if (sender.type === InitializeSender.ID) {
-            location.href = LinkUtil.CreateLink("../Initialize");
+            location.href = LinkUtil.CreateLink("../Initialize/");
         }
 
     }

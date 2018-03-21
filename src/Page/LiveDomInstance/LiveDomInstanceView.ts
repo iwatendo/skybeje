@@ -238,7 +238,7 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      */
     public StartLiveDom() {
 
-        let linkurl = LinkUtil.CreateLink("../LiveDomVisitor", this.Controller.SwPeer.PeerId);
+        let linkurl = LinkUtil.CreateLink("../LiveDomVisitor/", this.Controller.SwPeer.PeerId);
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;

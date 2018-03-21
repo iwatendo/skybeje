@@ -116,7 +116,7 @@ export default class SettingController {
         MessageChannelUtil.PostOwner(new InitializeSender());
 
         //  親フレームが無い場合はそのまま遷移
-        location.href = LinkUtil.CreateLink("../Initialize");
+        location.href = LinkUtil.CreateLink("../Initialize/");
     }
 
 }

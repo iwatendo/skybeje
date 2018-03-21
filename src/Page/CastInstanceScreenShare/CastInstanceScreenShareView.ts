@@ -149,7 +149,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
      * 
      */
     public SetClientLink() {
-        let linkurl = LinkUtil.CreateLink("../CastVisitor", this.Controller.SwPeer.PeerId);
+        let linkurl = LinkUtil.CreateLink("../CastVisitor/", this.Controller.SwPeer.PeerId);
         linkurl += "&sfu=" + (this.Controller.CastSetting.isSFU ? "1" : "0");
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
