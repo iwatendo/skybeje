@@ -26,10 +26,10 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         StdUtil.StopPropagation();
 
         document.getElementById('sbj-start-visitor').onclick = (e) => {
-            this.StartVisitor(true);
+            this.StartVisitor();
         };
 
-        let linkurl = LinkUtil.CreateLink("../HomeVisitor", LocalCache.BootHomeInstancePeerID);
+        let linkurl = LinkUtil.CreateLink("../HomeVisitor/", LocalCache.BootHomeInstancePeerID);
         let clipcopybtn = document.getElementById('sbj-start-linkcopy') as HTMLInputElement;
 
         //  「接続URLのコピー」
@@ -99,20 +99,12 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     /**
      * 
      */
-    public StartVisitor(isNewTab: boolean) {
-
-        if (isNewTab) {
-            let url = LinkUtil.CreateLink("../HomeVisitor/", LocalCache.BootHomeInstancePeerID);
-            window.open(url, '_blank');
-        } else {
-            let element = window.parent.document.getElementById('sbj-main-home-visitor-start');
-            if (element) {
-                element.click();
-            }
-        }
-
+    public StartVisitor() {
+        let url = LinkUtil.CreateLink("../HomeVisitor/", LocalCache.BootHomeInstancePeerID);
+        window.open(url, '_blank');
     }
-
+        
+    
 
     /**
      * タイムラインのクリア処理
@@ -121,16 +113,16 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         this.Controller.Model.ClearTimeline(() => {
             this.Controller.Manager.Chat.AllClear();
             this.Controller.SwPeer.SendAll(new ClearTimelineSender());
-        });
+    });
     }
-
+    
     /**
      * プロフィール編集ダイアログの表示
      * @param hid 
      */
     public DoShowRoomEditDialog(hid: string) {
-
-        let src = LinkUtil.CreateLink("../Room/") + "?hid=" + hid;
+    
+    let src = LinkUtil.CreateLink("../Room/") + "?hid=" + hid;
 
         this._roomFrame.src = null;
         this._roomFrame.onload = () => {
