@@ -87,18 +87,20 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
             GMapsUtil.GetLocate((gpos) => {
                 let sender = new MapLocationSender();
                 sender.Location = gpos;
-                this.Controller.SwPeer.SendToOwner(sender);
-                alert("現在位置を通知しました");
+                if (confirm("現在位置を送信します")) {
+                    this.Controller.SwPeer.SendToOwner(sender);
+                }
             });
         }
 
         //  カメラ起動ボタン
         cameraBotton.onclick = (e) => {
             FileUtil.SelectImageCamera((file) => {
-                FileAttachUtil.FileToBase64(file, (f, src) => {
+                FileAttachUtil.FileToBase64_ChageOrentation(file, (f, src) => {
                     let sender = new PictureSender(src);
-                    this.Controller.SwPeer.SendToOwner(sender);
-                    alert("写真を送信しました");
+                    if (confirm("写真を送信します")) {
+                        this.Controller.SwPeer.SendToOwner(sender);
+                    }
                 })
             });
         }

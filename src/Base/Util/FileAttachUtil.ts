@@ -2,6 +2,8 @@ import FileUtil from "./FileUtil";
 
 interface OnDropFile { (file: File, src: string): void }
 
+declare var loadImage: any;
+
 export default class FileAttachUtil {
 
     public static SetImageDropEvenet(
@@ -24,7 +26,7 @@ export default class FileAttachUtil {
             //  カメラの起動
             cameraButtonElement.onclick = (e) => {
                 FileUtil.SelectImageCamera((file) => {
-                    this.FileToBase64(file, callback);
+                    this.FileToBase64_ChageOrentation(file, callback);
                 });
             };
         }
@@ -68,6 +70,34 @@ export default class FileAttachUtil {
             }
         }
     }
+
+
+    /**
+     * iPhone等のスマホの写真が回転する為、適切な表示に修正
+     * @param file 
+     * @param callback 
+     */
+    public static FileToBase64_ChageOrentation(file, callback) {
+
+        var options = { canvas: true, orientation: undefined };
+
+        loadImage.parseMetaData(file, (data) => {
+            if (data.exif) {
+                options.orientation = data.exif.get('Orientation');
+            }
+            loadImage(file, (canvas: HTMLCanvasElement) => {
+                canvas.toBlob((blob) => {
+                    let reader = new FileReader();
+                    reader.onload = function (event) {
+                        let target = event.target as FileReader;
+                        callback(blob, target.result);
+                    };
+                    reader.readAsDataURL(blob);
+                }, "image/jpeg");
+            }, options);
+        });
+    }
+
 
     /**
      * 指定されたURLの画像を Base64 形式に変換する
