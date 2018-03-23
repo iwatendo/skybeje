@@ -10,6 +10,7 @@ import CastInstanceScreenShareView from "./CastInstanceScreenShareView";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
+import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 
 
 export class CastInstanceScreenShareReceiver extends AbstractServiceReceiver<CastInstanceScreenShareController> {
@@ -26,6 +27,14 @@ export class CastInstanceScreenShareReceiver extends AbstractServiceReceiver<Cas
                 let cursor = sender as IconCursorSender;
                 this.Controller.CursorCache.Set(cursor);
                 this.Controller.SwPeer.SendAll(sender);
+            }
+        }
+
+        //  字幕表示
+        if (sender.type === CastSubTitlesSender.ID) {
+            if (this.Controller.CastSetting.useCastProp) {
+                let cst = sender as CastSubTitlesSender;
+                this.Controller.SwPeer.SendAll(cst);
             }
         }
 

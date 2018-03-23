@@ -34,9 +34,11 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
 
         //  字幕表示
         if (sender.type === CastSubTitlesSender.ID) {
-            let cst = sender as CastSubTitlesSender;
-            this.Controller.SwPeer.SendAll(cst);
-            this.Controller.View.Cursor.SetMessage(cst)
+            if (this.Controller.CastSetting.useCastProp) {
+                let cst = sender as CastSubTitlesSender;
+                this.Controller.SwPeer.SendAll(cst);
+                this.Controller.View.Cursor.SetMessage(cst)
+            }
         }
 
         //  アイコン取得
