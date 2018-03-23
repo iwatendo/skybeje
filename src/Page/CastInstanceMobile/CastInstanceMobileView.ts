@@ -168,6 +168,11 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         StreamUtil.GetStreaming(msc,
             (stream) => {
                 if (this.Controller.SwRoom) {
+
+                    if (this._micMute) {
+                        StreamUtil.SetMute(stream, true);
+                    }
+
                     this.Controller.SwRoom.Refresh(stream);
                 }
 
