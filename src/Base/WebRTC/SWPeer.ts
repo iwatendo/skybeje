@@ -189,7 +189,9 @@ export default class SWPeer {
      */
     public CheckPeer() {
         if (this._service) {
-            this._connCache.CheckAlive();
+            setTimeout(() => {
+                this._connCache.CheckAlive();
+            }, 2000);
         }
     }
 
