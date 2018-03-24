@@ -53,6 +53,10 @@
     padding: 0px 72px;
 }
 
+#sbj-home-visitor-main{
+    background-color: var(--sbj-color-default-chatroom);
+}
+
 .sbj-home-visitor-header-row{
     padding: 0px 40px 0px 54px;
 }

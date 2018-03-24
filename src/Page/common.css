@@ -16,6 +16,7 @@ body {
     --sbj-color-link-text: #0099ff;
     --sbj-color-warning-text: #FF3333;
     
+    --sbj-color-default-chatroom: gainsboro;
     --sbj-color-default-background:  rgba(255,255,255,.75);
     --sbj-color-edge-background:  rgba(0,0,0,.3);
     --sbj-color-cast-background:  rgba(255,255,255,.3);

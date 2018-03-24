@@ -50,7 +50,7 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
         room1.note = "接続したメンバーが最初に配置される部屋です";
         room1.isDefault = true;
         room1.background = new ImageInfo();
-        room1.background.src = "/image/default-room1.jpg";
+        //  room1.background.src = "/image/default-room1.jpg";
 
         //  
         let room2 = new Home.Room();
@@ -61,7 +61,7 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
         room2.note = "チャットルームインスタンスのオーナーの操作で入れる部屋です";
         room2.isDefault = false;
         room2.background = new ImageInfo();
-        room2.background.src = "/image/default-room2.jpg";
+        //  room2.background.src = "/image/default-room2.jpg";
 
         this.UpdateRoom(room1, () => {
             this.UpdateRoom(room2, () => {
