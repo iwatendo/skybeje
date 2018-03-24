@@ -1,4 +1,7 @@
 module.exports = {
+
+  mode: 'development',  
+
   entry: {
     initialize: './src/Page/Initialize/Script.ts',
     profile: './src/Page/Profile/Script.ts',

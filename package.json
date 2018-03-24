@@ -1,6 +1,6 @@
 {
   "name": "skybeje",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
@@ -12,13 +12,11 @@
     "clean": "rimraf dist/*",
     "webpack": "webpack --colors --config ./webpack.config.dev.js",
     "webpack:release": "webpack --colors --config ./webpack.config.release.js",
-    "webpack:debug": "webpack --colors --config ./webpack.config.debug.js",
     "copy:lib": "cpx \"./src/Page/Lib/*\" ./dist/lib",
     "copy:image": "cpx \"./src/Page/Image/*\" ./dist/image",
     "copy:src": "cpx \"./src/Page/**/{*.html,*.css,*.map,*.json}\" ./dist",
     "build": "npm-run-all -s webpack copy:lib copy:image copy:src setversion",
-    "build:release": "npm-run-all -s clean webpack:release copy:lib copy:image copy:src setversion",
-    "build:debug": "npm-run-all -s webpack:debug copy:src"
+    "build:release": "npm-run-all -s clean webpack:release copy:lib copy:image copy:src setversion"
   },
   "dependencies": {
     "co": "^4.6.0",
@@ -30,9 +28,10 @@
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "rimraf": "^2.6.2",
-    "ts-loader": "^2.3.7",
+    "ts-loader": "^4.1.0",
     "typescript": "^2.7.2",
-    "webpack": "^3.11.0",
+    "webpack": "^4.2.0",
+    "webpack-cli": "^2.0.9",
     "youtube": "^0.1.0"
   },
   "devDependencies": {

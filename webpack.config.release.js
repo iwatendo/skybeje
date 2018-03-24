@@ -1,6 +1,9 @@
 var webpack = require('webpack');
 
 module.exports = {
+
+  mode: 'production',
+
   entry: {
     initialize: './src/Page/Initialize/Script.ts',
     profile: './src/Page/Profile/Script.ts',
@@ -20,18 +23,21 @@ module.exports = {
     selectactor: './src/Page/SelectActor/Script.ts',
     usersettings: './src/Page/UserSettings/Script.ts',
   },
+
   output: {
     path: __dirname + '/dist',
     filename: '[name]/bundle.js'
   },
+
   externals: {
     'react': 'React',
     'react-dom': 'ReactDOM'
   },
 
   resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: ['.ts', '.tsx', '.js']
   },
+
   module: {
     rules: [
       {
@@ -42,6 +48,7 @@ module.exports = {
       }
     ]
   },
+
   performance: {
     hints: false
   },
