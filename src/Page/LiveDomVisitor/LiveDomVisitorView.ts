@@ -26,6 +26,18 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
         StdUtil.StopTouchMove();
         StdUtil.StopTouchZoom();
 
+
+        let submenu = document.getElementById('sbj-cast-submenu') as HTMLElement;
+        submenu.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
+        submenu.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
+        submenu.hidden = false;
+        submenu.style.opacity = "0.0";
+
+        //  リロード処理
+        document.getElementById('sbj-cast-reload').onclick = (e) => {
+            location.reload();
+        }
+
         callback();
     }
 

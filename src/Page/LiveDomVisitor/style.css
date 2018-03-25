@@ -62,3 +62,25 @@ body {
     height: 100%;
     width: 100%;
 }
+
+.sbj-cast-button {
+    position: absolute;
+    background-color: var(--sbj-color-timeline-panel);
+    border-radius: 6px;
+}
+
+#sbj-cast-reload{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+#sbj-cast-submenu{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom : 0px;
+    height: 52px;
+    background-color: var(--sbj-color-edge-background);
+}
+
