@@ -122,8 +122,9 @@ export default class GadgetInstanceController extends AbstractServiceController<
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
         this.CursorCache.Remove(conn.remoteId);
+        conn.close();
+        this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
 
