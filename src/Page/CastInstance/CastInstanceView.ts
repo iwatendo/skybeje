@@ -121,7 +121,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
-        LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn, clientopenbtn, qrcode);
+        LinkUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
 
         this.Controller.SetStreaming();
     }

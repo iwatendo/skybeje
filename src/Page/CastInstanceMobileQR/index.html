@@ -37,13 +37,14 @@
                 <div class="sbj-split-left">
 
                     <div id="sbj-cast-setting">
+                        <b> モバイル端末から配信する為のQRコードです</b>
                         <br/>
-                        <br/> 以下のQRコードから、配信するためのページに接続できます。
+                        <br/> ・iOSは Ver11.2以降、Androidは Ver7.1.1以降に対応しています。
+                        <br/>（ただし、利用できない端末や、動作が重い端末もあります。）
                         <br/>
                         <br/>・iPhone/iPadの場合、標準カメラでQRコードを読取ってください。
-                        <br/>・Androidの場合、ブラウザはChromeを選択してください。
+                        <br/>・Android端末の場合、ブラウザはChromeを選択してください。
                         <br/>
-                        <br/>モバイル端末側で配信を開始すると、視聴用ページのリンクが表示されます
                         <br/>
                         <br/>
                         <div class="mdl-shadow--3dp sbj-mobile-qrcode-box">
@@ -81,7 +82,7 @@
                         <div id="sbj-picture-info" hidden>
                             <h4>写真情報</h4>
                             <img id="sbj-picture">
-                        </img>
+                            </img>
                         </div>
                     </div>
 
@@ -114,35 +115,39 @@
                     </div>
                     <div class="mdl-color-text--grey-600" id="sbj-livecast-note">
                         <h4 class="mdl-color-text--grey-800">
-                            モバイル端末でのライブキャストについて
+                            モバイル端末からのライブキャストについて
                         </h4>
-                        アカウント登録や外部アプリ不用で、ブラウザのみで配信できます。
+                        スマートフォンやタブレットのカメラの映像を、パソコン上で見たり、人に見せたりする事ができます。
                         <br/>
-                        <br/>モバイル端末側で「開始」ボタンを押すとライブキャストが開始されます。
-                        <br/>チャットクライアントから呼出した場合、自動的にチャットルームで視聴ページが開きます。
-                        <br/>単体で起動した場合は、接続URLをコピーするためのボタンが表示されますので、視聴して欲しい人にURLを伝えてください。
-                        <br/>
-                        <br/>一般的なビデオ通話に使用されるWebRTC(P2P)を使用した配信であり、大規模配信には利用できません。
+                        <br/>ただし、一般的なビデオ通話に使用されるWebRTC(P2P)での配信であり、大規模配信には利用できません。
+                        <br/>（双方向のビデオ通話ではなく、単方向のビデオ通話のイメージの機能です）
                         <br/>本サービスは、10人以下での利用を想定しています。
                         <br/>
                         <br/>
-                        <h4 class="mdl-color-text--grey-800">
-                            SFUについて
-                        </h4>
-                        本サービスはNTT Communicationsの
-                        <a href="https://webrtc.ecl.ntt.com/" target="_blunk">SkyWay</a>を使用しています。
+                        <b>使い方</b>
+                        <br/>・モバイル端末で左のQRコードを読みとります。
+                        <br/>・モバイル端末側で「配信開始」ボタンを押します。
+                        <br/>・単体で起動した場合は、視聴URLをコピーするためのボタンが表示されますので、視聴して欲しい人にURLを伝えてください。
+                        <br/>・Skybejeチャットから呼出した場合、自動的にチャット側で視聴ページが開きます。
                         <br/>
-                        <br/>多人数への配信を安定させる為に、SkyWayのSFUを利用できます。
+                        <br/>
+                        <h4 class="mdl-color-text--grey-800">
+                            ３名以上のメンバーに配信をしたい場合
+                        </h4>
+                        本サービスはWebRTC(P2P)での配信の為、接続人数が多いほど配信元の端末に負荷が掛かります。
+                        <br/>
+                        <br/>多人数への配信を安定させる為に、
+                        <a href="https://webrtc.ecl.ntt.com/" target="_blunk">SkyWay</a>のSFUを利用することができます。
                         <br/>詳細については
                         <a href="https://webrtc.ecl.ntt.com/sfu.html" target="_blunk">SFUについて</a>を参照してください。
                         <br/>
-                        <br/> 1～2人への配信する場合は基本的にSFUは不用です。
+                        <br/> 1～2人へ配信する場合は基本的にSFUは不要です。
                         <br/> 3～4人以上の場合で、配信が安定しない場合はSFUを使用してください。
                         <br/>
                         <br/> SkyWayのSFUサーバーは東京にあります。その為SFUを使用した場合、東京のサーバーを経由します。
                         <br/> 環境にもよりますが、SFUを使用しない方が安定するケースもあるようです。
                         <br/>
-                        <br/> 2018年3月時点で SkyWayのSFUは「Safari」及び「iOS」に未対応です。
+                        <br/> ただし 2018年3月時点で SkyWayのSFUは「Safari」及び「iOS」に未対応です。
                         <br/> そのため、iPhone/iPad ではSFUを使った配信および視聴ができません。
                         <br/>
                         <br/> MacOSの場合、Google Chromeを使用すればSFUを使用できます。
@@ -156,7 +161,7 @@
                         <br/> ブラウザや端末によって利用できる映像コーディックに差異があります。
                         <br/> 配信側と視聴側で、利用できる映像コーディクで一致するものが無い場合、視聴できません。
                         <br/>
-                        <br/> 現在、SafariがH264のみ対応で、Androidの場合H264に対応していない端末が存在します。
+                        <br/> 現在、SafariがH264のみに対応しています。Android端末の場合、H264に対応していない機種が多数存在します。
                         <br/> そのため、以下のような組合せではライブキャストの視聴ができません。
                         <br/> ・H264未対応のAndroid端末 と iPhoneまたはiPad
                         <br/> ・H264未対応のAndroid端末 と MacOSでSafari（※MacOSでもChromeの場合は大丈夫です）

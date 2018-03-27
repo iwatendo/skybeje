@@ -79,13 +79,19 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
     public SetCastStauts(castStatus: CastStatusSender) {
 
         if (castStatus.isCasting) {
+
+            //  モバイル端末の回転通知の場合は何もしない
+            if(castStatus.isOrientationChange){
+                return;
+            }
+
             let isSfu = (document.getElementById('sbj-check-sfu') as HTMLInputElement).checked;
             let linkurl = castStatus.clientUrl;
             linkurl += "&sfu=" + (isSfu ? "1" : "0");
             let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
             let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
             let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
-            LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn, clientopenbtn, qrcode);
+            LinkUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
 
             this.ChangeDisplay(true, true);
         }
@@ -102,7 +108,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         document.getElementById('sbj-cast-instance-account-count').hidden = !(isMobileConnect && isLiveCast);
         document.getElementById("sbj-terminal-info").hidden = !isMobileConnect;
         document.getElementById("sbj-cast-setting").hidden = isMobileConnect;
-        document.getElementById('sbj-livecast-note').hidden = isMobileConnect;
+        document.getElementById('sbj-livecast-note').hidden = isLiveCast;
         (document.getElementById("sbj-check-sfu") as HTMLInputElement).disabled = isMobileConnect;
         document.getElementById('sbj-client-link').hidden = !isLiveCast;
     }

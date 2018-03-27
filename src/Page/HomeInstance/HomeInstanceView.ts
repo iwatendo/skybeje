@@ -33,7 +33,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         let clipcopybtn = document.getElementById('sbj-start-linkcopy') as HTMLInputElement;
 
         //  「接続URLのコピー」
-        LinkUtil.SetCopyLinkButton(linkurl, clipcopybtn);
+        LinkUtil.SetCopyLinkButton(linkurl, "接続URL", clipcopybtn);
 
         document.getElementById('sbj-clear-timeline').onclick = (e) => {
             this.ClearTimeline();
@@ -103,8 +103,8 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         let url = LinkUtil.CreateLink("../HomeVisitor/", LocalCache.BootHomeInstancePeerID);
         window.open(url, '_blank');
     }
-        
-    
+
+
 
     /**
      * タイムラインのクリア処理
@@ -113,16 +113,16 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         this.Controller.Model.ClearTimeline(() => {
             this.Controller.Manager.Chat.AllClear();
             this.Controller.SwPeer.SendAll(new ClearTimelineSender());
-    });
+        });
     }
-    
+
     /**
      * プロフィール編集ダイアログの表示
      * @param hid 
      */
     public DoShowRoomEditDialog(hid: string) {
-    
-    let src = LinkUtil.CreateLink("../Room/") + "?hid=" + hid;
+
+        let src = LinkUtil.CreateLink("../Room/") + "?hid=" + hid;
 
         this._roomFrame.src = null;
         this._roomFrame.onload = () => {

@@ -109,17 +109,17 @@ export default class LinkUtil {
      * @param openBtn 
      * @param qrcode 
      */
-    public static SetCopyLinkButton(link: string, linkCopyBtn: HTMLButtonElement, openBtn: HTMLButtonElement = null, qrcode: HTMLFrameElement = null) {
+    public static SetCopyLinkButton(link: string, label:string, linkCopyBtn: HTMLButtonElement, openBtn: HTMLButtonElement = null, qrcode: HTMLFrameElement = null) {
 
         if (link) {
             if (linkCopyBtn) {
                 linkCopyBtn.onclick = (e) => {
                     StdUtil.ClipBoardCopy(link);
-                    linkCopyBtn.textContent = " 接続URLをクリップボードにコピーしました ";
+                    linkCopyBtn.textContent = " " + label + "をクリップボードにコピーしました ";
                     linkCopyBtn.classList.remove('mdl-button--colored');
                     linkCopyBtn.classList.add('mdl-button--accent');
                     window.setTimeout(() => {
-                        linkCopyBtn.textContent = " 接続URLのコピー ";
+                        linkCopyBtn.textContent = " " + label + "のコピー ";
                         linkCopyBtn.classList.remove('mdl-button--accent');
                         linkCopyBtn.classList.add('mdl-button--colored');
                     }, 2500);
