@@ -145,13 +145,16 @@ export default class ServentElementPack {
      */
     public IsDispStatus(): boolean {
 
-        //  フレームが非表示の場合はステータスも表示しない
-        if (this.Frame.hidden) {
-            return false;
-        }
+        //  フレーム上のステータス表示を一時廃止
+        return false;
 
-        //  文言が設定されている場合のみ表示する
-        return (this.Status && this.Status.textContent.length > 0);
+        // //  フレームが非表示の場合はステータスも表示しない
+        // if (this.Frame.hidden) {
+        //     return false;
+        // }
+
+        // //  文言が設定されている場合のみ表示する
+        // return (this.Status && this.Status.textContent.length > 0);
     }
 
 }

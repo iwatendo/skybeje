@@ -276,7 +276,7 @@ export default class CastSelectorView {
         slp.Frame.style.height = "calc(" + (this._dispFrameCount > 1 ? "50%" : "100%") + " - 8px)";
         slp.Frame.style.width = "calc(" + (this._dispFrameCount > 2 ? "50%" : "100%") + " - 8px)";
 
-        slp.Status.hidden = (!this._isLayoutMode);
+        slp.Status.hidden = !(this._isLayoutMode && slp.IsDispStatus());
         slp.Status.style.position = "absolute";
         slp.Status.style.zIndex = "3";
 
