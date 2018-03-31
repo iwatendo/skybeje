@@ -7,6 +7,7 @@ import IconListView from "./Icon/IconListView";
 import GuideListView from "./Guide/GuideListView";
 import ProfileController from "./ProfileController";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
+import MdlUtil from "../../Contents/Util/MdlUtil";
 
 
 export default class ProfileView extends AbstractServiceView<ProfileController> {
@@ -102,22 +103,10 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         (document.getElementById('sbj-profile-note') as HTMLInputElement).value = actor.profile;
 
         let isIconDispChange = Personal.Actor.IsIconDispChange(actor.actorType);
-        (document.getElementById('sbj-profile-caster') as HTMLInputElement).checked = isIconDispChange;
-        if (isIconDispChange) {
-            document.getElementById('sbj-profile-caster-label').classList.add('is-checked');
-        }
-        else {
-            document.getElementById('sbj-profile-caster-label').classList.remove('is-checked');
-        }
+        MdlUtil.SetChecked('sbj-profile-caster', 'sbj-profile-caster-label', isIconDispChange);
 
         let isDispSubtitles = Personal.Actor.IsDispSubtitles(actor.actorType);
-        (document.getElementById('sbj-profile-narrator') as HTMLInputElement).checked = isDispSubtitles;
-        if (isDispSubtitles) {
-            document.getElementById('sbj-profile-narrator-label').classList.add('is-checked');
-        }
-        else {
-            document.getElementById('sbj-profile-narrator-label').classList.remove('is-checked');
-        }
+        MdlUtil.SetChecked('sbj-profile-narrator', 'sbj-profile-narrator-label', isDispSubtitles);
 
         this._iconListView = new IconListView(this.Controller, document.getElementById('sbj-profile-icons-list'));
         this._guideListView = new GuideListView(this.Controller, document.getElementById('sbj-profile-guides-list'))

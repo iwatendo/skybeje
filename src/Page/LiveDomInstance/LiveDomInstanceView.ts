@@ -12,12 +12,15 @@ import { Room } from "../../Contents/IndexedDB/Home";
 import LiveDomSender from "../../Contents/Sender/LiveDomSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import MdlUtil from "../../Contents/Util/MdlUtil";
 
 export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInstanceController> {
 
     public Cursor: CastPropController;
     public LiveDom: LiveDomSender;
     public PreViewLiveDom: LiveDomSender;
+
+    private _hasOwner: boolean = false;
 
     /**
      * 初期化処理
@@ -69,6 +72,18 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
             this.SendOption();
         }
 
+        //  コントロールレイヤーの表示有無
+        document.getElementById('sbj-check-control-disp').onchange = (e) => {
+            if (this.IsChangeLiveDomSettings()) {
+
+            }
+        }
+
+        //  アスペクト比率の指定有無
+        document.getElementById('sbj-check-aspect-disp').onchange = (e) => {
+            if (this.IsChangeLiveDomSettings()) this.ChangeAspectFixed();
+        }
+
         //  レイヤー設定変更
         for (let i = 1; i <= 4; i++) {
             document.getElementById('sbj-embedded-value-layer' + i.toString()).onchange = (ev) => {
@@ -102,6 +117,7 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     public InitializeDomSetting() {
         this.ChangeAspect(this.LiveDom);
         this.ChangeLayerDOM(this.LiveDom);
+        this.ChangeAspectFixed();
     }
 
 
@@ -110,6 +126,8 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      */
     public InitializeChatLink() {
         (document.getElementById('sbj-check-cursor-disp-label') as HTMLInputElement).hidden = false;
+        this._hasOwner = true;
+        this.ChangeAspectFixed();
     }
 
 
@@ -169,6 +187,9 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      */
     public GetLiveDomSender(): LiveDomSender {
         let sender = new LiveDomSender();
+
+        sender.isDispControlLayer = (document.getElementById('sbj-check-control-disp') as HTMLInputElement).checked;
+        sender.isAspectFix = (document.getElementById('sbj-check-aspect-disp') as HTMLInputElement).checked;
         sender.aspectW = Number.parseInt((document.getElementById('sbj-aspect-width') as HTMLInputElement).value);
         sender.aspectH = Number.parseInt((document.getElementById('sbj-aspect-height') as HTMLInputElement).value);
         sender.layerBackgroundB = (document.getElementById('sbj-embedded-value-layer1') as HTMLInputElement).value;
@@ -184,6 +205,8 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
      * @param sender 
      */
     public SetLiveDomSender(sender: LiveDomSender) {
+        (document.getElementById('sbj-check-control-disp') as HTMLInputElement).checked = sender.isDispControlLayer;
+        (document.getElementById('sbj-check-aspect-disp') as HTMLInputElement).checked = sender.isAspectFix;
         (document.getElementById('sbj-aspect-width') as HTMLInputElement).value = sender.aspectW.toString();
         (document.getElementById('sbj-aspect-height') as HTMLInputElement).value = sender.aspectH.toString();
         (document.getElementById('sbj-embedded-value-layer1') as HTMLInputElement).value = sender.layerBackgroundB;
@@ -255,6 +278,15 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     public SendLiveDom() {
         this.LiveDom = this.GetLiveDomSender();
         this.Controller.SwPeer.SendAll(this.LiveDom);
+
+        if (!this.LiveDom.isAspectFix) {
+            if (this.Controller.CastSetting.useCastProp) {
+                this.Controller.CastSetting.useCastProp = false;
+                this.Controller.SendCastInfo();
+                MdlUtil.SetChecked('sbj-check-cursor-disp', 'sbj-check-cursor-disp-label', false);
+            }
+        }
+
     }
 
 
@@ -295,6 +327,29 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
             $("#sbj-livedom-layer3").empty();
             $("#sbj-livedom-layer4").empty();
         }
+    }
+
+
+    /**
+     * 
+     */
+    public ChangeAspectFixed() {
+
+        let aspectFixed = (document.getElementById('sbj-check-aspect-disp') as HTMLInputElement).checked;
+        document.getElementById('sbj-aspect-setting').hidden = !aspectFixed;
+
+        let dom = this.GetLiveDomSender();
+
+        if (!aspectFixed) {
+            dom.aspectW = 4;
+            dom.aspectH = 3;
+        }
+
+        if (this._hasOwner) {
+            (document.getElementById('sbj-check-cursor-disp-label') as HTMLInputElement).hidden = !aspectFixed;
+        }
+
+        this.ChangeAspect(dom);
     }
 
 

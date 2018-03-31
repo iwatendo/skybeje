@@ -81,16 +81,32 @@
                             <button id="sbj-livedom-pushpage" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored"
                                 hidden>
                                 <i class="material-icons">restore_page</i>
-                                &nbsp;配信ページ更新&nbsp;
+                                &nbsp;視聴ページ更新&nbsp;
                             </button>
                         </div>
 
-                        <h6 class="sbj-livedom-label"> アスペクト比（横）</h6>
-                        <input id="sbj-aspect-width" class="mdl-slider mdl-js-slider" type="range" min="1" max="16" tabindex="0">
-                        <span id="sbj-aspect-width-tip" class="mdl-tooltip" for="sbj-aspect-width"></span>
-                        <h6 class="sbj-livedom-label"> アスペクト比（縦）</h6>
-                        <input id="sbj-aspect-height" class="mdl-slider mdl-js-slider" type="range" min="1" max="16" tabindex="0">
-                        <span id="sbj-aspect-height-tip" class="mdl-tooltip" for="sbj-aspect-height"></span>
+                        <label id="sbj-check-control-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                            for="sbj-check-control-disp">
+                            <input type="checkbox" id="sbj-check-control-disp" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">コントロール・レイヤーを表示</span>
+                        </label>
+                        <div class="mdl-tooltip" data-mdl-for="sbj-check-control-disp-label">視聴ページの下部に表示されるレイヤ</div>
+
+                        <label id="sbj-check-aspect-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                            for="sbj-check-aspect-disp">
+                            <input type="checkbox" id="sbj-check-aspect-disp" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">視聴ページのアスペクト比を指定</span>
+                        </label>
+                        <div class="mdl-tooltip" data-mdl-for="sbj-check-aspect-disp-label">ユーザーアイコンを表示したい場合、アスペクト比の指定が必要</div>
+
+                        <span id="sbj-aspect-setting">
+                            <h6 class="sbj-livedom-label"> アスペクト比（横）</h6>
+                            <input id="sbj-aspect-width" class="mdl-slider mdl-js-slider" type="range" min="1" max="16" tabindex="0">
+                            <span id="sbj-aspect-width-tip" class="mdl-tooltip" for="sbj-aspect-width"></span>
+                            <h6 class="sbj-livedom-label"> アスペクト比（縦）</h6>
+                            <input id="sbj-aspect-height" class="mdl-slider mdl-js-slider" type="range" min="1" max="16" tabindex="0">
+                            <span id="sbj-aspect-height-tip" class="mdl-tooltip" for="sbj-aspect-height"></span>
+                        </span>
 
                         <label id="sbj-check-cursor-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
                             for="sbj-check-cursor-disp" hidden>
@@ -131,10 +147,10 @@
                     </div>
                     <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
                         <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                            &nbsp; 接続ページ起動 &nbsp;
+                            &nbsp; 視聴ページ起動 &nbsp;
                         </button>
                         <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
-                            &nbsp; 接続URLのコピー &nbsp;
+                            &nbsp; 視聴URLのコピー &nbsp;
                         </button>
                         <div class="mdl-shadow--3dp sbj-client-link-qrcode-box">
                             <iframe id="sbj-link-qrcode" class="sbj-client-link-qrcode-frame" src=""></iframe>

@@ -30,7 +30,6 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
         let submenu = document.getElementById('sbj-cast-submenu') as HTMLElement;
         submenu.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
         submenu.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
-        submenu.hidden = false;
         submenu.style.opacity = "0.0";
 
         //  リロード処理
@@ -71,13 +70,15 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
             let liveDomLayer2 = document.getElementById('sbj-livedom-layer2');
             let liveDomLayer3 = document.getElementById('sbj-livedom-layer3');
             let liveDomLayer4 = document.getElementById('sbj-livedom-layer4');
-            let aspect: number = livedom.aspectW / livedom.aspectH;
+            let aspect: number = (livedom.isAspectFix ? livedom.aspectW / livedom.aspectH : 0);
 
             LiveDomVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
             CursorDispOffset.SetOffsetDiv(liveDomLayer1, LiveDomVisitorView.Offset, false);
             CursorDispOffset.SetOffsetDiv(liveDomLayer2, LiveDomVisitorView.Offset, false);
             CursorDispOffset.SetOffsetDiv(liveDomLayer3, LiveDomVisitorView.Offset, false);
             CursorDispOffset.SetOffsetDiv(liveDomLayer4, LiveDomVisitorView.Offset, true);
+
+            document.getElementById('sbj-cast-submenu').hidden = !livedom.isDispControlLayer;
         }
     }
 

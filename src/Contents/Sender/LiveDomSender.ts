@@ -10,6 +10,8 @@ export default class LiveDomSender extends Sender {
 
     constructor() {
         super(LiveDomSender.ID);
+        this.isDispControlLayer = false;
+        this.isAspectFix = false;
         this.aspectW = 0;
         this.aspectH = 0;
         this.layerBackgroundB = "";
@@ -18,6 +20,8 @@ export default class LiveDomSender extends Sender {
         this.layerControl = "";
     }
 
+    public isDispControlLayer: boolean;
+    public isAspectFix: boolean;
     public aspectW: number;
     public aspectH: number;
     public layerBackgroundB: string;
@@ -27,7 +31,9 @@ export default class LiveDomSender extends Sender {
 
 
     public static Equals(s1: LiveDomSender, s2: LiveDomSender): boolean {
-        if (s1.aspectH === s2.aspectH
+        if (s1.isDispControlLayer === s2.isDispControlLayer
+            && s1.isAspectFix === s2.isAspectFix
+            && s1.aspectH === s2.aspectH
             && s1.aspectW === s2.aspectW
             && s1.layerBackgroundB === s2.layerBackgroundB
             && s1.layerBackgroundF === s2.layerBackgroundF

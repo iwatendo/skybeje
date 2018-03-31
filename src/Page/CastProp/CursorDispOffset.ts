@@ -56,7 +56,14 @@ export default class CursorDispOffset {
         result.clientWidth = content.clientWidth;
         result.clientHeight = content.clientHeight;
 
-        if (content.clientHeight * aspect < content.clientWidth) {
+        if (aspect === 0) {
+            //  アスペクト比指定がない場合
+            result.dispHeight = content.clientHeight;
+            result.dispWidth = content.clientWidth;
+            result.offsetRight = 0;
+            result.offsetTop = 0;
+        }
+        else if (content.clientHeight * aspect < content.clientWidth) {
             //  divが横に長い場合・・・
             result.dispHeight = content.clientHeight;
             result.dispWidth = content.clientHeight * aspect;
