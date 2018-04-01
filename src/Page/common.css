@@ -97,9 +97,15 @@ h1, h2, h3, h4, h5, h6,
 }
 
 
-.fit{
+.full{
     position: absolute;
+    height:100%;
+    width:100%;
+}
+
+.fit{
     object-fit: contain;
+    position: absolute;
     height:100%;
     width:100%;
 }
