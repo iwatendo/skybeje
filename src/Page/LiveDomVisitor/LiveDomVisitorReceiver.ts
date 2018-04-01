@@ -46,7 +46,7 @@ export class LiveDomVisitorReceiver extends AbstractServiceReceiver<LiveDomVisit
         }
 
         //  LiveDom
-        if(sender.type === LiveDomSender.ID){
+        if (sender.type === LiveDomSender.ID) {
             this.Controller.View.SetLiveDom(sender as LiveDomSender);
         }
     }

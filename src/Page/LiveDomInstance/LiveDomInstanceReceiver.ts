@@ -10,6 +10,7 @@ import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import IconSender from "../../Contents/Sender/IconSender";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import GetLiveDomSender from "../../Contents/Sender/GetLiveDomSender";
+import LiveDomMessageSender from "../../Contents/Sender/LiveDomMessageSender";
 
 
 export class LiveDomInstanceReceiver extends AbstractServiceReceiver<LiveDomInstanceController> {
@@ -57,6 +58,11 @@ export class LiveDomInstanceReceiver extends AbstractServiceReceiver<LiveDomInst
         //  キャスト情報の送信
         if (sender.type === GetCastSettingSedner.ID) {
             this.Controller.SwPeer.SendTo(conn, this.Controller.CastSetting);
+        }
+
+        //  LiveDOMからの入力情報
+        if (sender.type === LiveDomMessageSender.ID) {
+            this.Controller.SwPeer.SendToOwner(sender);
         }
 
     }

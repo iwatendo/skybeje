@@ -31,6 +31,9 @@ import ProfileChangeSender from "../../Contents/Sender/ProfileChangeSender";
 import SettingsChangeSender from "../../Contents/Sender/SettingsChangeSender";
 import InitializeSender from "../../Contents/Sender/InitializeSender";
 import LinkUtil from "../../Base/Util/LinkUtil";
+import LiveDomMessageSender from "../../Contents/Sender/LiveDomMessageSender";
+import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
+import ActorCache from "./Cache/ActorCache";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -152,6 +155,12 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             this.Controller.View.InputPane.ChangeVoiceChatMember(sender as VoiceChatMemberListSender);
         }
 
+        if (sender.type === LiveDomMessageSender.ID) {
+            this.ConvertLiveDomMessage(sender as LiveDomMessageSender, (chatmsg) => {
+                this.Controller.SwPeer.SendToOwner(chatmsg);
+            });
+        }
+
     }
 
 
@@ -266,6 +275,37 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             this.Controller.SwPeer.SendToOwner(serventSender);
         });
 
+    }
+
+
+    /**
+     * LiveDomからのメッセージをチャットメッセージに変換して送信
+     * @param sender 
+     * @param callback 
+     */
+    private ConvertLiveDomMessage(sender: LiveDomMessageSender, callback) {
+
+        let chatmsg = new ChatMessageSender();
+        chatmsg.text = sender.text;
+        let ic = sender.iconCurosr;
+
+        if (ic) {
+            chatmsg.aid = ic.aid;
+            chatmsg.iid = ic.iid;
+            chatmsg.peerid = ic.homePeerId;
+
+            this.Controller.ActorCache.GetActor(ic.homePeerId, ic.aid, (actor) => {
+                chatmsg.name = actor.name + "(LiveDom)";
+                callback(chatmsg);
+            });
+        }
+        else {
+            let ca = this.Controller.CurrentActor;
+            chatmsg.aid = ca.aid;
+            chatmsg.peerid = this.Controller.SwPeer.PeerId;
+            chatmsg.name = "Guest";
+            callback(chatmsg);
+        }
     }
 
 }
