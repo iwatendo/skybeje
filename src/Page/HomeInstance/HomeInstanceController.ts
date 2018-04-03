@@ -55,7 +55,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
                 //  UI初期化
                 this.View = new HomeInstanceView(this, () => {
-                    
+
                 });
 
             });
@@ -71,7 +71,8 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      */
     public OnPeerError(err: Error) {
         super.OnPeerError(err);
-        alert(err.name);
+        //  子のピアが予期せぬ切断をしてもアラート表示はしない
+        //  alert(err.name + "\n" + err.message);
     }
 
 
