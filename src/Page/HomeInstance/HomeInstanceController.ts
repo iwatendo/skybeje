@@ -55,7 +55,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
                 //  UI初期化
                 this.View = new HomeInstanceView(this, () => {
-
+                    
                 });
 
             });
@@ -70,9 +70,8 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      * @param err
      */
     public OnPeerError(err: Error) {
-
-        LogUtil.Error(this, err.name);
-        LogUtil.Error(this, err.message);
+        super.OnPeerError(err);
+        alert(err.name);
     }
 
 
