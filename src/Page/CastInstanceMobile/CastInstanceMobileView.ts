@@ -12,6 +12,8 @@ import FileAttachUtil from "../../Base/Util/FileAttachUtil";
 import PictureSender from "../../Contents/Sender/PictureSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 
+declare var ons: any;
+
 export default class CastInstanceMobileView extends AbstractServiceView<CastInstanceMobileController> {
 
     public Cursor: CastPropController;
@@ -85,22 +87,24 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         //  位置情報通知
         document.getElementById('sbj-location').onclick = (e) => {
             GMapsUtil.GetLocate((gpos) => {
+                this.ShowToast("位置情報を送信しています");
+                this.MenuClose();
                 let sender = new MapLocationSender();
                 sender.Location = gpos;
-                if (confirm("現在位置を送信します")) {
-                    this.Controller.SwPeer.SendToOwner(sender);
-                }
+                this.Controller.SwPeer.SendToOwner(sender);
+                this.ShowToast("位置情報を送信しました");
             });
         }
 
         //  カメラ起動ボタン
         cameraBotton.onclick = (e) => {
             FileUtil.SelectImageCamera((file) => {
+                this.ShowToast("写真を送信しています");
+                this.MenuClose();
                 FileAttachUtil.FileToBase64_ChageOrentation(file, (f, src) => {
                     let sender = new PictureSender(src);
-                    if (confirm("写真を送信します")) {
-                        this.Controller.SwPeer.SendToOwner(sender);
-                    }
+                    this.Controller.SwPeer.SendToOwner(sender);
+                    this.ShowToast("写真を送信しました");
                 })
             });
         }
@@ -118,6 +122,16 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         callback();
     }
 
+
+    /**
+     * 
+     * @param message 
+     */
+    private ShowToast(message: string) {
+        (ons as any).notification.toast(message, {
+            timeout: 2000
+        });
+    }
 
     /**
      * メニューを閉じる

@@ -68,7 +68,16 @@
 
     <template id="home.html">
         <ons-page>
-
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button onclick="document.getElementById('menu').open()">
+                        <ons-icon icon="md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">
+                    Skybeje
+                </div>
+            </ons-toolbar>
             <section id="sbj-bottom-toolbar">
                 <ons-button modifier="large" id="sbj-cast-instance-start">配信開始</ons-button>
             </section>
