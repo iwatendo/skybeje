@@ -31,6 +31,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let option3 = document.getElementById('sbj-screenshare-option-3') as HTMLInputElement;
         let option4 = document.getElementById('sbj-screenshare-option-4') as HTMLInputElement;
 
+        let settingElement = document.getElementById('sbj-screenshare-setting');
         let mainElement = document.getElementById('sbj-cast-instance-main');
         let noExtElement = document.getElementById('sbj-cast-instance-main-no-extension');
         let linkElement = document.getElementById('sbj-client-link');
@@ -76,6 +77,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             });
 
             this.Controller.SetStreaming(width, height, fr, () => {
+                settingElement.hidden = true;
                 startButton.hidden = true;
                 stopButton.hidden = false;
                 accountCount.hidden = false;
