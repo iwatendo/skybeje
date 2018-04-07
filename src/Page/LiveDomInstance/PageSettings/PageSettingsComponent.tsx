@@ -30,8 +30,6 @@ export interface PageSettingsComponentStat {
 export default class PageSettingsComponent extends React.Component<PageSettingsComponentProp, PageSettingsComponentStat> {
 
 
-    private _selectedSetting: string = '';
-
     /**
      * コンストラクタ
      * @param props
@@ -44,29 +42,27 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
 
     public render() {
 
-        let avatarstyle = {
-            color: 'var(--sbj-color-default-text)',
-            borderRadius: "0%",
-            backgroundColor: "initial",
-        };
-
         let itemsElement = this.props.items.map((ps) => {
 
-            let liclass = "mdl-list__item";
+            let isSelect = this.IsSelectPage(ps);
+            let isLive = this.IsLivePage(ps);
+            let hasTag = (ps.pageTag.trim().length > 0);
 
-            if (this.state && ps.pageId === this.state.selectItem) {
-                liclass += " mdl-shadow--2dp";
-            }
+            let liclass = "sbj-list-item mdl-list__item" + (hasTag ? " mdl-list__item--two-line" : "") + (isSelect ? " mdl-shadow--2dp" : "");
+            let subTitle = (hasTag ? <span className="mdl-list__item-sub-title">{ps.pageTag}</span> : <span></span>);
+            let buttonclass = "mdl-button mdl-js-button mdl-button--colored" + (isLive ? " mdl-button--raised" : "");
+            let buttonName = (isLive ? "配信中" : "配信");
 
             return (
-                <li className={liclass} onClick={this.OnClickItem.bind(this, ps)}>
-                    <span className="mdl-list__item-secondary-action">
-                        <button className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onClick={this.OnClickSend.bind(this, ps)}>
-                            送信
-                        </button>
-                    </span>
+                <li className={liclass} onClick={this.OnClickItem.bind(this, ps)} onDoubleClick={this.OnDoubleClickItem.bind(this, ps)}>
                     <span className="mdl-list__item-primary-content">
                         <span>{ps.pageName}</span>
+                        {subTitle}
+                    </span>
+                    <span className="mdl-list__item-secondary-action">
+                        <button className={buttonclass} onClick={this.OnClickSend.bind(this, ps)}>
+                            {buttonName}
+                        </button>
                     </span>
                 </li>
             );
@@ -82,6 +78,30 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
 
 
     /**
+     * 選択しているページ設定か？
+     * @param id 
+     */
+    public IsSelectPage(ps: PageSettings): boolean {
+        return (this.state && ps.pageId === this.state.selectItem);
+    }
+
+
+    /**
+     * ライブ中のページか？
+     * @param ps 
+     */
+    public IsLivePage(ps: PageSettings): boolean {
+        let view = this.props.controller.View;
+        if (view && view.LiveDom) {
+            return (ps.pageId === view.LiveDom.pageId);
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    /**
      * 選択行の変更
      * @param ps 
      * @param e 
@@ -93,6 +113,17 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
         this.setState({
             selectItem: ps.pageId
         });
+    }
+
+
+    /**
+     * 行選択
+     * @param ps 
+     * @param e 
+     */
+    public OnDoubleClickItem(ps: PageSettings, e) {
+        this.OnClickItem(ps, e);
+        this.props.controller.View.PageSettings.OnClickPageEdit();
     }
 
 

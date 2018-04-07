@@ -7,6 +7,7 @@ export class PageSettings {
     constructor() {
         this.pageId = "";
         this.pageName = "";
+        this.pageTag = "";
         this.isDispControlLayer = false;
         this.isAspectFix = false;
         this.aspectW = 0;
@@ -19,6 +20,7 @@ export class PageSettings {
 
     public pageId: string;
     public pageName: string;
+    public pageTag: string;
     public isDispControlLayer: boolean;
     public isAspectFix: boolean;
     public aspectW: number;

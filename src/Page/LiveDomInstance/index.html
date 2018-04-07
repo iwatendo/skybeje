@@ -71,29 +71,26 @@
                 <div class="sbj-split-right">
 
                     <div class="sbj-livedom-page-edit-menu">
+
                         <button id='sbj-livedom-page-add' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                             <i class='material-icons'>add</i>
                             ページの追加
                         </button>
-                        <span class="mdl-tooltip" for="sbj-livedom-page-add">LiveDOMページの追加</span>
                         <button id='sbj-livedom-page-copy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
                             <i class='material-icons'>content_copy</i>
                             複製
                         </button>
-                        <span class="mdl-tooltip" for="sbj-livedom-page-copy">LiveDOMページの複製</span>
                         <button id='sbj-livedom-page-edit' class="mdl-button mdl-js-button mdl-button--colored" hidden>
                             <i class='material-icons'>edit</i>
                             編集
                         </button>
-                        <span class="mdl-tooltip" for="sbj-livedom-page-edit">LiveDOMページの編集</span>
                         <button id='sbj-livedom-page-delete' class="mdl-button mdl-js-button mdl-button--accent" hidden>
                             <i class='material-icons'>delete</i>
                             削除
                         </button>
-                        <span class="mdl-tooltip" for="sbj-livedom-page-delete">LiveDOMページの削除</span>
                     </div>
 
-                    <div class="sbj-embedded mdl-color-text--grey-600">
+                    <div class="mdl-color-text--grey-600">
 
                         <div class="mdl-card__supporting-text" id="sbj-livedom-pageitems">
                             <!--React-->
@@ -108,8 +105,8 @@
             <div class="sbj-container">
                 <div class="sbj-split-left">
                     <div class="mdl-color-text--grey-600" id="sbj-livedom-instance-main">
-                        <h4>
-                            HTML設定
+                        <h4 id="sbj-livedom-edit-title">
+
                         </h4>
                         <div class="sbj-livedom-instance-actions mdl-list__item-primary-content">
                             <button id="sbj-livedom-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
@@ -121,6 +118,27 @@
                                 &nbsp;保存して戻る&nbsp;
                             </button>
                         </div>
+
+
+                        <label id="sbj-check-aspect-disp-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-aspect-disp">
+                            <input type="checkbox" id="sbj-check-aspect-disp" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">表示エリアのアスペクト比率を固定</span>
+                        </label>
+
+                        <span id="sbj-aspect-setting">
+                            <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
+                                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-width">
+                                <label class="mdl-textfield__label" for="sbj-aspect-width"></label>
+                                <span class="mdl-textfield__error">数値入力</span>
+                            </div>
+                            <span> : </span>
+                            <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
+                                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-height">
+                                <label class="mdl-textfield__label" for="sbj-aspect-height"></label>
+                                <span class="mdl-textfield__error">数値入力</span>
+                            </div>
+                        </span>
+
 
                         <div class="sbj-livedom-content-box">
                             <div id="sbj-livedom-content" class="mdl-list__item-primary-content sbj-livedom-content">
@@ -142,68 +160,49 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="sbj-split-right">
+                    <div class="sbj-embedded mdl-color-text--grey-600">
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> ページ名称
+                            </h6>
+                            <input type="text" id="sbj-embedded-value-name" spellCheck='false'>
+                        </div>
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> タグ
+                            </h6>
+                            <input type="text" id="sbj-embedded-value-tag" spellCheck='false'>
+                        </div>
+
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> 背景レイヤー（後）　※ユーザー操作不可 </h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer1" rows="4" cols="80" spellCheck='false'></textarea>
+                        </div>
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> 背景レイヤー（前）　※ユーザー操作不可</h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer2" rows="4" cols="80" spellCheck='false'></textarea>
+                        </div>
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> アクティブ・レイヤー　※ユーザー操作可能
+                                <br/>但しこのレイヤを使用した場合、アイコン及び字幕が表示ができなくなります。
+                            </h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="4" cols="80" spellCheck='false'></textarea>
+                        </div>
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> コントロール・レイヤー
+                                <br/>下部にカーソルをあてた際に表示される半透明のエリアです
+                            </h6>
+                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="4" cols="80" spellCheck='false'></textarea>
+                        </div>
 
                         <label id="sbj-check-control-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
                             for="sbj-check-control-disp">
                             <input type="checkbox" id="sbj-check-control-disp" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">コントロール・レイヤーを表示</span>
                         </label>
-                        <div class="mdl-tooltip" data-mdl-for="sbj-check-control-disp-label">視聴ページの下部に表示されるレイヤ</div>
 
-                        <label id="sbj-check-aspect-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
-                            for="sbj-check-aspect-disp">
-                            <input type="checkbox" id="sbj-check-aspect-disp" class="mdl-switch__input" checked>
-                            <span class="mdl-switch__label">視聴ページのアスペクト比を指定</span>
-                        </label>
-                        <div class="mdl-tooltip" data-mdl-for="sbj-check-aspect-disp-label">ユーザーアイコンや字幕を表示する場合は、アスペクト比の指定が必要です</div>
-
-                        <span id="sbj-aspect-setting">
-                            <h6 class="sbj-livedom-label"> アスペクト比（横）</h6>
-                            <input id="sbj-aspect-width" class="mdl-slider mdl-js-slider" type="range" min="1" max="16" tabindex="0">
-                            <span id="sbj-aspect-width-tip" class="mdl-tooltip" for="sbj-aspect-width"></span>
-                            <h6 class="sbj-livedom-label"> アスペクト比（縦）</h6>
-                            <input id="sbj-aspect-height" class="mdl-slider mdl-js-slider" type="range" min="1" max="16" tabindex="0">
-                            <span id="sbj-aspect-height-tip" class="mdl-tooltip" for="sbj-aspect-height"></span>
-                        </span>
-
-                    </div>
-                </div>
-
-                <div class="sbj-split-right">
-                    <div class="sbj-embedded mdl-color-text--grey-600">
-                        <h4>
-                            レイヤー設定
-                        </h4>
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> ページ名称
-                            </h6>
-                            <input type="text" id="sbj-embedded-value-name">
-                        </div>
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> 背景レイヤー（後）
-                                <br/>このレイヤーに配置したエレメントはクリックできません
-                            </h6>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer1" rows="6" cols="80" spellCheck='false'></textarea>
-                        </div>
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> 背景レイヤー（前）
-                                <br/>このレイヤーに配置したエレメントはクリックできません
-                            </h6>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer2" rows="6" cols="80" spellCheck='false'></textarea>
-                        </div>
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> アクティブ・レイヤー
-                                <br/>このレイヤーに配置したエレメントはクリック可能です
-                                <br/>※ただし、ユーザーアイコンの配置／移動ができなくなります
-                            </h6>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="6" cols="80" spellCheck='false'></textarea>
-                        </div>
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> コントロール・レイヤー
-                                <br/>ページ下部にAudioタグ等を配置する為のレイヤーです
-                            </h6>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="6" cols="80" spellCheck='false'></textarea>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -11,6 +11,9 @@ export default class LiveDomSender extends Sender {
 
     constructor(ps: PageSettings = new PageSettings()) {
         super(LiveDomSender.ID);
+        this.pageId = ps.pageId;
+        this.pageName = ps.pageName;
+        this.pageTag = ps.pageTag;
         this.isDispControlLayer = ps.isDispControlLayer;
         this.isAspectFix = ps.isAspectFix;
         this.aspectW = ps.aspectW;
@@ -21,6 +24,9 @@ export default class LiveDomSender extends Sender {
         this.layerControl = ps.layerControl;
     }
 
+    public pageId: string;
+    public pageName: string;
+    public pageTag : string;
     public isDispControlLayer: boolean;
     public isAspectFix: boolean;
     public aspectW: number;
