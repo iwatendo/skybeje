@@ -32,7 +32,9 @@ export default class LiveDomInstanceController extends AbstractServiceController
         super();
         this.Receiver = new LiveDomInstanceReceiver(this);
         this.CursorCache = new CursorCache();
-        this.View = new LiveDomInstanceView(this, () => { });
+        this.Model = new LiveDomInstanceModel(this, () => {
+            this.View = new LiveDomInstanceView(this, () => { });
+        });
     };
 
 
@@ -41,9 +43,7 @@ export default class LiveDomInstanceController extends AbstractServiceController
      * @param peer
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
-        if (this.View) {
-            this.View.InitializeDomSetting();
-        }
+        //
     }
 
     /**

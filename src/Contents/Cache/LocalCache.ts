@@ -154,17 +154,6 @@ export default class LocalCache {
         return (value ? Number.parseInt(value) : 0);
     }
 
-
-    //  LiveDomの設定保存
-    public static set LiveDomSetting(value: string) {
-        localStorage.setItem('livedom-setting', value);
-    }
-    public static get LiveDomSetting(): string {
-        let value = localStorage.getItem('livedom-setting');
-        return (value ? value : "");
-    }
-
-
 }
 
 
