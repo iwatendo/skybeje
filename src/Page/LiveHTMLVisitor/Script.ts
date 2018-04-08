@@ -1,15 +1,15 @@
 ﻿import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import LiveDomVisitorController from "./LiveDomVisitorController";
+import LiveHTMLVisitorController from "./LiveHTMLVisitorController";
 import SWPeer from "../../Base/WebRTC/SWPeer";
-import LiveDomMessageSender from "../../Contents/Sender/LiveDomMessageSender";
+import LiveHTMLMessageSender from "../../Contents/Sender/LiveHTMLMessageSender";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 
-let controller: LiveDomVisitorController;
+let controller: LiveHTMLVisitorController;
 
 if (StdUtil.IsSupoortPlatform(true)) {
 
-    controller = new LiveDomVisitorController();
+    controller = new LiveHTMLVisitorController();
     let ownerId = LinkUtil.GetPeerID();
 
     controller.SwPeer = new SWPeer(controller, ownerId, () => {
@@ -19,7 +19,7 @@ if (StdUtil.IsSupoortPlatform(true)) {
 
 
 function skybejeSend(message: string) {
-    let sender = new LiveDomMessageSender();
+    let sender = new LiveHTMLMessageSender();
     sender.text = message;
     sender.peerid = controller.SwPeer.PeerId;
 

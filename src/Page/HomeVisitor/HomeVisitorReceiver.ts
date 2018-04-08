@@ -31,7 +31,7 @@ import ProfileChangeSender from "../../Contents/Sender/ProfileChangeSender";
 import SettingsChangeSender from "../../Contents/Sender/SettingsChangeSender";
 import InitializeSender from "../../Contents/Sender/InitializeSender";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import LiveDomMessageSender from "../../Contents/Sender/LiveDomMessageSender";
+import LiveHTMLMessageSender from "../../Contents/Sender/LiveHTMLMessageSender";
 import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
 import ActorCache from "./Cache/ActorCache";
 
@@ -155,8 +155,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             this.Controller.View.InputPane.ChangeVoiceChatMember(sender as VoiceChatMemberListSender);
         }
 
-        if (sender.type === LiveDomMessageSender.ID) {
-            this.ConvertLiveDomMessage(sender as LiveDomMessageSender, (chatmsg) => {
+        if (sender.type === LiveHTMLMessageSender.ID) {
+            this.ConvertLiveHTMLMessage(sender as LiveHTMLMessageSender, (chatmsg) => {
                 this.Controller.SwPeer.SendToOwner(chatmsg);
             });
         }
@@ -279,11 +279,11 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
 
     /**
-     * LiveDomからのメッセージをチャットメッセージに変換して送信
+     * LiveHTMLからのメッセージをチャットメッセージに変換して送信
      * @param sender 
      * @param callback 
      */
-    private ConvertLiveDomMessage(sender: LiveDomMessageSender, callback) {
+    private ConvertLiveHTMLMessage(sender: LiveHTMLMessageSender, callback) {
 
         let chatmsg = new ChatMessageSender();
         chatmsg.text = sender.text;
@@ -295,7 +295,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             chatmsg.peerid = ic.homePeerId;
 
             this.Controller.ActorCache.GetActor(ic.homePeerId, ic.aid, (actor) => {
-                chatmsg.name = actor.name + "(LiveDom)";
+                chatmsg.name = actor.name + "(LiveHTML)";
                 callback(chatmsg);
             });
         }

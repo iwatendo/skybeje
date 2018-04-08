@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import LiveDomInstanceController from '../LiveDomInstanceController';
+import LiveHTMLInstanceController from '../LiveHTMLInstanceController';
 import PageSettingsComponent from './PageSettingsComponent';
 import { PageSettings } from '../../../Contents/IndexedDB/LiveHTML';
 import StdUtil from "../../../Base/Util/StdUtil";
@@ -15,7 +15,7 @@ import MdlUtil from "../../../Contents/Util/MdlUtil";
 export default class PageSettingsController {
 
     private _element: HTMLElement;
-    private _controller: LiveDomInstanceController;
+    private _controller: LiveHTMLInstanceController;
     private _previewPageSetting: PageSettings;
     private _selectPageSetting: PageSettings;
 
@@ -23,7 +23,7 @@ export default class PageSettingsController {
     /**
      * 
      */
-    public constructor(controller: LiveDomInstanceController, element: HTMLElement) {
+    public constructor(controller: LiveHTMLInstanceController, element: HTMLElement) {
         this._controller = controller;
         this._element = element;
         this._previewPageSetting = new PageSettings();

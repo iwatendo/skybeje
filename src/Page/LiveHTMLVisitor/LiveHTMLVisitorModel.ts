@@ -1,9 +1,9 @@
 
 import AbstractServiceModel, { OnModelLoad } from "../../Base/AbstractServiceModel";
-import LiveDomVisitorController from "./LiveDomVisitorController";
+import LiveHTMLVisitorController from "./LiveHTMLVisitorController";
 
 
-export default class LiveDomVisitorModel extends AbstractServiceModel<LiveDomVisitorController> {
+export default class LiveHTMLVisitorModel extends AbstractServiceModel<LiveHTMLVisitorController> {
 
     /**
      * 初期化処理

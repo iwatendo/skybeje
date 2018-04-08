@@ -2,18 +2,18 @@
 import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 
-import LiveDomInstanceController from "./LiveDomInstanceController";
-import LiveDomInstanceView from "./LiveDomInstanceView";
+import LiveHTMLInstanceController from "./LiveHTMLInstanceController";
+import LiveHTMLInstanceView from "./LiveHTMLInstanceView";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import IconSender from "../../Contents/Sender/IconSender";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
-import GetLiveDomSender from "../../Contents/Sender/GetLiveDomSender";
-import LiveDomMessageSender from "../../Contents/Sender/LiveDomMessageSender";
+import GetLiveHTMLSender from "../../Contents/Sender/GetLiveHTMLSender";
+import LiveHTMLMessageSender from "../../Contents/Sender/LiveHTMLMessageSender";
 
 
-export class LiveDomInstanceReceiver extends AbstractServiceReceiver<LiveDomInstanceController> {
+export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLInstanceController> {
 
 
     /**
@@ -50,9 +50,9 @@ export class LiveDomInstanceReceiver extends AbstractServiceReceiver<LiveDomInst
             this.Controller.View.SetRoom(this.Controller.CastRoom.room);
         }
 
-        //  LiveDom情報送信
-        if (sender.type === GetLiveDomSender.ID) {
-            conn.send(this.Controller.View.LiveDom);
+        //  LiveHTML情報送信
+        if (sender.type === GetLiveHTMLSender.ID) {
+            conn.send(this.Controller.View.LiveHTML);
         }
 
         //  キャスト情報の送信
@@ -60,8 +60,8 @@ export class LiveDomInstanceReceiver extends AbstractServiceReceiver<LiveDomInst
             this.Controller.SwPeer.SendTo(conn, this.Controller.CastSetting);
         }
 
-        //  LiveDOMからの入力情報
-        if (sender.type === LiveDomMessageSender.ID) {
+        //  LiveHTMLからの入力情報
+        if (sender.type === LiveHTMLMessageSender.ID) {
             this.Controller.SwPeer.SendToOwner(sender);
         }
 

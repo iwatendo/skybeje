@@ -1,10 +1,10 @@
 
 import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/AbstractServiceModel";
 import * as LiveHTML from "../../Contents/IndexedDB/LiveHTML";
-import LiveDomInstanceController from "./LiveDomInstanceController";
+import LiveHTMLInstanceController from "./LiveHTMLInstanceController";
 
 
-export default class LiveDomInstanceModel extends AbstractServiceModel<LiveDomInstanceController> {
+export default class LiveHTMLInstanceModel extends AbstractServiceModel<LiveHTMLInstanceController> {
 
     private _liveHTMLDB: LiveHTML.DB;
 

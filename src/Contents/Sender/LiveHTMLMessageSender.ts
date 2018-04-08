@@ -4,12 +4,12 @@ import IconCursorSender from "./IconCursorSender";
 /**
  * 
  */
-export default class LiveDomMessageSender extends Sender {
+export default class LiveHTMLMessageSender extends Sender {
 
-    public static ID = "LiveDomMessage";
+    public static ID = "LiveHTMLMessage";
 
     constructor() {
-        super(LiveDomMessageSender.ID);
+        super(LiveHTMLMessageSender.ID);
         this.text = "";
         this.peerid = "";
         this.iconCurosr = null;

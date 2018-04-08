@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import StdUtil from "../../../Base/Util/StdUtil";
 
-import LiveDomInstanceController from '../LiveDomInstanceController';
+import LiveHTMLInstanceController from '../LiveHTMLInstanceController';
 import { PageSettings } from '../../../Contents/IndexedDB/LiveHTML';
 
 
@@ -11,7 +11,7 @@ import { PageSettings } from '../../../Contents/IndexedDB/LiveHTML';
  * プロパティ
  */
 export interface PageSettingsComponentProp {
-    controller: LiveDomInstanceController;
+    controller: LiveHTMLInstanceController;
     items: Array<PageSettings>;
     selectItem: string;
 }
@@ -102,8 +102,8 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      */
     public IsLivePage(ps: PageSettings): boolean {
         let view = this.props.controller.View;
-        if (view && view.LiveDom) {
-            return (ps.pageId === view.LiveDom.pageId);
+        if (view && view.LiveHTML) {
+            return (ps.pageId === view.LiveHTML.pageId);
         }
         else {
             return false;
@@ -143,7 +143,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * @param e 
      */
     public OnClickSend(ps: PageSettings, e) {
-        this.props.controller.View.SendLiveDom(ps);
+        this.props.controller.View.SendLiveHTML(ps);
     }
 
 }

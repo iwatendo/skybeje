@@ -5,21 +5,21 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import CastStatusSender, { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 
-import LiveDomInstanceModel from "./LiveDomInstanceModel";
-import LiveDomInstanceView from "./LiveDomInstanceView";
-import { LiveDomInstanceReceiver } from "./LiveDomInstanceReceiver";
+import LiveHTMLInstanceModel from "./LiveHTMLInstanceModel";
+import LiveHTMLInstanceView from "./LiveHTMLInstanceView";
+import { LiveHTMLInstanceReceiver } from "./LiveHTMLInstanceReceiver";
 import CursorCache from "../../Contents/Cache/CursorCache";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import CursorClearSender from "../../Contents/Sender/CursorClearSender";
 
-export default class LiveDomInstanceController extends AbstractServiceController<LiveDomInstanceView, LiveDomInstanceModel> {
+export default class LiveHTMLInstanceController extends AbstractServiceController<LiveHTMLInstanceView, LiveHTMLInstanceModel> {
 
-    public ControllerName(): string { return "LiveDomInstance"; }
+    public ControllerName(): string { return "LiveHTMLInstance"; }
 
-    public View: LiveDomInstanceView;
+    public View: LiveHTMLInstanceView;
 
-    public CastStatus = new CastStatusSender(CastTypeEnum.LiveDom);
+    public CastStatus = new CastStatusSender(CastTypeEnum.LiveHTML);
     public CastSetting = new CastSettingSender();
     public CastRoom = new RoomSender();
 
@@ -30,10 +30,10 @@ export default class LiveDomInstanceController extends AbstractServiceController
      */
     constructor() {
         super();
-        this.Receiver = new LiveDomInstanceReceiver(this);
+        this.Receiver = new LiveHTMLInstanceReceiver(this);
         this.CursorCache = new CursorCache();
-        this.Model = new LiveDomInstanceModel(this, () => {
-            this.View = new LiveDomInstanceView(this, () => { });
+        this.Model = new LiveHTMLInstanceModel(this, () => {
+            this.View = new LiveHTMLInstanceView(this, () => { });
         });
     };
 
@@ -60,9 +60,9 @@ export default class LiveDomInstanceController extends AbstractServiceController
      * オーナー接続時イベント
      */
     public OnOwnerConnection() {
-        this.CastStatus = new CastStatusSender(CastTypeEnum.LiveDom);
+        this.CastStatus = new CastStatusSender(CastTypeEnum.LiveHTML);
         this.CastStatus.instanceUrl = location.href;
-        this.CastStatus.clientUrl = LinkUtil.CreateLink('../LiveDomVisitor/index.html', this.SwPeer.PeerId);
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../LiveHTMLVisitor/index.html', this.SwPeer.PeerId);
         this.SwPeer.SendToOwner(this.CastStatus);
 
         this.View.InitializeChatLink();
@@ -92,9 +92,9 @@ export default class LiveDomInstanceController extends AbstractServiceController
             this.SwPeer.SendTo(conn, cursor);
         });
 
-        //  LiveDom情報通知
-        if (this.View.LiveDom) {
-            this.SwPeer.SendTo(conn, this.View.LiveDom);
+        //  LiveHTML情報通知
+        if (this.View.LiveHTML) {
+            this.SwPeer.SendTo(conn, this.View.LiveHTML);
         }
 
     }
@@ -133,7 +133,7 @@ export default class LiveDomInstanceController extends AbstractServiceController
         this.CastStatus.isCasting = isCasting;
         this.CastStatus.isClose = isClose;
         this.CastStatus.isHide = false;
-        this.CastStatus.clientUrl = LinkUtil.CreateLink('../LiveDomVisitor/index.html', this.SwPeer.PeerId);
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../LiveHTMLVisitor/index.html', this.SwPeer.PeerId);
         this.SendCastInfo();
     }
 

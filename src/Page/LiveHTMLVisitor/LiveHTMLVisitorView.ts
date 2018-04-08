@@ -4,19 +4,19 @@ import StdUtil from "../../Base/Util/StdUtil";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
 import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 import CastPropController from "../CastProp/CastPropController";
-import LiveDomVisitorController from "./LiveDomVisitorController";
+import LiveHTMLVisitorController from "./LiveHTMLVisitorController";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
-import LiveDomSender from "../../Contents/Sender/LiveDomSender";
+import LiveHTMLSender from "../../Contents/Sender/LiveHTMLSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 
 /**
  * 
  */
-export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorController> {
+export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorController> {
 
     public Cursor: CastPropController;
-    public LiveDom = new LiveDomSender();
+    public LiveHTML = new LiveHTMLSender();
     public static Offset = new CursorDispOffset();
 
     //
@@ -50,7 +50,7 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
 
-        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return LiveDomVisitorView.Offset; }, () => { this.Risize(this.LiveDom); });
+        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return LiveHTMLVisitorView.Offset; }, () => { this.Risize(this.LiveHTML); });
         this.Cursor.DisplayAll();
 
         MessageChannelUtil.SetChild(this.Controller, (sender) => {
@@ -63,7 +63,7 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
     /**
      * 
      */
-    public Risize(livedom: LiveDomSender) {
+    public Risize(livedom: LiveHTMLSender) {
         if (livedom) {
             let contents = document.getElementById('sbj-livedom-visitor-contents') as HTMLElement;
             let liveDomLayer1 = document.getElementById('sbj-livedom-layer1');
@@ -72,11 +72,11 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
             let liveDomLayer4 = document.getElementById('sbj-livedom-layer4');
             let aspect: number = (livedom.isAspectFix ? livedom.aspectW / livedom.aspectH : 0);
 
-            LiveDomVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
-            CursorDispOffset.SetOffsetDiv(liveDomLayer1, LiveDomVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveDomLayer2, LiveDomVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveDomLayer3, LiveDomVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveDomLayer4, LiveDomVisitorView.Offset, true);
+            LiveHTMLVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
+            CursorDispOffset.SetOffsetDiv(liveDomLayer1, LiveHTMLVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveDomLayer2, LiveHTMLVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveDomLayer3, LiveHTMLVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveDomLayer4, LiveHTMLVisitorView.Offset, true);
 
             document.getElementById('sbj-cast-submenu').hidden = !livedom.isDispControlLayer;
         }
@@ -87,12 +87,12 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
      * 埋込ページの変更
      * @param dom 
      */
-    public SetLiveDom(dom: LiveDomSender) {
-        this.SetLiveDomElement($("#sbj-livedom-layer1"), this.LiveDom.layerBackgroundB, dom.layerBackgroundB);
-        this.SetLiveDomElement($("#sbj-livedom-layer2"), this.LiveDom.layerBackgroundF, dom.layerBackgroundF);
-        this.SetLiveDomElement($("#sbj-livedom-layer3"), this.LiveDom.layerActive, dom.layerActive);
-        this.SetLiveDomElement($("#sbj-livedom-layer4"), this.LiveDom.layerControl, dom.layerControl);
-        this.LiveDom = dom;
+    public SetLiveHTML(dom: LiveHTMLSender) {
+        this.SetLiveHTMLElement($("#sbj-livedom-layer1"), this.LiveHTML.layerBackgroundB, dom.layerBackgroundB);
+        this.SetLiveHTMLElement($("#sbj-livedom-layer2"), this.LiveHTML.layerBackgroundF, dom.layerBackgroundF);
+        this.SetLiveHTMLElement($("#sbj-livedom-layer3"), this.LiveHTML.layerActive, dom.layerActive);
+        this.SetLiveHTMLElement($("#sbj-livedom-layer4"), this.LiveHTML.layerControl, dom.layerControl);
+        this.LiveHTML = dom;
         this.Risize(dom);
     }
 
@@ -103,7 +103,7 @@ export class LiveDomVisitorView extends AbstractServiceView<LiveDomVisitorContro
      * @param pre 
      * @param cur 
      */
-    public SetLiveDomElement(element: JQuery, pre: string, cur: string) {
+    public SetLiveHTMLElement(element: JQuery, pre: string, cur: string) {
         if (pre !== cur) {
             element.empty().show().append(cur);
         }

@@ -3,22 +3,22 @@ import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView"
 import StdUtil from "../../Base/Util/StdUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 
-import LiveDomInstanceController from "./LiveDomInstanceController";
+import LiveHTMLInstanceController from "./LiveHTMLInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import { Room } from "../../Contents/IndexedDB/Home";
-import LiveDomSender from "../../Contents/Sender/LiveDomSender";
+import LiveHTMLSender from "../../Contents/Sender/LiveHTMLSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import MdlUtil from "../../Contents/Util/MdlUtil";
 import PageSettingsController from "./PageSettings/PageSettingsController";
 import { PageSettings } from "../../Contents/IndexedDB/LiveHTML";
 
-export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInstanceController> {
+export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLInstanceController> {
 
     public Cursor: CastPropController;
-    public LiveDom: LiveDomSender;
+    public LiveHTML: LiveHTMLSender;
     public PageSettings: PageSettingsController;
 
     private _hasOwner: boolean = false;
@@ -34,7 +34,7 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         //  ストリーミング開始ボタン
         document.getElementById('sbj-livedom-instance-start').onclick = (e) => {
             this.ChangeDisplayMode(true);
-            this.StartLiveDom();
+            this.StartLiveHTML();
         }
 
         //  ストリーミング停止ボタン
@@ -169,9 +169,9 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
 
             //  選択行かつ表示中の行の場合は更新内容をSendする
             if (ps) {
-                let liveId = (this.LiveDom ? this.LiveDom.pageId : "");
+                let liveId = (this.LiveHTML ? this.LiveHTML.pageId : "");
                 if (ps.pageId === liveId) {
-                    this.SendLiveDom(ps);
+                    this.SendLiveHTML(ps);
                 }
             }
         }
@@ -181,9 +181,9 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     /** 
      * 
      */
-    public StartLiveDom() {
+    public StartLiveHTML() {
 
-        let linkurl = LinkUtil.CreateLink("../LiveDomVisitor/", this.Controller.SwPeer.PeerId);
+        let linkurl = LinkUtil.CreateLink("../LiveHTMLVisitor/", this.Controller.SwPeer.PeerId);
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
@@ -196,9 +196,9 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     /**
      * 
      */
-    public SendLiveDom(ps: PageSettings) {
-        this.LiveDom = new LiveDomSender(ps);
-        this.Controller.SwPeer.SendAll(this.LiveDom);
+    public SendLiveHTML(ps: PageSettings) {
+        this.LiveHTML = new LiveHTMLSender(ps);
+        this.Controller.SwPeer.SendAll(this.LiveHTML);
 
         let castTitle = ps.pageName;
         if (ps.pageTag.length > 0) { castTitle += "（" + ps.pageTag + "）"; }

@@ -9,7 +9,7 @@ export enum CastTypeEnum {
     LiveCast = 1,
     ScreenShare = 2,
     Gadget = 3,
-    LiveDom = 4,
+    LiveHTML = 4,
 }
 
 

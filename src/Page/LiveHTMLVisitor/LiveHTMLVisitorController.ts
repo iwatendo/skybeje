@@ -2,18 +2,18 @@
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
 import * as Personal from "../../Contents/IndexedDB/Personal";
-import { LiveDomVisitorView } from "./LiveDomVisitorView";
-import LiveDomVisitorModel from "./LiveDomVisitorModel";
-import { LiveDomVisitorReceiver } from "./LiveDomVisitorReceiver";
-import GetLiveDomSender from "../../Contents/Sender/GetLiveDomSender";
+import { LiveHTMLVisitorView } from "./LiveHTMLVisitorView";
+import LiveHTMLVisitorModel from "./LiveHTMLVisitorModel";
+import { LiveHTMLVisitorReceiver } from "./LiveHTMLVisitorReceiver";
+import GetLiveHTMLSender from "../../Contents/Sender/GetLiveHTMLSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 
 
-export default class LiveDomVisitorController extends AbstractServiceController<LiveDomVisitorView, LiveDomVisitorModel> {
+export default class LiveHTMLVisitorController extends AbstractServiceController<LiveHTMLVisitorView, LiveHTMLVisitorModel> {
 
-    public ControllerName(): string { return "LiveDomVisitor"; }
+    public ControllerName(): string { return "LiveHTMLVisitor"; }
 
-    public View: LiveDomVisitorView;
+    public View: LiveHTMLVisitorView;
 
     private _castPeerId: string;
 
@@ -22,7 +22,7 @@ export default class LiveDomVisitorController extends AbstractServiceController<
      */
     constructor() {
         super();
-        this.Receiver = new LiveDomVisitorReceiver(this);
+        this.Receiver = new LiveHTMLVisitorReceiver(this);
     };
 
 
@@ -31,7 +31,7 @@ export default class LiveDomVisitorController extends AbstractServiceController<
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
 
-        this.View = new LiveDomVisitorView(this, () => {
+        this.View = new LiveHTMLVisitorView(this, () => {
             //  
         });
     }

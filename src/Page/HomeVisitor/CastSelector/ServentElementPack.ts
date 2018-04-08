@@ -119,7 +119,7 @@ export default class ServentElementPack {
                 break;
             case CastTypeEnum.ScreenShare: castTypeName = "スクリーンシェア"; break;
             case CastTypeEnum.Gadget: castTypeName = "ガジェット配信"; break;
-            case CastTypeEnum.LiveDom: castTypeName = "ライブDOM"; break;
+            case CastTypeEnum.LiveHTML: castTypeName = "ライブHTML"; break;
         }
 
         return name + "：" + castTypeName;
@@ -135,7 +135,7 @@ export default class ServentElementPack {
             case CastTypeEnum.LiveCast: return "videocam";
             case CastTypeEnum.ScreenShare: return "screen_share";
             case CastTypeEnum.Gadget: return "ondemand_video";
-            case CastTypeEnum.LiveDom: return "web";
+            case CastTypeEnum.LiveHTML: return "web";
         }
     }
 

@@ -5,12 +5,12 @@ import { PageSettings } from "../IndexedDB/LiveHTML";
 /**
  * 
  */
-export default class LiveDomSender extends Sender {
+export default class LiveHTMLSender extends Sender {
 
-    public static ID = "LiveDom";
+    public static ID = "LiveHTML";
 
     constructor(ps: PageSettings = new PageSettings()) {
-        super(LiveDomSender.ID);
+        super(LiveHTMLSender.ID);
         this.pageId = ps.pageId;
         this.pageName = ps.pageName;
         this.pageTag = ps.pageTag;
@@ -37,7 +37,7 @@ export default class LiveDomSender extends Sender {
     public layerControl: string;
 
 
-    public static Equals(s1: LiveDomSender, s2: LiveDomSender): boolean {
+    public static Equals(s1: LiveHTMLSender, s2: LiveHTMLSender): boolean {
         if (s1.isDispControlLayer === s2.isDispControlLayer
             && s1.isAspectFix === s2.isAspectFix
             && s1.aspectH === s2.aspectH
