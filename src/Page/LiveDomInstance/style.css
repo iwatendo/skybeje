@@ -49,6 +49,10 @@
  *
  *---------------------------*/
 
+ #sbj-livedom-edit-title{
+     margin: 32px 0px;
+ }
+
  #sbj-check-aspect-disp-label{
      width: 75%;
  }
@@ -83,17 +87,12 @@
     width: 32px;    
 }
 
-#sbj-embedded-value-name{
-    width: 400px;
-    font-size: 18px;
-    margin: 0px 0px 12px 0px;
-    
+#sbj-embedded-value-name-field{
+    width: 420px;
 }
 
-#sbj-embedded-value-tag{
-    width: 400px;
-    font-size: 16px;
-    margin: 0px 0px 20px 0px;
+#sbj-embedded-value-tag-field{
+    width: 420px;
 }
 
 #sbj-livedom-pageitems{
@@ -108,6 +107,11 @@
     border-bottom-style: solid;
     border-bottom-color: lightgray;
 }
+
+.sbj-list-item-select{
+    background-color: aliceblue;
+}
+
 
 #sbj-livedom-layer1 #sbj-livedom-layer2 #sbj-livedom-layey3{
     position: absolute;

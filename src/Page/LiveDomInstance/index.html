@@ -27,6 +27,12 @@
                 <div id="sbj-livedom-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-livedom-instance-account-count">この配信への接続数</div>
                 <h5 id="sbj-livedom-room-name" class="mdl-color-text--pink" hidden></h5>
+
+                <div class="mdl-layout-spacer"></div>
+                <button id='sbj-livedom-page-edit-close' class="mdl-button mdl-js-button mdl-button--colored" hidden>
+                    <i class="material-icons">backspace</i>
+                    <div class="mdl-tooltip" data-mdl-for="sbj-livedom-page-edit-close">前画面に戻る</div>
+                </button>
             </div>
         </header>
 
@@ -47,13 +53,12 @@
                             </button>
                         </div>
 
-                        <label id="sbj-check-cursor-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
-                            for="sbj-check-cursor-disp" hidden>
-                            <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
-                            <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
-                        </label>
+                        <h5 id="sbj-livedom-cast-title" hidden>
+                            ページを表示していません
+                        </h5>
 
                         <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
+
                             <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                                 &nbsp; 視聴ページ起動 &nbsp;
                             </button>
@@ -64,6 +69,12 @@
                                 <iframe id="sbj-link-qrcode" class="sbj-client-link-qrcode-frame" src=""></iframe>
                             </div>
                         </div>
+
+                        <label id="sbj-check-cursor-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                            for="sbj-check-cursor-disp" hidden>
+                            <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
+                            <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
+                        </label>
 
                     </div>
                 </div>
@@ -105,20 +116,9 @@
             <div class="sbj-container">
                 <div class="sbj-split-left">
                     <div class="mdl-color-text--grey-600" id="sbj-livedom-instance-main">
+
                         <h4 id="sbj-livedom-edit-title">
-
                         </h4>
-                        <div class="sbj-livedom-instance-actions mdl-list__item-primary-content">
-                            <button id="sbj-livedom-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
-                                <i class="material-icons">backspace</i>
-                                &nbsp;保存しないで戻る&nbsp;
-                            </button>
-                            <button id="sbj-livedom-pagesettings-save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
-                                <i class="material-icons">save</i>
-                                &nbsp;保存して戻る&nbsp;
-                            </button>
-                        </div>
-
 
                         <label id="sbj-check-aspect-disp-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-aspect-disp">
                             <input type="checkbox" id="sbj-check-aspect-disp" class="mdl-switch__input" checked>
@@ -165,35 +165,42 @@
 
                 <div class="sbj-split-right">
                     <div class="sbj-embedded mdl-color-text--grey-600">
+
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> ページ名称
-                            </h6>
-                            <input type="text" id="sbj-embedded-value-name" spellCheck='false'>
-                        </div>
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> タグ
-                            </h6>
-                            <input type="text" id="sbj-embedded-value-tag" spellCheck='false'>
+                            <div id="sbj-embedded-value-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="sbj-embedded-value-name" spellcheck=false maxlength="64" autocomplete="off"
+                                    required autofocus></input>
+                                <label class="mdl-textfield__label" for="sbj-embedded-value-name">ページ名</label>
+                                <span class="mdl-textfield__error">ページ名称を入力してください</span>
+                            </div>
                         </div>
 
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> 背景レイヤー（後）　※ユーザー操作不可 </h6>
+                            <div id="sbj-embedded-value-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="sbj-embedded-value-tag" spellcheck=false maxlength="64"></input>
+                                <label class="mdl-textfield__label" for="sbj-embedded-value-tag">タグ</label>
+                            </div>
+                        </div>
+
+                        <div class="sbj-embedded-value-div">
+                            <h6 class="sbj-livedom-label"> 背景レイヤー（後）</h6>
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer1" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> 背景レイヤー（前）　※ユーザー操作不可</h6>
+                            <h6 class="sbj-livedom-label"> 背景レイヤー（前）</h6>
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer2" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> アクティブ・レイヤー　※ユーザー操作可能
-                                <br/>但しこのレイヤを使用した場合、アイコン及び字幕が表示ができなくなります。
+                            <h6 class="sbj-livedom-label"> アクティブ・レイヤー
                             </h6>
+                            &nbsp;&nbsp;・このレイヤーに配置したエレメントはユーザーの操作が可能です。
+                            <br/>&nbsp;&nbsp;・ただしSkybejeチャットからのアイコン／字幕表示は背面に回り、非表示または操作不能となります。
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> コントロール・レイヤー
-                                <br/>下部にカーソルをあてた際に表示される半透明のエリアです
-                            </h6>
+                            <h6 class="sbj-livedom-label"> コントロール・レイヤー</h6>
+                            &nbsp;&nbsp;・表示エリアの下部にカーソルをあてた際に表示される半透明のエリアです。
+                            <br/>&nbsp;&nbsp;・Audioタグ等の設置を想定したレイヤーであり、非表示にする事もできます。
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
 
@@ -202,6 +209,21 @@
                             <input type="checkbox" id="sbj-check-control-disp" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">コントロール・レイヤーを表示</span>
                         </label>
+
+                        <div class="sbj-livedom-instance-actions">
+                            &nbsp;
+                        </div>
+
+                        <div class="sbj-livedom-instance-actions mdl-list__item-primary-content">
+                            <button id="sbj-livedom-pagesettings-save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
+                                <i class="material-icons">done</i>
+                                &nbsp;
+                                <span id="sbj-livedom-pagesettings-done"></span>&nbsp;
+                            </button>
+                            <button id="sbj-livedom-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                                &nbsp;キャンセル&nbsp;
+                            </button>
+                        </div>
 
                     </div>
                 </div>

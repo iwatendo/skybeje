@@ -13,6 +13,7 @@ import { PageSettings } from '../../../Contents/IndexedDB/LiveHTML';
 export interface PageSettingsComponentProp {
     controller: LiveDomInstanceController;
     items: Array<PageSettings>;
+    selectItem: string;
 }
 
 
@@ -48,10 +49,10 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
             let isLive = this.IsLivePage(ps);
             let hasTag = (ps.pageTag.trim().length > 0);
 
-            let liclass = "sbj-list-item mdl-list__item" + (hasTag ? " mdl-list__item--two-line" : "") + (isSelect ? " mdl-shadow--2dp" : "");
+            let liclass = "sbj-list-item mdl-list__item" + (hasTag ? " mdl-list__item--two-line" : "") + (isSelect ? " sbj-list-item-select mdl-shadow--2dp" : "");
             let subTitle = (hasTag ? <span className="mdl-list__item-sub-title">{ps.pageTag}</span> : <span></span>);
             let buttonclass = "mdl-button mdl-js-button mdl-button--colored" + (isLive ? " mdl-button--raised" : "");
-            let buttonName = (isLive ? "配信中" : "配信");
+            let buttonName = (isLive ? "表示中" : "表示");
 
             return (
                 <li className={liclass} onClick={this.OnClickItem.bind(this, ps)} onDoubleClick={this.OnDoubleClickItem.bind(this, ps)}>
@@ -82,7 +83,16 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * @param id 
      */
     public IsSelectPage(ps: PageSettings): boolean {
-        return (this.state && ps.pageId === this.state.selectItem);
+
+        let view = this.props.controller.View;
+        if (view && view.PageSettings) {
+
+            let selps = view.PageSettings.GetSelect();
+            return (ps.pageId === selps.pageId);
+        }
+        else {
+            return false;
+        }
     }
 
 
@@ -107,7 +117,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * @param e 
      */
     public OnClickItem(ps: PageSettings, e) {
-
+        
         this.props.controller.View.PageSettings.SetSelect(ps);
 
         this.setState({

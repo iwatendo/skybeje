@@ -144,12 +144,14 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
         let stopButton = document.getElementById('sbj-livedom-instance-stop');
         let roomName = document.getElementById('sbj-livedom-room-name');
         let linkElement = document.getElementById('sbj-client-link');
+        let castTitle = document.getElementById('sbj-livedom-cast-title');
 
         startButton.hidden = isLive;
         stopButton.hidden = !isLive;
 
         roomName.hidden = !isLive;
         linkElement.hidden = !isLive;
+        castTitle.hidden = !isLive;
     }
 
     /***
@@ -158,13 +160,22 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     public ChangeDisplayEditMode(isPageSetting: boolean) {
         document.getElementById('sbj-livedom-main-content').hidden = isPageSetting;
         document.getElementById('sbj-livedom-edit-content').hidden = !isPageSetting;
+        document.getElementById('sbj-livedom-page-edit-close').hidden = !isPageSetting;
 
         if (!isPageSetting) {
             this.PageSettings.Display();
+
+            let ps = this.PageSettings.GetSelect();
+
+            //  選択行かつ表示中の行の場合は更新内容をSendする
+            if (ps) {
+                let liveId = (this.LiveDom ? this.LiveDom.pageId : "");
+                if (ps.pageId === liveId) {
+                    this.SendLiveDom(ps);
+                }
+            }
         }
-
     }
-
 
 
     /** 
@@ -188,6 +199,10 @@ export default class LiveDomInstanceView extends AbstractServiceView<LiveDomInst
     public SendLiveDom(ps: PageSettings) {
         this.LiveDom = new LiveDomSender(ps);
         this.Controller.SwPeer.SendAll(this.LiveDom);
+
+        let castTitle = ps.pageName;
+        if (ps.pageTag.length > 0) { castTitle += "（" + ps.pageTag + "）"; }
+        document.getElementById('sbj-livedom-cast-title').textContent = "「" + castTitle + "」を表示中";
     }
 
 }

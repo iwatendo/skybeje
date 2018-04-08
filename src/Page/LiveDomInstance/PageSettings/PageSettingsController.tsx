@@ -29,6 +29,12 @@ export default class PageSettingsController {
         this._previewPageSetting = new PageSettings();
         this._selectPageSetting = new PageSettings();
 
+        //  ESCキーで閉じる
+        document.onkeydown = (e: KeyboardEvent) => {
+            if (e.keyCode === 27) { this.Close(false); }
+        }
+
+        document.getElementById('sbj-livedom-page-edit-close').onclick = (e) => { this.Close(false); }
         document.getElementById('sbj-livedom-pagesettings-cancel').onclick = (e) => { this.Close(false); }
         document.getElementById('sbj-livedom-pagesettings-save').onclick = (e) => { this.Close(true); }
 
@@ -37,6 +43,11 @@ export default class PageSettingsController {
         document.getElementById('sbj-livedom-page-copy').onclick = (e) => { this.OnClickPageCopy() };
         document.getElementById('sbj-livedom-page-edit').onclick = (e) => { this.OnClickPageEdit() };
         document.getElementById('sbj-livedom-page-delete').onclick = (e) => { this.OnClickPageDelete() };
+
+        //  アスペクト比率の指定有無
+        document.getElementById('sbj-check-aspect-disp').onchange = (e) => {
+            this.ChangeAspectFixed(this.GetPageSettings());
+        }
 
         //  アスペクト比変更時
         document.getElementById('sbj-aspect-width').oninput = (e) => {
@@ -51,10 +62,10 @@ export default class PageSettingsController {
 
         };
 
-        //  アスペクト比率の指定有無
-        document.getElementById('sbj-check-aspect-disp').onchange = (e) => {
-            this.ChangeAspectFixed(this.GetPageSettings());
-        }
+        //  ページ名称変更イベント
+        document.getElementById('sbj-embedded-value-name').oninput = (e) => {
+            this.CheckPageName();
+        };
 
         //  レイヤー設定変更
         for (let i = 1; i <= 4; i++) {
@@ -76,15 +87,40 @@ export default class PageSettingsController {
         this._controller.Model.GetPageSettingsAll((pss) => {
 
             //  ソート
-            pss.sort((a, b) => {
-                if (a.pageName < b.pageName) return -1;
-                if (a.pageName > b.pageName) return 1;
-                return 0;
-            })
+            pss.sort(this.PageSettingCompare);
+            //  選択行
+            let select = (this._selectPageSetting ? this._selectPageSetting.pageId : "");
 
-            ReactDOM.render(<PageSettingsComponent controller={this._controller} items={pss} />, this._element, () => {
+            ReactDOM.render(<PageSettingsComponent controller={this._controller} items={pss} selectItem={select} />, this._element, () => {
             });
         });
+    }
+
+
+    /**
+     * ページ設定のソート用関数
+     * @param a 
+     * @param b 
+     */
+    public PageSettingCompare(a: PageSettings, b: PageSettings): number {
+        if (a.pageName < b.pageName) return -1;
+        if (a.pageName > b.pageName) return 1;
+        if (a.pageTag < b.pageTag) return -1;
+        if (a.pageTag > b.pageTag) return 1;
+        return 0;
+    }
+
+
+    /**
+     * ページ名称の入力チェック
+     */
+    public CheckPageName() {
+
+        let value = (document.getElementById('sbj-embedded-value-name') as HTMLInputElement).value;
+
+        //  ページ名が設定されていない場合、更新ボタンを押せないようにする
+        let button = document.getElementById('sbj-livedom-pagesettings-save') as HTMLButtonElement;
+        button.disabled = (value.length === 0);
     }
 
 
@@ -125,14 +161,31 @@ export default class PageSettingsController {
         MdlUtil.SetChecked('sbj-check-aspect-disp', 'sbj-check-aspect-disp-label', ps.isAspectFix);
         (document.getElementById('sbj-aspect-width') as HTMLInputElement).value = ps.aspectW.toString();
         (document.getElementById('sbj-aspect-height') as HTMLInputElement).value = ps.aspectH.toString();
+
         (document.getElementById('sbj-embedded-value-name') as HTMLInputElement).value = ps.pageName;
         (document.getElementById('sbj-embedded-value-tag') as HTMLInputElement).value = ps.pageTag;
+        if (ps.pageName && ps.pageName.length > 0) {
+            document.getElementById('sbj-embedded-value-name-field').classList.remove('is-invalid');
+            document.getElementById('sbj-embedded-value-name-field').classList.add('is-dirty');
+        }
+        else {
+            document.getElementById('sbj-embedded-value-name-field').classList.add('is-invalid');
+            document.getElementById('sbj-embedded-value-name-field').classList.remove('is-dirty');
+        }
+        if (ps.pageTag && ps.pageTag.length > 0) {
+            document.getElementById('sbj-embedded-value-tag-field').classList.add('is-dirty');
+        }
+        else {
+            document.getElementById('sbj-embedded-value-tag-field').classList.remove('is-dirty');
+        }
+
         (document.getElementById('sbj-embedded-value-layer1') as HTMLInputElement).value = ps.layerBackgroundB;
         (document.getElementById('sbj-embedded-value-layer2') as HTMLInputElement).value = ps.layerBackgroundF;
         (document.getElementById('sbj-embedded-value-layer3') as HTMLInputElement).value = ps.layerActive;
         (document.getElementById('sbj-embedded-value-layer4') as HTMLInputElement).value = ps.layerControl;
         this.ChangeAspectFixed(ps);
         this.ChangeHTML(ps);
+        this.CheckPageName();
     }
 
 
@@ -207,6 +260,7 @@ export default class PageSettingsController {
             let ps = this.GetPageSettings();
 
             this._controller.Model.UpdatePageSettings(ps, () => {
+                this.SetSelect(ps);
                 this._controller.View.ChangeDisplayEditMode(false);
                 this.SetPageSettings(null);
             })
@@ -246,9 +300,16 @@ export default class PageSettingsController {
     }
 
 
-    public SetEditTitle(title: string) {
+    /**
+     * 
+     * @param title 
+     * @param bottonTitle 
+     */
+    public SetEditTitle(title: string, bottonTitle: string) {
         let element = document.getElementById('sbj-livedom-edit-title');
-        element.textContent = "LiveHTML" + title;
+        element.textContent = title;
+        let button = document.getElementById('sbj-livedom-pagesettings-done');
+        button.textContent = bottonTitle;
     }
 
 
@@ -266,7 +327,7 @@ export default class PageSettingsController {
 
         this.SetPageSettings(newPage);
 
-        this.SetEditTitle('（ページ追加）');
+        this.SetEditTitle('ページの追加', '追加');
         this._controller.View.ChangeDisplayEditMode(true);
     }
 
@@ -280,7 +341,7 @@ export default class PageSettingsController {
             this._controller.Model.GetPageSettings(pageId, (newPage) => {
                 newPage.pageId = StdUtil.UniqKey();
                 this.SetPageSettings(newPage);
-                this.SetEditTitle('（複製）');
+                this.SetEditTitle('ページの複製', '追加');
                 this._controller.View.ChangeDisplayEditMode(true);
             })
         }
@@ -293,7 +354,7 @@ export default class PageSettingsController {
     public OnClickPageEdit() {
         if (this.IsSelect()) {
             this.SetPageSettings(this._selectPageSetting);
-            this.SetEditTitle('（編集）');
+            this.SetEditTitle('ページの編集', '更新');
             this._controller.View.ChangeDisplayEditMode(true);
         }
     }
