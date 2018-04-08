@@ -17,43 +17,43 @@
 
 <body>
 
-    <div id="sbj-livedom-instance-layout" class="sbj-livedom-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+    <div id="sbj-livehtml-instance-layout" class="sbj-livehtml-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
 
-        <header class="sbj-livedom-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
-            <div class="sbj-livedom-instance--header-row mdl-layout__header-row">
-                <span id="sbj-livedom-instance-title" class="mdl-layout-title">
+        <header class="sbj-livehtml-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+            <div class="sbj-livehtml-instance--header-row mdl-layout__header-row">
+                <span id="sbj-livehtml-instance-title" class="mdl-layout-title">
                     Skybeje LiveHTML
                 </span>
-                <div id="sbj-livedom-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
-                <div class="mdl-tooltip" data-mdl-for="sbj-livedom-instance-account-count">この配信への接続数</div>
-                <h5 id="sbj-livedom-room-name" class="mdl-color-text--pink" hidden></h5>
+                <div id="sbj-livehtml-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
+                <div class="mdl-tooltip" data-mdl-for="sbj-livehtml-instance-account-count">この配信への接続数</div>
+                <h5 id="sbj-livehtml-room-name" class="mdl-color-text--pink" hidden></h5>
 
                 <div class="mdl-layout-spacer"></div>
-                <button id='sbj-livedom-page-edit-close' class="mdl-button mdl-js-button mdl-button--colored" hidden>
+                <button id='sbj-livehtml-page-edit-close' class="mdl-button mdl-js-button mdl-button--colored" hidden>
                     <i class="material-icons">backspace</i>
-                    <div class="mdl-tooltip" data-mdl-for="sbj-livedom-page-edit-close">前画面に戻る</div>
+                    <div class="mdl-tooltip" data-mdl-for="sbj-livehtml-page-edit-close">前画面に戻る</div>
                 </button>
             </div>
         </header>
 
-        <main class="mdl-layout__content" id="sbj-livedom-main-content">
+        <main class="mdl-layout__content" id="sbj-livehtml-main-content">
             <div class="sbj-container">
                 <div class="sbj-split-left">
-                    <div class="mdl-color-text--grey-600" id="sbj-livedom-instance-main">
+                    <div class="mdl-color-text--grey-600" id="sbj-livehtml-instance-main">
 
-                        <div class="sbj-livedom-instance-actions mdl-list__item-primary-content">
-                            <button id="sbj-livedom-instance-start" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+                        <div class="sbj-livehtml-instance-actions mdl-list__item-primary-content">
+                            <button id="sbj-livehtml-instance-start" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
                                 <i class="material-icons">play_arrow</i>
                                 &nbsp;配信開始&nbsp;
                             </button>
-                            <button id="sbj-livedom-instance-stop" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
+                            <button id="sbj-livehtml-instance-stop" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
                                 hidden>
                                 <i class="material-icons">stop</i>
                                 &nbsp;配信停止&nbsp;
                             </button>
                         </div>
 
-                        <h5 id="sbj-livedom-cast-title" hidden>
+                        <h5 id="sbj-livehtml-cast-title" hidden>
                             ページ未表示
                         </h5>
 
@@ -70,7 +70,7 @@
                             </div>
                         </div>
 
-                        <label id="sbj-check-cursor-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                        <label id="sbj-check-cursor-disp-label" class="sbj-livehtml-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
                             for="sbj-check-cursor-disp" hidden>
                             <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
@@ -81,21 +81,21 @@
 
                 <div class="sbj-split-right">
 
-                    <div class="sbj-livedom-page-edit-menu">
+                    <div class="sbj-livehtml-page-edit-menu">
 
-                        <button id='sbj-livedom-page-add' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                        <button id='sbj-livehtml-page-add' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                             <i class='material-icons'>add</i>
                             ページの追加
                         </button>
-                        <button id='sbj-livedom-page-copy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
+                        <button id='sbj-livehtml-page-copy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
                             <i class='material-icons'>content_copy</i>
                             複製
                         </button>
-                        <button id='sbj-livedom-page-edit' class="mdl-button mdl-js-button mdl-button--colored" hidden>
+                        <button id='sbj-livehtml-page-edit' class="mdl-button mdl-js-button mdl-button--colored" hidden>
                             <i class='material-icons'>edit</i>
                             編集
                         </button>
-                        <button id='sbj-livedom-page-delete' class="mdl-button mdl-js-button mdl-button--accent" hidden>
+                        <button id='sbj-livehtml-page-delete' class="mdl-button mdl-js-button mdl-button--accent" hidden>
                             <i class='material-icons'>delete</i>
                             削除
                         </button>
@@ -103,7 +103,7 @@
 
                     <div class="mdl-color-text--grey-600">
 
-                        <div class="mdl-card__supporting-text" id="sbj-livedom-pageitems">
+                        <div class="mdl-card__supporting-text" id="sbj-livehtml-pageitems">
                             <!--React-->
                         </div>
 
@@ -112,12 +112,12 @@
             </div>
         </main>
 
-        <main class="mdl-layout__content" id="sbj-livedom-edit-content" hidden>
+        <main class="mdl-layout__content" id="sbj-livehtml-edit-content" hidden>
             <div class="sbj-container">
                 <div class="sbj-split-left">
-                    <div class="mdl-color-text--grey-600" id="sbj-livedom-instance-main">
+                    <div class="mdl-color-text--grey-600" id="sbj-livehtml-instance-main">
 
-                        <h4 id="sbj-livedom-edit-title">
+                        <h4 id="sbj-livehtml-edit-title">
                         </h4>
 
                         <label id="sbj-check-aspect-disp-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-aspect-disp">
@@ -140,23 +140,23 @@
                         </span>
 
 
-                        <div class="sbj-livedom-content-box">
-                            <div id="sbj-livedom-content" class="mdl-list__item-primary-content sbj-livedom-content">
-                                <div id='sbj-livedom-layer1'>
+                        <div class="sbj-livehtml-content-box">
+                            <div id="sbj-livehtml-content" class="mdl-list__item-primary-content sbj-livehtml-content">
+                                <div id='sbj-livehtml-layer1'>
                                 </div>
-                                <div id='sbj-livedom-layer2'>
+                                <div id='sbj-livehtml-layer2'>
                                 </div>
                                 <div id="sbj-cast-item-port">
                                     <div id="sbj-cast-cursor-port">
                                         <!-- React -->
                                     </div>
                                 </div>
-                                <div id="sbj-livedom-visitor-message-port" hidden>
-                                    <h2 id="sbj-livedom-visitor-message"></h2>
+                                <div id="sbj-livehtml-visitor-message-port" hidden>
+                                    <h2 id="sbj-livehtml-visitor-message"></h2>
                                 </div>
-                                <div id='sbj-livedom-layer3'>
+                                <div id='sbj-livehtml-layer3'>
                                 </div>
-                                <div id='sbj-livedom-layer4'>
+                                <div id='sbj-livehtml-layer4'>
                                 </div>
                             </div>
                         </div>
@@ -183,44 +183,44 @@
                         </div>
 
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> 背景レイヤー（後）</h6>
+                            <h6 class="sbj-livehtml-label"> 背景レイヤー（後）</h6>
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer1" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> 背景レイヤー（前）</h6>
+                            <h6 class="sbj-livehtml-label"> 背景レイヤー（前）</h6>
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer2" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> アクティブ・レイヤー
+                            <h6 class="sbj-livehtml-label"> アクティブ・レイヤー
                             </h6>
                             &nbsp;&nbsp;・このレイヤーに配置したエレメントはユーザーの操作が可能です。
                             <br/>&nbsp;&nbsp;・ただしSkybejeチャットからのアイコン／字幕表示は背面に回り、非表示または操作不能となります。
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
                         <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livedom-label"> コントロール・レイヤー</h6>
+                            <h6 class="sbj-livehtml-label"> コントロール・レイヤー</h6>
                             &nbsp;&nbsp;・表示エリアの下部にカーソルをあてた際に表示される半透明のエリアです。
                             <br/>&nbsp;&nbsp;・Audioタグ等の設置を想定したレイヤーであり、非表示にする事もできます。
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
 
-                        <label id="sbj-check-control-disp-label" class="sbj-livedom-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                        <label id="sbj-check-control-disp-label" class="sbj-livehtml-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
                             for="sbj-check-control-disp">
                             <input type="checkbox" id="sbj-check-control-disp" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">コントロール・レイヤーを表示</span>
                         </label>
 
-                        <div class="sbj-livedom-instance-actions">
+                        <div class="sbj-livehtml-instance-actions">
                             &nbsp;
                         </div>
 
-                        <div class="sbj-livedom-instance-actions mdl-list__item-primary-content">
-                            <button id="sbj-livedom-pagesettings-save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
+                        <div class="sbj-livehtml-instance-actions mdl-list__item-primary-content">
+                            <button id="sbj-livehtml-pagesettings-save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
                                 <i class="material-icons">done</i>
                                 &nbsp;
-                                <span id="sbj-livedom-pagesettings-done"></span>&nbsp;
+                                <span id="sbj-livehtml-pagesettings-done"></span>&nbsp;
                             </button>
-                            <button id="sbj-livedom-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                            <button id="sbj-livehtml-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
                                 &nbsp;キャンセル&nbsp;
                             </button>
                         </div>

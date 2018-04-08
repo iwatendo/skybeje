@@ -46,7 +46,7 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
      */
     public InitializeCursor() {
 
-        let contents = document.getElementById('sbj-livedom-visitor-contents') as HTMLElement;
+        let contents = document.getElementById('sbj-livehtml-visitor-contents') as HTMLElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
 
@@ -65,11 +65,11 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
      */
     public Risize(livedom: LiveHTMLSender) {
         if (livedom) {
-            let contents = document.getElementById('sbj-livedom-visitor-contents') as HTMLElement;
-            let liveDomLayer1 = document.getElementById('sbj-livedom-layer1');
-            let liveDomLayer2 = document.getElementById('sbj-livedom-layer2');
-            let liveDomLayer3 = document.getElementById('sbj-livedom-layer3');
-            let liveDomLayer4 = document.getElementById('sbj-livedom-layer4');
+            let contents = document.getElementById('sbj-livehtml-visitor-contents') as HTMLElement;
+            let liveDomLayer1 = document.getElementById('sbj-livehtml-layer1');
+            let liveDomLayer2 = document.getElementById('sbj-livehtml-layer2');
+            let liveDomLayer3 = document.getElementById('sbj-livehtml-layer3');
+            let liveDomLayer4 = document.getElementById('sbj-livehtml-layer4');
             let aspect: number = (livedom.isAspectFix ? livedom.aspectW / livedom.aspectH : 0);
 
             LiveHTMLVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
@@ -88,10 +88,10 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
      * @param dom 
      */
     public SetLiveHTML(dom: LiveHTMLSender) {
-        this.SetLiveHTMLElement($("#sbj-livedom-layer1"), this.LiveHTML.layerBackgroundB, dom.layerBackgroundB);
-        this.SetLiveHTMLElement($("#sbj-livedom-layer2"), this.LiveHTML.layerBackgroundF, dom.layerBackgroundF);
-        this.SetLiveHTMLElement($("#sbj-livedom-layer3"), this.LiveHTML.layerActive, dom.layerActive);
-        this.SetLiveHTMLElement($("#sbj-livedom-layer4"), this.LiveHTML.layerControl, dom.layerControl);
+        this.SetLiveHTMLElement($("#sbj-livehtml-layer1"), this.LiveHTML.layerBackgroundB, dom.layerBackgroundB);
+        this.SetLiveHTMLElement($("#sbj-livehtml-layer2"), this.LiveHTML.layerBackgroundF, dom.layerBackgroundF);
+        this.SetLiveHTMLElement($("#sbj-livehtml-layer3"), this.LiveHTML.layerActive, dom.layerActive);
+        this.SetLiveHTMLElement($("#sbj-livehtml-layer4"), this.LiveHTML.layerControl, dom.layerControl);
         this.LiveHTML = dom;
         this.Risize(dom);
     }

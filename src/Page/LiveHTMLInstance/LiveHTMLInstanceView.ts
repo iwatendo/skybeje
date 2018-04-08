@@ -32,13 +32,13 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         StdUtil.StopTouchMove();
 
         //  ストリーミング開始ボタン
-        document.getElementById('sbj-livedom-instance-start').onclick = (e) => {
+        document.getElementById('sbj-livehtml-instance-start').onclick = (e) => {
             this.ChangeDisplayMode(true);
             this.StartLiveHTML();
         }
 
         //  ストリーミング停止ボタン
-        document.getElementById('sbj-livedom-instance-stop').onclick = (e) => {
+        document.getElementById('sbj-livehtml-instance-stop').onclick = (e) => {
             this.Controller.ServerSend(false, false);
             location.href = "";
         };
@@ -48,7 +48,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
             this.SendOption();
         }
 
-        this.PageSettings = new PageSettingsController(this.Controller, document.getElementById('sbj-livedom-pageitems'));
+        this.PageSettings = new PageSettingsController(this.Controller, document.getElementById('sbj-livehtml-pageitems'));
 
         this.InitializeCursor();
         callback();
@@ -69,7 +69,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      * @param count 
      */
     public SetPeerCount(count: number) {
-        document.getElementById("sbj-livedom-instance-account-count").setAttribute("data-badge", count.toString());
+        document.getElementById("sbj-livehtml-instance-account-count").setAttribute("data-badge", count.toString());
     }
 
 
@@ -79,7 +79,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      */
     public SetRoom(room: Room) {
         let message = "「" + room.name + "」に配信中";
-        document.getElementById("sbj-livedom-room-name").innerText = message;
+        document.getElementById("sbj-livehtml-room-name").innerText = message;
     }
 
 
@@ -99,7 +99,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      * カーソル表示設定
      */
     public InitializeCursor() {
-        let content = document.getElementById('sbj-livedom-content') as HTMLVideoElement;
+        let content = document.getElementById('sbj-livehtml-content') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
         this.Cursor = new CastPropController(this.Controller, itemport, curport, () => {
@@ -140,11 +140,11 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      * @param isLive 
      */
     public ChangeDisplayMode(isLive: boolean) {
-        let startButton = document.getElementById('sbj-livedom-instance-start');
-        let stopButton = document.getElementById('sbj-livedom-instance-stop');
-        let roomName = document.getElementById('sbj-livedom-room-name');
+        let startButton = document.getElementById('sbj-livehtml-instance-start');
+        let stopButton = document.getElementById('sbj-livehtml-instance-stop');
+        let roomName = document.getElementById('sbj-livehtml-room-name');
         let linkElement = document.getElementById('sbj-client-link');
-        let castTitle = document.getElementById('sbj-livedom-cast-title');
+        let castTitle = document.getElementById('sbj-livehtml-cast-title');
 
         startButton.hidden = isLive;
         stopButton.hidden = !isLive;
@@ -158,9 +158,9 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      * 表示切替
      */
     public ChangeDisplayEditMode(isPageSetting: boolean) {
-        document.getElementById('sbj-livedom-main-content').hidden = isPageSetting;
-        document.getElementById('sbj-livedom-edit-content').hidden = !isPageSetting;
-        document.getElementById('sbj-livedom-page-edit-close').hidden = !isPageSetting;
+        document.getElementById('sbj-livehtml-main-content').hidden = isPageSetting;
+        document.getElementById('sbj-livehtml-edit-content').hidden = !isPageSetting;
+        document.getElementById('sbj-livehtml-page-edit-close').hidden = !isPageSetting;
 
         if (!isPageSetting) {
             this.PageSettings.Display();
@@ -200,9 +200,20 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         this.LiveHTML = new LiveHTMLSender(ps);
         this.Controller.SwPeer.SendAll(this.LiveHTML);
 
-        let castTitle = ps.pageName;
-        if (ps.pageTag.length > 0) { castTitle += "（" + ps.pageTag + "）"; }
-        document.getElementById('sbj-livedom-cast-title').textContent = "「" + castTitle + "」を表示中";
+        let castTitle: string = "";
+
+        if (ps.pageName.length > 0) {
+            castTitle = ps.pageName;
+            if (ps.pageTag.length > 0) {
+                castTitle += "（" + ps.pageTag + "）";
+            }
+            castTitle = "「" + castTitle + "」を表示中";
+        }
+        else {
+            castTitle = "ページ未表示";
+        }
+
+        document.getElementById('sbj-livehtml-cast-title').textContent = castTitle;
     }
 
 }

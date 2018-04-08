@@ -34,15 +34,15 @@ export default class PageSettingsController {
             if (e.keyCode === 27) { this.Close(false); }
         }
 
-        document.getElementById('sbj-livedom-page-edit-close').onclick = (e) => { this.Close(false); }
-        document.getElementById('sbj-livedom-pagesettings-cancel').onclick = (e) => { this.Close(false); }
-        document.getElementById('sbj-livedom-pagesettings-save').onclick = (e) => { this.Close(true); }
+        document.getElementById('sbj-livehtml-page-edit-close').onclick = (e) => { this.Close(false); }
+        document.getElementById('sbj-livehtml-pagesettings-cancel').onclick = (e) => { this.Close(false); }
+        document.getElementById('sbj-livehtml-pagesettings-save').onclick = (e) => { this.Close(true); }
 
         //  編集ボタン郡
-        document.getElementById('sbj-livedom-page-add').onclick = (e) => { this.OnClickPageAdd() };
-        document.getElementById('sbj-livedom-page-copy').onclick = (e) => { this.OnClickPageCopy() };
-        document.getElementById('sbj-livedom-page-edit').onclick = (e) => { this.OnClickPageEdit() };
-        document.getElementById('sbj-livedom-page-delete').onclick = (e) => { this.OnClickPageDelete() };
+        document.getElementById('sbj-livehtml-page-add').onclick = (e) => { this.OnClickPageAdd() };
+        document.getElementById('sbj-livehtml-page-copy').onclick = (e) => { this.OnClickPageCopy() };
+        document.getElementById('sbj-livehtml-page-edit').onclick = (e) => { this.OnClickPageEdit() };
+        document.getElementById('sbj-livehtml-page-delete').onclick = (e) => { this.OnClickPageDelete() };
 
         //  アスペクト比率の指定有無
         document.getElementById('sbj-check-aspect-disp').onchange = (e) => {
@@ -119,7 +119,7 @@ export default class PageSettingsController {
         let value = (document.getElementById('sbj-embedded-value-name') as HTMLInputElement).value;
 
         //  ページ名が設定されていない場合、更新ボタンを押せないようにする
-        let button = document.getElementById('sbj-livedom-pagesettings-save') as HTMLButtonElement;
+        let button = document.getElementById('sbj-livehtml-pagesettings-save') as HTMLButtonElement;
         button.disabled = (value.length === 0);
     }
 
@@ -195,17 +195,17 @@ export default class PageSettingsController {
     public ChangeHTML(dom: PageSettings) {
 
         if (this._previewPageSetting) {
-            if (this._previewPageSetting.layerBackgroundB !== dom.layerBackgroundB) $("#sbj-livedom-layer1").empty().append(dom.layerBackgroundB);
-            if (this._previewPageSetting.layerBackgroundF !== dom.layerBackgroundF) $("#sbj-livedom-layer2").empty().append(dom.layerBackgroundF);
-            if (this._previewPageSetting.layerActive !== dom.layerActive) $("#sbj-livedom-layer3").empty().append(dom.layerActive);
-            if (this._previewPageSetting.layerControl !== dom.layerControl) $("#sbj-livedom-layer4").empty().append(dom.layerControl);
+            if (this._previewPageSetting.layerBackgroundB !== dom.layerBackgroundB) $("#sbj-livehtml-layer1").empty().append(dom.layerBackgroundB);
+            if (this._previewPageSetting.layerBackgroundF !== dom.layerBackgroundF) $("#sbj-livehtml-layer2").empty().append(dom.layerBackgroundF);
+            if (this._previewPageSetting.layerActive !== dom.layerActive) $("#sbj-livehtml-layer3").empty().append(dom.layerActive);
+            if (this._previewPageSetting.layerControl !== dom.layerControl) $("#sbj-livehtml-layer4").empty().append(dom.layerControl);
             this._previewPageSetting = dom;
         }
         else {
-            $("#sbj-livedom-layer1").empty();
-            $("#sbj-livedom-layer2").empty();
-            $("#sbj-livedom-layer3").empty();
-            $("#sbj-livedom-layer4").empty();
+            $("#sbj-livehtml-layer1").empty();
+            $("#sbj-livehtml-layer2").empty();
+            $("#sbj-livehtml-layer3").empty();
+            $("#sbj-livehtml-layer4").empty();
         }
     }
 
@@ -230,7 +230,7 @@ export default class PageSettingsController {
      * アスペクト比の変更
      */
     public ChangeAspect(dom: PageSettings) {
-        let content = document.getElementById('sbj-livedom-content') as HTMLElement;
+        let content = document.getElementById('sbj-livehtml-content') as HTMLElement;
 
         let aspect = dom.aspectW / dom.aspectH;
 
@@ -286,9 +286,9 @@ export default class PageSettingsController {
         this._selectPageSetting = sel;
 
         let seldisp = !(sel && sel.pageId.length > 0);
-        document.getElementById('sbj-livedom-page-copy').hidden = seldisp;
-        document.getElementById('sbj-livedom-page-edit').hidden = seldisp;
-        document.getElementById('sbj-livedom-page-delete').hidden = seldisp;
+        document.getElementById('sbj-livehtml-page-copy').hidden = seldisp;
+        document.getElementById('sbj-livehtml-page-edit').hidden = seldisp;
+        document.getElementById('sbj-livehtml-page-delete').hidden = seldisp;
     }
 
 
@@ -306,9 +306,9 @@ export default class PageSettingsController {
      * @param bottonTitle 
      */
     public SetEditTitle(title: string, bottonTitle: string) {
-        let element = document.getElementById('sbj-livedom-edit-title');
+        let element = document.getElementById('sbj-livehtml-edit-title');
         element.textContent = title;
-        let button = document.getElementById('sbj-livedom-pagesettings-done');
+        let button = document.getElementById('sbj-livehtml-pagesettings-done');
         button.textContent = bottonTitle;
     }
 

@@ -43,8 +43,8 @@ export default class LiveHTMLVisitorController extends AbstractServiceController
 
     //  Peerエラー
     public OnPeerError(err: Error) {
-        document.getElementById('sbj-livedom-visitor-message-port').hidden = false;
-        document.getElementById('sbj-livedom-visitor-message').textContent = "接続に失敗、またはライブキャストは終了しています";
+        document.getElementById('sbj-livehtml-visitor-message-port').hidden = false;
+        document.getElementById('sbj-livehtml-visitor-message').textContent = "接続に失敗、またはライブキャストは終了しています";
     }
 
 
