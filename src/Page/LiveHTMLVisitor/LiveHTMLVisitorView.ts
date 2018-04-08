@@ -63,22 +63,22 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
     /**
      * 
      */
-    public Risize(livedom: LiveHTMLSender) {
-        if (livedom) {
+    public Risize(livehtml: LiveHTMLSender) {
+        if (livehtml) {
             let contents = document.getElementById('sbj-livehtml-visitor-contents') as HTMLElement;
-            let liveDomLayer1 = document.getElementById('sbj-livehtml-layer1');
-            let liveDomLayer2 = document.getElementById('sbj-livehtml-layer2');
-            let liveDomLayer3 = document.getElementById('sbj-livehtml-layer3');
-            let liveDomLayer4 = document.getElementById('sbj-livehtml-layer4');
-            let aspect: number = (livedom.isAspectFix ? livedom.aspectW / livedom.aspectH : 0);
+            let liveHtmlLayer1 = document.getElementById('sbj-livehtml-layer1');
+            let liveHtmlLayer2 = document.getElementById('sbj-livehtml-layer2');
+            let liveHtmlLayer3 = document.getElementById('sbj-livehtml-layer3');
+            let liveHtmlLayer4 = document.getElementById('sbj-livehtml-layer4');
+            let aspect: number = (livehtml.isAspectFix ? livehtml.aspectW / livehtml.aspectH : 0);
 
             LiveHTMLVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
-            CursorDispOffset.SetOffsetDiv(liveDomLayer1, LiveHTMLVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveDomLayer2, LiveHTMLVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveDomLayer3, LiveHTMLVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveDomLayer4, LiveHTMLVisitorView.Offset, true);
+            CursorDispOffset.SetOffsetDiv(liveHtmlLayer1, LiveHTMLVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveHtmlLayer2, LiveHTMLVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveHtmlLayer3, LiveHTMLVisitorView.Offset, false);
+            CursorDispOffset.SetOffsetDiv(liveHtmlLayer4, LiveHTMLVisitorView.Offset, true);
 
-            document.getElementById('sbj-cast-submenu').hidden = !livedom.isDispControlLayer;
+            document.getElementById('sbj-cast-submenu').hidden = !livehtml.isDispControlLayer;
         }
     }
 

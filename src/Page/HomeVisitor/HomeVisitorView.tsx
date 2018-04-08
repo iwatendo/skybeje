@@ -116,7 +116,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
         document.getElementById('sbj-service-castinstance-screenshare').onclick = (e) => { clickevent("../CastInstanceScreenShare/"); }
         document.getElementById('sbj-service-castinstance-mobile').onclick = (e) => { clickevent("../CastInstanceMobileQR/"); }
         document.getElementById('sbj-service-gadgetinstance-youtube').onclick = (e) => { clickevent("../GadgetInstance/"); }
-        document.getElementById('sbj-service-livedom').onclick = (e) => { clickevent("../LiveHTMLInstance/"); }
+        document.getElementById('sbj-service-livehtml').onclick = (e) => { clickevent("../LiveHTMLInstance/"); }
     }
 
 
