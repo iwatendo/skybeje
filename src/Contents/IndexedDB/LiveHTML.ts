@@ -61,7 +61,7 @@ export class DB extends AbstractIndexedDB<Data> {
 
     public WriteAllData(data: Data, callback: DBI.OnWriteComplete) {
 
-        this.WriteAll<PageSettings>(DB.PageSettings, (n) => n.mid, data.Pages, () => {
+        this.WriteAll<PageSettings>(DB.PageSettings, (n) => n.pageId, data.Pages, () => {
             callback();
         });
     }

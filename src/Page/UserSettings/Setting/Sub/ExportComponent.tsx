@@ -53,6 +53,13 @@ export default class ExportComponent extends React.Component<ExportProp, any> {
                         <h6 className="sbj-export-type">チャットルーム設定</h6>
                     </div>
                     <div className="sbj-export mdl-card__supporting-text">
+                        <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={this.OnExportLiveHTMLClick.bind(this)}>
+                            <i className='material-icons'>archive</i>
+                            &nbsp;エクスポート&nbsp;
+                        </button>
+                        <h6 className="sbj-export-type">LiveHTML設定</h6>
+                    </div>
+                    <div className="sbj-export mdl-card__supporting-text">
                         <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onClick={this.OnExportTimelineClick.bind(this)}>
                             <i className='material-icons'>archive</i>
                             &nbsp;エクスポート&nbsp;
@@ -87,6 +94,14 @@ export default class ExportComponent extends React.Component<ExportProp, any> {
         this.props.controller.Export(DBEnum.Home);
     }
 
+
+    /**
+     * 
+     * @param event 
+     */
+    public OnExportLiveHTMLClick(event) {
+        this.props.controller.Export(DBEnum.LiveHTML);
+    }
 
     /**
      * 

@@ -11,9 +11,10 @@ export default class UserSettingsModel extends AbstractServiceModel<UserSettings
 
     private _dbc: DBContainer;
 
-    public get PersonalDB() { return this._dbc.PersonalDB }
-    public get HomeDB() { return this._dbc.HomeDB }
-    public get TimelineDB() { return this._dbc.TimelineDB }
+    public get PersonalDB() { return this._dbc.PersonalDB; }
+    public get HomeDB() { return this._dbc.HomeDB; }
+    public get TimelineDB() { return this._dbc.TimelineDB; }
+    public get LiveHTMLDB() { return this._dbc.LiveHTMLDB; }
 
 
     /**

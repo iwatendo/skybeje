@@ -21,6 +21,7 @@ export enum DBEnum {
     Home = 1,
     Gadget = 2,
     Timeline = 3,
+    LiveHTML = 4,
 }
 
 export interface OnImportComplete { (IsSucceed: boolean, msg: string): void }
@@ -70,6 +71,7 @@ export default class SettingController {
             case DBEnum.Personal: this._controller.Model.PersonalDB.Export(); break;
             case DBEnum.Home: this._controller.Model.HomeDB.Export(); break;
             case DBEnum.Timeline: this._controller.Model.TimelineDB.Export(); break;
+            case DBEnum.LiveHTML: this._controller.Model.LiveHTMLDB.Export(); break;
         }
     }
 
@@ -101,6 +103,7 @@ export default class SettingController {
         if (this._controller.Model.PersonalDB.IsImportMatch(data)) return this._controller.Model.PersonalDB;
         if (this._controller.Model.HomeDB.IsImportMatch(data)) return this._controller.Model.HomeDB;
         if (this._controller.Model.TimelineDB.IsImportMatch(data)) return this._controller.Model.TimelineDB;
+        if (this._controller.Model.LiveHTMLDB.IsImportMatch(data)) return this._controller.Model.LiveHTMLDB;
 
         return null;
     }

@@ -2,6 +2,7 @@
 import * as Personal from "./Personal";
 import * as Home from "./Home";
 import * as Timeline from "./Timeline";
+import * as LiveHTML from "./LiveHTML";
 import { OnModelLoad } from "../../Base/AbstractServiceModel";
 
 export default class DBContainer {
@@ -9,6 +10,7 @@ export default class DBContainer {
     public PersonalDB: Personal.DB;
     public HomeDB: Home.DB;
     public TimelineDB: Timeline.DB;
+    public LiveHTMLDB: LiveHTML.DB;
 
     /**
      * 
@@ -17,6 +19,7 @@ export default class DBContainer {
         this.PersonalDB = new Personal.DB();
         this.HomeDB = new Home.DB();
         this.TimelineDB = new Timeline.DB();
+        this.LiveHTMLDB = new LiveHTML.DB();
     }
 
 
@@ -29,7 +32,9 @@ export default class DBContainer {
         this.PersonalDB.Remove(() => {
             this.HomeDB.Remove(() => {
                 this.TimelineDB.Remove(() => {
-                    callback();
+                    this.LiveHTMLDB.Remove(() => {
+                        callback();
+                    });
                 });
             });
         });
@@ -46,7 +51,9 @@ export default class DBContainer {
         this.PersonalDB.Connect(() => {
             this.HomeDB.Connect(() => {
                 this.TimelineDB.Connect(() => {
-                    callback();
+                    this.LiveHTMLDB.Connect(() => {
+                        callback();
+                    });
                 });
             });
         });
