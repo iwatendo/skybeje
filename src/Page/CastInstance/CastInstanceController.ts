@@ -146,7 +146,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
             //  PeerIDをルーム名称とする
             let roomname = this.SwPeer.PeerId;
             let roommode = (this.CastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
-            this.SwRoom = new SWRoom(this, this, this.SwPeer.Peer, roomname, roommode, stream);
+            this.SwRoom = new SWRoom(this, roomname, roommode, stream);
             //  オーナー 及び 接続クライアントに通知
             this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
         }, (errname) => {

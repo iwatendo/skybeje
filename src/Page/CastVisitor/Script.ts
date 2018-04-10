@@ -12,6 +12,6 @@ if (StdUtil.IsSupoortPlatform(true)) {
     let roomMode = (controller.UseSFU() ? SWRoomMode.SFU : SWRoomMode.Mesh);
 
     controller.SwPeer = new SWPeer(controller, ownerId, () => {
-        controller.SwRoom = new SWRoom(controller, controller, controller.SwPeer.Peer, ownerId, roomMode);
+        controller.SwRoom = new SWRoom(controller, ownerId, roomMode);
     });
 }

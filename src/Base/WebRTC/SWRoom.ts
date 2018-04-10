@@ -80,15 +80,13 @@ export default class SWRoom {
 
     /**
      * コンストラクタ
-     * @param sender 
      * @param service 
-     * @param peer 
      * @param name 
      * @param mode 
      */
-    constructor(sender: ISWRoom, service: IServiceController, peer: PeerJs.Peer, name: string, mode: SWRoomMode, stream: MediaStream = null) {
-        this._sender = sender;
-        this._peer = peer;
+    constructor(service: ISWRoom & IServiceController, name: string, mode: SWRoomMode, stream: MediaStream = null) {
+        this._sender = service;
+        this._peer = service.SwPeer.Peer;
         this._service = service;
         this._mode = mode;
         this._stream = stream;

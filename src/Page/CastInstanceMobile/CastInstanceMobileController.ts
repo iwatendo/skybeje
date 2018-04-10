@@ -151,7 +151,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
 
         let roomName = this.SwPeer.PeerId;        //  PeerIDをルーム名称とする
         let roomMode = (this.CastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
-        this.SwRoom = new SWRoom(this, this, this.SwPeer.Peer, roomName, roomMode, this.Stream);
+        this.SwRoom = new SWRoom(this, roomName, roomMode, this.Stream);
 
         this.ServerSend(true, false);
     }

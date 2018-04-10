@@ -166,7 +166,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
             //  PeerIDをルーム名称とする
             let roomname = this.SwPeer.PeerId;
             let roommode = (this.CastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
-            this.SwRoom = new SWRoom(this, this, this.SwPeer.Peer, roomname, roommode, stream);
+            this.SwRoom = new SWRoom(this, roomname, roommode, stream);
             this.ServerSend(true, false);
             callback();
         });
