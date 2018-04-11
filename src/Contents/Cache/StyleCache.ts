@@ -151,26 +151,28 @@ export default class StyleCache {
             return;
         }
         else {
+            let bgurl: string = null;
 
-            let bgurl: string;
-
-            if (rec.src.indexOf("data:image") === 0) {
-                //  base64形式の場合は、blob形式にして格納
-                window.URL = window.URL || (window as any).webkitURL;
-                let blob = this.ToBlob(rec.src);
-                bgurl = window.URL.createObjectURL(blob);
+            if (rec.src) {
+                if (rec.src.indexOf("data:image") === 0) {
+                    //  base64形式の場合は、blob形式にして格納
+                    window.URL = window.URL || (window as any).webkitURL;
+                    let blob = this.ToBlob(rec.src);
+                    bgurl = window.URL.createObjectURL(blob);
+                }
+                else {
+                    bgurl = rec.src;
+                }
             }
-            else {
-                bgurl = rec.src;
-            }
 
-            if (rec) {
+            if (rec && bgurl) {
                 this._element.style.setProperty('--sbj-bgc-' + key, "");
                 this._element.style.setProperty('--sbj-imgbg-' + key, "url(" + bgurl + ")");
                 this._element.style.setProperty('--sbj-imgbgs-' + key, StyleCache.SizeEnumToString(rec.backgroundsize));
                 this._element.style.setProperty('--sbj-imgbgr-' + key, StyleCache.RepeatEnumToString(rec.backgroundrepeat));
                 this._element.style.setProperty('--sbj-imgbgp-' + key, StyleCache.PosEnumToString(rec.backgroundposition));
             }
+
             StyleCache._imgCssMap.set(key, key);
         }
     }
