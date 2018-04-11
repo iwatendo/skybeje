@@ -145,6 +145,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         let roomName = document.getElementById('sbj-livehtml-room-name');
         let linkElement = document.getElementById('sbj-client-link');
         let castTitle = document.getElementById('sbj-livehtml-cast-title');
+        let noteElement = document.getElementById('sbj-livehtml-note');
 
         startButton.hidden = isLive;
         stopButton.hidden = !isLive;
@@ -152,6 +153,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         roomName.hidden = !isLive;
         linkElement.hidden = !isLive;
         castTitle.hidden = !isLive;
+        noteElement.hidden = isLive;
     }
 
     /***

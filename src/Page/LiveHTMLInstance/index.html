@@ -76,6 +76,34 @@
                             <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
                         </label>
 
+                        <div class="mdl-color-text--grey-600" id="sbj-livehtml-note">
+                            <br/>
+                            <h4 class="mdl-color-text--grey-800">
+                                LiveHTMLについて
+                            </h4>
+                            &nbsp;&nbsp;登録したHTMLを視聴ページに表示する機能です。
+                            <br/>&nbsp;&nbsp;任意のタイミングで表示するHTMLの切り替えが可能です。
+                            <br/>&nbsp;&nbsp;登録したHTMLはブラウザのDB(IndexedDB)に保存されます。
+                            <br/>
+                            <br/>&nbsp;&nbsp;WebRTC(P2P)でのデータ通信のため大規模な配信はできません。
+                            <br/>&nbsp;&nbsp;本サービスは10人以下での利用を想定しています。
+                            <br/>
+                            <h5 class="mdl-color-text--grey-800">
+                                使い方
+                            </h5>
+                            ・「配信開始」を押します。
+                            <br/>・リストから表示したいページを選択して「表示」を押します。
+                            <br/>・単体起動した場合は、視聴して欲しい人にURLを伝えてください。
+                            <br/>・Skybejeチャットからの起動時は、自動的にチャット側に表示されます。
+                            <br/>
+                            <h5 class="mdl-color-text--grey-800">
+                                注意事項
+                            </h5>
+                            &nbsp;&nbsp;外部のWebサービスおよび各種Webサービスの埋込コードの利用が可能ですが、各Webサービスの利用規約に違反しないように注意してください。
+                            <br/>
+                        </div>
+
+
                     </div>
                 </div>
 
@@ -85,7 +113,7 @@
 
                         <button id='sbj-livehtml-page-add' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                             <i class='material-icons'>add</i>
-                            ページの追加
+                            HTMLページの追加
                         </button>
                         <button id='sbj-livehtml-page-copy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
                             <i class='material-icons'>content_copy</i>
