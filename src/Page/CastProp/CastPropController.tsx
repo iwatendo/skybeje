@@ -74,10 +74,10 @@ export default class CastPropController {
         }
 
         window.onresize = ((ev) => {
-            if(onrisize){
+            if (onrisize) {
                 onrisize();
             }
-            this.DisplayAll(); 
+            this.DisplayAll();
         });
 
         window.onbeforeunload = (ev) => {
@@ -123,10 +123,15 @@ export default class CastPropController {
         if (sender) {
 
             //  座標のオフセット取得
-            let vdo = CastPropController._getOffset();
+            let offset = CastPropController._getOffset();
+
+            if (isDisp && offset.clientWidth === 0 && offset.clientHeight === 0) {
+                return;
+            }
+
             //  offsetXY → ClientXYに変更（CursorのDiv上の移動イベントを取得したい為）
-            sender.posRx = (clientX - vdo.offsetRight + CastPropController.OffsetX) / vdo.dispWidth;
-            sender.posRy = (clientY - vdo.offsetTop + CastPropController.OffsetY) / vdo.dispHeight;
+            sender.posRx = (clientX - offset.offsetRight + CastPropController.OffsetX) / offset.dispWidth;
+            sender.posRy = (clientY - offset.offsetTop + CastPropController.OffsetY) / offset.dispHeight;
             sender.isDisp = isDisp;
 
             this._intervalSend.Send(sender, (s) => { this.SendCursorToOwner(s) });

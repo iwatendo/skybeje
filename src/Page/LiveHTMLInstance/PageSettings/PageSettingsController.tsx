@@ -248,6 +248,11 @@ export default class PageSettingsController {
             content.style.width = "100%";
             content.style.height = height.toString() + "px";
         }
+
+        if (this._controller.View.Cursor) {
+            this._controller.View.Cursor.DisplayAll();
+        }
+
     }
 
 

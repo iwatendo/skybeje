@@ -51,7 +51,6 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
         let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
 
         this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return LiveHTMLVisitorView.Offset; }, () => { this.Risize(this.LiveHTML); });
-        this.Cursor.DisplayAll();
 
         MessageChannelUtil.SetChild(this.Controller, (sender) => {
             let cst = sender as ChatStatusSender;
@@ -79,6 +78,9 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
             CursorDispOffset.SetOffsetDiv(liveHtmlLayer4, LiveHTMLVisitorView.Offset, true);
 
             document.getElementById('sbj-cast-submenu').hidden = !livehtml.isDispControlLayer;
+        }
+        if (this.Cursor) {
+            this.Cursor.DisplayAll();
         }
     }
 

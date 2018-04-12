@@ -164,7 +164,12 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         document.getElementById('sbj-livehtml-edit-content').hidden = !isPageSetting;
         document.getElementById('sbj-livehtml-page-edit-close').hidden = !isPageSetting;
 
-        if (!isPageSetting) {
+        if (isPageSetting) {
+            if (this.Cursor) {
+                this.Cursor.DisplayAll();
+            }
+        }
+        else {
             this.PageSettings.Display();
 
             let ps = this.PageSettings.GetSelect();
