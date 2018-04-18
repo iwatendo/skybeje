@@ -7,6 +7,7 @@ import PageSettingsComponent from './PageSettingsComponent';
 import { PageSettings } from '../../../Contents/IndexedDB/LiveHTML';
 import StdUtil from "../../../Base/Util/StdUtil";
 import MdlUtil from "../../../Contents/Util/MdlUtil";
+import LinkUtil from "../../../Base/Util/LinkUtil";
 
 
 /**
@@ -194,19 +195,39 @@ export default class PageSettingsController {
      */
     public ChangeHTML(dom: PageSettings) {
 
+        let layer1 = $("#sbj-livehtml-layer1");
+        let layer2 = $("#sbj-livehtml-layer2");
+        let layer3 = $("#sbj-livehtml-layer3");
+        let layer4 = $("#sbj-livehtml-layer4");
+
         if (this._previewPageSetting) {
-            if (this._previewPageSetting.layerBackgroundB !== dom.layerBackgroundB) $("#sbj-livehtml-layer1").empty().append(dom.layerBackgroundB);
-            if (this._previewPageSetting.layerBackgroundF !== dom.layerBackgroundF) $("#sbj-livehtml-layer2").empty().append(dom.layerBackgroundF);
-            if (this._previewPageSetting.layerActive !== dom.layerActive) $("#sbj-livehtml-layer3").empty().append(dom.layerActive);
-            if (this._previewPageSetting.layerControl !== dom.layerControl) $("#sbj-livehtml-layer4").empty().append(dom.layerControl);
+            this.CheckChangeLayerHTML(layer1, this._previewPageSetting.layerBackgroundB, dom.layerBackgroundB);
+            this.CheckChangeLayerHTML(layer2, this._previewPageSetting.layerBackgroundF, dom.layerBackgroundF);
+            this.CheckChangeLayerHTML(layer3, this._previewPageSetting.layerActive, dom.layerActive);
+            this.CheckChangeLayerHTML(layer4, this._previewPageSetting.layerControl, dom.layerControl);
             this._previewPageSetting = dom;
         }
         else {
-            $("#sbj-livehtml-layer1").empty();
-            $("#sbj-livehtml-layer2").empty();
-            $("#sbj-livehtml-layer3").empty();
-            $("#sbj-livehtml-layer4").empty();
+            layer1.empty();
+            layer2.empty();
+            layer3.empty();
+            layer4.empty();
         }
+    }
+
+
+    /**
+     * 
+     * @param layer 
+     * @param pre 
+     * @param cur 
+     */
+    public CheckChangeLayerHTML(layer: JQuery, pre: string, cur: string) {
+        if (pre === cur) {
+            return;
+        }
+        let html = PageSettings.ReplasePeerId(cur, this._controller.SwPeer.PeerId);
+        layer.empty().append(html);
     }
 
 

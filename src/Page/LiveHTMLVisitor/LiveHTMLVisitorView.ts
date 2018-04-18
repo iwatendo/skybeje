@@ -9,6 +9,7 @@ import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import LiveHTMLSender from "../../Contents/Sender/LiveHTMLSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
+import { PageSettings } from "../../Contents/IndexedDB/LiveHTML";
 
 /**
  * 
@@ -107,7 +108,8 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
      */
     public SetLiveHTMLElement(element: JQuery, pre: string, cur: string) {
         if (pre !== cur) {
-            element.empty().show().append(cur);
+            let html = PageSettings.ReplasePeerId(cur, LinkUtil.GetPeerID());
+            element.empty().show().append(html);
         }
 
         if (cur.trim().length === 0) {

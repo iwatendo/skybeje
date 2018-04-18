@@ -29,6 +29,15 @@ export class PageSettings {
     public layerBackgroundF: string;
     public layerActive: string;
     public layerControl: string;
+
+    public static ReplasePeerId(html: string, peerid: string): string {
+        if (html && html.length > 0) {
+            return html.replace("{peer}", peerid);
+        }
+        else {
+            return html;
+        }
+    }
 }
 
 export class Data {
