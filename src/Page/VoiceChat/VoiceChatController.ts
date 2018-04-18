@@ -11,7 +11,9 @@ import SWPeer from "../../Base/WebRTC/SWPeer";
  */
 export default class VoiceChatController extends AbstractServiceController<VoiceChatView, VoiceChatModel> {
 
+
     public ControllerName(): string { return "VoiceChat"; }
+
 
     /**
      *
@@ -27,14 +29,9 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      * @param peer
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
-
-        //  DB接続
-        this.Model = new VoiceChatModel(this, () => {
-            //  UI初期化
-            this.View = new VoiceChatView(this, () => {
-            });
-        });
-
+        this.Receiver = new VoiceChatReceiver(this);
+        this.Model = new VoiceChatModel(this, () => { });
+        this.View = new VoiceChatView(this, () => { });
     }
 
 

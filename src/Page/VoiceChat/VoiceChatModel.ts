@@ -14,6 +14,7 @@ export default class VoiceChatModel extends AbstractServiceModel<VoiceChatContro
      * @param callback 
      */
     protected Initialize(callback: OnModelLoad) {
+        callback();
     }
 
 }

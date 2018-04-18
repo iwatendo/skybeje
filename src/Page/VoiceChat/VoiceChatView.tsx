@@ -22,15 +22,6 @@ import VoiceChatMemberListSender from '../../Contents/Sender/VoiceChatMemberList
 
 export default class VoiceChatView extends AbstractServiceView<VoiceChatController> {
 
-    private _voiceChat = document.getElementById('sbj-voicechat') as HTMLInputElement;
-    private _voiceChatOn = document.getElementById('sbj-voicechat-on');
-    private _voiceChatOff = document.getElementById('sbj-voicechat-off');
-
-    private _voiceMicSettings = document.getElementById('sbj-voicechat-settings');
-    private _voiceMic = document.getElementById('sbj-voicechatmic') as HTMLInputElement;
-    private _voiceMicOn = document.getElementById('sbj-voicechatmic-on');
-    private _voiceMicOff = document.getElementById('sbj-voicechatmic-off');
-
     private _isVoiceChat: boolean;
     private _isMicMute: boolean = true;
     private _voiceChatStream: MediaStream;
@@ -42,20 +33,23 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      */
     protected Initialize(callback: OnViewLoad) {
 
-        this._voiceChat.onclick = (e) => {
+        document.getElementById('sbj-voicechat').onclick = (e) => {
             this.ChangeVoiceChat();
         }
 
-        this._voiceMicSettings.onclick = (e) => {
+        document.getElementById('sbj-voicechat-settings').onclick = (e) => {
             VoiceChatSettingDialog.Show();
         }
 
-        this._voiceMic.onclick = (e) => {
+        let voiceMicElement = document.getElementById('sbj-voicechatmic') as HTMLInputElement;
+
+        voiceMicElement.onclick = (e) => {
             this.IsMicMute = !this.IsMicMute;
         }
 
+        voiceMicElement.hidden = true;
+
         this._isMicMute = true;
-        this._voiceMic.hidden = true;
         this.SetMediaDevice();
 
         callback();
@@ -67,15 +61,21 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      * ボイスチャットの開始
      */
     private ChangeVoiceChat() {
+
+        let voiceChatElement = document.getElementById('sbj-voicechat') as HTMLInputElement;
+        let voiceChatOnElement = document.getElementById('sbj-voicechat-on');
+        let voiceChatOffElement = document.getElementById('sbj-voicechat-off');
+        let voiceMicElement = document.getElementById('sbj-voicechatmic') as HTMLInputElement;
+        let voiceMicSettingsElement = document.getElementById('sbj-voicechat-settings');
+
         this._isVoiceChat = !this._isVoiceChat;
-        this._voiceChatOn.hidden = !this._isVoiceChat;
-        this._voiceChatOff.hidden = this._isVoiceChat;
-        this._voiceMic.hidden = !this._isVoiceChat;
-        this._voiceMicSettings.hidden = this._isVoiceChat;
+        voiceChatOnElement.hidden = !this._isVoiceChat;
+        voiceChatOffElement.hidden = this._isVoiceChat;
+        voiceMicElement.hidden = !this._isVoiceChat;
 
         if (this._isVoiceChat) {
-            this._voiceChat.classList.remove("mdl-button--colored");
-            this._voiceChat.classList.add("mdl-button--accent");
+            voiceChatElement.classList.remove("mdl-button--colored");
+            voiceChatElement.classList.add("mdl-button--accent");
 
             let msc = StreamUtil.GetMediaStreamConstraints(null, this._audioDevice);
 
@@ -91,15 +91,14 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
 
         }
         else {
-            this._voiceChat.classList.remove("mdl-button--accent");
-            this._voiceChat.classList.add("mdl-button--colored");
+            voiceChatElement.classList.remove("mdl-button--accent");
+            voiceChatElement.classList.add("mdl-button--colored");
             this.Controller.SwRoom.Close();
             this.IsMicMute = true;
         }
 
         let sender = new VoiceChatMemberSender();
         sender.peerid = this.Controller.SwPeer.PeerId;
-
         //  sender.aid = this._controller.CurrentActor.aid;
         //  sender.iid = this._controller.CurrentActor.dispIid;
         sender.isMember = this._isVoiceChat;
@@ -121,8 +120,8 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      */
     private set IsMicMute(value) {
         this._isMicMute = value;
-        this._voiceMicOn.hidden = value;
-        this._voiceMicOff.hidden = !value;
+        document.getElementById('sbj-voicechatmic-on').hidden = value;
+        document.getElementById('sbj-voicechatmic-off').hidden = !value;
         StreamUtil.SetMute(this._voiceChatStream, value);
     }
 
@@ -142,7 +141,17 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      * @param meberList 
      */
     public ChangeVoiceChatMember(meberList: VoiceChatMemberListSender) {
-        //  人数表示
+
+        let count: number = 0;
+
+        meberList.Members.forEach(member => {
+            if (member.isMember) {
+                count++;
+            }
+        });
+
+        //  参加人数表示の変更
+        document.getElementById("sbj-voicechat-count").setAttribute("data-badge", count.toString());
     }
 
 
@@ -183,7 +192,7 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      */
     public ChnageDevice() {
         let options = LocalCache.VoiceChatOptions;
-        this._voiceChat.disabled = !(options.SelectMic ? true : false);
+        (document.getElementById('sbj-voicechat') as HTMLInputElement).disabled = !(options.SelectMic ? true : false);
     }
 
 

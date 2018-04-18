@@ -12,12 +12,14 @@ import CursorCache from "../../Contents/Cache/CursorCache";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import CursorClearSender from "../../Contents/Sender/CursorClearSender";
+import VoiceChatManager from "../HomeInstance/Manager/VoiceChatManager";
 
 export default class LiveHTMLInstanceController extends AbstractServiceController<LiveHTMLInstanceView, LiveHTMLInstanceModel> {
 
     public ControllerName(): string { return "LiveHTMLInstance"; }
 
     public View: LiveHTMLInstanceView;
+    public VoiceChat: VoiceChatManager;
 
     public CastStatus = new CastStatusSender(CastTypeEnum.LiveHTML);
     public CastSetting = new CastSettingSender();
@@ -31,6 +33,7 @@ export default class LiveHTMLInstanceController extends AbstractServiceControlle
     constructor() {
         super();
         this.Receiver = new LiveHTMLInstanceReceiver(this);
+        this.VoiceChat = new VoiceChatManager(this);
         this.CursorCache = new CursorCache();
         this.Model = new LiveHTMLInstanceModel(this, () => {
             this.View = new LiveHTMLInstanceView(this, () => { });
@@ -114,6 +117,7 @@ export default class LiveHTMLInstanceController extends AbstractServiceControlle
         }
         this.CursorCache.Remove(conn.remoteId);
         this.View.Cursor.Remove(conn.remoteId);
+        this.VoiceChat.RemoveConnection(conn.remoteId);
 
         conn.close();
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());

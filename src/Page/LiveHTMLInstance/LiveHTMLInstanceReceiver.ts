@@ -11,6 +11,7 @@ import IconSender from "../../Contents/Sender/IconSender";
 import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import GetLiveHTMLSender from "../../Contents/Sender/GetLiveHTMLSender";
 import LiveHTMLMessageSender from "../../Contents/Sender/LiveHTMLMessageSender";
+import VoiceChatMemberSender from "../../Contents/Sender/VoiceChatMemberSender";
 
 
 export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLInstanceController> {
@@ -63,6 +64,11 @@ export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLIn
         //  LiveHTMLからの入力情報
         if (sender.type === LiveHTMLMessageSender.ID) {
             this.Controller.SwPeer.SendToOwner(sender);
+        }
+
+        //  ボイスチャットのメンバー通知
+        if (sender.type === VoiceChatMemberSender.ID) {
+            this.Controller.VoiceChat.SetMember(sender as VoiceChatMemberSender);
         }
 
     }

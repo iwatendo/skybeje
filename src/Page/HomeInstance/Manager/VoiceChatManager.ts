@@ -2,11 +2,12 @@ import HomeInstanceController from "../HomeInstanceController";
 
 import VoiceChatMemberSender from "../../../Contents/Sender/VoiceChatMemberSender";
 import VoiceChatMemberListSender from "../../../Contents/Sender/VoiceChatMemberListSender";
+import IServiceController from "../../../Base/IServiceController";
 
 
 export default class VoiceChatManager {
 
-    private _controller: HomeInstanceController;
+    private _controller: IServiceController;
     private _voiceChatMemberList = new Array<VoiceChatMemberSender>();
 
 
@@ -14,7 +15,7 @@ export default class VoiceChatManager {
      * コンストラクタ
      * @param controller 
      */
-    constructor(controller: HomeInstanceController) {
+    constructor(controller: IServiceController) {
         this._controller = controller;
     }
 
