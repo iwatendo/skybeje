@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+	<title>Skybeje-VoiceChat</title>
+	<meta charset='utf-8'>
+	<link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+	<script src='/lib/jquery-2.2.3.min.js'></script>
+	<script src='/lib/forcedtimer.js'></script>
+	<script src='/lib/skyway.min.js'></script>
+	<link rel='stylesheet' href='/lib/material.min.css' />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel='stylesheet' href='../common.css?v={version}' />
+	<link rel='stylesheet' href='../common.dialog.css?v={version}' />
+	<link rel='stylesheet' href='style.css?v={version}' />
+	<script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+
+	<div class="mdl-layout mdl-js-layout">
+		<main class="mdl-layout__content mdl-color--grey-100 sbj-content" id="sbj-content">
+			<div class="mdl-card__actions">
+				<button class="mdl-button mdl-button--colored" id="sbj-voicechat">
+					<span id="sbj-voicechat-on" hidden>
+						<i class="material-icons">phone_missed</i>通話中</span>
+					<span id="sbj-voicechat-off">
+						<i class="material-icons">phone_in_talk</i>グループ通話</span>
+				</button>
+				<button class="mdl-button mdl-button--colored" id="sbj-voicechat-settings">
+					<span id="sbj-voicechatmic-settings-label">
+						<i class="material-icons">settings</i>マイク設定</span>
+				</button>
+				<button class="sbj-button-right mdl-button mdl-button--colored" id="sbj-voicechatmic">
+					<span id="sbj-voicechatmic-on" hidden>
+						<i class="material-icons">mic</i>マイク</span>
+					<span id="sbj-voicechatmic-off">
+						<i class="material-icons">mic_off</i>マイク</span>
+				</button>
+			</div>
+		</main>
+	</div>
+
+	<!--sbj-voicechat-setting Dialog-->
+	<dialog id='sbj-voicechat-setting-dialog' class='sbj-dialog'>
+		<div id="sbj-voicechat-setting-background" class="sbj-dialog-background">
+
+			<div class="sbj-voicechat-setting-card mdl-card mdl-shadow--2dp flexiblebox">
+				<div class="sbj-voicechat-device">
+					<!-- Mic -->
+					<div class="sbj-voicechat-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
+						<input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
+						<label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
+						<ul id="mic-list" class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
+							<li class="mdl-menu__item"></li>
+						</ul>
+					</div>
+					<!-- トラブルシュート -->
+					<div>
+						<a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">グループ通話ができない場合</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</dialog>
+
+	<script src="/lib/react.min.js"></script>
+	<script src="/lib/react-dom.min.js"></script>
+	<script src="bundle.js?v={version}"></script>
+
+</body>
+
+</html>
