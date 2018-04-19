@@ -5,6 +5,8 @@ import VoiceChatReceiver from "./VoiceChatReceiver";
 import VoiceChatView from "./VoiceChatView";
 import VoiceChatModel from "./VoiceChatModel";
 import SWPeer from "../../Base/WebRTC/SWPeer";
+import { SWRoomMode } from "../../Base/WebRTC/SWRoom";
+import StdUtil from "../../Base/Util/StdUtil";
 
 /**
  * 
@@ -87,6 +89,7 @@ export default class VoiceChatController extends AbstractServiceController<Voice
         }
         else {
             let newElement: HTMLVideoElement = document.createElement('video');
+
             newElement.id = peerid;
             this._elementMap.set(peerid, newElement);
             return newElement;
@@ -109,23 +112,33 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      */
     public OnRoomOpen() {
 
-        /**
-         *【削除予定】
-        * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
-        * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
-        */
-        SWPeer.GetApiKey((apikey) => {
-            let peer = new Peer({ key: apikey, debug: 1 }) as any;
-            peer.on('open', async () => {
-                await this.Sleep(1000);
-                let name = this.SwRoom.RoomName;
-                let room = peer.joinRoom(name, { mode: "sfu" });
-                room.on('open', async () => {
-                    await this.Sleep(2000);
-                    peer.destroy();
-                });
-            });
-        });
+        this.View.JoinButtonDisabled = false;
+
+        // /**
+        //  *【削除予定】
+        // * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
+        // * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
+        // */
+        // let roomMode = (this.SwRoom.RoomMode === SWRoomMode.SFU ? "sfu" : "mesh");
+
+        // SWPeer.GetApiKey((apikey) => {
+        //     let peer = new Peer({ key: apikey, debug: 1 }) as any;
+        //     peer.on('open', async () => {
+        //         await this.Sleep(1000);
+        //         let name = this.SwRoom.RoomName;
+        //         let room = peer.joinRoom(name, { mode: roomMode });
+        //         room.on('open', async () => {
+        //             await this.Sleep(2000);
+        //             peer.destroy();
+        //         });
+        //     });
+        // });
+
+    }
+
+
+    public OnRoomClose() {
+        this.View.JoinButtonDisabled = false;
     }
 
 

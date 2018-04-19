@@ -32,11 +32,16 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      */
     protected Initialize(callback: OnViewLoad) {
 
+
         document.getElementById('sbj-voicechat').onclick = (e) => {
+            this.JoinButtonDisabled = true;
             this.ChangeVoiceChat();
         }
 
-        document.getElementById('sbj-voicechat-settings').onclick = (e) => {
+        let settingsElement = document.getElementById('sbj-voicechat-settings');
+
+        settingsElement.hidden = StdUtil.IsMobile();
+        settingsElement.onclick = (e) => {
             let link = LinkUtil.CreateLink("../VoiceChatSettings/");
             window.open(link, "_blank");
         }
@@ -44,7 +49,9 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         let voiceMicElement = document.getElementById('sbj-voicechatmic') as HTMLInputElement;
 
         voiceMicElement.onclick = (e) => {
+            this.MuteButtonDisabled = true;
             this.IsMicMute = !this.IsMicMute;
+            this.MuteButtonDisabled = false;
         }
 
         voiceMicElement.hidden = true;
@@ -54,6 +61,17 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         callback();
     }
 
+
+    /**
+     * 
+     */
+    public set JoinButtonDisabled(value: boolean) {
+        (document.getElementById('sbj-voicechat') as HTMLInputElement).disabled = value;
+    }
+
+    public set MuteButtonDisabled(value: boolean) {
+        (document.getElementById('sbj-voicechatmic') as HTMLInputElement).disabled = value;
+    }
 
 
     /**
@@ -76,7 +94,7 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
             voiceChatElement.classList.remove("mdl-button--colored");
             voiceChatElement.classList.add("mdl-button--accent");
 
-            let msc = StreamUtil.GetMediaStreamConstraints(null, LocalCache.VoiceChatOptions.SelectMic);
+            let msc = this.GetMediaStream();
 
             StreamUtil.GetStreaming(msc, (stream) => {
                 this._voiceChatStream = stream;
@@ -105,6 +123,17 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         sender.isMember = this._isVoiceChat;
 
         this.Controller.SwPeer.SendToOwner(sender);
+    }
+
+
+    /**
+     * 
+     */
+    public GetMediaStream(): MediaStreamConstraints {
+        // if (StdUtil.IsMobile()) {
+        //     return StreamUtil.GetMediaStreamConstraints_Mobile(null, true);
+        // }
+        return StreamUtil.GetMediaStreamConstraints(null, LocalCache.VoiceChatOptions.SelectMic);
     }
 
 
