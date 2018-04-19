@@ -1,5 +1,5 @@
 import Sender from "../../Base/Container/Sender";
-import { PageSettings } from "../IndexedDB/LiveHTML";
+import { PageSettings, CtrlLayerEnum } from "../IndexedDB/LiveHTML";
 
 
 /**
@@ -14,7 +14,7 @@ export default class LiveHTMLSender extends Sender {
         this.pageId = ps.pageId;
         this.pageName = ps.pageName;
         this.pageTag = ps.pageTag;
-        this.isDispControlLayer = ps.isDispControlLayer;
+        this.ctrlLayerMode = ps.ctrlLayerMode;
         this.isAspectFix = ps.isAspectFix;
         this.aspectW = ps.aspectW;
         this.aspectH = ps.aspectH;
@@ -27,7 +27,7 @@ export default class LiveHTMLSender extends Sender {
     public pageId: string;
     public pageName: string;
     public pageTag : string;
-    public isDispControlLayer: boolean;
+    public ctrlLayerMode: CtrlLayerEnum;
     public isAspectFix: boolean;
     public aspectW: number;
     public aspectH: number;
@@ -38,7 +38,7 @@ export default class LiveHTMLSender extends Sender {
 
 
     public static Equals(s1: LiveHTMLSender, s2: LiveHTMLSender): boolean {
-        if (s1.isDispControlLayer === s2.isDispControlLayer
+        if (s1.ctrlLayerMode === s2.ctrlLayerMode
             && s1.isAspectFix === s2.isAspectFix
             && s1.aspectH === s2.aspectH
             && s1.aspectW === s2.aspectW

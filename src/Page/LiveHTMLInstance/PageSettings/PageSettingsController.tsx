@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 
 import LiveHTMLInstanceController from '../LiveHTMLInstanceController';
 import PageSettingsComponent from './PageSettingsComponent';
-import { PageSettings } from '../../../Contents/IndexedDB/LiveHTML';
+import { PageSettings, CtrlLayerEnum } from '../../../Contents/IndexedDB/LiveHTML';
 import StdUtil from "../../../Base/Util/StdUtil";
 import MdlUtil from "../../../Contents/Util/MdlUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
@@ -57,11 +57,6 @@ export default class PageSettingsController {
         document.getElementById('sbj-aspect-height').oninput = (e) => {
             this.ChangeAspect(this.GetPageSettings());
         }
-
-        //  コントロールレイヤーの表示有無
-        document.getElementById('sbj-check-control-disp').onchange = (e) => {
-
-        };
 
         //  ページ名称変更イベント
         document.getElementById('sbj-embedded-value-name').oninput = (e) => {
@@ -134,7 +129,6 @@ export default class PageSettingsController {
         sender.pageId = this._previewPageSetting.pageId;
         sender.pageName = (document.getElementById('sbj-embedded-value-name') as HTMLInputElement).value;
         sender.pageTag = (document.getElementById('sbj-embedded-value-tag') as HTMLInputElement).value;
-        sender.isDispControlLayer = (document.getElementById('sbj-check-control-disp') as HTMLInputElement).checked;
         sender.isAspectFix = (document.getElementById('sbj-check-aspect-disp') as HTMLInputElement).checked;
         sender.aspectW = Number.parseInt((document.getElementById('sbj-aspect-width') as HTMLInputElement).value);
         sender.aspectH = Number.parseInt((document.getElementById('sbj-aspect-height') as HTMLInputElement).value);
@@ -142,7 +136,30 @@ export default class PageSettingsController {
         sender.layerBackgroundF = (document.getElementById('sbj-embedded-value-layer2') as HTMLInputElement).value;
         sender.layerActive = (document.getElementById('sbj-embedded-value-layer3') as HTMLInputElement).value;
         sender.layerControl = (document.getElementById('sbj-embedded-value-layer4') as HTMLInputElement).value;
+        sender.ctrlLayerMode = this.CtrlLayerMode;
+
         return sender;
+    }
+
+
+    /**
+     * 
+     */
+    public get CtrlLayerMode(): CtrlLayerEnum {
+        if ((document.getElementById('sbj-ctrl-layer-option-1') as HTMLInputElement).checked) return CtrlLayerEnum.Overlay;
+        if ((document.getElementById('sbj-ctrl-layer-option-2') as HTMLInputElement).checked) return CtrlLayerEnum.Show;
+        if ((document.getElementById('sbj-ctrl-layer-option-3') as HTMLInputElement).checked) return CtrlLayerEnum.Hide;
+        return CtrlLayerEnum.Overlay;
+    }
+
+
+    /**
+     * 
+     */
+    public set CtrlLayerMode(value: CtrlLayerEnum) {
+        (document.getElementById('sbj-ctrl-layer-option-1') as HTMLInputElement).checked = (value === CtrlLayerEnum.Overlay);
+        (document.getElementById('sbj-ctrl-layer-option-2') as HTMLInputElement).checked = (value === CtrlLayerEnum.Show);
+        (document.getElementById('sbj-ctrl-layer-option-3') as HTMLInputElement).checked = (value === CtrlLayerEnum.Hide);
     }
 
 
@@ -156,8 +173,8 @@ export default class PageSettingsController {
             ps = new PageSettings();
         }
 
-        (document.getElementById('sbj-check-control-disp') as HTMLInputElement).checked = ps.isDispControlLayer;
-        MdlUtil.SetChecked('sbj-check-control-disp', 'sbj-check-control-disp-label', ps.isDispControlLayer);
+        this.CtrlLayerMode = ps.ctrlLayerMode;
+
         (document.getElementById('sbj-check-aspect-disp') as HTMLInputElement).checked = ps.isAspectFix;
         MdlUtil.SetChecked('sbj-check-aspect-disp', 'sbj-check-aspect-disp-label', ps.isAspectFix);
         (document.getElementById('sbj-aspect-width') as HTMLInputElement).value = ps.aspectW.toString();
@@ -347,7 +364,7 @@ export default class PageSettingsController {
         let newPage = new PageSettings();
         newPage.pageId = StdUtil.UniqKey();
         newPage.isAspectFix = true;
-        newPage.isDispControlLayer = true;
+        newPage.ctrlLayerMode = CtrlLayerEnum.Overlay;
         newPage.aspectW = 4;
         newPage.aspectH = 3;
 

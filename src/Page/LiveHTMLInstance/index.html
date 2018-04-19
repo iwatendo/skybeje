@@ -222,21 +222,28 @@
                             <h6 class="sbj-livehtml-label"> アクティブ・レイヤー
                             </h6>
                             &nbsp;&nbsp;・このレイヤーに配置したエレメントはユーザーの操作が可能です。
-                            <br/>&nbsp;&nbsp;・ただしSkybejeチャットからのアイコン／字幕表示は背面に回り、非表示または操作不能となります。
+                            <br/>&nbsp;&nbsp;・但しSkybejeチャットからのアイコンや字幕が背後に回る為、操作できなくなります。
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
                         <div class="sbj-embedded-value-div">
+
                             <h6 class="sbj-livehtml-label"> コントロール・レイヤー</h6>
-                            &nbsp;&nbsp;・表示エリアの下部にカーソルをあてた際に表示される半透明のエリアです。
-                            <br/>&nbsp;&nbsp;・Audioタグ等の設置を想定したレイヤーであり、非表示にする事もできます。
+                            <div>
+                                <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-1">
+                                    <input type="radio" id="sbj-ctrl-layer-option-1" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="1" checked>
+                                    <span class="mdl-radio__label">フォーカス時のみ表示</span>
+                                </label>
+                                <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-2">
+                                    <input type="radio" id="sbj-ctrl-layer-option-2" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="2">
+                                    <span class="mdl-radio__label">常に表示</span>
+                                </label>
+                                <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-3">
+                                    <input type="radio" id="sbj-ctrl-layer-option-3" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="3">
+                                    <span class="mdl-radio__label">非表示</span>
+                                </label>
+                            </div>
                             <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="4" cols="80" spellCheck='false'></textarea>
                         </div>
-
-                        <label id="sbj-check-control-disp-label" class="sbj-livehtml-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
-                            for="sbj-check-control-disp">
-                            <input type="checkbox" id="sbj-check-control-disp" class="mdl-switch__input" checked>
-                            <span class="mdl-switch__label">コントロール・レイヤーを表示</span>
-                        </label>
 
                         <div class="sbj-livehtml-instance-actions">
                             &nbsp;

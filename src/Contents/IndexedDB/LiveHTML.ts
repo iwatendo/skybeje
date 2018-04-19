@@ -2,13 +2,20 @@
 import * as DBI from "../../Base/AbstractIndexedDB";
 
 
+export enum CtrlLayerEnum {
+    Overlay = 0,
+    Show = 1,
+    Hide = 2,
+}
+
+
 export class PageSettings {
 
     constructor() {
         this.pageId = "";
         this.pageName = "";
         this.pageTag = "";
-        this.isDispControlLayer = false;
+        this.ctrlLayerMode = CtrlLayerEnum.Overlay;
         this.isAspectFix = false;
         this.aspectW = 0;
         this.aspectH = 0;
@@ -21,7 +28,7 @@ export class PageSettings {
     public pageId: string;
     public pageName: string;
     public pageTag: string;
-    public isDispControlLayer: boolean;
+    public ctrlLayerMode: CtrlLayerEnum;
     public isAspectFix: boolean;
     public aspectW: number;
     public aspectH: number;

@@ -164,3 +164,7 @@
 .sbj-embedded-value{
     resize: auto;
 }
+
+.sbj-radio{
+    margin: 6px 12px;
+}

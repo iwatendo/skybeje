@@ -9,7 +9,7 @@ import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import LiveHTMLSender from "../../Contents/Sender/LiveHTMLSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
-import { PageSettings } from "../../Contents/IndexedDB/LiveHTML";
+import { PageSettings, CtrlLayerEnum } from "../../Contents/IndexedDB/LiveHTML";
 
 /**
  * 
@@ -26,12 +26,6 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
         StdUtil.StopTouchZoom();
-
-
-        let submenu = document.getElementById('sbj-cast-submenu') as HTMLElement;
-        submenu.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
-        submenu.onmouseout = (e) => { submenu.style.opacity = "0.0"; }
-        submenu.style.opacity = "0.0";
 
         //  リロード処理
         document.getElementById('sbj-cast-reload').onclick = (e) => {
@@ -77,8 +71,6 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
             CursorDispOffset.SetOffsetDiv(liveHtmlLayer2, LiveHTMLVisitorView.Offset, false);
             CursorDispOffset.SetOffsetDiv(liveHtmlLayer3, LiveHTMLVisitorView.Offset, false);
             CursorDispOffset.SetOffsetDiv(liveHtmlLayer4, LiveHTMLVisitorView.Offset, true);
-
-            document.getElementById('sbj-cast-submenu').hidden = !livehtml.isDispControlLayer;
         }
         if (this.Cursor) {
             this.Cursor.DisplayAll();
@@ -88,15 +80,24 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
 
     /**
      * 埋込ページの変更
-     * @param dom 
+     * @param livehtml 
      */
-    public SetLiveHTML(dom: LiveHTMLSender) {
-        this.SetLiveHTMLElement($("#sbj-livehtml-layer1"), this.LiveHTML.layerBackgroundB, dom.layerBackgroundB);
-        this.SetLiveHTMLElement($("#sbj-livehtml-layer2"), this.LiveHTML.layerBackgroundF, dom.layerBackgroundF);
-        this.SetLiveHTMLElement($("#sbj-livehtml-layer3"), this.LiveHTML.layerActive, dom.layerActive);
-        this.SetLiveHTMLElement($("#sbj-livehtml-layer4"), this.LiveHTML.layerControl, dom.layerControl);
-        this.LiveHTML = dom;
-        this.Risize(dom);
+    public SetLiveHTML(livehtml: LiveHTMLSender) {
+        this.SetLiveHTMLElement($("#sbj-livehtml-layer1"), this.LiveHTML.layerBackgroundB, livehtml.layerBackgroundB);
+        this.SetLiveHTMLElement($("#sbj-livehtml-layer2"), this.LiveHTML.layerBackgroundF, livehtml.layerBackgroundF);
+        this.SetLiveHTMLElement($("#sbj-livehtml-layer3"), this.LiveHTML.layerActive, livehtml.layerActive);
+        this.SetLiveHTMLElement($("#sbj-livehtml-layer4"), this.LiveHTML.layerControl, livehtml.layerControl);
+        this.LiveHTML = livehtml;
+
+        let submenu = document.getElementById('sbj-cast-submenu') as HTMLElement;
+        let mout_opacity = (livehtml.ctrlLayerMode === CtrlLayerEnum.Overlay ? "0.0" : "1.0");
+        submenu.hidden = (livehtml.ctrlLayerMode === CtrlLayerEnum.Hide);
+
+        submenu.onmouseover = (e) => { submenu.style.opacity = "1.0"; }
+        submenu.onmouseout = (e) => { submenu.style.opacity = mout_opacity; }
+        submenu.style.opacity = mout_opacity;
+
+        this.Risize(livehtml);
     }
 
 
