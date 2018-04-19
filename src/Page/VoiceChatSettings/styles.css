@@ -1,0 +1,40 @@
+
+.sbj-container {
+    max-width: 1600px;
+    min-width: 900px;
+    width: calc(100% - 16px);
+    margin: 0 auto;
+}
+
+.sbj--header-row {
+    padding: 0px 20px 0px 32px;
+}
+
+.sbj-split-left {
+    float: left;
+    width: 550px;
+    padding: 0px;
+}
+
+.sbj-split-right {
+    float: right;
+    width: calc(100% - 568px);
+}
+
+#sbj-voicechat-settings-main{
+    margin: 16px 32px;
+}
+
+.sbj-voicechat-settings-device{
+    padding: 0px 0px 16px 0px;
+}
+
+.sbj-voicechat-settings-device-select{
+    outline: 0;
+    width: 420px;
+}
+
+#sbj-voicechat-settings-title {
+    padding: 0px 20px 0px 0px;
+}
+

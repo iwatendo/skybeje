@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+	<title>Skybeje-VoiceChatSettings</title>
+	<meta http-equiv="Last-Modified" content="{modified}">
+	<meta charset="utf-8">
+	<link rel="icon" type="image/vnd.microsoft.icon" href="../../image/favicon.ico">
+	<link rel='stylesheet' href='/lib/material.min.css' />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel='stylesheet' href='../common.css?v={version}' />
+	<link rel="stylesheet" href="styles.css?v={version}">
+	<script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+
+	<div class="sbj-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		<header id="sbj-header" class="sbj-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+			<div class="sbj--header-row mdl-layout__header-row">
+				<span id="sbj-home-title" class="mdl-layout-title">Skybeje グループ通話設定</span>
+				<div class="mdl-layout-spacer"></div>
+				<button id='sbj-setting-close' class="mdl-button mdl-js-button mdl-button--colored">
+					<i class="material-icons">backspace</i>
+					<div class="mdl-tooltip" data-mdl-for="sbj-setting-close">前画面に戻る</div>
+				</button>
+			</div>
+		</header>
+		<main class="mdl-layout__content">
+			<div class="sbj-container">
+				<div class="sbj-split-left">
+					<div class="mdl-color-text--grey-600" id="sbj-voicechat-settings-main">
+						<h4 class="mdl-color-text--grey-800">
+							使用デバイスの設定
+						</h4>
+						<div class="sbj-voicechat-settings-device">
+							<!-- Mic -->
+							<div class="sbj-voicechat-settings-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select"
+							 id="mic-select-div">
+								<input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
+								<label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
+								<ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
+									<li class="mdl-menu__item"></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="mdl-color-text--grey-600" id="sbj-voicechat-settings-main">
+						<button id='sbj-voicechat-settings-close' class="mdl-button mdl-button--raised mdl-button--colored">
+							<i class="material-icons">keyboard_arrow_left</i>
+							前画面に戻る
+						</button>
+					</div>
+				</div>
+
+				<div class="sbj-split-right">
+					<div class="mdl-color-text--grey-600" id="sbj-livecast-note">
+						<h4 class="mdl-color-text--grey-800">
+							グループ通話の設定について
+						</h4>
+						<br/>全てのグループ通話機能の初期値として保持されます。
+						<br/>
+						<br/>通話中のデバイス変更はできません。
+						<br/>一度通話を終了させてから再接続する事で設定が反映されます。
+						<br/>
+						<br/>
+						<h4 class="mdl-color-text--grey-800">
+							グループ通話に参加できない場合
+						</h4>
+						<a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">トラブルシュート</a>を確認してみてください。
+						<br/>
+						<br/>
+						<br/>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script src="/lib/react.min.js"></script>
+	<script src="/lib/react-dom.min.js"></script>
+	<script src="bundle.js?v={version}"></script>
+	</div>
+
+	<script src="/lib/react.min.js"></script>
+	<script src="/lib/react-dom.min.js"></script>
+	<script src="bundle.js?v={version}"></script>
+</body>
+
+</html>

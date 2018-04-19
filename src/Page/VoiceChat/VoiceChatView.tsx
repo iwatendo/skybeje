@@ -14,7 +14,6 @@ import DeviceUtil, { DeviceKind } from '../../Base/Util/DeviceUtil';
 import LocalCache from '../../Contents/Cache/LocalCache';
 
 import VoiceChatController from "./VoiceChatController";
-import VoiceChatSettingDialog from './VoiceChatSettingDialog';
 import { DeviceView } from '../DeviceView/DeviceVew';
 import VoiceChatMemberSender from '../../Contents/Sender/VoiceChatMemberSender';
 import VoiceChatMemberListSender from '../../Contents/Sender/VoiceChatMemberListSender';
@@ -38,7 +37,8 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         }
 
         document.getElementById('sbj-voicechat-settings').onclick = (e) => {
-            VoiceChatSettingDialog.Show();
+            let link = LinkUtil.CreateLink("../VoiceChatSettings/");
+            window.open(link, "_blank");
         }
 
         let voiceMicElement = document.getElementById('sbj-voicechatmic') as HTMLInputElement;
@@ -50,7 +50,6 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         voiceMicElement.hidden = true;
 
         this._isMicMute = true;
-        this.SetMediaDevice();
 
         callback();
     }
@@ -77,7 +76,7 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
             voiceChatElement.classList.remove("mdl-button--colored");
             voiceChatElement.classList.add("mdl-button--accent");
 
-            let msc = StreamUtil.GetMediaStreamConstraints(null, this._audioDevice);
+            let msc = StreamUtil.GetMediaStreamConstraints(null, LocalCache.VoiceChatOptions.SelectMic);
 
             StreamUtil.GetStreaming(msc, (stream) => {
                 this._voiceChatStream = stream;
@@ -155,45 +154,6 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
     }
 
 
-    /**
-     * Audioソースの取得とリストへのセット
-     */
-    public SetMediaDevice() {
-
-        let preMic = LocalCache.VoiceChatOptions.SelectMic;
-        let isInit = (!preMic);
-
-        DeviceUtil.GetAudioDevice((devices) => {
-
-            let textElement = document.getElementById('mic-select') as HTMLInputElement;
-            var listElement = document.getElementById('mic-list') as HTMLElement;
-
-            var view = new DeviceView(DeviceKind.Audio, textElement, listElement, devices, (deviceId, deviceName) => {
-                this._audioDevice = deviceId;
-                LocalCache.SetVoiceChatOptions((opt) => opt.SelectMic = deviceId);
-                this.ChnageDevice();
-            });
-
-            if (isInit) {
-                view.SelectFirstDevice();
-            } else {
-                view.SelectDeivce(preMic);
-            }
-
-            document.getElementById("mic-select-div").classList.add("is-dirty");
-            this.ChnageDevice();
-        });
-
-    }
-
-
-    /**
-     * デバイス変更時処理
-     */
-    public ChnageDevice() {
-        let options = LocalCache.VoiceChatOptions;
-        (document.getElementById('sbj-voicechat') as HTMLInputElement).disabled = !(options.SelectMic ? true : false);
-    }
 
 
 }

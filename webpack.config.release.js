@@ -20,6 +20,7 @@ module.exports = {
     livehtmlinstance: './src/Page/LiveHTMLInstance/Script.ts',
     livehtmlvisitor: './src/Page/LiveHTMLVisitor/Script.ts',
     voicechat:'./src/Page/VoiceChat/Script.ts',
+    voicechatsettings: './src/Page/VoiceChatSettings/Script.ts',
     qrcode: './src/Page/QrCode/Script.ts',
     selectactor: './src/Page/SelectActor/Script.ts',
     usersettings: './src/Page/UserSettings/Script.ts',
