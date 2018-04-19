@@ -83,7 +83,9 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
                 this.IsMicMute = true;
                 let peer = this.Controller.SwPeer;
                 let ownerid = this.Controller.SwPeer.OwnerPeerId;
-                this.Controller.SwRoom = new SWRoom(this.Controller, ownerid, SWRoomMode.SFU, stream);
+
+                let mode = (this.UseSFU() ? SWRoomMode.SFU : SWRoomMode.Mesh);
+                this.Controller.SwRoom = new SWRoom(this.Controller, ownerid, mode, stream);
             }, (errname) => {
                 alert(errname);
             });
@@ -103,6 +105,18 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         sender.isMember = this._isVoiceChat;
 
         this.Controller.SwPeer.SendToOwner(sender);
+    }
+
+
+    /** 
+     * 
+     */
+    public UseSFU(): boolean {
+        let arg = LinkUtil.GetArgs('sfu');
+        if (arg === "1") return true;
+        if (arg === "0") return false;
+        //  オプション未指定時はSFU使用と判定する
+        return true;
     }
 
 
