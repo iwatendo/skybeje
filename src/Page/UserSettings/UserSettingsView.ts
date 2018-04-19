@@ -19,7 +19,14 @@ export default class UserSettingsView extends AbstractServiceView<UserSettingsCo
         new SettingController(this.Controller, element);
 
         document.getElementById('sbj-setting-close').onclick = (e) => {
-            window.open('about:blank', '_self').close();
+            this.Close();
+        }
+
+        //  ESCキーでのクローズ
+        document.onkeydown = (e) => {
+            if (e.keyCode === 27) {
+                this.Close();
+            }
         }
 
         MessageChannelUtil.SetChild(this.Controller, () => { });
@@ -32,6 +39,10 @@ export default class UserSettingsView extends AbstractServiceView<UserSettingsCo
         }, false);
 
         callback();
+    }
+
+    public Close() {
+        window.open('about:blank', '_self').close();
     }
 
 

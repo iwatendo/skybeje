@@ -105,7 +105,7 @@ export default class SettingComponent extends React.Component<SettingProp, Setti
 
                             <li className={liclass_exit} onClick={this.onClickExit.bind(this)}>
                                 <span className="mdl-list__item-primary-content">
-                                    <i className="material-icons mdl-list__item-avatar" style={avatarstyle}>backspace</i>
+                                    <i className="material-icons mdl-list__item-avatar" style={avatarstyle}>keyboard_arrow_left</i>
                                     <span>設定終了</span>
                                     <span className="mdl-list__item-sub-title">前画面に戻ります</span>
                                 </span>
@@ -171,7 +171,7 @@ export default class SettingComponent extends React.Component<SettingProp, Setti
     }
 
     public onClickExit(ev) {
-        window.open('about:blank', '_self').close();
+        this.props.controller.View.Close();
     }
 
 }
