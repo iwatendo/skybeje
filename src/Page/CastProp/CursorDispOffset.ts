@@ -6,6 +6,7 @@ export default class CursorDispOffset {
     dispHeight: number = 0;
     offsetRight: number = 0;
     offsetTop: number = 0;
+    ctrlHeight: number = 0;
 
     /**
      * Videoの表示エリアのオフセット値計算（送信時/受信時共通処理）
@@ -46,36 +47,40 @@ export default class CursorDispOffset {
 
 
     /**
-     * Div内の指定比率の最大比率で表示する為のOffset計算
-     * @param content
+     * Content内に、指定比率の最大値で表示する為のOffset計算
+     * @param contentClientWidth 
+     * @param contentClientHeight 
+     * @param cntlHeight 
+     * @param aspect 
      */
-    public static GetAspectDispOffset(content: HTMLElement, aspect: number): CursorDispOffset {
+    public static GetAspectDispOffset(contentClientWidth: number, contentClientHeight: number, ctrlHeight: number, aspect: number): CursorDispOffset {
 
         let result = new CursorDispOffset();
 
-        result.clientWidth = content.clientWidth;
-        result.clientHeight = content.clientHeight;
+        result.ctrlHeight = ctrlHeight;
+        result.clientWidth = contentClientWidth;
+        result.clientHeight = (contentClientHeight > ctrlHeight ? contentClientHeight - ctrlHeight : 0);
 
         if (aspect === 0) {
             //  アスペクト比指定がない場合
-            result.dispHeight = content.clientHeight;
-            result.dispWidth = content.clientWidth;
+            result.dispHeight = result.clientHeight;
+            result.dispWidth = result.clientWidth;
             result.offsetRight = 0;
             result.offsetTop = 0;
         }
-        else if (content.clientHeight * aspect < content.clientWidth) {
+        else if (result.clientHeight * aspect < result.clientWidth) {
             //  divが横に長い場合・・・
-            result.dispHeight = content.clientHeight;
-            result.dispWidth = content.clientHeight * aspect;
+            result.dispHeight = result.clientHeight;
+            result.dispWidth = result.clientHeight * aspect;
             result.offsetTop = 0;
-            result.offsetRight = (content.clientWidth - result.dispWidth) / 2;
+            result.offsetRight = (result.clientWidth - result.dispWidth) / 2;
         }
         else {
             //  divが縦に長い場合
-            result.dispWidth = content.clientWidth;
-            result.dispHeight = content.clientWidth / aspect;
+            result.dispWidth = result.clientWidth;
+            result.dispHeight = result.clientWidth / aspect;
             result.offsetRight = 0;
-            result.offsetTop = (content.clientHeight - result.dispHeight) / 2;
+            result.offsetTop = (result.clientHeight - result.dispHeight) / 2;
         }
 
         return result;

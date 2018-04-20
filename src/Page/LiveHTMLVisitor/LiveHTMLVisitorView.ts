@@ -66,11 +66,16 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
             let liveHtmlLayer4 = document.getElementById('sbj-livehtml-layer4');
             let aspect: number = (livehtml.isAspectFix ? livehtml.aspectW / livehtml.aspectH : 0);
 
-            LiveHTMLVisitorView.Offset = CursorDispOffset.GetAspectDispOffset(contents, aspect);
-            CursorDispOffset.SetOffsetDiv(liveHtmlLayer1, LiveHTMLVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveHtmlLayer2, LiveHTMLVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveHtmlLayer3, LiveHTMLVisitorView.Offset, false);
-            CursorDispOffset.SetOffsetDiv(liveHtmlLayer4, LiveHTMLVisitorView.Offset, true);
+            let ctrlHeight = (livehtml.ctrlLayerMode === CtrlLayerEnum.Show ? 52 : 0);
+            let ctrlAreaOffset = CursorDispOffset.GetAspectDispOffset(contents.clientWidth, contents.clientHeight, 0, 0);
+            let dispAreaOffset = CursorDispOffset.GetAspectDispOffset(contents.clientWidth, contents.clientHeight, ctrlHeight, aspect);
+
+            CursorDispOffset.SetOffsetDiv(liveHtmlLayer1, dispAreaOffset, false);
+            CursorDispOffset.SetOffsetDiv(liveHtmlLayer2, dispAreaOffset, false);
+            CursorDispOffset.SetOffsetDiv(liveHtmlLayer3, dispAreaOffset, false);
+            CursorDispOffset.SetOffsetDiv(liveHtmlLayer4, ctrlAreaOffset, true);
+
+            LiveHTMLVisitorView.Offset = dispAreaOffset;
         }
         if (this.Cursor) {
             this.Cursor.DisplayAll();
