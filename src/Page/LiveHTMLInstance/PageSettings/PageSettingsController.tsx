@@ -162,7 +162,7 @@ export default class PageSettingsController {
             let s = i.toString();
             let inputElement = 'sbj-ctrl-layer-option-' + s;
             let labelElement = 'sbj-ctrl-layer-option-label-' + s;
-            let checked = (value.toString() === s);
+            let checked = (value && value.toString() === s);
             MdlUtil.SetChecked(inputElement, labelElement, checked);
         }
 
@@ -223,6 +223,11 @@ export default class PageSettingsController {
         let layer3 = $("#sbj-livehtml-layer3");
         let layer4 = $("#sbj-livehtml-layer4");
 
+        let mainHeight = (PageSettings.HasCtrl(dom) ? "calc(100% - 52px)" : "100%");
+        layer1.height(mainHeight);
+        layer2.height(mainHeight);
+        layer3.height(mainHeight);
+
         if (this._previewPageSetting) {
             this.CheckChangeLayerHTML(layer1, this._previewPageSetting.layerBackgroundB, dom.layerBackgroundB);
             this.CheckChangeLayerHTML(layer2, this._previewPageSetting.layerBackgroundF, dom.layerBackgroundF);
@@ -236,6 +241,8 @@ export default class PageSettingsController {
             layer3.empty();
             layer4.empty();
         }
+
+        this.ChangeAspect(dom);
     }
 
 
@@ -273,24 +280,27 @@ export default class PageSettingsController {
     /**
      * アスペクト比の変更
      */
-    public ChangeAspect(dom: PageSettings) {
+    public ChangeAspect(ps: PageSettings) {
         let content = document.getElementById('sbj-livehtml-content') as HTMLElement;
 
-        let aspect = dom.aspectW / dom.aspectH;
+        let _ctlSize = (PageSettings.HasCtrl(ps) ? 52 : 0);
+        let _mpx = 480;
+
+        let aspect = ps.aspectW / ps.aspectH;
 
         if (aspect === 1) {
-            content.style.width = "100%";
-            content.style.height = "100%";
+            content.style.width = _mpx + "px";
+            content.style.height = (_mpx + _ctlSize) + "px";
         }
         else if (aspect < 1) {
-            let width = (480 * dom.aspectW / dom.aspectH);
-            content.style.width = width.toString(); + "px";
-            content.style.height = "100%";
+            let width = (_mpx * ps.aspectW / ps.aspectH);
+            content.style.width = width + "px";
+            content.style.height = (_mpx + _ctlSize) + "px";
         }
         else {
-            let height = (480 * dom.aspectH / dom.aspectW);
-            content.style.width = "100%";
-            content.style.height = height.toString() + "px";
+            let height = (_mpx * ps.aspectH / ps.aspectW);
+            content.style.width = _mpx + "px";
+            content.style.height = (height + _ctlSize) + "px";
         }
 
         if (this._controller.View.Cursor) {

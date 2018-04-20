@@ -37,6 +37,17 @@ export class PageSettings {
     public layerActive: string;
     public layerControl: string;
 
+
+    public static HasCtrl(ps: PageSettings): boolean {
+        if (ps && ps.layerControl && ps.layerControl.length > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
     public static ReplasePeerId(html: string, peerid: string): string {
         if (html && html.length > 0) {
             return html.replace("{peer}", peerid);

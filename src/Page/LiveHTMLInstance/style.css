@@ -59,14 +59,14 @@
 
  .sbj-livehtml-content-box{
      width: 480px;
-     height: 480px;
+     height: calc(480px + 52px);
      background-color: whitesmoke;
  }
 
 .sbj-livehtml-content{
     position: relative;
     width: 480px;
-    height: 360px;
+    height: calc(360px + 52px);
     overflow: hidden;
     background-color: var(--sbj-color-edge-background);
 }
@@ -113,13 +113,14 @@
 }
 
 
-#sbj-livehtml-layer1 #sbj-livehtml-layer2 #sbj-livehtml-layey3{
+.sbj-livehtml-layer{
     position: absolute;
+    top: 0;
     height: 100%;
     width: 100%;
 }
 
-#sbj-livehtml-layer4 {
+.sbj-livehtml-ctrl-layer {
     position: absolute;
     bottom: 0;
     width:100%;
