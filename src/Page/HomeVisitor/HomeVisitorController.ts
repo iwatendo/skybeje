@@ -423,7 +423,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * @param peerid 
      * @param stream 
      */
-    public OnRoomStream(peerid: string, stream: any) {
+    public OnRoomStream(peerid: string, stream: MediaStream) {
 
         let element = this.GetVideoElement(peerid);
 

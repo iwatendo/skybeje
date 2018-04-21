@@ -19,7 +19,7 @@ export default interface ISWRoom {
     OnRoomRecv(peerid: string, recv);
 
     //
-    OnRoomStream(peerid: string, stream);
+    OnRoomStream(peerid: string, stream: MediaStream);
 
     //
     OnRoomRemoveStream(peerid: string, stream);

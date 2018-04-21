@@ -158,7 +158,7 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      * @param peerid 
      * @param stream 
      */
-    public OnRoomStream(peerid: string, stream: any) {
+    public OnRoomStream(peerid: string, stream: MediaStream) {
 
         let element = this.GetAudioElement(peerid);
 
