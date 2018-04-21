@@ -69,21 +69,21 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      * ボイスチャット用
      *----------------------------------------------------------*/
 
-    private _elementMap = new Map<string, HTMLVideoElement>();
+    private _elementMap = new Map<string, HTMLAudioElement>();
     private _peerList = new Array<string>();
 
 
     /**
      * 
      * @param peerid 
-     * @param videoElement 
+     * @param element 
      */
-    public SetVideoElement(peerid: string, videoElement: HTMLVideoElement) {
+    public SetAudioElement(peerid: string, element: HTMLAudioElement) {
         if (this._elementMap.has(peerid)) {
             let preElement = this._elementMap.get(peerid);
         }
         else {
-            this._elementMap.set(peerid, videoElement);
+            this._elementMap.set(peerid, element);
         }
     }
 
@@ -92,15 +92,16 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      * 
      * @param peerid 
      */
-    public GetVideoElement(peerid): HTMLVideoElement {
+    public GetAudioElement(peerid): HTMLAudioElement {
 
         if (this._elementMap.has(peerid)) {
             return this._elementMap.get(peerid);
         }
         else {
-            let newElement: HTMLVideoElement = document.createElement('video');
+            let newElement: HTMLAudioElement = document.createElement('audio');
 
             newElement.id = peerid;
+            newElement.autoplay = true;
             this._elementMap.set(peerid, newElement);
             return newElement;
         }
@@ -159,7 +160,7 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      */
     public OnRoomStream(peerid: string, stream: any) {
 
-        let element = this.GetVideoElement(peerid);
+        let element = this.GetAudioElement(peerid);
 
         if (element) {
             element.srcObject = stream;
@@ -180,7 +181,7 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      * @param stream 
      */
     public OnRoomRemoveStream(peerid: string, stream: any) {
-        let element = this.GetVideoElement(peerid);
+        let element = this.GetAudioElement(peerid);
 
         if (element) {
             element.pause();

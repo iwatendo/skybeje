@@ -3,9 +3,9 @@ import * as DBI from "../../Base/AbstractIndexedDB";
 
 
 export enum CtrlLayerEnum {
-    Overlay = 0,
-    Show = 1,
-    Hide = 2,
+    Overlay = 1,
+    Show = 2,
+    Hide = 3,
 }
 
 

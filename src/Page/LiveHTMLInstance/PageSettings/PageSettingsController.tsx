@@ -146,9 +146,9 @@ export default class PageSettingsController {
      * 
      */
     public get CtrlLayerMode(): CtrlLayerEnum {
-        if ((document.getElementById('sbj-ctrl-layer-option-0') as HTMLInputElement).checked) return CtrlLayerEnum.Overlay;
-        if ((document.getElementById('sbj-ctrl-layer-option-1') as HTMLInputElement).checked) return CtrlLayerEnum.Show;
-        if ((document.getElementById('sbj-ctrl-layer-option-2') as HTMLInputElement).checked) return CtrlLayerEnum.Hide;
+        if ((document.getElementById('sbj-ctrl-layer-option-1') as HTMLInputElement).checked) return CtrlLayerEnum.Overlay;
+        if ((document.getElementById('sbj-ctrl-layer-option-2') as HTMLInputElement).checked) return CtrlLayerEnum.Show;
+        if ((document.getElementById('sbj-ctrl-layer-option-3') as HTMLInputElement).checked) return CtrlLayerEnum.Hide;
         return CtrlLayerEnum.Overlay;
     }
 
@@ -158,7 +158,7 @@ export default class PageSettingsController {
      */
     public set CtrlLayerMode(value: CtrlLayerEnum) {
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 1; i <= 3; i++) {
             let s = i.toString();
             let inputElement = 'sbj-ctrl-layer-option-' + s;
             let labelElement = 'sbj-ctrl-layer-option-label-' + s;
