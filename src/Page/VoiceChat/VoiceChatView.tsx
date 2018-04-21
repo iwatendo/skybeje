@@ -116,12 +116,19 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
             this.IsMicMute = true;
         }
 
+        this.SendVoiceChatInfo();
+    }
+
+
+    /**
+     * 
+     */
+    public SendVoiceChatInfo() {
         let sender = new VoiceChatMemberSender();
         sender.peerid = this.Controller.SwPeer.PeerId;
-        //  sender.aid = this._controller.CurrentActor.aid;
-        //  sender.iid = this._controller.CurrentActor.dispIid;
+        sender.aid = "";
+        sender.iid = "";
         sender.isMember = this._isVoiceChat;
-
         this.Controller.SwPeer.SendToOwner(sender);
     }
 
@@ -195,8 +202,5 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         //  参加人数表示の変更
         document.getElementById("sbj-voicechat-count").setAttribute("data-badge", count.toString());
     }
-
-
-
 
 }

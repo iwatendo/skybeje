@@ -55,6 +55,16 @@ export default class VoiceChatController extends AbstractServiceController<Voice
     }
 
 
+    /**
+     * オーナーPeerの接続時イベント
+     */
+    public OnOwnerConnection() {
+        if (this.View) {
+            this.View.SendVoiceChatInfo();
+        }
+    }
+
+
     /*-----------------------------------------------------------
      * ボイスチャット用
      *----------------------------------------------------------*/
