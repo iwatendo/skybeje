@@ -18,4 +18,15 @@ export default class MdlUtil {
         }
     }
 
+    public static SetColered(elementName:string,value: boolean){
+
+        let element = (document.getElementById(elementName) as HTMLInputElement);
+        if (value) {
+            element.classList.add('mdl-button--colored');
+        }
+        else {
+            element.classList.remove('mdl-button--colored');
+        }
+    }
+
 }

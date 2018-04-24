@@ -22,25 +22,39 @@
 		<main class="mdl-layout__content mdl-color--grey-100 sbj-content" id="sbj-content">
 			<div class="mdl-card__actions">
 				<button class="mdl-button mdl-button--colored" id="sbj-voicechat-settings" hidden>
-					<span id="sbj-voicechatmic-settings-label">
+					<span id="sbj-voicechat-mic-settings-label">
 						<i class="material-icons">settings</i>
 					</span>
 				</button>
 				<div id="sbj-voicechat-count" class="material-icons mdl-badge mdl-button--colored mdl-badge--overlap" data-badge="0">person</div>
 				<button class="mdl-button mdl-button--colored" id="sbj-voicechat">
 					<span id="sbj-voicechat-on" hidden>
-						<i class="material-icons">phone_missed</i>通話を終了</span>
+						<i class="material-icons">phone_missed</i>グループ通話を終了</span>
 					<span id="sbj-voicechat-off">
-						<i class="material-icons">phone_in_talk</i>通話に参加</span>
+						<i class="material-icons">phone_in_talk</i>グループ通話に参加</span>
 				</button>
-				<button class="mdl-button mdl-button--colored" id="sbj-voicechatmic" hidden>
-					<span id="sbj-voicechatmic-on" hidden>
-						<i class="material-icons">mic</i>ミュートにする</span>
-					<span id="sbj-voicechatmic-off">
-						<i class="material-icons">mic_off</i>ミュート中です</span>
+				<button class="mdl-button mdl-button--colored sbj-mute-button" id="sbj-voicechat-mic" hidden>
+					<span id="sbj-voicechat-mic-on">
+						<i class="material-icons">mic</i>
+					</span>
+					<span id="sbj-voicechat-mic-off" hidden>
+						<i class="material-icons">mic_off</i>
+					</span>
 				</button>
+				<button class="mdl-button mdl-button--colored sbj-mute-button" id="sbj-voicechat-speaker" hidden>
+					<span id="sbj-voicechat-speaker-on">
+						<i class="material-icons">volume_up</i>
+					</span>
+					<span id="sbj-voicechat-speaker-off" hidden>
+						<i class="material-icons">volume_off</i>
+					</span>
+				</button>
+
 			</div>
 		</main>
+
+		<video id='sbj-video' autoplay="true" playsinline="true" muted hidden></video>
+
 	</div>
 
 	<script src="/lib/react.min.js"></script>

@@ -69,89 +69,24 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      * ボイスチャット用
      *----------------------------------------------------------*/
 
-    private _elementMap = new Map<string, HTMLAudioElement>();
-    private _peerList = new Array<string>();
-
-
-    /**
-     * 
-     * @param peerid 
-     * @param element 
-     */
-    public SetAudioElement(peerid: string, element: HTMLAudioElement) {
-        if (this._elementMap.has(peerid)) {
-            let preElement = this._elementMap.get(peerid);
-        }
-        else {
-            this._elementMap.set(peerid, element);
-        }
-    }
-
-
-    /**
-     * 
-     * @param peerid 
-     */
-    public GetAudioElement(peerid): HTMLAudioElement {
-
-        if (this._elementMap.has(peerid)) {
-            return this._elementMap.get(peerid);
-        }
-        else {
-            let newElement: HTMLAudioElement = document.createElement('audio');
-
-            newElement.id = peerid;
-            newElement.autoplay = true;
-            this._elementMap.set(peerid, newElement);
-            return newElement;
-        }
-
-    }
-
-
-    /**
-     * スリープ関数
-     * @param milliseconds 
-     */
-    private Sleep(milliseconds: number) {
-        return new Promise<void>(resolve => { setTimeout(() => resolve(), milliseconds); });
-    }
-
-
     /**
      * 
      */
     public OnRoomOpen() {
-
         this.View.JoinButtonDisabled = false;
-
-        // /**
-        //  *【削除予定】
-        // * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
-        // * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
-        // */
-        // let roomMode = (this.SwRoom.RoomMode === SWRoomMode.SFU ? "sfu" : "mesh");
-
-        // SWPeer.GetApiKey((apikey) => {
-        //     let peer = new Peer({ key: apikey, debug: 1 }) as any;
-        //     peer.on('open', async () => {
-        //         await this.Sleep(1000);
-        //         let name = this.SwRoom.RoomName;
-        //         let room = peer.joinRoom(name, { mode: roomMode });
-        //         room.on('open', async () => {
-        //             await this.Sleep(2000);
-        //             peer.destroy();
-        //         });
-        //     });
-        // });
-
     }
 
 
+    /**
+     * 
+     */
     public OnRoomClose() {
         this.View.JoinButtonDisabled = false;
     }
 
+
+    private _peerList = new Array<string>();
+    private _map = new Map<string, MediaStreamTrack>();
 
     /**
      * 
@@ -160,17 +95,20 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      */
     public OnRoomStream(peerid: string, stream: MediaStream) {
 
-        let element = this.GetAudioElement(peerid);
+        if (stream && peerid !== this.SwPeer.PeerId) {
 
-        if (element) {
-            element.srcObject = stream;
-            element.play();
-        }
+            let track = this.View.AddAudioTrack(stream);
+            this.View.RefreshAudio();
 
-        if (this._peerList.filter((p) => p === peerid).length === 0) {
-            //  新しい通話Streamが追加された場合、通知する
-            this._peerList.push(peerid);
-            this.View.ChangeVoiceChatStreamMember(this._peerList);
+            if (track) {
+                this._map.set(peerid, track);
+            }
+
+            //  新しいStreamが追加された場合通知
+            if (this._peerList.filter((p) => p === peerid).length === 0) {
+                this._peerList.push(peerid);
+                this.View.ChangeVoiceChatStreamMember(this._peerList);
+            }
         }
     }
 
@@ -181,14 +119,14 @@ export default class VoiceChatController extends AbstractServiceController<Voice
      * @param stream 
      */
     public OnRoomRemoveStream(peerid: string, stream: any) {
-        let element = this.GetAudioElement(peerid);
 
-        if (element) {
-            element.pause();
+        if (this._map.has(peerid)) {
+            let track = this._map.get(peerid);
+            this.View.RemoveAudioTrack(track);
         }
 
+        //  Streamが除去された場合通知
         if (this._peerList.filter((p) => p === peerid).length === 0) {
-            //  通話Streamが除去された場合、通知する
             this._peerList = this._peerList.filter((p) => p !== peerid);
             this.View.ChangeVoiceChatStreamMember(this._peerList);
         }

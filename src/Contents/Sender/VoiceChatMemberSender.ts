@@ -13,10 +13,12 @@ export default class VoiceChatMemberSender extends Sender {
         this.aid = "";
         this.iid = "";
         this.isMember = false;
+        this.isSFU = true;
     }
 
     public peerid: string;
     public aid: string;
     public iid: string;
     public isMember: boolean;
+    public isSFU: boolean;
 }

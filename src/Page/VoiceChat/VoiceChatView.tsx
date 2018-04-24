@@ -7,7 +7,7 @@ import LinkUtil from '../../Base/Util/LinkUtil';
 
 import { DialogMode } from "../../Contents/AbstractDialogController";
 import SpeechUtil from "../../Base/Util/SpeechUtil";
-import StreamUtil from '../../Base/Util/StreamUtil';
+import StreamUtil, { MobileCam } from '../../Base/Util/StreamUtil';
 import SWRoom, { SWRoomMode } from '../../Base/WebRTC/SWRoom';
 import DeviceUtil, { DeviceKind } from '../../Base/Util/DeviceUtil';
 
@@ -17,15 +17,18 @@ import VoiceChatController from "./VoiceChatController";
 import { DeviceView } from '../DeviceView/DeviceVew';
 import VoiceChatMemberSender from '../../Contents/Sender/VoiceChatMemberSender';
 import VoiceChatMemberListSender from '../../Contents/Sender/VoiceChatMemberListSender';
+import MdlUtil from '../../Contents/Util/MdlUtil';
 
 
 export default class VoiceChatView extends AbstractServiceView<VoiceChatController> {
 
     private _isVoiceChat: boolean;
-    private _isMicMute: boolean = true;
+    private _isMicMute: boolean;
+    private _isSpeakerMute: boolean;
     private _voiceChatStream: MediaStream;
     private _audioDevice: string;
 
+    private _audioMediaStream: MediaStream;
 
     /**
      * 
@@ -46,17 +49,21 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
             window.open(link, "_blank");
         }
 
-        let voiceMicElement = document.getElementById('sbj-voicechatmic') as HTMLInputElement;
+        let micButton = document.getElementById('sbj-voicechat-mic') as HTMLInputElement;
+        let speakerButton = document.getElementById('sbj-voicechat-speaker') as HTMLInputElement;
 
-        voiceMicElement.onclick = (e) => {
+        micButton.onclick = (e) => {
             this.MuteButtonDisabled = true;
             this.IsMicMute = !this.IsMicMute;
             this.MuteButtonDisabled = false;
         }
 
-        voiceMicElement.hidden = true;
+        speakerButton.onclick = (e) => {
+            this.IsSpeakerMute = !this.IsSpeakerMute;
+        }
 
-        this._isMicMute = true;
+        this._isMicMute = false;
+        this._isSpeakerMute = false;
 
         callback();
     }
@@ -70,7 +77,7 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
     }
 
     public set MuteButtonDisabled(value: boolean) {
-        (document.getElementById('sbj-voicechatmic') as HTMLInputElement).disabled = value;
+        (document.getElementById('sbj-voicechat-mic') as HTMLInputElement).disabled = value;
     }
 
 
@@ -79,26 +86,31 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      */
     private ChangeVoiceChat() {
 
+        let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
         let voiceChatElement = document.getElementById('sbj-voicechat') as HTMLInputElement;
         let voiceChatOnElement = document.getElementById('sbj-voicechat-on');
         let voiceChatOffElement = document.getElementById('sbj-voicechat-off');
-        let voiceMicElement = document.getElementById('sbj-voicechatmic') as HTMLInputElement;
+        let voiceMicElement = document.getElementById('sbj-voicechat-mic') as HTMLInputElement;
+        let voiceSpeakerElement = document.getElementById('sbj-voicechat-speaker') as HTMLInputElement;
         let voiceMicSettingsElement = document.getElementById('sbj-voicechat-settings');
 
         this._isVoiceChat = !this._isVoiceChat;
         voiceChatOnElement.hidden = !this._isVoiceChat;
         voiceChatOffElement.hidden = this._isVoiceChat;
         voiceMicElement.hidden = !this._isVoiceChat;
+        voiceSpeakerElement.hidden = !this._isVoiceChat;
 
         if (this._isVoiceChat) {
+
             voiceChatElement.classList.remove("mdl-button--colored");
             voiceChatElement.classList.add("mdl-button--accent");
 
-            let msc = this.GetMediaStream();
+            let msc = this.GetMyDeviceMediaStream();
 
             StreamUtil.GetStreaming(msc, (stream) => {
                 this._voiceChatStream = stream;
-                this.IsMicMute = true;
+                this.IsMicMute = false;
+                this.IsSpeakerMute = false;
                 let peer = this.Controller.SwPeer;
                 let ownerid = this.Controller.SwPeer.OwnerPeerId;
 
@@ -114,9 +126,11 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
             voiceChatElement.classList.add("mdl-button--colored");
             this.Controller.SwRoom.Close();
             this.IsMicMute = true;
+            this.IsSpeakerMute = true;
         }
 
         this.SendVoiceChatInfo();
+        this.RefreshAudio();
     }
 
 
@@ -129,18 +143,24 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         sender.aid = "";
         sender.iid = "";
         sender.isMember = this._isVoiceChat;
+        sender.isSFU = this.UseSFU();
         this.Controller.SwPeer.SendToOwner(sender);
     }
 
 
     /**
-     * 
+     * 自身の音声ストリームの取得
      */
-    public GetMediaStream(): MediaStreamConstraints {
-        // if (StdUtil.IsMobile()) {
-        //     return StreamUtil.GetMediaStreamConstraints_Mobile(null, true);
-        // }
-        return StreamUtil.GetMediaStreamConstraints(null, LocalCache.VoiceChatOptions.SelectMic);
+    public GetMyDeviceMediaStream(): MediaStreamConstraints {
+
+        if (StdUtil.IsMobile()) {
+            return StreamUtil.GetMediaStreamConstraints_Mobile(MobileCam.NONE, true);
+        }
+        else {
+            return StreamUtil.GetMediaStreamConstraints(null, LocalCache.VoiceChatOptions.SelectMic);
+        }
+
+        //  return StreamUtil.GetMediaStreamConstraints_DefaultDevice();
     }
 
 
@@ -169,9 +189,30 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      */
     private set IsMicMute(value) {
         this._isMicMute = value;
-        document.getElementById('sbj-voicechatmic-on').hidden = value;
-        document.getElementById('sbj-voicechatmic-off').hidden = !value;
+        document.getElementById('sbj-voicechat-mic-on').hidden = value;
+        document.getElementById('sbj-voicechat-mic-off').hidden = !value;
+        MdlUtil.SetColered('sbj-voicechat-mic', !value);
         StreamUtil.SetMute(this._voiceChatStream, value);
+    }
+
+
+    /**
+     * スピーカーのミュート設定
+     */
+    private get IsSpeakerMute(): boolean {
+        return this._isSpeakerMute;
+    }
+
+
+    /**
+     * スピーカーのミュート設定
+     */
+    private set IsSpeakerMute(value) {
+        this._isSpeakerMute = value;
+        document.getElementById('sbj-voicechat-speaker-on').hidden = value;
+        document.getElementById('sbj-voicechat-speaker-off').hidden = !value;
+        MdlUtil.SetColered('sbj-voicechat-speaker', !value);
+        this.RefreshAudio();
     }
 
 
@@ -201,6 +242,77 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
 
         //  参加人数表示の変更
         document.getElementById("sbj-voicechat-count").setAttribute("data-badge", count.toString());
+    }
+
+
+    /*-----------------------------------------------------------
+     * 通話相手の音声ストリーム処理
+     *----------------------------------------------------------*/
+
+
+    /**
+     * 
+     * @param stream 
+     */
+    private GetAudioTrack(stream: MediaStream): MediaStreamTrack {
+
+        let result: MediaStreamTrack;
+
+        stream.getTracks().forEach(track => {
+            if (track.kind === "audio") {
+                result = track;
+            }
+        });
+
+        return result;
+    }
+
+
+    /**
+     * AudioTrackの追加
+     * @param peerid 
+     */
+    public AddAudioTrack(stream: MediaStream): MediaStreamTrack {
+
+        let element = document.getElementById('sbj-video') as HTMLVideoElement;
+
+        let track = this.GetAudioTrack(stream);
+
+        if (this._audioMediaStream) {
+
+            this._audioMediaStream.addTrack(track);
+        }
+        else {
+            let tracks = new Array();
+            tracks.push(track);
+            this._audioMediaStream = new MediaStream(tracks);
+        }
+
+        return track;
+    }
+
+
+    /**
+     * 指定AudioTrackの削除
+     * @param track 
+     */
+    public RemoveAudioTrack(track: MediaStreamTrack) {
+        let element = document.getElementById('sbj-video') as HTMLVideoElement;
+        if (element.srcObject) {
+            (element.srcObject as MediaStream).removeTrack(track);
+        }
+    }
+
+
+    /**
+     * ボイスチャット参加メンバーからの音声の再生のリフレッシュ
+     */
+    public RefreshAudio() {
+        let element = document.getElementById('sbj-video') as HTMLVideoElement;
+        element.srcObject = this._audioMediaStream;
+        StreamUtil.SetMute(this._audioMediaStream, this.IsSpeakerMute);
+        element.muted = this.IsSpeakerMute;
+        element.play();
     }
 
 }

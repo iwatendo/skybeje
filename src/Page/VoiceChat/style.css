@@ -2,6 +2,12 @@
     overflow-y: hidden;
 }
 
+.sbj-mute-button{
+    color: #757575;
+    padding: 0px 8px;
+    min-width: 48px;
+}
+
 #sbj-voicechat-count{
     top:8px;
     color: rgba(0,0,0,0.6);

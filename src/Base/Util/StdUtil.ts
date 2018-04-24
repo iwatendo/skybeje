@@ -419,4 +419,12 @@ export default class StdUtil {
         return result;
     }
 
+    /**
+     * スリープ関数
+     * @param milliseconds 
+     */
+    public static Sleep(milliseconds: number) {
+        return new Promise<void>(resolve => { setTimeout(() => resolve(), milliseconds); });
+    }
+
 }
