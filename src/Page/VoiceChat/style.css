@@ -12,3 +12,21 @@
     top:8px;
     color: rgba(0,0,0,0.6);
 }
+
+#sbj-voicechat-message-port{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-voicechat-message{
+    position: absolute;
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+    top: calc(50% - 8px);
+    color: var(--sbj-color-default-text);
+}

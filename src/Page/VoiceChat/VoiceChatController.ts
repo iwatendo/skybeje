@@ -65,6 +65,17 @@ export default class VoiceChatController extends AbstractServiceController<Voice
     }
 
 
+    /**
+     * オーナー側が切断した場合
+     */
+    public OnOwnerClose() {
+        if (this.SwRoom) this.SwRoom.Close();
+        document.getElementById('sbj-voicechat-main').hidden = true;
+        document.getElementById('sbj-voicechat-message-port').hidden = false;
+        document.getElementById('sbj-voicechat-message').textContent = "LiveHTMLは終了しました";
+    }
+
+
     /*-----------------------------------------------------------
      * ボイスチャット用
      *----------------------------------------------------------*/

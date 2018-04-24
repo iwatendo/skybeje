@@ -44,7 +44,7 @@ export default class LiveHTMLVisitorController extends AbstractServiceController
     //  Peerエラー
     public OnPeerError(err: Error) {
         document.getElementById('sbj-livehtml-visitor-message-port').hidden = false;
-        document.getElementById('sbj-livehtml-visitor-message').textContent = "接続に失敗、またはライブキャストは終了しています";
+        document.getElementById('sbj-livehtml-visitor-message').textContent = "接続に失敗、またはLiveHTMLは終了しています";
     }
 
 
@@ -58,6 +58,17 @@ export default class LiveHTMLVisitorController extends AbstractServiceController
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.InitializeCursor();
+    }
+
+
+    /**
+     * オーナー側が切断した場合
+     */
+    public OnOwnerClose() {
+        document.getElementById('sbj-livehtml-visitor-message-port').hidden = false;
+        if(!document.getElementById('sbj-livehtml-visitor-message').textContent.length){
+            document.getElementById('sbj-livehtml-visitor-message').textContent = "LiveHTMLは終了しました";
+        }
     }
 
 

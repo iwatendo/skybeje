@@ -20,7 +20,7 @@
 
 	<div class="mdl-layout mdl-js-layout">
 		<main class="mdl-layout__content mdl-color--grey-100 sbj-content" id="sbj-content">
-			<div class="mdl-card__actions">
+			<div class="mdl-card__actions" id="sbj-voicechat-main">
 				<button class="mdl-button mdl-button--colored" id="sbj-voicechat-settings" hidden>
 					<span id="sbj-voicechat-mic-settings-label">
 						<i class="material-icons">settings</i>
@@ -49,8 +49,10 @@
 						<i class="material-icons">volume_off</i>
 					</span>
 				</button>
-
 			</div>
+            <div id="sbj-voicechat-message-port" hidden>
+                <h5 id="sbj-voicechat-message"></h5>
+            </div>
 		</main>
 
 		<video id='sbj-video' autoplay="true" playsinline="true" muted hidden></video>
