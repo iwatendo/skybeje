@@ -57,7 +57,7 @@ export class TimelineInputingItemComponent extends React.Component<TimelineInput
         let name = this.props.chatInputing.name;
         let inputingLabel = " 入力中 ";
 
-        let namestyle = { float: (isMine ? "left" : "right") };
+        let namestyle: React.CSSProperties = { float: (isMine ? "left" : "right") };
 
         if (isMine) {
             return (

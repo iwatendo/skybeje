@@ -142,7 +142,7 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
         let name = this.props.MsgGroup[0].name;
         let datetime = this.ToDispDate(this.props.MsgGroup[0].ctime);
 
-        let namestyle = { float: (isMine ? "left" : "right") };
+        let namestyle: React.CSSProperties = { float: (isMine ? "left" : "right") };
 
         if (isMine) {
             return (

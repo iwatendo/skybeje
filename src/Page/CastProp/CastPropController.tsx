@@ -103,7 +103,7 @@ export default class CastPropController {
      */
     private DoRender() {
         let vdo = CastPropController._getOffset();
-        ReactDOM.render(<CastPropComponent controller={this} cursorList={this._cursorList} subtitles={this._subtitles} offset={vdo} />, this._cursorDispElement, (el) => {
+        ReactDOM.render(<CastPropComponent controller={this} cursorList={this._cursorList} subtitles={this._subtitles} offset={vdo} />, this._cursorDispElement, () => {
             this.SetCursorIcon(this._cursorList);
         });
     }

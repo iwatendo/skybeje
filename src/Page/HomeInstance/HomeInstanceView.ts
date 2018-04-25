@@ -30,7 +30,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         };
 
         let linkurl = LinkUtil.CreateLink("../HomeVisitor/", LocalCache.BootHomeInstancePeerID);
-        let clipcopybtn = document.getElementById('sbj-start-linkcopy') as HTMLInputElement;
+        let clipcopybtn = document.getElementById('sbj-start-linkcopy') as HTMLButtonElement;
 
         //  「接続URLのコピー」
         LinkUtil.SetCopyLinkButton(linkurl, "接続URL", clipcopybtn);
