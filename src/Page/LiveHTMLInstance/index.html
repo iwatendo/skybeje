@@ -41,8 +41,13 @@
                 <div class="sbj-split-left">
                     <div class="mdl-color-text--grey-600" id="sbj-livehtml-instance-main">
 
+                        <h5 class="sbj-livehtml-cast-title" id="sbj-livehtml-cast-title">
+                            表示するHTMLページを選択してください
+                        </h5>
+
                         <div class="sbj-livehtml-instance-actions mdl-list__item-primary-content">
-                            <button id="sbj-livehtml-instance-start" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+                            <button id="sbj-livehtml-instance-start" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored"
+                                disabled>
                                 <i class="material-icons">play_arrow</i>
                                 &nbsp;配信開始&nbsp;
                             </button>
@@ -53,11 +58,11 @@
                             </button>
                         </div>
 
-                        <h5 id="sbj-livehtml-cast-title" hidden>
-                            ページ未表示
-                        </h5>
-
                         <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
+
+                            <h6>
+                                LiveHTMLが配信されています
+                            </h6>
 
                             <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                                 &nbsp; 視聴ページ起動 &nbsp;
@@ -91,10 +96,11 @@
                             <h5 class="mdl-color-text--grey-800">
                                 使い方
                             </h5>
-                            ・「配信開始」を押します。
-                            <br/>・リストから表示したいページを選択して「表示」を押します。
+                            ・表示したいHTMLページを選択し「視聴ページに表示」を押します。
+                            <br/>・「配信開始」を押します。
                             <br/>・単体起動した場合は、視聴して欲しい人にURLを伝えてください。
                             <br/>・Skybejeチャットからの起動時は、自動的にチャット側に表示されます。
+                            <br/>・配信中も表示するHTMLページの切替えが可能です
                             <br/>
                             <h5 class="mdl-color-text--grey-800">
                                 注意事項

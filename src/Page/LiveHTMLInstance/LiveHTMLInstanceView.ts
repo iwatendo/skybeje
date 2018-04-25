@@ -56,6 +56,19 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
 
 
     /**
+     * 配信中ページID
+     */
+    public get LivePageId(): string {
+        if (this.LiveHTML) {
+            return this.LiveHTML.pageId;
+        }
+        else {
+            return "";
+        }
+    }
+
+
+    /**
      * 
      */
     public InitializeChatLink() {
@@ -144,7 +157,6 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         let stopButton = document.getElementById('sbj-livehtml-instance-stop');
         let roomName = document.getElementById('sbj-livehtml-room-name');
         let linkElement = document.getElementById('sbj-client-link');
-        let castTitle = document.getElementById('sbj-livehtml-cast-title');
         let noteElement = document.getElementById('sbj-livehtml-note');
 
         startButton.hidden = isLive;
@@ -152,9 +164,9 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
 
         roomName.hidden = !isLive;
         linkElement.hidden = !isLive;
-        castTitle.hidden = !isLive;
         noteElement.hidden = isLive;
     }
+
 
     /***
      * 表示切替
@@ -204,6 +216,9 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      * 
      */
     public SendLiveHTML(ps: PageSettings) {
+
+        let startElement = (document.getElementById('sbj-livehtml-instance-start') as HTMLInputElement);
+
         this.LiveHTML = new LiveHTMLSender(ps);
         this.Controller.SwPeer.SendAll(this.LiveHTML);
 
@@ -214,10 +229,13 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
             if (ps.pageTag.length > 0) {
                 castTitle += "（" + ps.pageTag + "）";
             }
-            castTitle = "「" + castTitle + "」を表示中";
+            castTitle = "「" + castTitle + "」を配信先に表示";
+            startElement.disabled = false;
+
         }
         else {
-            castTitle = "ページ未表示";
+            castTitle = "表示するHTMLページを選択してください";
+            startElement.disabled = true;
         }
 
         document.getElementById('sbj-livehtml-cast-title').textContent = castTitle;

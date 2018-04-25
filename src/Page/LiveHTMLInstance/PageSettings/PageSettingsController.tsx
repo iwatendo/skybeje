@@ -344,10 +344,11 @@ export default class PageSettingsController {
     public SetSelect(sel: PageSettings) {
         this._selectPageSetting = sel;
 
-        let seldisp = !(sel && sel.pageId.length > 0);
-        document.getElementById('sbj-livehtml-page-copy').hidden = seldisp;
-        document.getElementById('sbj-livehtml-page-edit').hidden = seldisp;
-        document.getElementById('sbj-livehtml-page-delete').hidden = seldisp;
+        let isAnySelect = (sel && sel.pageId.length > 0);
+        let isLivePage = (sel && sel.pageId === this._controller.View.LivePageId);
+        document.getElementById('sbj-livehtml-page-copy').hidden = !isAnySelect;
+        document.getElementById('sbj-livehtml-page-edit').hidden = !isAnySelect;
+        document.getElementById('sbj-livehtml-page-delete').hidden = !isAnySelect || isLivePage;
     }
 
 

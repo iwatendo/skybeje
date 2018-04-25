@@ -17,6 +17,12 @@
     width: calc(100% - 568px);
 }
 
+.sbj-livehtml-cast-title{
+    font-weight: 600;
+    color: #3f51b5;
+    padding: 0px 0px 4px 0px;
+}
+
 #sbj-livehtml-instance-main{
     margin: 16px 32px;
 }
