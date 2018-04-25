@@ -119,7 +119,7 @@
 .sbj-split-pane-component-left{
     background-color: var(--sbj-color-timeline-panel);
     width: 600px;
-    min-width: 450px;
+    min-width: 520px;
 }
 
 #sbj-home-visitor-divider {
@@ -149,7 +149,7 @@
     width: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    height: calc(100% - 202px);
+    height: calc(100% - 162px);
 }
 
 .sbj-home-visitor-disconnect-action{
@@ -204,7 +204,7 @@
 
 .sbj-inputpanel{
     position: absolute;
-    bottom: 48px;
+    bottom: 8px;
     left: 8px;
     right: 8px;
     background-color: var(--sbj-color-default-background);
@@ -235,6 +235,7 @@
 
 .sbj-inputpanel-button{
     padding: 0px 8px;
+    color: #757575;    
 }
 
 .sbj-inputpanel-button-right{

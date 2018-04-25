@@ -152,7 +152,9 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
         //  ボイスチャットルームメンバーの変更通知
         if (sender.type === VoiceChatMemberListSender.ID) {
-            this.Controller.View.InputPane.ChangeVoiceChatMember(sender as VoiceChatMemberListSender);
+            if (this.Controller.View.InputPane) {
+                this.Controller.View.InputPane.ChangeVoiceChatMember(sender as VoiceChatMemberListSender);
+            }
         }
 
         if (sender.type === LiveHTMLMessageSender.ID) {

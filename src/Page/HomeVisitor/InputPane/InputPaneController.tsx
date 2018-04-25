@@ -37,7 +37,7 @@ export default class InputPaneController {
     private _textareaElement = document.getElementById('sbj-inputpanel-text') as HTMLInputElement;
     private _actorEditButton = document.getElementById('sbj-inputpanel-actor-edit-button');
     private _selectActorButton = document.getElementById('sbj-inputpanel-select-actor-button');
-    private _sendMessageButton = document.getElementById('sbj-inputpanel-send-message-button');
+    private _sendMessageButton = document.getElementById('sbj-inputpanel-send-message-button') as HTMLInputElement;
 
     private _voiceSpeech = document.getElementById('sbj-inputpanel-speech');
     private _voiceSpeechOn = document.getElementById('sbj-inputpanel-speech-on');
@@ -90,7 +90,8 @@ export default class InputPaneController {
 
         //  イベント設定
         this._textareaElement.onkeydown = (e) => { this.OnKeyDown(e); };
-        this._textareaElement.onkeyup = (e) => { this.OnTextChange(); }
+        //  this._textareaElement.onkeyup = (e) => { this.OnTextChange(); }
+        this._textareaElement.oninput = (e) => { this.OnTextChange(); }
         this._actorEditButton.onclick = (e) => { this.DoShowProfileEditDialog(); };
         this._actorIconElement.onclick = (e) => { this.MoveSelectionIcon(1); };
         this._selectActorButton.onclick = (e) => { this.DoShowActorSelectPanel(); };
@@ -118,10 +119,10 @@ export default class InputPaneController {
 
         this._isMicMute = true;
         this._voiceMic.hidden = true;
-        this._textareaElement.value = "";
         this.SetMediaDevice();
         this.DisplayActor();
         this.UserSettingChange();
+        this.ClearText();
     }
 
 
@@ -175,7 +176,7 @@ export default class InputPaneController {
         //  エスケープキーは入力中の文字をクリアして終了
         if (e.keyCode === 27) {
             e.returnValue = false;
-            this._textareaElement.value = "";
+            this.ClearText();
             return;
         }
 
@@ -257,8 +258,17 @@ export default class InputPaneController {
 
         if (text && text.length > 0) {
             this.SendChatMessage(text, false);
-            this._textareaElement.value = "";
+            this.ClearText();
         }
+    }
+
+
+    /**
+     * テキストエリアのクリア処理
+     */
+    private ClearText() {
+        this._textareaElement.value = "";
+        this.OnTextChange();
     }
 
 
@@ -275,6 +285,7 @@ export default class InputPaneController {
                 this._textareaElement.value = this._textareaElement.value + text;
                 this._textareaElement.selectionStart = start;
                 this._textareaElement.selectionEnd = start + end;
+                this.OnTextChange();
                 break;
             case 1:
                 //  直接チャットメッセージとして送信
@@ -341,14 +352,16 @@ export default class InputPaneController {
      */
     private OnTextChange() {
 
+        let isInput = this.IsInput();
+        this._sendMessageButton.hidden = !isInput;
+
         let chm = new ChatInfoSender();
         let actor = this._controller.CurrentActor;
         chm.peerid = this._controller.PeerId;
         chm.aid = actor.aid;
         chm.name = actor.name;
         chm.iid = actor.dispIid;
-        chm.isInputing = this.IsInput();
-
+        chm.isInputing = isInput;
         this._intervalSend.Send(chm, (s) => { this._controller.SwPeer.SendToOwner(s); });
     }
 
@@ -577,6 +590,12 @@ export default class InputPaneController {
     private ChangeVoiceRecognition() {
         this._isVoiceRecognition = !this._isVoiceRecognition;
 
+        if (this._isVoiceRecognition) {
+            this._voiceRecognition.classList.add("mdl-button--colored");
+        }
+        else {
+            this._voiceRecognition.classList.remove("mdl-button--colored");
+        }
         this._voiceRecognitionOn.hidden = !this._isVoiceRecognition;
         this._voiceRecognitionOff.hidden = this._isVoiceRecognition;
         if (this._isVoiceRecognition) {

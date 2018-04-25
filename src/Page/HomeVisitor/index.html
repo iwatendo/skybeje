@@ -143,7 +143,7 @@
 									<i class="material-icons">arrow_drop_up</i>
 								</button>
 								<div class="mdl-tooltip" data-mdl-for="sbj-inputpanel-other-room-button">
-									ルーム一覧
+									参加ルーム
 								</div>
 								<ul id="sbj-inputpanel-other-room-list" class="mdl-menu mdl-js-menu mdl-menu--top-right" for="sbj-inputpanel-other-room-button">
 								</ul>
@@ -172,11 +172,11 @@
 								<span id="sbj-inputpanel-speech-off">
 									<i class="material-icons">volume_off</i>テキスト読上</span>
 							</button>
-							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-send-message-recognition">
+							<button class="sbj-inputpanel-button mdl-button" id="sbj-inputpanel-send-message-recognition">
 								<span id="sbj-inputpanel-send-message-recognition-on" hidden>
-									<i class="material-icons">speaker_notes</i>音声認識</span>
+									<i class="material-icons">speaker_notes</i>音声認識(ON)</span>
 								<span id="sbj-inputpanel-send-message-recognition-off">
-									<i class="material-icons">speaker_notes_off</i>音声認識</span>
+									<i class="material-icons">speaker_notes_off</i>音声認識(OFF)</span>
 							</button>
 							<button class="sbj-inputpanel-button-right mdl-button mdl-button--colored" id="sbj-inputpanel-send-message-button">
 								<i class="material-icons">send</i>送信
@@ -185,7 +185,8 @@
 					</div>
 				</div>
 
-				<div class="sbj-speechpanel" id="sbj-speechpanel">
+				<!-- SkybejeチャットのVoiceChatは廃止（内部的に処理は残す）-->
+				<div class="sbj-speechpanel" id="sbj-speechpanel" hidden>
 					<div class="mdl-card__actions sbj-inputpanel-action">
 						<div class="sbj-inpupanel-voicechat-member" id="sbj-inpupanel-voicechat-member"></div>
 						<button class="sbj-inputpanel-button-right mdl-button mdl-button--colored" id="sbj-inputpanel-voicechat">
