@@ -54,7 +54,7 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
 
         //  
         let room2 = new Home.Room();
-        room2.name = "チャットルーム２（リビング）";
+        room2.name = "チャットルーム２";
         room2.hid = StdUtil.CreateUuid();
         room2.order = 2;
         room2.tag = "Default";
