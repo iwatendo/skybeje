@@ -36,6 +36,7 @@ export default class HomeVisitorModel extends AbstractServiceModel<HomeVisitorCo
         let icon = new Personal.Icon;
         icon.iid = StdUtil.CreateUuid();
         icon.img = new ImageInfo();
+        icon.dispratio = 8;
         icon.img.src = "/image/default-icon.png";
 
         //  デフォルトユーザー
@@ -114,7 +115,7 @@ export default class HomeVisitorModel extends AbstractServiceModel<HomeVisitorCo
         });
     }
 
-    
+
     /**
      * アイコン情報を全て取得
      * @param callback 
