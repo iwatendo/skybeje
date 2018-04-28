@@ -23,6 +23,8 @@ export default class DeviceUtil {
                 }
             });
             callback(result);
+        }).catch((err) => {
+            alert("GetAudioDevice\n" + err);
         });
     }
 
@@ -43,6 +45,28 @@ export default class DeviceUtil {
 
             callback(result);
 
+        }).catch((err) => {
+            alert("GetVideoDevice\n" + err);
+        });
+    }
+
+
+    /**
+     * 
+     */
+    public static GetSpeakerDevice(callback: OnReadDevice) {
+
+        navigator.mediaDevices.enumerateDevices().then((devices) => {
+
+            let result = Array<MediaDeviceInfo>();
+            devices.forEach((device, index, array) => {
+                if (device.kind === 'audiooutput') {
+                    result.push(device);
+                }
+            });
+            callback(result);
+        }).catch((err) => {
+            alert("GetSpeakerDevice\n" + err);
         });
     }
 
@@ -62,7 +86,7 @@ export default class DeviceUtil {
         let result: number = 0;
 
         if (this._deviceCount.has(kind)) {
-            let result = this._deviceCount.get(kind);
+            result = this._deviceCount.get(kind);
         }
 
         result++;
