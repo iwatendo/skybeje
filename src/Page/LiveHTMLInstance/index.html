@@ -28,7 +28,28 @@
                 <div class="mdl-tooltip" data-mdl-for="sbj-livehtml-instance-account-count">この配信への接続数</div>
                 <h5 id="sbj-livehtml-room-name" class="mdl-color-text--pink" hidden></h5>
 
+                <div id="sbj-livehtml-page-edit-menu">
+
+                    <button id='sbj-livehtml-page-add' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                        <i class='material-icons'>add</i>
+                        HTMLページの追加
+                    </button>
+                    <button id='sbj-livehtml-page-copy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
+                        <i class='material-icons'>content_copy</i>
+                        複製
+                    </button>
+                    <button id='sbj-livehtml-page-edit' class="mdl-button mdl-js-button mdl-button--colored" hidden>
+                        <i class='material-icons'>edit</i>
+                        編集
+                    </button>
+                    <button id='sbj-livehtml-page-delete' class="mdl-button mdl-js-button mdl-button--accent" hidden>
+                        <i class='material-icons'>delete</i>
+                        削除
+                    </button>
+                </div>
+
                 <div class="mdl-layout-spacer"></div>
+
                 <button id='sbj-livehtml-page-edit-close' class="mdl-button mdl-js-button mdl-button--colored" hidden>
                     <i class="material-icons">backspace</i>
                     <div class="mdl-tooltip" data-mdl-for="sbj-livehtml-page-edit-close">前画面に戻る</div>
@@ -36,7 +57,7 @@
             </div>
         </header>
 
-        <main class="mdl-layout__content" id="sbj-livehtml-main-content">
+        <main class="mdl-layout__content sbj-layout-content" id="sbj-livehtml-main-content">
             <div class="sbj-container">
                 <div class="sbj-split-left">
                     <div class="mdl-color-text--grey-600" id="sbj-livehtml-instance-main">
@@ -113,28 +134,7 @@
                     </div>
                 </div>
 
-                <div class="sbj-split-right">
-
-                    <div class="sbj-livehtml-page-edit-menu">
-
-                        <button id='sbj-livehtml-page-add' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                            <i class='material-icons'>add</i>
-                            HTMLページの追加
-                        </button>
-                        <button id='sbj-livehtml-page-copy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
-                            <i class='material-icons'>content_copy</i>
-                            複製
-                        </button>
-                        <button id='sbj-livehtml-page-edit' class="mdl-button mdl-js-button mdl-button--colored" hidden>
-                            <i class='material-icons'>edit</i>
-                            編集
-                        </button>
-                        <button id='sbj-livehtml-page-delete' class="mdl-button mdl-js-button mdl-button--accent" hidden>
-                            <i class='material-icons'>delete</i>
-                            削除
-                        </button>
-                    </div>
-
+                <div class="sbj-split-right" id="sbj-split-right">
                     <div class="mdl-color-text--grey-600">
 
                         <div class="mdl-card__supporting-text" id="sbj-livehtml-pageitems">
@@ -146,9 +146,9 @@
             </div>
         </main>
 
-        <main class="mdl-layout__content" id="sbj-livehtml-edit-content" hidden>
-            <div class="sbj-container">
-                <div class="sbj-split-left">
+        <main class="mdl-layout__content sbj-layout-content" id="sbj-livehtml-edit-content" hidden>
+            <div class="sbj-container" id="sbj-container">
+                <div class="sbj-split-left" id="sbj-split-left">
                     <div class="mdl-color-text--grey-600" id="sbj-livehtml-instance-main">
 
                         <h4 id="sbj-livehtml-edit-title">

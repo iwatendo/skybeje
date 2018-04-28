@@ -51,7 +51,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
 
             let liclass = "sbj-list-item mdl-list__item" + (hasTag ? " mdl-list__item--two-line" : "") + (isSelect ? " sbj-list-item-select mdl-shadow--2dp" : "");
             let subTitle = (hasTag ? <span className="mdl-list__item-sub-title">{ps.pageTag}</span> : <span></span>);
-            let buttonclass = "mdl-button mdl-js-button mdl-button--colored" + (isLive ? " mdl-button--raised" : "");
+            let buttonclass = "sbj-button mdl-button mdl-js-button mdl-button--colored" + (isLive ? " mdl-button--raised" : "");
             let buttonName = (isLive ? "配信先に表示" : "配信先に表示");
 
             return (
@@ -133,7 +133,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      */
     public OnDoubleClickItem(ps: PageSettings, e) {
         this.OnClickItem(ps, e);
-        this.props.controller.View.PageSettings.OnClickPageEdit();
+        this.props.controller.View.SendLiveHTML(ps);
     }
 
 

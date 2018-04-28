@@ -311,7 +311,6 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
     public RefreshAudio() {
         let element = document.getElementById('sbj-video') as HTMLVideoElement;
         element.srcObject = this._audioMediaStream;
-        //navigator.mediaDevices.enumerateDevices().then((devices)=>{}).catch((err)=>{       });
         element.play();
         element.muted = this.IsSpeakerMute;
         StreamUtil.SetMute(this._audioMediaStream, this.IsSpeakerMute);

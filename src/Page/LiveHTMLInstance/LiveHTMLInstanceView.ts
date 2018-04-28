@@ -50,10 +50,29 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
 
         this.PageSettings = new PageSettingsController(this.Controller, document.getElementById('sbj-livehtml-pageitems'));
 
-        this.InitializeCursor();
+        //  LiveHTMLのプレビューにはカーソル表示しない
+        //  this.InitializeCursor();
+
+        window.onresize = (e) => { this.Resize(); };
+        this.Resize();
         callback();
     }
 
+
+    /**
+     * リサイズ時処理
+     */
+    public Resize() {
+
+        let clientWidth = window.document.documentElement.clientWidth;
+        let leftpos = 572;
+        if (clientWidth > 1632) {
+            leftpos += (clientWidth - 1632) / 2;
+        }
+
+        let submenu = document.getElementById('sbj-livehtml-page-edit-menu');
+        submenu.style.left = leftpos + "px";
+    }
 
     /**
      * 配信中ページID
@@ -115,6 +134,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         let content = document.getElementById('sbj-livehtml-content') as HTMLVideoElement;
         let itemport = document.getElementById('sbj-item-layer') as HTMLElement;
         let curport = document.getElementById('sbj-cursor-layer') as HTMLElement;
+
         this.Cursor = new CastPropController(this.Controller, itemport, curport, () => {
             let offset = new CursorDispOffset();
             offset.clientWidth = content.clientWidth;
