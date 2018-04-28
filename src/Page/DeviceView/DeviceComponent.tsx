@@ -11,7 +11,7 @@ import DeviceUtil from '../../Base/Util/DeviceUtil';
  */
 export interface DeviceProp {
     owner: DeviceView;
-    deviceList: Array<any>;
+    deviceList: Array<MediaDeviceInfo>;
 }
 
 

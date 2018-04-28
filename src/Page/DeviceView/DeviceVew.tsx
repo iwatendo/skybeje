@@ -13,7 +13,7 @@ export class DeviceView {
 
     private _textElement: HTMLInputElement;
     private _listElement: HTMLElement;
-    private _devices: Array<any>;
+    private _devices: Array<MediaDeviceInfo>;
     private _onChangeDevice: OnChangeDevice;
     private _selectDeviceId: string;
     private _deviceKind: DeviceKind;
@@ -26,7 +26,7 @@ export class DeviceView {
      * @param devices 
      * @param deviceSelector 
      */
-    public constructor(deviceKind: DeviceKind, textElement: HTMLInputElement, listElement: HTMLElement, devices: Array<string>, deviceSelector: OnChangeDevice) {
+    public constructor(deviceKind: DeviceKind, textElement: HTMLInputElement, listElement: HTMLElement, devices: Array<MediaDeviceInfo>, deviceSelector: OnChangeDevice) {
         this._deviceKind = deviceKind;
         this._textElement = textElement;
         this._textElement.style.cursor = "pointer";

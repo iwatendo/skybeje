@@ -1,5 +1,5 @@
 
-interface OnReadDevice { (devices: Array<any>) }
+interface OnReadDevice { (devices: Array<MediaDeviceInfo>) }
 
 
 export enum DeviceKind {
@@ -16,7 +16,7 @@ export default class DeviceUtil {
 
         navigator.mediaDevices.enumerateDevices().then((devices) => {
 
-            let result = Array<any>();
+            let result = Array<MediaDeviceInfo>();
             devices.forEach((device, index, array) => {
                 if (device.kind === 'audioinput') {
                     result.push(device);
@@ -33,7 +33,7 @@ export default class DeviceUtil {
 
         navigator.mediaDevices.enumerateDevices().then((devices) => {
 
-            let result = Array<any>();
+            let result = Array<MediaDeviceInfo>();
 
             devices.forEach((device, index, array) => {
                 if (device.kind === 'videoinput') {
@@ -127,7 +127,7 @@ export default class DeviceUtil {
      * ※デバイス名称が取得できなかった場合は連番を設定します
      * @param device  
      */
-    public static Set(device: any): string {
+    public static Set(device: MediaDeviceInfo): string {
 
         let id = device.deviceId;
         let kid = this.ToKindId(device.kind, id);
