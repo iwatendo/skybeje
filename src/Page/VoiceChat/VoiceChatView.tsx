@@ -63,7 +63,7 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         }
 
         this._isMicMute = false;
-        this._isSpeakerMute = false;
+        this._isSpeakerMute = true;
 
         callback();
     }
@@ -110,7 +110,8 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
             StreamUtil.GetStreaming(msc, (stream) => {
                 this._voiceChatStream = stream;
                 this.IsMicMute = false;
-                this.IsSpeakerMute = false;
+                //  モバイル端末の場合はミュート状態で起動
+                this.IsSpeakerMute = StdUtil.IsMobile();
                 let peer = this.Controller.SwPeer;
                 let ownerid = this.Controller.SwPeer.OwnerPeerId;
 
@@ -310,9 +311,10 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
     public RefreshAudio() {
         let element = document.getElementById('sbj-video') as HTMLVideoElement;
         element.srcObject = this._audioMediaStream;
-        StreamUtil.SetMute(this._audioMediaStream, this.IsSpeakerMute);
-        element.muted = this.IsSpeakerMute;
+        //navigator.mediaDevices.enumerateDevices().then((devices)=>{}).catch((err)=>{       });
         element.play();
+        element.muted = this.IsSpeakerMute;
+        StreamUtil.SetMute(this._audioMediaStream, this.IsSpeakerMute);
     }
 
 }
