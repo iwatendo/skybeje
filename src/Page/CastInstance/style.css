@@ -83,13 +83,13 @@
     background-color: var(--sbj-color-edge-background);
 }
 
-#sbj-cast-item-port{
+#sbj-item-layer{
     position: absolute;
     height: 100%;
     width: 100%;
 }
 
-#sbj-cast-cursor-port{
+#sbj-cursor-layer{
     height: 100%;
     width: 100%;
     user-select: none;

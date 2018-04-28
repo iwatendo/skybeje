@@ -28,7 +28,7 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
         StdUtil.StopTouchZoom();
 
         //  リロード処理
-        document.getElementById('sbj-cast-reload').onclick = (e) => {
+        document.getElementById('sbj-reload-button').onclick = (e) => {
             location.reload();
         }
 
@@ -41,9 +41,9 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
      */
     public InitializeCursor() {
 
-        let contents = document.getElementById('sbj-livehtml-visitor-contents') as HTMLElement;
-        let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
-        let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
+        let contents = document.getElementById('sbj-livehtml-visitor-main') as HTMLElement;
+        let itemport = document.getElementById('sbj-item-layer') as HTMLElement;
+        let curport = document.getElementById('sbj-cursor-layer') as HTMLElement;
 
         this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return LiveHTMLVisitorView.Offset; }, () => { this.Risize(this.LiveHTML); });
 
@@ -58,17 +58,23 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
      * 
      */
     public Risize(livehtml: LiveHTMLSender) {
+
         if (livehtml) {
-            let contents = document.getElementById('sbj-livehtml-visitor-contents') as HTMLElement;
-            let liveHtmlLayer1 = document.getElementById('sbj-livehtml-layer1');
-            let liveHtmlLayer2 = document.getElementById('sbj-livehtml-layer2');
-            let liveHtmlLayer3 = document.getElementById('sbj-livehtml-layer3');
-            let liveHtmlLayer4 = document.getElementById('sbj-livehtml-layer4');
+
+            let mainElement = document.getElementById('sbj-livehtml-visitor-main') as HTMLElement;
+            let liveHtmlContents = document.getElementById('sbj-livehtml-contents') as HTMLElement;
+            let liveHtmlLayer1 = document.getElementById('sbj-backgroundB-layer');
+            let liveHtmlLayer2 = document.getElementById('sbj-backgroundF-layer');
+            let liveHtmlLayer3 = document.getElementById('sbj-active-layer');
+            let liveHtmlLayer4 = document.getElementById('sbj-cotrol-layer');
+
             let aspect: number = (livehtml.isAspectFix ? livehtml.aspectW / livehtml.aspectH : 0);
 
             let ctrlHeight = (livehtml.ctrlLayerMode === CtrlLayerEnum.Show ? 52 : 0);
-            let ctrlAreaOffset = CursorDispOffset.GetAspectDispOffset(contents.clientWidth, contents.clientHeight, 0, 0);
-            let dispAreaOffset = CursorDispOffset.GetAspectDispOffset(contents.clientWidth, contents.clientHeight, ctrlHeight, aspect);
+            liveHtmlContents.style.height = "calc(100% - " + ctrlHeight + "px)";
+
+            let ctrlAreaOffset = CursorDispOffset.GetAspectDispOffset(mainElement.clientWidth, mainElement.clientHeight, 0);
+            let dispAreaOffset = CursorDispOffset.GetAspectDispOffset(liveHtmlContents.clientWidth, liveHtmlContents.clientHeight, aspect);
 
             CursorDispOffset.SetOffsetDiv(liveHtmlLayer1, dispAreaOffset, false);
             CursorDispOffset.SetOffsetDiv(liveHtmlLayer2, dispAreaOffset, false);
@@ -76,7 +82,9 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
             CursorDispOffset.SetOffsetDiv(liveHtmlLayer4, ctrlAreaOffset, true);
 
             LiveHTMLVisitorView.Offset = dispAreaOffset;
+
         }
+
         if (this.Cursor) {
             this.Cursor.DisplayAll();
         }
@@ -88,13 +96,13 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
      * @param livehtml 
      */
     public SetLiveHTML(livehtml: LiveHTMLSender) {
-        this.SetLiveHTMLElement($("#sbj-livehtml-layer1"), this.LiveHTML.layerBackgroundB, livehtml.layerBackgroundB);
-        this.SetLiveHTMLElement($("#sbj-livehtml-layer2"), this.LiveHTML.layerBackgroundF, livehtml.layerBackgroundF);
-        this.SetLiveHTMLElement($("#sbj-livehtml-layer3"), this.LiveHTML.layerActive, livehtml.layerActive);
-        this.SetLiveHTMLElement($("#sbj-livehtml-layer4"), this.LiveHTML.layerControl, livehtml.layerControl);
+        this.SetLiveHTMLElement($("#sbj-backgroundB-layer"), this.LiveHTML.layerBackgroundB, livehtml.layerBackgroundB);
+        this.SetLiveHTMLElement($("#sbj-backgroundF-layer"), this.LiveHTML.layerBackgroundF, livehtml.layerBackgroundF);
+        this.SetLiveHTMLElement($("#sbj-active-layer"), this.LiveHTML.layerActive, livehtml.layerActive);
+        this.SetLiveHTMLElement($("#sbj-cotrol-layer"), this.LiveHTML.layerControl, livehtml.layerControl);
         this.LiveHTML = livehtml;
 
-        let submenu = document.getElementById('sbj-cast-submenu') as HTMLElement;
+        let submenu = document.getElementById('sbj-control-contents') as HTMLElement;
         let mout_opacity = (livehtml.ctrlLayerMode === CtrlLayerEnum.Overlay ? "0.0" : "1.0");
         submenu.hidden = (livehtml.ctrlLayerMode === CtrlLayerEnum.Hide);
 

@@ -242,8 +242,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      */
     public InitializeCursor() {
         let video = document.getElementById('sbj-video') as HTMLVideoElement;
-        let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
-        let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
+        let itemport = document.getElementById('sbj-item-layer') as HTMLElement;
+        let curport = document.getElementById('sbj-cursor-layer') as HTMLElement;
         this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return CursorDispOffset.GetVideoDispOffset(video); });
         this.Cursor.DisplayAll();
     }

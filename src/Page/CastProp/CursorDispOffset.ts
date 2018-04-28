@@ -6,7 +6,6 @@ export default class CursorDispOffset {
     dispHeight: number = 0;
     offsetRight: number = 0;
     offsetTop: number = 0;
-    ctrlHeight: number = 0;
 
     /**
      * Videoの表示エリアのオフセット値計算（送信時/受信時共通処理）
@@ -53,13 +52,12 @@ export default class CursorDispOffset {
      * @param cntlHeight 
      * @param aspect 
      */
-    public static GetAspectDispOffset(contentClientWidth: number, contentClientHeight: number, ctrlHeight: number, aspect: number): CursorDispOffset {
+    public static GetAspectDispOffset(contentClientWidth: number, contentClientHeight: number, aspect: number): CursorDispOffset {
 
         let result = new CursorDispOffset();
 
-        result.ctrlHeight = ctrlHeight;
         result.clientWidth = contentClientWidth;
-        result.clientHeight = (contentClientHeight > ctrlHeight ? contentClientHeight - ctrlHeight : 0);
+        result.clientHeight = contentClientHeight;
 
         if (aspect === 0) {
             //  アスペクト比指定がない場合

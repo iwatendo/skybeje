@@ -43,7 +43,7 @@ export default class SubTitlesComponent extends React.Component<SubTitlesProp, a
 
         let offset = this.props.offset;
 
-        let bottompos = Math.round((offset.clientHeight - offset.dispHeight) / 2) + offset.ctrlHeight;
+        let bottompos = Math.round((offset.clientHeight - offset.dispHeight) / 2);
         let sidepos = Math.round((offset.clientWidth - offset.dispWidth) / 2);
         let fontsize = Math.round((offset.dispHeight + offset.dispWidth) * 0.03);
         let lineheight = Math.ceil(fontsize * 1.4);

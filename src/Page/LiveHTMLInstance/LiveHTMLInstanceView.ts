@@ -113,8 +113,8 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      */
     public InitializeCursor() {
         let content = document.getElementById('sbj-livehtml-content') as HTMLVideoElement;
-        let itemport = document.getElementById('sbj-cast-item-port') as HTMLElement;
-        let curport = document.getElementById('sbj-cast-cursor-port') as HTMLElement;
+        let itemport = document.getElementById('sbj-item-layer') as HTMLElement;
+        let curport = document.getElementById('sbj-cursor-layer') as HTMLElement;
         this.Cursor = new CastPropController(this.Controller, itemport, curport, () => {
             let offset = new CursorDispOffset();
             offset.clientWidth = content.clientWidth;

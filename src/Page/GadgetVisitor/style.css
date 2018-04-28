@@ -99,7 +99,7 @@ body {
     margin: 0px;
 }
 
-#sbj-cast-item-port{
+#sbj-item-layer{
     position: absolute;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -109,7 +109,7 @@ body {
     width: 100%;
 }
 
-#sbj-cast-cursor-port{
+#sbj-cursor-layer{
     position: absolute;
     overflow-x: hidden;
     overflow-y: hidden;

@@ -19,37 +19,37 @@
 <body>
 
     <div class="mdl-layout mdl-js-layout">
-        <main id="sbj-livehtml-visitor-contents" class="sbj-livehtml-visitor-contents mdl-layout__content">
-
-            <div class='sbj-livehtml' id='sbj-livehtml-layer1'>
-            </div>
-
-            <div class='sbj-livehtml' id='sbj-livehtml-layer2'>
-            </div>
-
-            <div id="sbj-cast-item-port">
-                <div id="sbj-cast-cursor-port">
-                    <!-- React -->
+        <main id="sbj-livehtml-visitor-main" class="mdl-layout__content">
+            <div id="sbj-livehtml-contents">
+                <div class='sbj-layer' id='sbj-backgroundB-layer'>
+                    <!-- 背景レイヤー（後）-->
+                </div>
+                <div class='sbj-layer' id='sbj-backgroundF-layer'>
+                    <!-- 背景レイヤー（前）-->
+                </div>
+                <div id="sbj-item-layer">
+                    <div id="sbj-cursor-layer">
+                        <!-- カーソルレイヤ -->
+                    </div>
+                </div>
+                <div id="sbj-message-layer" hidden>
+                    <h4 id="sbj-subtitle-message">
+                        <!-- 字幕表示 -->
+                    </h4>
+                </div>
+                <div class='sbj-layer' id='sbj-active-layer'>
+                    <!-- アクティブレイヤー -->
                 </div>
             </div>
-
-            <div id="sbj-livehtml-visitor-message-port" hidden>
-                <h4 id="sbj-livehtml-visitor-message"></h4>
-            </div>
-
-            <div class='sbj-livehtml' id='sbj-livehtml-layer3'>
-            </div>
-
-            <div id="sbj-cast-submenu" hidden>
-                <div class='sbj-livehtml' id='sbj-livehtml-layer4'>
+            <div id="sbj-control-contents" hidden>
+                <div class='sbj-layer' id='sbj-cotrol-layer'>
+                    <!-- コントロールレイヤー -->
                 </div>
-                <button id="sbj-cast-reload" class="sbj-cast-button mdl-button mdl-js-button mdl-button--icon">
+                <button id="sbj-reload-button" class="mdl-button mdl-js-button mdl-button--icon">
                     <i class="material-icons">refresh</i>
                 </button>
             </div>
-
         </main>
-
     </div>
 
     <script src="/lib/react.min.js"></script>

@@ -43,8 +43,8 @@ export default class LiveHTMLVisitorController extends AbstractServiceController
 
     //  Peerエラー
     public OnPeerError(err: Error) {
-        document.getElementById('sbj-livehtml-visitor-message-port').hidden = false;
-        document.getElementById('sbj-livehtml-visitor-message').textContent = "接続に失敗、またはLiveHTMLは終了しています";
+        document.getElementById('sbj-message-layer').hidden = false;
+        document.getElementById('sbj-subtitle-message').textContent = "接続に失敗、またはLiveHTMLは終了しています";
     }
 
 
@@ -65,9 +65,9 @@ export default class LiveHTMLVisitorController extends AbstractServiceController
      * オーナー側が切断した場合
      */
     public OnOwnerClose() {
-        document.getElementById('sbj-livehtml-visitor-message-port').hidden = false;
-        if(!document.getElementById('sbj-livehtml-visitor-message').textContent.length){
-            document.getElementById('sbj-livehtml-visitor-message').textContent = "LiveHTMLは終了しました";
+        document.getElementById('sbj-message-layer').hidden = false;
+        if (document.getElementById('sbj-subtitle-message').textContent.trim().length === 0) {
+            document.getElementById('sbj-subtitle-message').textContent = "LiveHTMLは終了しました";
         }
     }
 

@@ -146,7 +146,7 @@ export default class CastPropController {
     public IsCursorPort(ev: MouseEvent) {
 
         let targetId = (ev.target as any).id;
-        if (targetId === "sbj-cast-cursor-port") {
+        if (targetId === "sbj-cursor-layer") {
             return true;
         }
 

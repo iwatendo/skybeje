@@ -1,29 +1,37 @@
-﻿
-body {
+﻿body {
     overflow-x: hidden;
     overflow-y: hidden;
 }
 
-.sbj-livehtml-visitor-contents {
+#sbj-livehtml-visitor-main {
     width: 100%;
     height: 100%;
     background-color: var(--sbj-color-cast-background);
 }
 
-.sbj-livehtml{
-    position: absolute;
+#sbj-livehtml-contents{
+    position: relative;
+    height:100%;
+    width:100%;
 }
 
-#sbj-livehtml-visitor-message-port{
+.sbj-layer{
+    position: absolute;
+    height:100%;
+    width:100%;
+    overflow-y: auto;
+}
+
+#sbj-message-layer{
+    position: absolute;
     width: 100%;
     height: 100%;
-    position: absolute;
     top: 0;
     left: 0;
     background-color: var(--sbj-color-edge-background);
 }
 
-#sbj-livehtml-visitor-message{
+#sbj-subtitle-message{
     position: absolute;
     margin: 0px;
     width: 100%;
@@ -32,18 +40,7 @@ body {
     color: var(--sbj-color-default-text);
 }
 
-.sbj-livehtml-visitor-button {
-    position: absolute;
-    background-color: var(--sbj-color-timeline-panel);
-    border-radius: 6px;
-}
-
-.sbj-livehtml-visitor-mobile-button{
-    height: 48px;
-    width: 48px;
-}
-
-#sbj-cast-item-port{
+#sbj-item-layer{
     position: absolute;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -53,7 +50,7 @@ body {
     width: 100%;
 }
 
-#sbj-cast-cursor-port{
+#sbj-cursor-layer{
     position: absolute;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -63,19 +60,7 @@ body {
     width: 100%;
 }
 
-.sbj-cast-button {
-    position: absolute;
-    background-color: var(--sbj-color-timeline-panel);
-    border-radius: 6px;
-}
-
-#sbj-cast-reload{
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-}
-
-#sbj-cast-submenu{
+#sbj-control-contents{
     position: absolute;
     left: 0px;
     right: 0px;
@@ -84,3 +69,10 @@ body {
     background-color: var(--sbj-color-edge-background);
 }
 
+#sbj-reload-button{
+    position: absolute;
+    background-color: var(--sbj-color-timeline-panel);
+    border-radius: 6px;
+    bottom: 10px;
+    right: 10px;
+}

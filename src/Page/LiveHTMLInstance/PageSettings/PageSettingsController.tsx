@@ -218,10 +218,10 @@ export default class PageSettingsController {
      */
     public ChangeHTML(dom: PageSettings) {
 
-        let layer1 = $("#sbj-livehtml-layer1");
-        let layer2 = $("#sbj-livehtml-layer2");
-        let layer3 = $("#sbj-livehtml-layer3");
-        let layer4 = $("#sbj-livehtml-layer4");
+        let layer1 = $("#sbj-backgroundB-layer");
+        let layer2 = $("#sbj-backgroundF-layer");
+        let layer3 = $("#sbj-active-layer");
+        let layer4 = $("#sbj-cotrol-layer");
 
         let mainHeight = (PageSettings.HasCtrl(dom) ? "calc(100% - 52px)" : "100%");
         layer1.height(mainHeight);
