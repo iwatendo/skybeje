@@ -117,7 +117,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * @param e 
      */
     public OnClickItem(ps: PageSettings, e) {
-        
+
         this.props.controller.View.PageSettings.SetSelect(ps);
 
         this.setState({
@@ -132,8 +132,8 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * @param e 
      */
     public OnDoubleClickItem(ps: PageSettings, e) {
-        this.OnClickItem(ps, e);
         this.props.controller.View.SendLiveHTML(ps);
+        this.OnClickItem(ps, e);
     }
 
 

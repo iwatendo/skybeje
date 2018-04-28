@@ -207,7 +207,15 @@
      left: 550px;
      overflow-wrap: unset;
      overflow-x: hidden;
-     width: 480px;
+     width: 840px;
+ }
+
+ .sbj-livehtml-page-search{
+     padding: 16px 48px;
+ }
+
+ #sbj-livehtml-page-search-label{
+    top: 6px;
  }
 
 .sbj-embedded{

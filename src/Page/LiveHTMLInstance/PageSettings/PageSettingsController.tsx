@@ -19,6 +19,7 @@ export default class PageSettingsController {
     private _controller: LiveHTMLInstanceController;
     private _previewPageSetting: PageSettings;
     private _selectPageSetting: PageSettings;
+    private _pageList: Array<PageSettings>;
 
 
     /**
@@ -49,10 +50,13 @@ export default class PageSettingsController {
         document.getElementById('sbj-livehtml-pagesettings-save').onclick = (e) => { this.Close(true); }
 
         //  編集ボタン郡
-        document.getElementById('sbj-livehtml-page-add').onclick = (e) => { this.OnClickPageAdd() };
-        document.getElementById('sbj-livehtml-page-copy').onclick = (e) => { this.OnClickPageCopy() };
-        document.getElementById('sbj-livehtml-page-edit').onclick = (e) => { this.OnClickPageEdit() };
-        document.getElementById('sbj-livehtml-page-delete').onclick = (e) => { this.OnClickPageDelete() };
+        document.getElementById('sbj-livehtml-page-add').onclick = (e) => { this.OnClickPageAdd(); };
+        document.getElementById('sbj-livehtml-page-copy').onclick = (e) => { this.OnClickPageCopy(); };
+        document.getElementById('sbj-livehtml-page-edit').onclick = (e) => { this.OnClickPageEdit(); };
+        document.getElementById('sbj-livehtml-page-delete').onclick = (e) => { this.OnClickPageDelete(); };
+
+        //  検索テキスト入力
+        document.getElementById('sbj-livehtml-page-search-text').oninput = (e) => { this.OnSearch(); };
 
         //  アスペクト比率の指定有無
         document.getElementById('sbj-check-aspect-disp').onchange = (e) => {
@@ -93,12 +97,62 @@ export default class PageSettingsController {
 
             //  ソート
             pss.sort(this.PageSettingCompare);
-            //  選択行
-            let select = (this._selectPageSetting ? this._selectPageSetting.pageId : "");
 
-            ReactDOM.render(<PageSettingsComponent controller={this._controller} items={pss} selectItem={select} />, this._element, () => {
-            });
+            //  リスト表示
+            this._pageList = pss;
+            this.DisplayList(pss);
         });
+    }
+
+
+    /**
+     * 検索文字入力時
+     */
+    public OnSearch() {
+        if (this._pageList) {
+            this.DisplayList(this._pageList);
+        }
+    }
+
+
+    /**
+     * ページフィルター
+     * @param ps 
+     * @param st 
+     */
+    public PageFilter(ps: PageSettings, st: string) {
+        if (ps) {
+            if (ps.pageName.toLowerCase().indexOf(st) >= 0) return true;
+            if (ps.pageTag.toLowerCase().indexOf(st) >= 0) return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 
+     * @param pss 
+     */
+    public DisplayList(pss: Array<PageSettings>) {
+
+        let searchText = (document.getElementById('sbj-livehtml-page-search-text') as HTMLInputElement).value.trim().toLowerCase();
+        let dispList = pss;
+
+        let select = (this._selectPageSetting ? this._selectPageSetting.pageId : "");   //  選択行
+
+        if (searchText.length) {
+            dispList = pss.filter((ps) => this.PageFilter(ps, searchText));
+
+            //  絞り込みの結果に選択行が含まれない場合、選択を解除
+            if (select) {
+                if (dispList.filter((ps) => (ps.pageId === select)).length === 0) {
+                    select = "";
+                    this.SetSelect(null);
+                }
+            }
+        }
+
+        ReactDOM.render(<PageSettingsComponent controller={this._controller} items={dispList} selectItem={select} />, this._element, () => { });
     }
 
 
@@ -108,10 +162,19 @@ export default class PageSettingsController {
      * @param b 
      */
     public PageSettingCompare(a: PageSettings, b: PageSettings): number {
-        if (a.pageName < b.pageName) return -1;
-        if (a.pageName > b.pageName) return 1;
-        if (a.pageTag < b.pageTag) return -1;
-        if (a.pageTag > b.pageTag) return 1;
+
+        let apn = a.pageName.toLocaleLowerCase();
+        let bpn = b.pageName.toLocaleLowerCase();
+
+        if (apn < bpn) return -1;
+        if (apn > bpn) return 1;
+
+        let apt = a.pageTag.toLocaleLowerCase();
+        let bpt = b.pageTag.toLocaleLowerCase();
+
+        if (apt < bpt) return -1;
+        if (apt > bpt) return 1;
+
         return 0;
     }
 
@@ -355,9 +418,9 @@ export default class PageSettingsController {
 
         let isAnySelect = (sel && sel.pageId.length > 0);
         let isLivePage = (sel && sel.pageId === this._controller.View.LivePageId);
-        document.getElementById('sbj-livehtml-page-copy').hidden = !isAnySelect;
-        document.getElementById('sbj-livehtml-page-edit').hidden = !isAnySelect;
-        document.getElementById('sbj-livehtml-page-delete').hidden = !isAnySelect || isLivePage;
+        (document.getElementById('sbj-livehtml-page-copy') as HTMLInputElement).disabled = !isAnySelect;
+        (document.getElementById('sbj-livehtml-page-edit') as HTMLInputElement).disabled = !isAnySelect;
+        (document.getElementById('sbj-livehtml-page-delete') as HTMLInputElement).disabled = !isAnySelect || isLivePage;
     }
 
 
@@ -410,7 +473,7 @@ export default class PageSettingsController {
             this._controller.Model.GetPageSettings(pageId, (newPage) => {
                 newPage.pageId = StdUtil.UniqKey();
                 this.SetPageSettings(newPage);
-                this.SetEditTitle('ページの複製', '追加');
+                this.SetEditTitle('ページのコピー', '追加');
                 this._controller.View.ChangeDisplayEditMode(true);
             })
         }

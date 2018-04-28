@@ -31,20 +31,31 @@
 
                     <button id='sbj-livehtml-page-add' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                         <i class='material-icons'>add</i>
-                        HTMLページの追加
+                        ページの追加
                     </button>
-                    <button id='sbj-livehtml-page-copy' class="mdl-button mdl-js-button mdl-button--colored" hidden>
-                        <i class='material-icons'>content_copy</i>
-                        複製
-                    </button>
-                    <button id='sbj-livehtml-page-edit' class="mdl-button mdl-js-button mdl-button--colored" hidden>
+                    <button id='sbj-livehtml-page-edit' class="mdl-button mdl-js-button mdl-button--colored" disabled>
                         <i class='material-icons'>edit</i>
                         編集
                     </button>
-                    <button id='sbj-livehtml-page-delete' class="mdl-button mdl-js-button mdl-button--accent" hidden>
+                    <button id='sbj-livehtml-page-copy' class="mdl-button mdl-js-button mdl-button--colored" disabled>
+                        <i class='material-icons'>content_copy</i>
+                        コピー
+                    </button>
+                    <button id='sbj-livehtml-page-delete' class="mdl-button mdl-js-button mdl-button--accent" disabled>
                         <i class='material-icons'>delete</i>
                         削除
                     </button>
+
+                    <div class="sbj-livehtml-page-search mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="sbj-livehtml-page-search-text">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input class="mdl-textfield__input" type="text" spellcheck="false" id="sbj-livehtml-page-search-text">
+                            <label class="mdl-textfield__label" id="sbj-livehtml-page-search-label">ページの絞り込み</label>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="mdl-layout-spacer"></div>
@@ -78,9 +89,9 @@
 
                         <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
 
-                            <h6>
-                                LiveHTMLは配信中です
-                            </h6>
+                            <h5>
+                                LiveHTML配信中
+                            </h5>
 
                             <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                                 &nbsp; 視聴ページ起動 &nbsp;
@@ -114,7 +125,7 @@
                             <h5 class="mdl-color-text--grey-800">
                                 使い方
                             </h5>
-                            ・表示したいHTMLページを選択し「視聴ページに表示」を押します。
+                            ・表示したいページを選択し「配信先に表示」を押します。
                             <br/>・「配信開始」を押します。
                             <br/>・単体起動した場合は、視聴して欲しい人にURLを伝えてください。
                             <br/>・Skybejeチャットからの起動時は、自動的にチャット側に表示されます。
