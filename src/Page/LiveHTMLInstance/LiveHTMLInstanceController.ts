@@ -116,7 +116,7 @@ export default class LiveHTMLInstanceController extends AbstractServiceControlle
             this.SwPeer.SendAll(cursor);
         }
         this.CursorCache.Remove(conn.remoteId);
-        this.View.Cursor.Remove(conn.remoteId);
+        //  this.View.Cursor.Remove(conn.remoteId);
         this.VoiceChat.RemoveConnection(conn.remoteId);
 
         conn.close();

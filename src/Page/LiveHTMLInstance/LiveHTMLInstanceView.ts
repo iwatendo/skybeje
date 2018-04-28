@@ -110,8 +110,14 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      * @param room 
      */
     public SetRoom(room: Room) {
-        let message = "「" + room.name + "」に配信中";
-        document.getElementById("sbj-livehtml-room-name").innerText = message;
+
+        if (room && room.name.length > 0) {
+            let roomName = document.getElementById('sbj-livehtml-room-name');
+            roomName.hidden = false;
+            let message = room.name;
+            document.getElementById("sbj-livehtml-room-name").innerText = "配信先：" + message;
+        }
+
     }
 
 
@@ -175,14 +181,12 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
     public ChangeDisplayMode(isLive: boolean) {
         let startButton = document.getElementById('sbj-livehtml-instance-start');
         let stopButton = document.getElementById('sbj-livehtml-instance-stop');
-        let roomName = document.getElementById('sbj-livehtml-room-name');
         let linkElement = document.getElementById('sbj-client-link');
         let noteElement = document.getElementById('sbj-livehtml-note');
 
         startButton.hidden = isLive;
         stopButton.hidden = !isLive;
 
-        roomName.hidden = !isLive;
         linkElement.hidden = !isLive;
         noteElement.hidden = isLive;
     }
@@ -249,7 +253,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
             if (ps.pageTag.length > 0) {
                 castTitle += "（" + ps.pageTag + "）";
             }
-            castTitle = "「" + castTitle + "」を配信先に表示";
+            castTitle = "表示ページ：" + castTitle;
             startElement.disabled = false;
 
         }
