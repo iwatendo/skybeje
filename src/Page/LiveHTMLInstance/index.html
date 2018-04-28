@@ -49,10 +49,6 @@
 
                 <div class="mdl-layout-spacer"></div>
 
-                <button id='sbj-livehtml-page-edit-close' class="mdl-button mdl-js-button mdl-button--colored" hidden>
-                    <i class="material-icons">backspace</i>
-                    <div class="mdl-tooltip" data-mdl-for="sbj-livehtml-page-edit-close">前画面に戻る</div>
-                </button>
             </div>
         </header>
 
@@ -146,130 +142,133 @@
                 </div>
             </div>
         </main>
+    </div>
 
-        <main class="mdl-layout__content sbj-layout-content" id="sbj-livehtml-edit-content" hidden>
-            <div class="sbj-container" id="sbj-container">
-                <div class="sbj-split-left" id="sbj-split-left">
-                    <div class="mdl-color-text--grey-600" id="sbj-livehtml-instance-main">
+    <div class="mdl-layout__content sbj-layout-content" id="sbj-livehtml-edit-content" hidden>
+        <div class="sbj-edit-container" id="sbj-edit-container">
+            <div class="sbj-split-left" id="sbj-split-left">
+                <div class="mdl-color-text--grey-600" id="sbj-livehtml-instance-main">
 
-                        <h4 id="sbj-livehtml-edit-title">
-                        </h4>
+                    <h4 id="sbj-livehtml-edit-title">
+                    </h4>
 
-                        <label id="sbj-check-aspect-disp-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-aspect-disp">
-                            <input type="checkbox" id="sbj-check-aspect-disp" class="mdl-switch__input" checked>
-                            <span class="mdl-switch__label">表示エリアのアスペクト比率を固定</span>
-                        </label>
+                    <label id="sbj-check-aspect-disp-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-aspect-disp">
+                        <input type="checkbox" id="sbj-check-aspect-disp" class="mdl-switch__input" checked>
+                        <span class="mdl-switch__label">表示エリアのアスペクト比率を固定</span>
+                    </label>
 
-                        <span id="sbj-aspect-setting">
-                            <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-width">
-                                <label class="mdl-textfield__label" for="sbj-aspect-width"></label>
-                                <span class="mdl-textfield__error">数値入力</span>
+                    <span id="sbj-aspect-setting">
+                        <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-width">
+                            <label class="mdl-textfield__label" for="sbj-aspect-width"></label>
+                            <span class="mdl-textfield__error">数値入力</span>
+                        </div>
+                        <span> : </span>
+                        <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-height">
+                            <label class="mdl-textfield__label" for="sbj-aspect-height"></label>
+                            <span class="mdl-textfield__error">数値入力</span>
+                        </div>
+                    </span>
+                    <div class="sbj-livehtml-content-box">
+                        <div id="sbj-livehtml-content" class="mdl-list__item-primary-content sbj-livehtml-content">
+                            <div class="sbj-layer" id='sbj-backgroundB-layer'>
                             </div>
-                            <span> : </span>
-                            <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-height">
-                                <label class="mdl-textfield__label" for="sbj-aspect-height"></label>
-                                <span class="mdl-textfield__error">数値入力</span>
+                            <div class="sbj-layer" id='sbj-backgroundF-layer'>
                             </div>
-                        </span>
-                        <div class="sbj-livehtml-content-box">
-                            <div id="sbj-livehtml-content" class="mdl-list__item-primary-content sbj-livehtml-content">
-                                <div class="sbj-layer" id='sbj-backgroundB-layer'>
-                                </div>
-                                <div class="sbj-layer" id='sbj-backgroundF-layer'>
-                                </div>
-                                <div id="sbj-item-layer">
-                                    <div id="sbj-cursor-layer">
-                                        <!-- React -->
-                                    </div>
-                                </div>
-                                <div id="sbj-message-layer" hidden>
-                                    <h2 id="sbj-subtitle-message"></h2>
-                                </div>
-                                <div class="sbj-layer" id='sbj-active-layer'>
-                                </div>
-                                <div class="sbj-control-layer" id='sbj-cotrol-layer'>
+                            <div id="sbj-item-layer">
+                                <div id="sbj-cursor-layer">
+                                    <!-- React -->
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="sbj-split-right">
-                    <div class="sbj-embedded mdl-color-text--grey-600">
-
-                        <div class="sbj-embedded-value-div">
-                            <div id="sbj-embedded-value-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="sbj-embedded-value-name" spellcheck=false maxlength="64" autocomplete="off"
-                                    required autofocus></input>
-                                <label class="mdl-textfield__label" for="sbj-embedded-value-name">ページ名</label>
-                                <span class="mdl-textfield__error">ページ名称を入力してください</span>
+                            <div id="sbj-message-layer" hidden>
+                                <h2 id="sbj-subtitle-message"></h2>
+                            </div>
+                            <div class="sbj-layer" id='sbj-active-layer'>
+                            </div>
+                            <div class="sbj-control-layer" id='sbj-cotrol-layer'>
                             </div>
                         </div>
-
-                        <div class="sbj-embedded-value-div">
-                            <div id="sbj-embedded-value-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                <input class="mdl-textfield__input" type="text" id="sbj-embedded-value-tag" spellcheck=false maxlength="64"></input>
-                                <label class="mdl-textfield__label" for="sbj-embedded-value-tag">タグ</label>
-                            </div>
-                        </div>
-
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livehtml-label"> 背景レイヤー（後）</h6>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer1" rows="4" cols="80" spellCheck='false'></textarea>
-                        </div>
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livehtml-label"> 背景レイヤー（前）</h6>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer2" rows="4" cols="80" spellCheck='false'></textarea>
-                        </div>
-                        <div class="sbj-embedded-value-div">
-                            <h6 class="sbj-livehtml-label"> アクティブ・レイヤー
-                            </h6>
-                            &nbsp;&nbsp;・このレイヤーに配置したエレメントはユーザーの操作が可能です。
-                            <br/>&nbsp;&nbsp;・但しSkybejeチャットからのアイコンや字幕が背後に回る為、操作できなくなります。
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="4" cols="80" spellCheck='false'></textarea>
-                        </div>
-                        <div class="sbj-embedded-value-div">
-
-                            <h6 class="sbj-livehtml-label"> コントロール・レイヤー</h6>
-                            <div>
-                                <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-1" id="sbj-ctrl-layer-option-label-1">
-                                    <input type="radio" id="sbj-ctrl-layer-option-1" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="1" checked>
-                                    <span class="mdl-radio__label">フォーカス時のみ表示</span>
-                                </label>
-                                <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-2" id="sbj-ctrl-layer-option-label-2">
-                                    <input type="radio" id="sbj-ctrl-layer-option-2" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="2">
-                                    <span class="mdl-radio__label">常に表示</span>
-                                </label>
-                                <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-3" id="sbj-ctrl-layer-option-label-3">
-                                    <input type="radio" id="sbj-ctrl-layer-option-3" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="3">
-                                    <span class="mdl-radio__label">非表示</span>
-                                </label>
-                            </div>
-                            <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="4" cols="80" spellCheck='false'></textarea>
-                        </div>
-
-                        <div class="sbj-livehtml-instance-actions">
-                            &nbsp;
-                        </div>
-
-                        <div class="sbj-livehtml-instance-actions mdl-list__item-primary-content">
-                            <button id="sbj-livehtml-pagesettings-save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
-                                <i class="material-icons">done</i>
-                                &nbsp;
-                                <span id="sbj-livehtml-pagesettings-done"></span>&nbsp;
-                            </button>
-                            <button id="sbj-livehtml-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
-                                &nbsp;キャンセル&nbsp;
-                            </button>
-                        </div>
-
                     </div>
                 </div>
             </div>
-        </main>
 
+            <div class="sbj-split-right">
+                <div class="sbj-embedded mdl-color-text--grey-600">
+
+                    <button id='sbj-livehtml-page-edit-close' class="mdl-button mdl-js-button">
+                        <i class="material-icons">close</i>
+                    </button>
+
+                    <div class="sbj-embedded-value-div">
+                        <div id="sbj-embedded-value-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="sbj-embedded-value-name" spellcheck=false maxlength="64" autocomplete="off"
+                                required autofocus></input>
+                            <label class="mdl-textfield__label" for="sbj-embedded-value-name">ページ名</label>
+                            <span class="mdl-textfield__error">ページ名称を入力してください</span>
+                        </div>
+                    </div>
+
+                    <div class="sbj-embedded-value-div">
+                        <div id="sbj-embedded-value-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="sbj-embedded-value-tag" spellcheck=false maxlength="64"></input>
+                            <label class="mdl-textfield__label" for="sbj-embedded-value-tag">タグ</label>
+                        </div>
+                    </div>
+
+                    <div class="sbj-embedded-value-div">
+                        <h6 class="sbj-livehtml-label"> 背景レイヤー（後）</h6>
+                        <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer1" rows="4" cols="80" spellCheck='false'></textarea>
+                    </div>
+                    <div class="sbj-embedded-value-div">
+                        <h6 class="sbj-livehtml-label"> 背景レイヤー（前）</h6>
+                        <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer2" rows="4" cols="80" spellCheck='false'></textarea>
+                    </div>
+                    <div class="sbj-embedded-value-div">
+                        <h6 class="sbj-livehtml-label"> アクティブ・レイヤー
+                        </h6>
+                        &nbsp;&nbsp;・このレイヤーに配置したエレメントはユーザーの操作が可能です。
+                        <br/>&nbsp;&nbsp;・但しSkybejeチャットからのアイコンや字幕が背後に回る為、操作できなくなります。
+                        <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="4" cols="80" spellCheck='false'></textarea>
+                    </div>
+                    <div class="sbj-embedded-value-div">
+
+                        <h6 class="sbj-livehtml-label"> コントロール・レイヤー</h6>
+                        <div>
+                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-1" id="sbj-ctrl-layer-option-label-1">
+                                <input type="radio" id="sbj-ctrl-layer-option-1" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="1" checked>
+                                <span class="mdl-radio__label">フォーカス時のみ表示</span>
+                            </label>
+                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-2" id="sbj-ctrl-layer-option-label-2">
+                                <input type="radio" id="sbj-ctrl-layer-option-2" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="2">
+                                <span class="mdl-radio__label">常に表示</span>
+                            </label>
+                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-3" id="sbj-ctrl-layer-option-label-3">
+                                <input type="radio" id="sbj-ctrl-layer-option-3" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="3">
+                                <span class="mdl-radio__label">非表示</span>
+                            </label>
+                        </div>
+                        <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="4" cols="80" spellCheck='false'></textarea>
+                    </div>
+
+                    <div class="sbj-livehtml-instance-actions">
+                        &nbsp;
+                    </div>
+
+                    <div class="sbj-livehtml-instance-actions mdl-list__item-primary-content">
+                        <button id="sbj-livehtml-pagesettings-save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
+                            <i class="material-icons">done</i>
+                            &nbsp;
+                            <span id="sbj-livehtml-pagesettings-done"></span>&nbsp;
+                        </button>
+                        <button id="sbj-livehtml-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                            &nbsp;キャンセル&nbsp;
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="/lib/react.min.js"></script>

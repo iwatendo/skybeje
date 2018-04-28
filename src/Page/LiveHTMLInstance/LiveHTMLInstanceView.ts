@@ -196,7 +196,6 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      * 表示切替
      */
     public ChangeDisplayEditMode(isPageSetting: boolean) {
-        document.getElementById('sbj-livehtml-main-content').hidden = isPageSetting;
         document.getElementById('sbj-livehtml-edit-content').hidden = !isPageSetting;
         document.getElementById('sbj-livehtml-page-edit-close').hidden = !isPageSetting;
 

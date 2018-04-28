@@ -4,6 +4,10 @@
     height: 100%;
 }
 
+#sbj-livehtml-main-content{
+    overflow: hidden;
+}
+
 .sbj-container {
     position: relative;
     max-width: 1600px;
@@ -12,8 +16,33 @@
     margin: 0 auto;
 }
 
-#sbj-livehtml-main-content{
-    overflow: hidden;
+#sbj-livehtml-edit-content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-edit-container {
+    position: relative;
+    max-width: 1200px;
+    min-width: 900px;
+    width: calc(100% - 16px);
+    height: calc(100% - 64px);
+    background-color: whitesmoke;
+    margin: 32px auto;
+}
+
+#sbj-livehtml-page-edit-close{
+    position: absolute;
+    top: 10px;
+    right:10px;
+	min-width: 36px;
+    width: 36px;
+    padding: 0px;
 }
 
 .sbj-split-left {

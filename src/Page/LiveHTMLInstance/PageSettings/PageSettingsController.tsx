@@ -35,6 +35,15 @@ export default class PageSettingsController {
             if (e.keyCode === 27) { this.Close(false); }
         }
 
+        //  周囲の半透明エリアのクリックで閉じる
+        document.getElementById('sbj-livehtml-edit-content').onclick = (e: MouseEvent) => {
+            let targetId = (e.target as HTMLElement).id;
+            if (targetId === 'sbj-livehtml-edit-content') {
+                this.Close(false);
+            }
+        };
+
+        //  
         document.getElementById('sbj-livehtml-page-edit-close').onclick = (e) => { this.Close(false); }
         document.getElementById('sbj-livehtml-pagesettings-cancel').onclick = (e) => { this.Close(false); }
         document.getElementById('sbj-livehtml-pagesettings-save').onclick = (e) => { this.Close(true); }
