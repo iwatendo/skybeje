@@ -6,9 +6,9 @@ import CastVisitorController from "./CastVisitorController";
 import { CastVisitorView } from "./CastVisitorView";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import IconSender from "../../Contents/Sender/IconSender";
-import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CursorClearSender from "../../Contents/Sender/CursorClearSender";
+import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 
 
 export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorController> {
@@ -39,9 +39,9 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
             this.Controller.View.Cursor.SetIcon(conn.remoteId, (sender as IconSender).icon);
         }
 
-        //  字幕表示
-        if (sender.type === CastSubTitlesSender.ID) {
-            this.Controller.View.Cursor.SetMessage(sender as CastSubTitlesSender);
+        //  チャット情報
+        if (sender.type === ChatStatusSender.ID) {
+            this.Controller.View.Cursor.SetMessage(sender as ChatStatusSender); //  字幕表示
         }
     }
 

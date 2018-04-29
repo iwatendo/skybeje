@@ -6,7 +6,6 @@ import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 import CastPropController from "../CastProp/CastPropController";
 import CastVisitorController from "./CastVisitorController";
-import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 
 /**

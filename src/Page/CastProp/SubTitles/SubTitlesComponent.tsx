@@ -1,11 +1,11 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import CastSubTitlesSender from '../../../Contents/Sender/CastSubTitlesSender';
 import CursorDispOffset from '../CursorDispOffset';
+import ChatStatusSender from '../../../Contents/Sender/ChatStatusSender';
 
 
 interface SubTitlesProp {
-    csr: CastSubTitlesSender;
+    chat: ChatStatusSender;
     offset: CursorDispOffset;
 }
 
@@ -21,7 +21,11 @@ export default class SubTitlesComponent extends React.Component<SubTitlesProp, a
      */
     public render() {
 
-        let msg = this.props.csr.message;
+        let msg = "";
+
+        if (this.props.chat.message) {
+            msg = this.props.chat.message;
+        }
 
         if (msg == null || msg.length == 0) {
             return (<div></div>);

@@ -7,7 +7,6 @@ import IconCursorSender from '../../Contents/Sender/IconCursorSender';
 import ChatStatusSender from '../../Contents/Sender/ChatStatusSender';
 import LocalCache from '../../Contents/Cache/LocalCache';
 import StyleCache from '../../Contents/Cache/StyleCache';
-import CastSubTitlesSender from '../../Contents/Sender/CastSubTitlesSender';
 
 import CastCursor from './Cursor/CastCursor';
 import SubTitlesComponent from './SubTitles/SubTitlesComponent';
@@ -26,7 +25,7 @@ export default class CastPropController {
     private _cursorDispElement: HTMLElement;
     private _baseCursorList = new Array<IconCursorSender>();   //  送られて来たカーソル情報の保持（相対座標）
     private _cursorList = new Array<CastCursor>();             //  表示しているカーソル情報の保持（絶対座標）
-    private _subtitles = new CastSubTitlesSender("");
+    private _subtitles = new ChatStatusSender();
 
     private static _vdo: CursorDispOffset;
     private static _getOffset: GetDispOffset;
@@ -92,9 +91,14 @@ export default class CastPropController {
      * 字幕表示
      * @param csr 
      */
-    public SetMessage(csr: CastSubTitlesSender) {
-        this._subtitles = csr;
-        this.DoRender();
+    public SetMessage(csr: ChatStatusSender) {
+        if (csr) {
+            //  字幕表示対象の場合、チャットの文章を字幕として表示
+            if (Personal.Actor.IsDispSubtitles(csr.actorType)) {
+                this._subtitles = csr;
+                this.DoRender();
+            }
+        }
     }
 
 
@@ -103,7 +107,7 @@ export default class CastPropController {
      */
     private DoRender() {
         let vdo = CastPropController._getOffset();
-        ReactDOM.render(<CastPropComponent controller={this} cursorList={this._cursorList} subtitles={this._subtitles} offset={vdo} />, this._cursorDispElement, () => {
+        ReactDOM.render(<CastPropComponent controller={this} cursorList={this._cursorList} chat={this._subtitles} offset={vdo} />, this._cursorDispElement, () => {
             this.SetCursorIcon(this._cursorList);
         });
     }
@@ -167,7 +171,7 @@ export default class CastPropController {
     public Clear() {
         this._baseCursorList = new Array<IconCursorSender>();
         this._cursorList = new Array<CastCursor>();
-        this._subtitles = new CastSubTitlesSender("");
+        this._subtitles = new ChatStatusSender();
         this.DoRender();
     };
 
@@ -246,6 +250,12 @@ export default class CastPropController {
      */
     public SetChatStatus(cur: ChatStatusSender) {
 
+        //  チャット情報はそのまま配信側に送信
+        if (cur.message.length > 0) {
+            this._service.SwPeer.SendToOwner(cur);
+        }
+
+        //  アイコン情報の設定
         if (!this.IconCursor) {
             this.IconCursor = new IconCursorSender();
             this.IconCursor.homePeerId = cur.peerid;
@@ -257,17 +267,9 @@ export default class CastPropController {
         //「発言時にカーソルアイコンを切替える」にチェックが入っている場合で
         // アイコン（またはアクター）が変更されていた場合は表示を自身のアイコン表示を切替える 
         let isIconDispChange = Personal.Actor.IsIconDispChange(cur.actorType);
-        let isDispSubtitles = Personal.Actor.IsDispSubtitles(cur.actorType);
-
 
         if (isIconDispChange && cur.message.length > 0 && cur.iid !== this.DispIid) {
             this.SendCursorToOwner(this.IconCursor);
-        }
-
-        //  メッセージ送信された場合に字幕表示をする
-        if (isDispSubtitles && cur.message.length > 0) {
-            let msg = new CastSubTitlesSender(cur.message);
-            this._service.SwPeer.SendToOwner(msg);
         }
 
     }

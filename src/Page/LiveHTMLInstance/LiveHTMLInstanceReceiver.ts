@@ -8,13 +8,13 @@ import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import IconSender from "../../Contents/Sender/IconSender";
-import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import GetLiveHTMLSender from "../../Contents/Sender/GetLiveHTMLSender";
 import LiveHTMLMessageSender from "../../Contents/Sender/LiveHTMLMessageSender";
 import VoiceChatMemberSender from "../../Contents/Sender/VoiceChatMemberSender";
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import StdUtil from "../../Base/Util/StdUtil";
 import SWRoom from "../../Base/WebRTC/SWRoom";
+import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 
 
 export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLInstanceController> {
@@ -35,10 +35,10 @@ export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLIn
             }
         }
 
-        //  字幕表示
-        if (sender.type === CastSubTitlesSender.ID) {
+        //  チャット情報
+        if (sender.type === ChatStatusSender.ID) {
             if (this.Controller.CastSetting.useCastProp) {
-                let cst = sender as CastSubTitlesSender;
+                let cst = sender as ChatStatusSender;
                 this.Controller.SwPeer.SendAll(cst);
                 this.Controller.View.Cursor.SetMessage(cst)
             }

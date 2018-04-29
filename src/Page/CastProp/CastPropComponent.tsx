@@ -5,14 +5,15 @@ import CastCursor from './Cursor/CastCursor';
 import CastPropController from "./CastPropController";
 import CursorItemComponent from "./Cursor/CursorItemComponent";
 import SubTitlesComponent from './SubTitles/SubTitlesComponent';
-import CastSubTitlesSender from '../../Contents/Sender/CastSubTitlesSender';
 import CursorDispOffset from './CursorDispOffset';
+import ChatStatusSender from '../../Contents/Sender/ChatStatusSender';
+import { Actor } from '../../Contents/IndexedDB/Personal';
 
 
 interface CursorProp {
     controller: CastPropController;
     cursorList: Array<CastCursor>;
-    subtitles: CastSubTitlesSender;
+    chat: ChatStatusSender;
     offset: CursorDispOffset;
 }
 
@@ -29,7 +30,11 @@ export default class CursorComponent extends React.Component<CursorProp, any> {
             return (<CursorItemComponent key={key} controller={this.props.controller} cursor={cur} />);
         });
 
-        let messageNodes = (<SubTitlesComponent csr={this.props.subtitles} offset={this.props.offset} />);
+        let messageNodes = (<div></div>);
+
+        if (Actor.IsDispSubtitles(this.props.chat.actorType)) {
+            messageNodes = (<SubTitlesComponent chat={this.props.chat} offset={this.props.offset} />);
+        }
 
         return (
             <div>

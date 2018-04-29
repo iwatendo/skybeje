@@ -6,10 +6,10 @@ import LiveHTMLVisitorController from "./LiveHTMLVisitorController";
 import { LiveHTMLVisitorView } from "./LiveHTMLVisitorView";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import IconSender from "../../Contents/Sender/IconSender";
-import CastSubTitlesSender from "../../Contents/Sender/CastSubTitlesSender";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CursorClearSender from "../../Contents/Sender/CursorClearSender";
 import LiveHTMLSender from "../../Contents/Sender/LiveHTMLSender";
+import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 
 
 export class LiveHTMLVisitorReceiver extends AbstractServiceReceiver<LiveHTMLVisitorController> {
@@ -40,9 +40,9 @@ export class LiveHTMLVisitorReceiver extends AbstractServiceReceiver<LiveHTMLVis
             this.Controller.View.Cursor.SetIcon(conn.remoteId, (sender as IconSender).icon);
         }
 
-        //  字幕表示
-        if (sender.type === CastSubTitlesSender.ID) {
-            this.Controller.View.Cursor.SetMessage(sender as CastSubTitlesSender);
+        //  チャット情報
+        if (sender.type === ChatStatusSender.ID) {
+            this.Controller.View.Cursor.SetMessage(sender as ChatStatusSender);     //  字幕表示
         }
 
         //  LiveHTML
