@@ -38,8 +38,8 @@
 
 #sbj-livehtml-page-edit-close{
     position: absolute;
-    top: 10px;
-    right:10px;
+    top: 16px;
+    right:16px;
 	min-width: 36px;
     width: 36px;
     padding: 0px;
@@ -108,7 +108,6 @@
 
  .sbj-livehtml-content-box{
      width: 480px;
-     height: calc(480px + 52px);
      background-color: whitesmoke;
  }
 
@@ -117,7 +116,7 @@
     width: 480px;
     height: calc(360px + 52px);
     overflow: hidden;
-    background-color: var(--sbj-color-edge-background);
+    background-color: var(--sbj-color-cast-background);
 }
 
 #sbj-item-layer{
@@ -136,12 +135,8 @@
     width: 32px;    
 }
 
-#sbj-embedded-value-name-field{
-    width: 420px;
-}
-
-#sbj-embedded-value-tag-field{
-    width: 420px;
+.sbj-livehtml-textfield{
+    width: 480px;
 }
 
 #sbj-livehtml-pageitems{
@@ -218,16 +213,17 @@
     top: 6px;
  }
 
-.sbj-embedded{
-    margin: 20px 0px;
+.sbj-livehtml{
+    margin: 96px 0px 16px 0px;
 }
 
 
-.sbj-embedded-value-div{
+.sbj-livehtml-value-div{
     display: block;
+    margin: 36px 0px;
 }
 
-.sbj-embedded-value{
+.sbj-livehtml-value{
     resize: auto;
 }
 

@@ -163,6 +163,23 @@
                     <h4 id="sbj-livehtml-edit-title">
                     </h4>
 
+                    <div id="sbj-livehtml-value-name-field" class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-name" spellcheck="false" maxlength="64" autocomplete="off"
+                            required autofocus></input>
+                        <label class="mdl-textfield__label" for="sbj-livehtml-value-name">ページ名</label>
+                        <span class="mdl-textfield__error">ページ名称を入力してください</span>
+                    </div>
+
+                    <div id="sbj-livehtml-value-tag-field" class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-tag" spellcheck="false" maxlength="64"></input>
+                        <label class="mdl-textfield__label" for="sbj-livehtml-value-tag">タグ</label>
+                    </div>
+
+                    <div id="sbj-livehtml-value-chatlink-field" class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-chatlinkage" spellcheck="false" maxlength="64"></input>
+                        <label class="mdl-textfield__label" for="sbj-livehtml-value-chatlinkage">チャット連動</label>
+                    </div>
+
                     <label id="sbj-check-aspect-disp-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-aspect-disp">
                         <input type="checkbox" id="sbj-check-aspect-disp" class="mdl-switch__input" checked>
                         <span class="mdl-switch__label">表示エリアのアスペクト比率を固定</span>
@@ -205,46 +222,30 @@
             </div>
 
             <div class="sbj-split-right">
-                <div class="sbj-embedded mdl-color-text--grey-600">
+                <div class="sbj-livehtml mdl-color-text--grey-600">
 
                     <button id='sbj-livehtml-page-edit-close' class="mdl-button mdl-js-button">
                         <i class="material-icons">close</i>
                     </button>
 
-                    <div class="sbj-embedded-value-div">
-                        <div id="sbj-embedded-value-name-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="sbj-embedded-value-name" spellcheck=false maxlength="64" autocomplete="off"
-                                required autofocus></input>
-                            <label class="mdl-textfield__label" for="sbj-embedded-value-name">ページ名</label>
-                            <span class="mdl-textfield__error">ページ名称を入力してください</span>
-                        </div>
+                    <div class="sbj-livehtml-value-div">
+                        <h6 class="sbj-livehtml-label"> 背景レイヤ１</h6>
+                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer1" rows="6" cols="80" spellCheck='false'></textarea>
                     </div>
-
-                    <div class="sbj-embedded-value-div">
-                        <div id="sbj-embedded-value-tag-field" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="sbj-embedded-value-tag" spellcheck=false maxlength="64"></input>
-                            <label class="mdl-textfield__label" for="sbj-embedded-value-tag">タグ</label>
-                        </div>
+                    <div class="sbj-livehtml-value-div">
+                        <h6 class="sbj-livehtml-label"> 背景レイヤ２</h6>
+                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer2" rows="6" cols="80" spellCheck='false'></textarea>
                     </div>
-
-                    <div class="sbj-embedded-value-div">
-                        <h6 class="sbj-livehtml-label"> 背景レイヤー（後）</h6>
-                        <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer1" rows="4" cols="80" spellCheck='false'></textarea>
-                    </div>
-                    <div class="sbj-embedded-value-div">
-                        <h6 class="sbj-livehtml-label"> 背景レイヤー（前）</h6>
-                        <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer2" rows="4" cols="80" spellCheck='false'></textarea>
-                    </div>
-                    <div class="sbj-embedded-value-div">
-                        <h6 class="sbj-livehtml-label"> アクティブ・レイヤー
+                    <div class="sbj-livehtml-value-div">
+                        <h6 class="sbj-livehtml-label"> アクティブレイヤ
                         </h6>
-                        &nbsp;&nbsp;・このレイヤーに配置したエレメントはユーザーの操作が可能です。
-                        <br/>&nbsp;&nbsp;・但しSkybejeチャットからのアイコンや字幕が背後に回る為、操作できなくなります。
-                        <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer3" rows="4" cols="80" spellCheck='false'></textarea>
+                        &nbsp;・このレイヤに配置するHTMLはユーザーの操作が可能です
+                        <br/>&nbsp;・アイコン／字幕のレイヤがこのレイヤの背面に回り、操作不能となるので注意
+                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer3" rows="6" cols="80" spellCheck='false'></textarea>
                     </div>
-                    <div class="sbj-embedded-value-div">
+                    <div class="sbj-livehtml-value-div">
 
-                        <h6 class="sbj-livehtml-label"> コントロール・レイヤー</h6>
+                        <h6 class="sbj-livehtml-label"> コントロールレイヤ</h6>
                         <div>
                             <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-1" id="sbj-ctrl-layer-option-label-1">
                                 <input type="radio" id="sbj-ctrl-layer-option-1" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="1" checked>
@@ -259,7 +260,7 @@
                                 <span class="mdl-radio__label">非表示</span>
                             </label>
                         </div>
-                        <textarea class="sbj-embedded-value" id="sbj-embedded-value-layer4" rows="4" cols="80" spellCheck='false'></textarea>
+                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer4" rows="6" cols="80" spellCheck='false'></textarea>
                     </div>
 
                     <div class="sbj-livehtml-instance-actions">

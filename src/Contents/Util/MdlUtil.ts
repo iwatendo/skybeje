@@ -18,7 +18,7 @@ export default class MdlUtil {
         }
     }
 
-    public static SetColered(elementName:string,value: boolean){
+    public static SetColered(elementName: string, value: boolean) {
 
         let element = (document.getElementById(elementName) as HTMLInputElement);
         if (value) {
@@ -28,5 +28,34 @@ export default class MdlUtil {
             element.classList.remove('mdl-button--colored');
         }
     }
+
+    /**
+     * 
+     * @param textElement 
+     * @param fieldEleemntName 
+     * @param value 
+     * @param useInvalid 
+     */
+    public static SetTextField(textElementName: string, fieldElementName: string, value: string, useInvalid: boolean = false) {
+
+        let textElement = document.getElementById(textElementName) as HTMLInputElement;
+        let fieldElement = document.getElementById(fieldElementName);
+
+        if (textElement && fieldElement) {
+
+            value = (value ? value : "");
+            textElement.value = value;
+
+            if (value.length > 0) {
+                if (useInvalid) fieldElement.classList.remove('is-invalid');
+                fieldElement.classList.add('is-dirty');
+            }
+            else {
+                if (useInvalid) fieldElement.classList.add('is-invalid');
+                fieldElement.classList.remove('is-dirty');
+            }
+        }
+    }
+
 
 }

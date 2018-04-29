@@ -72,13 +72,13 @@ export default class PageSettingsController {
         }
 
         //  ページ名称変更イベント
-        document.getElementById('sbj-embedded-value-name').oninput = (e) => {
+        document.getElementById('sbj-livehtml-value-name').oninput = (e) => {
             this.CheckPageName();
         };
 
-        //  レイヤー設定変更
+        //  レイヤ設定変更
         for (let i = 1; i <= 4; i++) {
-            document.getElementById('sbj-embedded-value-layer' + i.toString()).onchange = (ev) => {
+            document.getElementById('sbj-livehtml-value-layer' + i.toString()).onchange = (ev) => {
                 this.ChangeHTML(this.GetPageSettings());
             }
         }
@@ -184,7 +184,7 @@ export default class PageSettingsController {
      */
     public CheckPageName() {
 
-        let value = (document.getElementById('sbj-embedded-value-name') as HTMLInputElement).value;
+        let value = (document.getElementById('sbj-livehtml-value-name') as HTMLInputElement).value;
 
         //  ページ名が設定されていない場合、更新ボタンを押せないようにする
         let button = document.getElementById('sbj-livehtml-pagesettings-save') as HTMLButtonElement;
@@ -199,15 +199,16 @@ export default class PageSettingsController {
         let sender = new PageSettings();
 
         sender.pageId = this._previewPageSetting.pageId;
-        sender.pageName = (document.getElementById('sbj-embedded-value-name') as HTMLInputElement).value;
-        sender.pageTag = (document.getElementById('sbj-embedded-value-tag') as HTMLInputElement).value;
+        sender.pageName = (document.getElementById('sbj-livehtml-value-name') as HTMLInputElement).value;
+        sender.pageTag = (document.getElementById('sbj-livehtml-value-tag') as HTMLInputElement).value;
+        sender.chatLinkage = (document.getElementById('sbj-livehtml-value-chatlinkage') as HTMLInputElement).value;
         sender.isAspectFix = (document.getElementById('sbj-check-aspect-disp') as HTMLInputElement).checked;
         sender.aspectW = Number.parseInt((document.getElementById('sbj-aspect-width') as HTMLInputElement).value);
         sender.aspectH = Number.parseInt((document.getElementById('sbj-aspect-height') as HTMLInputElement).value);
-        sender.layerBackgroundB = (document.getElementById('sbj-embedded-value-layer1') as HTMLInputElement).value;
-        sender.layerBackgroundF = (document.getElementById('sbj-embedded-value-layer2') as HTMLInputElement).value;
-        sender.layerActive = (document.getElementById('sbj-embedded-value-layer3') as HTMLInputElement).value;
-        sender.layerControl = (document.getElementById('sbj-embedded-value-layer4') as HTMLInputElement).value;
+        sender.layerBackgroundB = (document.getElementById('sbj-livehtml-value-layer1') as HTMLInputElement).value;
+        sender.layerBackgroundF = (document.getElementById('sbj-livehtml-value-layer2') as HTMLInputElement).value;
+        sender.layerActive = (document.getElementById('sbj-livehtml-value-layer3') as HTMLInputElement).value;
+        sender.layerControl = (document.getElementById('sbj-livehtml-value-layer4') as HTMLInputElement).value;
         sender.ctrlLayerMode = this.CtrlLayerMode;
 
         return sender;
@@ -257,28 +258,13 @@ export default class PageSettingsController {
         MdlUtil.SetChecked('sbj-check-aspect-disp', 'sbj-check-aspect-disp-label', ps.isAspectFix);
         (document.getElementById('sbj-aspect-width') as HTMLInputElement).value = ps.aspectW.toString();
         (document.getElementById('sbj-aspect-height') as HTMLInputElement).value = ps.aspectH.toString();
-
-        (document.getElementById('sbj-embedded-value-name') as HTMLInputElement).value = ps.pageName;
-        (document.getElementById('sbj-embedded-value-tag') as HTMLInputElement).value = ps.pageTag;
-        if (ps.pageName && ps.pageName.length > 0) {
-            document.getElementById('sbj-embedded-value-name-field').classList.remove('is-invalid');
-            document.getElementById('sbj-embedded-value-name-field').classList.add('is-dirty');
-        }
-        else {
-            document.getElementById('sbj-embedded-value-name-field').classList.add('is-invalid');
-            document.getElementById('sbj-embedded-value-name-field').classList.remove('is-dirty');
-        }
-        if (ps.pageTag && ps.pageTag.length > 0) {
-            document.getElementById('sbj-embedded-value-tag-field').classList.add('is-dirty');
-        }
-        else {
-            document.getElementById('sbj-embedded-value-tag-field').classList.remove('is-dirty');
-        }
-
-        (document.getElementById('sbj-embedded-value-layer1') as HTMLInputElement).value = ps.layerBackgroundB;
-        (document.getElementById('sbj-embedded-value-layer2') as HTMLInputElement).value = ps.layerBackgroundF;
-        (document.getElementById('sbj-embedded-value-layer3') as HTMLInputElement).value = ps.layerActive;
-        (document.getElementById('sbj-embedded-value-layer4') as HTMLInputElement).value = ps.layerControl;
+        MdlUtil.SetTextField('sbj-livehtml-value-name', 'sbj-livehtml-value-name-field', ps.pageName, true);
+        MdlUtil.SetTextField('sbj-livehtml-value-tag', 'sbj-livehtml-value-tag-field', ps.pageTag);
+        MdlUtil.SetTextField('sbj-livehtml-value-chatlinkage', 'sbj-livehtml-value-chatlink-field', ps.chatLinkage);
+        (document.getElementById('sbj-livehtml-value-layer1') as HTMLInputElement).value = ps.layerBackgroundB;
+        (document.getElementById('sbj-livehtml-value-layer2') as HTMLInputElement).value = ps.layerBackgroundF;
+        (document.getElementById('sbj-livehtml-value-layer3') as HTMLInputElement).value = ps.layerActive;
+        (document.getElementById('sbj-livehtml-value-layer4') as HTMLInputElement).value = ps.layerControl;
         this.ChangeAspectFixed(ps);
         this.ChangeHTML(ps);
         this.CheckPageName();
@@ -286,7 +272,7 @@ export default class PageSettingsController {
 
 
     /**
-     * レイヤー情報の変更時イベント
+     * レイヤ情報の変更時イベント
      */
     public ChangeHTML(dom: PageSettings) {
 

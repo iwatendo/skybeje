@@ -15,6 +15,7 @@ export class PageSettings {
         this.pageId = "";
         this.pageName = "";
         this.pageTag = "";
+        this.chatLinkage = "";
         this.ctrlLayerMode = CtrlLayerEnum.Overlay;
         this.isAspectFix = false;
         this.aspectW = 0;
@@ -28,6 +29,7 @@ export class PageSettings {
     public pageId: string;
     public pageName: string;
     public pageTag: string;
+    public chatLinkage: string;
     public ctrlLayerMode: CtrlLayerEnum;
     public isAspectFix: boolean;
     public aspectW: number;
