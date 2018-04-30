@@ -14,6 +14,7 @@ import LocalCache from "../../Contents/Cache/LocalCache";
 import MdlUtil from "../../Contents/Util/MdlUtil";
 import PageSettingsController from "./PageSettings/PageSettingsController";
 import { PageSettings } from "../../Contents/IndexedDB/LiveHTML";
+import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 
 export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLInstanceController> {
 
@@ -92,6 +93,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      */
     public InitializeChatLink() {
         (document.getElementById('sbj-check-cursor-disp-label') as HTMLInputElement).hidden = false;
+        (document.getElementById('sbj-check-chatlinkage-label') as HTMLInputElement).hidden = false;
         this._hasOwner = true;
     }
 
@@ -262,6 +264,28 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         }
 
         document.getElementById('sbj-livehtml-cast-title').textContent = castTitle;
+    }
+
+
+    /**
+     * 
+     * @param chat 
+     */
+    public SetMessage(chat: ChatStatusSender) {
+
+        if (!chat) {
+            return;
+        }
+
+        if (this.Cursor) {
+            this.Cursor.SetMessage(chat);
+        }
+
+        if (this.PageSettings) {
+            if ((document.getElementById('sbj-check-chatlinkage') as HTMLInputElement).checked) {
+                this.PageSettings.ChceckChatLinkage(chat);
+            }
+        }
     }
 
 }

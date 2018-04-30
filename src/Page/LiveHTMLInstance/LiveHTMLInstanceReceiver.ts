@@ -40,7 +40,7 @@ export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLIn
             if (this.Controller.CastSetting.useCastProp) {
                 let cst = sender as ChatStatusSender;
                 this.Controller.SwPeer.SendAll(cst);
-                this.Controller.View.Cursor.SetMessage(cst)
+                this.Controller.View.SetMessage(cst);
             }
         }
 

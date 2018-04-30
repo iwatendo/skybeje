@@ -8,6 +8,7 @@ import { PageSettings, CtrlLayerEnum } from '../../../Contents/IndexedDB/LiveHTM
 import StdUtil from "../../../Base/Util/StdUtil";
 import MdlUtil from "../../../Contents/Util/MdlUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
+import ChatStatusSender from "../../../Contents/Sender/ChatStatusSender";
 
 
 /**
@@ -20,6 +21,7 @@ export default class PageSettingsController {
     private _previewPageSetting: PageSettings;
     private _selectPageSetting: PageSettings;
     private _pageList: Array<PageSettings>;
+    private _chatlinkageMap: Map<string, PageSettings>;
 
 
     /**
@@ -94,15 +96,50 @@ export default class PageSettingsController {
 
         //  データ読込
         this._controller.Model.GetPageSettingsAll((pss) => {
-
             //  ソート
             pss.sort(this.PageSettingCompare);
-
             //  リスト表示
             this._pageList = pss;
+            this.SetChatLinkage(pss);
             this.DisplayList(pss);
         });
     }
+
+
+    /**
+     * 
+     * @param pss 
+     */
+    public SetChatLinkage(pss: Array<PageSettings>) {
+
+        this._chatlinkageMap = new Map<string, PageSettings>();
+
+        pss.forEach(ps => {
+            let kw = (ps.chatLinkage ? ps.chatLinkage.trim() : "");
+            if (kw.length > 0) {
+                this._chatlinkageMap.set(kw.toLowerCase(), ps);
+            }
+        });
+    }
+
+
+    /**
+     * 
+     * @param chat 
+     */
+    public ChceckChatLinkage(chat: ChatStatusSender) {
+
+        let msg = (chat.message ? chat.message.trim().toLowerCase() : "");
+
+        if (this._chatlinkageMap && msg.length > 0) {
+            if (this._chatlinkageMap.has(msg)) {
+                let ps = this._chatlinkageMap.get(msg);
+                this._controller.View.SendLiveHTML(ps);
+                this.DisplayList(this._pageList);
+            }
+        }
+    }
+
 
 
     /**
