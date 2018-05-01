@@ -7,6 +7,7 @@ import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 import CastPropController from "../CastProp/CastPropController";
 import CastVisitorController from "./CastVisitorController";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
+import MdlUtil from "../../Contents/Util/MdlUtil";
 
 /**
  * 
@@ -90,16 +91,17 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
      */
     public SetMute(isMute: boolean) {
 
-        (document.getElementById('sbj-video') as HTMLVideoElement).muted = isMute;
-
         if (this.IsMobile) {
             document.getElementById('sbj-cast-visitor-volume-mobile-on').hidden = isMute;
             document.getElementById('sbj-cast-visitor-volume-mobile-off').hidden = !isMute;
+            MdlUtil.SetColered('sbj-cast-visitor-volume-mobile', !isMute);
         }
         else {
             document.getElementById('sbj-cast-visitor-volume-on').hidden = isMute;
             document.getElementById('sbj-cast-visitor-volume-off').hidden = !isMute;
         }
+
+        (document.getElementById('sbj-video') as HTMLVideoElement).muted = isMute;
     }
 
 
