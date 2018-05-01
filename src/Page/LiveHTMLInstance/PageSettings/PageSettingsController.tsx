@@ -35,21 +35,25 @@ export default class PageSettingsController {
 
         //  ESCキーで閉じる
         document.onkeydown = (e: KeyboardEvent) => {
-            if (e.keyCode === 27) { this.Close(false); }
+            if (e.keyCode === 27) {
+                //  HTML入力中にESCを押すケースがあるので閉じないようにする
+                //  this.Close(); 
+            }
         }
 
         //  周囲の半透明エリアのクリックで閉じる
         document.getElementById('sbj-livehtml-edit-content').onclick = (e: MouseEvent) => {
             let targetId = (e.target as HTMLElement).id;
             if (targetId === 'sbj-livehtml-edit-content') {
-                this.Close(false);
+                this.Close();
             }
         };
 
         //  
-        document.getElementById('sbj-livehtml-page-edit-close').onclick = (e) => { this.Close(false); }
-        document.getElementById('sbj-livehtml-pagesettings-cancel').onclick = (e) => { this.Close(false); }
-        document.getElementById('sbj-livehtml-pagesettings-save').onclick = (e) => { this.Close(true); }
+        document.getElementById('sbj-livehtml-page-edit-close').onclick = (e) => { this.Close(); }
+        document.getElementById('sbj-livehtml-pagesettings-cancel').onclick = (e) => { this.Close(); }
+        document.getElementById('sbj-livehtml-pagesettings-save').onclick = (e) => { this.Save(); }
+        document.getElementById('sbj-livehtml-pagesettings-save-close').onclick = (e) => { this.Save(); this.Close(); }
 
         //  編集ボタン郡
         document.getElementById('sbj-livehtml-page-add').onclick = (e) => { this.OnClickPageAdd(); };
@@ -63,25 +67,45 @@ export default class PageSettingsController {
         //  アスペクト比率の指定有無
         document.getElementById('sbj-check-aspect-disp').onchange = (e) => {
             this.ChangeAspectFixed(this.GetPageSettings());
+            this.CheckChangeSaveDisable();
         }
 
         //  アスペクト比変更時
         document.getElementById('sbj-aspect-width').oninput = (e) => {
             this.ChangeAspect(this.GetPageSettings());
+            this.CheckChangeSaveDisable();
         }
         document.getElementById('sbj-aspect-height').oninput = (e) => {
             this.ChangeAspect(this.GetPageSettings());
+            this.CheckChangeSaveDisable();
         }
 
         //  ページ名称変更イベント
         document.getElementById('sbj-livehtml-value-name').oninput = (e) => {
-            this.CheckPageName();
+            this.CheckChangeSaveDisable();
+        };
+
+        //  タグ変更時
+        document.getElementById('sbj-livehtml-value-tag').oninput = (e) => {
+            this.CheckChangeSaveDisable();
+        };
+
+        //  チャット連動変更時
+        document.getElementById('sbj-livehtml-value-chatlinkage').oninput = (e) => {
+            this.CheckChangeSaveDisable();
         };
 
         //  レイヤ設定変更
         for (let i = 1; i <= 4; i++) {
-            document.getElementById('sbj-livehtml-value-layer' + i.toString()).onchange = (ev) => {
-                this.ChangeHTML(this.GetPageSettings());
+            let element = document.getElementById('sbj-livehtml-value-layer' + i.toString());
+            element.onchange = (e) => { this.ChangeHTML(this.GetPageSettings()); }
+            element.oninput = (e) => { this.CheckChangeSaveDisable(); }
+        }
+
+        //  コントロールレイヤオプション
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById('sbj-ctrl-layer-option-' + i.toString()).onchange = (e) => {
+                this.CheckChangeSaveDisable();
             }
         }
 
@@ -219,13 +243,26 @@ export default class PageSettingsController {
     /**
      * ページ名称の入力チェック
      */
-    public CheckPageName() {
+    public CheckChangeSaveDisable(isInitSave: boolean = false) {
 
-        let value = (document.getElementById('sbj-livehtml-value-name') as HTMLInputElement).value;
+        let isDisable = false;
 
-        //  ページ名が設定されていない場合、更新ボタンを押せないようにする
-        let button = document.getElementById('sbj-livehtml-pagesettings-save') as HTMLButtonElement;
-        button.disabled = (value.length === 0);
+        let saveButton = document.getElementById('sbj-livehtml-pagesettings-save') as HTMLButtonElement;
+        let saveCloaseBtton = document.getElementById('sbj-livehtml-pagesettings-save-close') as HTMLButtonElement;
+
+        if (!isInitSave) {
+            let value = (document.getElementById('sbj-livehtml-value-name') as HTMLInputElement).value;
+            //  ページ名が設定されていない場合、更新ボタンを押せないようにする
+            isDisable = (value.length === 0);
+        }
+        else {
+            //  初期化時や保存時は更新ボタンを押せないようにする
+            //  ※ユーザー入力を検出した場合、押せるようになる
+            isDisable = true;
+        }
+
+        saveButton.disabled = isDisable;
+        saveCloaseBtton.disabled = isDisable;
     }
 
 
@@ -304,7 +341,7 @@ export default class PageSettingsController {
         (document.getElementById('sbj-livehtml-value-layer4') as HTMLInputElement).value = ps.layerControl;
         this.ChangeAspectFixed(ps);
         this.ChangeHTML(ps);
-        this.CheckPageName();
+        this.CheckChangeSaveDisable(true);
     }
 
 
@@ -407,22 +444,26 @@ export default class PageSettingsController {
 
     /**
      * 
+     */
+    public Save() {
+        let ps = this.GetPageSettings();
+
+        this._controller.Model.UpdatePageSettings(ps, () => {
+            this.SetSelect(ps);
+            this._controller.View.UpdateLive();
+            this.SetEditTitle('ページの編集', '更新');
+            this.CheckChangeSaveDisable(true);
+        })
+    }
+
+
+    /**
+     * 
      * @param isSave 
      */
-    public Close(isSave: boolean) {
-        if (isSave) {
-            let ps = this.GetPageSettings();
-
-            this._controller.Model.UpdatePageSettings(ps, () => {
-                this.SetSelect(ps);
-                this._controller.View.ChangeDisplayEditMode(false);
-                this.SetPageSettings(null);
-            })
-        }
-        else {
-            this._controller.View.ChangeDisplayEditMode(false);
-            this.SetPageSettings(null);
-        }
+    public Close() {
+        this._controller.View.ChangeDisplayEditMode(false);
+        this.SetPageSettings(null);
     }
 
 
@@ -443,7 +484,7 @@ export default class PageSettingsController {
         let isLivePage = (sel && sel.pageId === this._controller.View.LivePageId);
         (document.getElementById('sbj-livehtml-page-copy') as HTMLInputElement).disabled = !isAnySelect;
         (document.getElementById('sbj-livehtml-page-edit') as HTMLInputElement).disabled = !isAnySelect;
-        (document.getElementById('sbj-livehtml-page-delete') as HTMLInputElement).disabled = !isAnySelect || isLivePage;
+        (document.getElementById('sbj-livehtml-page-delete') as HTMLInputElement).disabled = !isAnySelect;
     }
 
 
@@ -463,8 +504,15 @@ export default class PageSettingsController {
     public SetEditTitle(title: string, bottonTitle: string) {
         let element = document.getElementById('sbj-livehtml-edit-title');
         element.textContent = title;
-        let button = document.getElementById('sbj-livehtml-pagesettings-done');
-        button.textContent = bottonTitle;
+        let saveButton = document.getElementById('sbj-livehtml-pagesettings-save-label');
+        if (saveButton.textContent !== bottonTitle) {
+            saveButton.textContent = bottonTitle;
+        }
+        let saveCloseButton = document.getElementById('sbj-livehtml-pagesettings-save-close-label');
+
+        if (saveCloseButton.textContent !== bottonTitle) {
+            saveCloseButton.textContent = bottonTitle;
+        }
     }
 
 
@@ -495,9 +543,13 @@ export default class PageSettingsController {
             let pageId = this._selectPageSetting.pageId;
             this._controller.Model.GetPageSettings(pageId, (newPage) => {
                 newPage.pageId = StdUtil.UniqKey();
+                newPage.pageName = newPage.pageName + "のコピー";
                 this.SetPageSettings(newPage);
                 this.SetEditTitle('ページのコピー', '追加');
                 this._controller.View.ChangeDisplayEditMode(true);
+
+                //  コピーの場合は最初から保存可能にする
+                this.CheckChangeSaveDisable();
             })
         }
     }

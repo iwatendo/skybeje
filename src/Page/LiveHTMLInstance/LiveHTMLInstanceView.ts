@@ -208,15 +208,21 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         }
         else {
             this.PageSettings.Display();
+        }
+    }
 
-            let ps = this.PageSettings.GetSelect();
 
-            //  選択行かつ表示中の行の場合は更新内容をSendする
-            if (ps) {
-                let liveId = (this.LiveHTML ? this.LiveHTML.pageId : "");
-                if (ps.pageId === liveId) {
-                    this.SendLiveHTML(ps);
-                }
+    /**
+     * 配信中のページが更新された場合に、視聴側に反映
+     */
+    public UpdateLive() {
+
+        let ps = this.PageSettings.GetSelect();
+        //  選択行かつ表示中の行の場合は更新内容をSendする
+        if (ps) {
+            let liveId = (this.LiveHTML ? this.LiveHTML.pageId : "");
+            if (ps.pageId === liveId) {
+                this.SendLiveHTML(ps);
             }
         }
     }

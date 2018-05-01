@@ -193,15 +193,13 @@
 
                     <span id="sbj-aspect-setting">
                         <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-width">
+                            <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-width">
                             <label class="mdl-textfield__label" for="sbj-aspect-width"></label>
-                            <span class="mdl-textfield__error">数値入力</span>
                         </div>
                         <span> : </span>
                         <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-height">
+                            <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-height">
                             <label class="mdl-textfield__label" for="sbj-aspect-height"></label>
-                            <span class="mdl-textfield__error">数値入力</span>
                         </div>
                     </span>
                     <div class="sbj-livehtml-content-box">
@@ -277,7 +275,12 @@
                         <button id="sbj-livehtml-pagesettings-save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
                             <i class="material-icons">done</i>
                             &nbsp;
-                            <span id="sbj-livehtml-pagesettings-done"></span>&nbsp;
+                            <span id="sbj-livehtml-pagesettings-save-label"></span>&nbsp;
+                        </button>
+                        <button id="sbj-livehtml-pagesettings-save-close" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
+                            <i class="material-icons">done</i>
+                            &nbsp;
+                            <span id="sbj-livehtml-pagesettings-save-close-label"></span>して閉じる&nbsp;
                         </button>
                         <button id="sbj-livehtml-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
                             &nbsp;キャンセル&nbsp;
