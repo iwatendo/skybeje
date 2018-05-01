@@ -284,7 +284,7 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
             this._audioMediaStream.addTrack(track);
         }
         else {
-            let tracks = new Array();
+            let tracks = new Array<MediaStreamTrack>();
             tracks.push(track);
             this._audioMediaStream = new MediaStream(tracks);
         }
@@ -310,8 +310,9 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
      */
     public RefreshAudio() {
         let element = document.getElementById('sbj-video') as HTMLVideoElement;
+        element.oncanplay = (e) => { element.play(); }
+
         element.srcObject = this._audioMediaStream;
-        element.play();
         element.muted = this.IsSpeakerMute;
         StreamUtil.SetMute(this._audioMediaStream, this.IsSpeakerMute);
     }

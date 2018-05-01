@@ -159,7 +159,7 @@ export default class StreamUtil {
     public static SetMute(stream: MediaStream, value: boolean) {
         if (stream) {
             let tracks = stream.getAudioTracks();
-            if (tracks.length > 0) {
+            if (tracks && tracks.length > 0) {
                 let track = tracks[0];
                 track.enabled = !value;
             }
