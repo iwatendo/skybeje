@@ -55,8 +55,8 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         let controller = this.Controller;
 
         //  更新ボタン押下時
-        document.getElementById('sbj-profile-append').onclick = (e) => { this.UpdateActor(this.Controller); }
-        document.getElementById('sbj-profile-update').onclick = (e) => { this.UpdateActor(this.Controller); }
+        document.getElementById('sbj-profile-append').onclick = (e) => { this.DoUpdate(this.Controller); }
+        document.getElementById('sbj-profile-update').onclick = (e) => { this.DoUpdate(this.Controller); }
 
         //  ルーム名変更時
         document.getElementById('sbj-profile-name').oninput = (e) => { this.SetButtonDisabled(); }
@@ -153,7 +153,7 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
         let isIconChangeMode = false;
 
         if (isIconChangeMode) {
-            this.UpdateActor(this.Controller);
+            this.DoUpdate(this.Controller);
         }
         else {
             this._iconListView.OnClickEditIcon(this._iconListView);
@@ -162,36 +162,49 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
 
 
     /**
-     * アクターデータの更新
-     * @param controller 
+     * 
      */
-    public UpdateActor(controller: ProfileController) {
-
-        let actor = controller.Actor;
-        let nameElement = document.getElementById('sbj-profile-name') as HTMLInputElement;
-        let tagElement = document.getElementById('sbj-profile-tag') as HTMLInputElement;
-        let noteElement = document.getElementById('sbj-profile-note') as HTMLInputElement;
+    private GetActorType(): Personal.ActorType {
         let actorTypeElement1 = document.getElementById('sbj-profile-caster') as HTMLInputElement;
         let actorTypeElement2 = document.getElementById('sbj-profile-narrator') as HTMLInputElement;
 
-
-        actor.name = nameElement.value;
-        actor.tag = tagElement.value;
-        actor.profile = noteElement.value;
-
         if (actorTypeElement1.checked) {
-            if (actorTypeElement2.checked) actor.actorType = Personal.ActorType.CastNarrator;
-            else actor.actorType = Personal.ActorType.Caster;
+            if (actorTypeElement2.checked) {
+                return Personal.ActorType.CastNarrator;
+            }
+            else {
+                return Personal.ActorType.Caster;
+            }
         }
         else {
-            if (actorTypeElement2.checked) actor.actorType = Personal.ActorType.Narrator;
-            else actor.actorType = Personal.ActorType.Default;
+            if (actorTypeElement2.checked) {
+                return Personal.ActorType.Narrator;
+            }
+            else {
+                return Personal.ActorType.Default;
+            }
         }
+
+    }
+
+
+    /**
+     * アクターデータの更新
+     * @param controller 
+     */
+    public DoUpdate(controller: ProfileController) {
+
+        let actor = controller.Actor;
+        actor.name = (document.getElementById('sbj-profile-name') as HTMLInputElement).value;
+        actor.tag = (document.getElementById('sbj-profile-tag') as HTMLInputElement).value;
+        actor.profile = (document.getElementById('sbj-profile-note') as HTMLInputElement).value;
+        actor.actorType = this.GetActorType();
 
         controller.Model.UpdateActor(actor, () => {
             controller.PostChangeClose(actor.aid);
         });
     }
+
 
     /**
      * キャンセル時の動作
@@ -199,18 +212,28 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
     public DoCancel() {
 
         let controller = this.Controller;
+        let actor = controller.Actor;
 
         if (controller.IsNew) {
-            let actor = controller.Actor;
+            //  アクターの新規追加で、アイコンorガイド登録された場合
+            //  キャンセルされてもアクター登録を行う
             if (actor.iconIds.length > 0 || actor.guideIds.length > 0) {
-                actor.name = "（名称未設定）";
+                actor.name = "名称未設定";
                 controller.Model.UpdateActor(actor, () => {
                     controller.PostChangeClose(actor.aid);
                 });
             }
         }
-
-        this.Controller.PostChangeClose("");
+        else {
+            //  アクター情報の更新がキャンセルされた場合でも
+            //  チャット側ではアクター情報を取得しなおす
+            if (actor && actor.aid) {
+                this.Controller.PostChangeClose(actor.aid);
+            }
+            else {
+                this.Controller.PostChangeClose("");
+            }
+        }
     }
 
 }

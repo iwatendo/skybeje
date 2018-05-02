@@ -65,7 +65,9 @@ export default class IconListView {
      * 
      */
     public SelectionIcon(): Personal.Icon {
-        let l = this._icons.filter(n => n.iid === this._owner.Actor.dispIid);
+        let l = this._icons.filter((icon) => {
+            return (icon && icon.iid === this._owner.Actor.dispIid)
+        });
         return (l.length > 0 ? l[0] : null);
     }
 
@@ -78,7 +80,9 @@ export default class IconListView {
         let iid = (this._owner.Actor.dispIid ? this._owner.Actor.dispIid : "");
         ReactDOM.render(<IconListComponent key={key} controller={this._owner} icons={this._icons} selectIid={iid} />, this._element, () => {
             this._icons.map((icon) => {
-                ImageInfo.SetCss(icon.iid, icon.img);
+                if (icon) {
+                    ImageInfo.SetCss(icon.iid, icon.img);
+                }
             });
         });
     }

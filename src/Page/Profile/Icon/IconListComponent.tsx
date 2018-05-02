@@ -57,10 +57,10 @@ export default class IconListComponent extends React.Component<IconListProp, Ico
         (document.getElementById('sbj-profile-delete-icon') as HTMLInputElement).disabled = !canEdit;
 
         let iconNodes = this.state.icons.map((icon) => {
-
-            let isSelect = (icon.iid === this.state.selectIid);
-            return (<IconListItemComponent key={icon.iid} owner={this} icon={icon} isSelect={isSelect} />);
-
+            if (icon) {
+                let isSelect = (icon.iid === this.state.selectIid);
+                return (<IconListItemComponent key={icon.iid} owner={this} icon={icon} isSelect={isSelect} />);
+            }
         });
 
         return (

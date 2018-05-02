@@ -104,7 +104,7 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
      * @param callback 
      */
     public UpdateActor(actor: Personal.Actor, callback: OnWrite = null) {
-        this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, callback);
+            this._personalDB.Write<Personal.Actor>(Personal.DB.ACTOR, actor.aid, actor, callback);
     }
 
 
@@ -143,7 +143,10 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
         let max: number = icons.length;
 
         let loopCall = (icon) => {
-            result.push(icon);
+
+            if (icon) {
+                result.push(icon);
+            }
             loop += 1;
             if (loop < max) {
                 this._personalDB.Read(Personal.DB.ICON, icons[loop], (icon) => {
@@ -275,7 +278,10 @@ export default class ProfileModel extends AbstractServiceModel<ProfileController
         let max: number = (guides ? guides.length : 0);
 
         let loopCall = (guide) => {
-            result.push(guide);
+
+            if (guide) {
+                result.push(guide);
+            }
             loop += 1;
             if (loop < max) {
                 this.GetGuide(guides[loop], loopCall);
