@@ -230,6 +230,7 @@ export default class IconDialogController {
      */
     private CreateImageRec(src): ImageInfo {
         let rec = new ImageInfo();
+        rec.backgroundsize = Enum.BgSizeEnum.Contain;
         rec.src = src;
         this._icon.img = rec;
         return rec;
@@ -266,6 +267,7 @@ export default class IconDialogController {
 
         if (image == null) {
             image = new ImageInfo();
+            image.backgroundsize = Enum.BgSizeEnum.Contain;
         }
 
         this._icon.img = image;
