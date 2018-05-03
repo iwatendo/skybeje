@@ -109,6 +109,11 @@ export default class PageSettingsController {
             }
         }
 
+        //  グループ通話機能の設置
+        document.getElementById('sbj-livehtml-set-voicecaht').onclick = (e) => {
+            this.SetVoiceChatHTML();
+        };
+
         this.Display();
     }
 
@@ -580,6 +585,21 @@ export default class PageSettingsController {
                 })
             }
         }
+    }
+
+
+    /**
+     * グループ通話機能の設置URL
+     */
+    public SetVoiceChatHTML() {
+
+        let url = LinkUtil.CreateLink("../VoiceChat/") + "?p={peer}&sfu=0";
+
+        let element = (document.getElementById('sbj-livehtml-value-layer4') as HTMLInputElement);
+        element.value = "<iframe class='voicechat' src='" + url + "'/>";
+
+        this.ChangeHTML(this.GetPageSettings());
+        this.CheckChangeSaveDisable();
     }
 
 }
