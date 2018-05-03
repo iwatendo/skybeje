@@ -47,6 +47,7 @@ body {
     --sbj-color-actor-selection: lightblue;
     --sbj-color-cast-cursor: whitesmoke;
     --sbj-color-icon-selection: #3f51b5;
+    --sbj-color-label: #3f51b5;
 
     --sbj-color-qrcode-background: white;
 }

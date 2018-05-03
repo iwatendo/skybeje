@@ -220,6 +220,6 @@
 }
 
 .sbj-message-color-label{
-    color: #3f51b5;
+    color: var(--sbj-color-label);
     font-size: 12px;
 }

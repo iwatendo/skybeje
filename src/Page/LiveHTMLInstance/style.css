@@ -62,7 +62,7 @@
 
 .sbj-livehtml-cast-title{
     font-weight: 600;
-    color: #3f51b5;
+    color: var(--sbj-color-label);
     padding: 0px 0px 4px 0px;
 }
 
