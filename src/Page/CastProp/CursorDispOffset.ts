@@ -6,6 +6,7 @@ export default class CursorDispOffset {
     dispHeight: number = 0;
     offsetRight: number = 0;
     offsetTop: number = 0;
+    aspect: number = 0;
 
     /**
      * Videoの表示エリアのオフセット値計算（送信時/受信時共通処理）
@@ -21,12 +22,13 @@ export default class CursorDispOffset {
 
         let divWidth: number = video.clientWidth;
         let divHeight: number = video.clientHeight;
-        let divAscpet: number = divWidth / divHeight;
+        let divAspect: number = divWidth / divHeight;
 
+        result.aspect = divAspect;
         result.clientWidth = video.clientWidth;
         result.clientHeight = video.clientHeight;
 
-        if (divAscpet > videoAspect) {
+        if (divAspect > videoAspect) {
             //  divが横に長い場合・・・
             result.dispHeight = divHeight;
             result.dispWidth = result.dispHeight * videoAspect;
@@ -56,6 +58,7 @@ export default class CursorDispOffset {
 
         let result = new CursorDispOffset();
 
+        result.aspect = aspect;
         result.clientWidth = contentClientWidth;
         result.clientHeight = contentClientHeight;
 
@@ -93,19 +96,31 @@ export default class CursorDispOffset {
      */
     public static SetOffsetDiv(element: HTMLElement, offset: CursorDispOffset, isControllLayer: boolean) {
         if (element) {
+
+            let width: string;
+            let height: string;
+
+            if (offset.aspect > 0) {
+                width = offset.dispWidth + "px";
+                height = offset.dispHeight + "px";
+            }
+            else {
+                width = "100%";
+                height = "100%";
+            }
+
             if (isControllLayer) {
                 element.style.bottom = "0px";
                 element.style.right = offset.offsetRight + "px";
-                element.style.width = offset.dispWidth + "px";
+                element.style.width = width;
             }
             else {
                 element.style.top = offset.offsetTop + "px";
                 element.style.right = offset.offsetRight + "px";
-                element.style.width = offset.dispWidth + "px";
-                element.style.height = offset.dispHeight + "px";
+                element.style.width = width;
+                element.style.height = height;
             }
         }
     }
-
 
 }
