@@ -20,8 +20,7 @@
 }
 
 #sbj-livecast-room-name{
-    display: inline-block;
-    margin: 0px 20px;
+    color: var(--sbj-color-label);
 }
 
 .sbj-cast-instance-actions{
@@ -54,13 +53,13 @@
 
 .sbj-split-left {
     float: left;
-    width: 330px;
+    width: 550px;
     padding: 0px;
 }
 
 .sbj-split-right {
     float: right;
-    width: calc(100% - 410px);
+    width: calc(100% - 568px);
 }
 
 .sbj-screenshare-resolution{

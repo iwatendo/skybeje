@@ -51,7 +51,7 @@ export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLIn
 
         if (sender.type === RoomSender.ID) {
             this.Controller.CastRoom = sender as RoomSender;
-            this.Controller.View.SetRoom(this.Controller.CastRoom.room);
+            this.Controller.View.SetRoomName(this.Controller.CastRoom.room);
         }
 
         //  LiveHTML情報送信

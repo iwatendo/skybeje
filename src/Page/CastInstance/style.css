@@ -22,8 +22,7 @@
 }
 
 #sbj-livecast-room-name{
-    display: inline-block;
-    margin: 0px 20px;
+    color: var(--sbj-color-label);
 }
 
 .sbj-cast-instance-actions{

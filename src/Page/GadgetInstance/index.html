@@ -42,6 +42,7 @@
 
             <main id="sbj-gadget-instance-main" class="mdl-layout__content">
                 <div class="mdl-color-text--grey-600">
+                    <h4 id="sbj-livecast-room-name">&nbsp;</h4>
                     <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
                         <button id="sbj-gadget-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
                             <i class="material-icons">play_arrow</i>
@@ -51,7 +52,6 @@
                             <i class="material-icons">stop</i>
                             &nbsp;停止&nbsp;
                         </button>
-                        <h5 id="sbj-livecast-room-name" class="mdl-color-text--pink" hidden></h5>
                     </div>
                 </div>
                 <div class="mdl-list__item-primary-content">
@@ -60,7 +60,8 @@
                     </div>
                     <input type="text" id="sbj-youtube-api-ready" hidden/>
                 </div>
-                <label id="sbj-check-cursor-disp-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-cursor-disp" hidden>
+                <label id="sbj-check-cursor-disp-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-cursor-disp"
+                    hidden>
                     <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
                     <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
                 </label>

@@ -35,7 +35,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let startButton = document.getElementById('sbj-cast-instance-start');
         let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
@@ -67,8 +66,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         checkSfuElement.onchange = (e) => { this.SendOption(); }
         cursorDispElement.onchange = (e) => { this.SendOption(); }
 
-        this.SetMediaDevice();
+        //  単体配信の場合
+        if (!LinkUtil.GetPeerID()) {
+            this.SetRoomName(null);
+        }
 
+        this.SetMediaDevice();
         this.InitializeCursor();
     }
 
@@ -92,7 +95,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let roomName = document.getElementById('sbj-livecast-room-name');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
@@ -103,7 +105,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
         accountCount.hidden = !isLiveCasting;
-        roomName.hidden = !isLiveCasting;
         micElement.hidden = isLiveCasting;
         camElement.hidden = isLiveCasting;
         sfuElement.disabled = isLiveCasting;
@@ -140,9 +141,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      * 配信ルーム名の表示
      * @param room 
      */
-    public SetRoom(room: Home.Room) {
-        let message = "「" + room.name + "」に配信中";
-        document.getElementById("sbj-livecast-room-name").innerText = message;
+    public SetRoomName(room: Home.Room) {
+        let title = (room ? room.name + "に配信" : "単体で配信");
+        document.getElementById("sbj-livecast-room-name").innerText = title;
     }
 
 

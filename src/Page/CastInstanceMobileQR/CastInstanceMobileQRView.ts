@@ -8,6 +8,7 @@ import TerminalInfoSender from "../../Contents/Sender/TerminalInfoSender";
 import MapLocationSender from "../../Contents/Sender/MapLocationSender";
 import GMapsUtil from "../../Contents/Util/GMapsUtil";
 import PictureSender from "../../Contents/Sender/PictureSender";
+import { Room } from "../../Contents/IndexedDB/Home";
 
 export default class CastInstanceMobileQRView extends AbstractServiceView<CastInstanceMobileQRController> {
 
@@ -58,6 +59,16 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
 
 
     /**
+     * 配信ルーム名の表示
+     * @param room 
+     */
+    public SetRoom(room: Room) {
+        let message = "「" + room.name + "」に配信";
+        document.getElementById("sbj-livecast-room-name").innerText = message;
+    }
+
+
+    /**
      * 
      */
     public GetOption(): CastSettingSender {
@@ -81,7 +92,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         if (castStatus.isCasting) {
 
             //  モバイル端末の回転通知の場合は何もしない
-            if(castStatus.isOrientationChange){
+            if (castStatus.isOrientationChange) {
                 return;
             }
 

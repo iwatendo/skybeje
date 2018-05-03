@@ -9,6 +9,7 @@ import IconSender from "../../Contents/Sender/IconSender";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
 import CursorClearSender from "../../Contents/Sender/CursorClearSender";
 import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
+import SWRoom from "../../Base/WebRTC/SWRoom";
 
 
 export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorController> {
@@ -32,6 +33,7 @@ export class CastVisitorReceiver extends AbstractServiceReceiver<CastVisitorCont
         //  キャスト情報の通知
         if (sender.type === CastSettingSender.ID) {
             this.Controller.View.SetCastSetting(sender as CastSettingSender);
+            this.Controller.JoinRoom();
         }
 
         //  アイコン取得

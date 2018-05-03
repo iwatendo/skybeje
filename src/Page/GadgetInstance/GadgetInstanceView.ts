@@ -79,6 +79,12 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
             guide.embedstatus = embedstatus;
             this.SetGuide(guide, true);
         });
+
+        //  単体配信の場合
+        if (!LinkUtil.GetPeerID()) {
+            this.SetRoomName(null);
+        }
+
         YouTubeUtil.Initialize("sbj-youtube-api-ready", "sbj-guide-youtube-player");
         callback();
     }
@@ -105,9 +111,9 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
      * 配信ルーム名の表示
      * @param room 
      */
-    public SetRoom(room: Home.Room) {
-        let message = "「" + room.name + "」に配信中";
-        document.getElementById("sbj-livecast-room-name").innerText = message;
+    public SetRoomName(room: Home.Room) {
+        let title = (room ? room.name + "に配信" : "単体で配信");
+        document.getElementById("sbj-livecast-room-name").innerText = title;
     }
 
 

@@ -7,6 +7,7 @@ import { CastVisitorView } from "./CastVisitorView";
 import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
 import LinkUtil from "../../Base/Util/LinkUtil";
+import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
@@ -110,6 +111,14 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     }
 
 
+    public JoinRoom() {
+        if (!this.SwRoom) {
+            let roomMode = (this.UseSFU() ? SWRoomMode.SFU : SWRoomMode.Mesh);
+            this.SwRoom = new SWRoom(this, LinkUtil.GetPeerID(), roomMode);
+        }
+    }
+
+
     /** 
      * 
      */
@@ -146,7 +155,9 @@ export default class CastVisitorController extends AbstractServiceController<Cas
             this._castPeerId = peerid;
             element.hidden = false;
             element.srcObject = stream;
-            element.play();
+            element.oncanplay = (e) => {
+                element.play();
+            }
         }
     }
 

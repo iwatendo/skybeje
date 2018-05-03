@@ -33,7 +33,7 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
 
         if (sender.type === RoomSender.ID) {
             this.Controller.CastRoom = sender as RoomSender;
-            this.Controller.View.SetRoom(this.Controller.CastRoom.room);
+            this.Controller.View.SetRoomName(this.Controller.CastRoom.room);
         }
 
         if (sender.type === GuideSender.ID) {

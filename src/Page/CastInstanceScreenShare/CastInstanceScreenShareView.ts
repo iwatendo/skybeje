@@ -118,6 +118,11 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             }
         }
 
+        //  単体配信の場合
+        if (!LinkUtil.GetPeerID()) {
+            this.SetRoomName(null);
+        }
+
         callback();
     }
 
@@ -173,9 +178,9 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
      * 配信ルーム名の表示
      * @param room 
      */
-    public SetRoom(room: Home.Room) {
-        let message = "「" + room.name + "」に配信中";
-        document.getElementById("sbj-livecast-room-name").innerText = message;
+    public SetRoomName(room: Home.Room) {
+        let title = (room ? room.name + "に配信" : "単体で配信");
+        document.getElementById("sbj-livecast-room-name").innerText = title;
     }
 
 

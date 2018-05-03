@@ -26,8 +26,14 @@ export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastIn
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
         //  HomeVistorから送信されたメッセージをそのまま、モバイル側に送信
-        if (sender.type === RoomSender.ID) { this.Controller.SwPeer.SendAll(sender); }
         if (sender.type === GetCastSettingSedner.ID) { this.Controller.SwPeer.SendAll(sender); }
+
+        //  
+        if (sender.type === RoomSender.ID) {
+            let rs = sender as RoomSender;
+            this.Controller.SwPeer.SendAll(sender);
+            this.Controller.View.SetRoom(rs.room);
+        }
 
         //  配信ステータスはオーナー側にも送信
         if (sender.type === CastStatusSender.ID) {

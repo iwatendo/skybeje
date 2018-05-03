@@ -49,6 +49,11 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
             this.SendOption();
         }
 
+        //  単体配信の場合
+        if (!LinkUtil.GetPeerID()) {
+            this.SetRoomName(null);
+        }
+
         this.PageSettings = new PageSettingsController(this.Controller, document.getElementById('sbj-livehtml-pageitems'));
 
         //  LiveHTMLのプレビューにはカーソル表示しない
@@ -111,15 +116,9 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      * 配信ルーム名の表示
      * @param room 
      */
-    public SetRoom(room: Room) {
-
-        if (room && room.name.length > 0) {
-            let roomName = document.getElementById('sbj-livehtml-room-name');
-            roomName.hidden = false;
-            let message = room.name;
-            document.getElementById("sbj-livehtml-room-name").innerText = "配信先：" + message;
-        }
-
+    public SetRoomName(room: Room) {
+        let title = (room ? room.name + "に配信" : "単体で配信");
+        document.getElementById("sbj-livehtml-room-name").innerText = title;
     }
 
 

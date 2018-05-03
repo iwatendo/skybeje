@@ -15,12 +15,11 @@
 
 #sbj-gadget-instance-main{
     overflow: hidden;
-    margin: 16px 32px;
+    margin: 0px 32px;
 }
 
 #sbj-livecast-room-name{
-    display: inline-block;
-    margin: 0px 20px;
+    color: var(--sbj-color-label);
 }
 
 .sbj-cast-instance-actions{
