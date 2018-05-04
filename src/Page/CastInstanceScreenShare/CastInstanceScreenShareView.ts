@@ -50,8 +50,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         }
 
         framerateText.oninput = (e) => {
-            let fr = Number.parseInt(framerateText.value);
-            startButton.disabled = !(fr > 0 && fr <= 30);
+            this.ReadyCheck();
         }
 
 
@@ -182,6 +181,24 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
     public SetRoomName(room: Home.Room) {
         let title = (room ? room.name + "に配信" : "単体で配信");
         document.getElementById("sbj-livecast-room-name").innerText = title;
+        this.ReadyCheck();
+    }
+
+    /**
+     * 配信開始可能か確認
+     */
+    public ReadyCheck() {
+
+        let disabled = true;
+
+        if (this.Controller.IsReady()) {
+            let frElement = document.getElementById('sbj-screenshare-framerate') as HTMLInputElement;
+            let fr = Number.parseInt(frElement.value);
+            disabled = !(fr > 0 && fr <= 30);
+        }
+
+        let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
+        startButton.disabled = disabled;
     }
 
 

@@ -10,6 +10,7 @@ interface OnSWPeerOpen { (): void }
 export default class SWPeer {
 
     private _peer: any;
+    private _ownerId: string;
     private _owner: PeerJs.DataConnection;
     private _connCache: SWConnectionCache;
     private _service: IServiceController;
@@ -56,6 +57,7 @@ export default class SWPeer {
 
         //
         this._service = service;
+        this._ownerId = ownerId;
         this._connCache = new SWConnectionCache(this);
         this._opencb = opencb;
 
@@ -245,6 +247,14 @@ export default class SWPeer {
      */
     public GetAliveConnectionCount(): number {
         return this._connCache.AliveConnectionCount();
+    }
+
+
+    /**
+     * オーナーが設定されているか？
+     */
+    public HasOwner() {
+        return (this._ownerId && this._ownerId.length > 0);
     }
 
 }

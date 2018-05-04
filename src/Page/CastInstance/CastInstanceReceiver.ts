@@ -46,6 +46,7 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
             this.Controller.View.Cursor.SetIcon(conn.remoteId, (sender as IconSender).icon);
         }
 
+        //  配信先のチャットルーム情報
         if (sender.type === RoomSender.ID) {
             this.Controller.CastRoom = sender as RoomSender;
             this.Controller.View.SetRoomName(this.Controller.CastRoom.room);

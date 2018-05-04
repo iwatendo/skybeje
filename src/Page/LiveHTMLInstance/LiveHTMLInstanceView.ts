@@ -119,6 +119,25 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
     public SetRoomName(room: Room) {
         let title = (room ? room.name + "に配信" : "単体で配信");
         document.getElementById("sbj-livehtml-room-name").innerText = title;
+        this.ReadyCheck();
+    }
+
+
+    /**
+     * 配信開始可能か確認
+     */
+    public ReadyCheck() {
+
+        let disabled = true;
+
+        //  配信先のチャットルームが確定かつ、カメラまたはマイクデバイスが選択されている場合
+        //  配信開始ボタン押下を許可
+        if (this.Controller.IsReady()) {
+            disabled = !(this.LiveHTML && this.LiveHTML.pageId);
+        }
+
+        let startButton = document.getElementById('sbj-livehtml-instance-start') as HTMLButtonElement;
+        startButton.disabled = disabled;
     }
 
 
@@ -247,8 +266,6 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
      */
     public SendLiveHTML(ps: PageSettings) {
 
-        let startElement = (document.getElementById('sbj-livehtml-instance-start') as HTMLInputElement);
-
         this.LiveHTML = new LiveHTMLSender(ps);
         this.Controller.SwPeer.SendAll(this.LiveHTML);
 
@@ -260,15 +277,13 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
                 castTitle += "（" + ps.pageTag + "）";
             }
             castTitle = "表示ページ：" + castTitle;
-            startElement.disabled = false;
-
         }
         else {
             castTitle = "表示するHTMLページを選択してください";
-            startElement.disabled = true;
         }
 
         document.getElementById('sbj-livehtml-cast-title').textContent = castTitle;
+        this.ReadyCheck();
     }
 
 

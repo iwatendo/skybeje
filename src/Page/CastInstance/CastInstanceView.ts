@@ -57,8 +57,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             location.href = "";
         };
 
-        let options = LocalCache.LiveCastOptions;
-
         let checkSfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;
         let cursorDispElement = document.getElementById('sbj-check-cursor-disp') as HTMLInputElement;
 
@@ -144,6 +142,26 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     public SetRoomName(room: Home.Room) {
         let title = (room ? room.name + "に配信" : "単体で配信");
         document.getElementById("sbj-livecast-room-name").innerText = title;
+        this.ReadyCheck();
+    }
+
+
+    /**
+     * 配信開始可能か確認
+     */
+    public ReadyCheck() {
+
+        let disabled = true;
+
+        //  配信先のチャットルームが確定かつ、カメラまたはマイクデバイスが選択されている場合
+        //  配信開始ボタン押下を許可
+        if (this.Controller.IsReady()) {
+            let options = LocalCache.LiveCastOptions;
+            disabled = !((options.SelectCam ? true : false) || (options.SelectMic ? true : false));
+        }
+
+        let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
+        startButton.disabled = disabled;
     }
 
 
@@ -166,7 +184,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             var view = new DeviceView(DeviceKind.Audio, textElement, listElement, devices, (deviceId, deviceName) => {
                 controller.AudioSource = deviceId;
                 LocalCache.SetLiveCastOptions((opt) => opt.SelectMic = deviceId);
-                this.ChnageDevice();
+                this.ReadyCheck();
             });
 
             if (isInit) {
@@ -177,7 +195,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
             this._micDeviceView = view;
             document.getElementById("mic-select-div").classList.add("is-dirty");
-            this.ChnageDevice();
+            this.ReadyCheck();
         });
 
         DeviceUtil.GetVideoDevice((devices) => {
@@ -190,7 +208,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
                 controller.VideoSource = deviceId;
                 LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceId);
-                this.ChnageDevice();
+                this.ReadyCheck();
 
                 if (deviceId) {
                     let msc = StreamUtil.GetMediaStreamConstraints(deviceId, null);
@@ -210,19 +228,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
             this._camDeviceView = view;
             document.getElementById("webcam-select-div").classList.add("is-dirty");
-            this.ChnageDevice();
+            this.ReadyCheck();
         });
 
-    }
-
-
-    /**
-     * デバイス変更時の共通処理
-     */
-    public ChnageDevice() {
-        let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
-        let options = LocalCache.LiveCastOptions;
-        startButton.disabled = !((options.SelectCam ? true : false) || (options.SelectMic ? true : false));
     }
 
 

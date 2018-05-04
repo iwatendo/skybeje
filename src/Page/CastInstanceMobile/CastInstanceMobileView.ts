@@ -124,6 +124,22 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
 
 
     /**
+     * 配信開始可能か確認
+     */
+    public ReadyCheck() {
+
+        let disabled = true;
+
+        if (this.Controller.IsReady()) {
+            disabled = false;
+        }
+
+        let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
+        startButton.disabled = disabled;
+    }
+    
+
+    /**
      * 
      * @param message 
      */

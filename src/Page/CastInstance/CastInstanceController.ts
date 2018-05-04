@@ -41,17 +41,14 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     };
 
 
-    private _peerid: string = null;
-
-
     /**
      * 自身のPeer生成時イベント
      * @param peer
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
-        this._peerid = peer.id;
         this.View = new CastInstanceView(this, () => { });
     }
+
 
     /**
      * 切断時処理
@@ -69,7 +66,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public OnOwnerConnection() {
         this.CastStatus = new CastStatusSender(CastTypeEnum.LiveCast);
         this.CastStatus.instanceUrl = location.href;
-        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this.SwPeer.PeerId);
         this.SwPeer.SendToOwner(this.CastStatus);
 
         this.View.InitializeChatLink();
@@ -177,7 +174,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         this.CastStatus.isCasting = isStreaming;
         this.CastStatus.isClose = isClose;
         this.CastStatus.isHide = false;
-        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid) + "&sfu=" + (this.CastSetting.isSFU ? 1 : 0);
+        this.CastStatus.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this.SwPeer.PeerId) + "&sfu=" + (this.CastSetting.isSFU ? 1 : 0);
         this.SendCastInfo();
     }
 
@@ -194,6 +191,22 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         //  オーナー側への通知
         if (this.CastStatus) {
             this.SwPeer.SendToOwner(this.CastStatus);
+        }
+    }
+
+
+    /**
+     *  配信準備ができているか？
+     */
+    public IsReady() {
+        if (this.SwPeer.HasOwner()) {
+            //  チャットから呼びされた場合、チャットルーム情報が設定された場合に配信可能とする
+            let r = this.CastRoom.room;
+            return (r && r.hid);
+        }
+        else {
+            //  単体起動の場合
+            return true;
         }
     }
 

@@ -50,6 +50,7 @@ export class CastInstanceMobileReceiver extends AbstractServiceReceiver<CastInst
         if (sender.type === RoomSender.ID) {
             this.Controller.CastRoom = sender as RoomSender;
             //  this.Controller.View.SetRoomName(this.Controller.CastRoom.room);
+            this.Controller.View.ReadyCheck();
         }
 
         //

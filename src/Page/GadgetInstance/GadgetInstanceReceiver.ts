@@ -38,7 +38,7 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
 
         if (sender.type === GuideSender.ID) {
             let guide = (sender as GuideSender).guide;
-            this.Controller.Guide = guide
+            this.Controller.Guide = guide;
             this.Controller.View.SetGuide(guide, true);
         }
 
@@ -55,7 +55,7 @@ export class GadgetInstanceReceiver extends AbstractServiceReceiver<GadgetInstan
 
         //  YouTubeの再生状況の送信
         if (sender.type == YouTubeStatusSender.ID) {
-            this.Controller.View.SetYouTubeStatus(conn, sender as YouTubeStatusSender)
+            this.Controller.View.SetYouTubeStatus(conn, sender as YouTubeStatusSender);
         }
 
     }

@@ -165,4 +165,19 @@ export default class GadgetInstanceController extends AbstractServiceController<
     }
 
 
+    /**
+     *  配信準備ができているか？
+     */
+    public IsReady() {
+        if (this.SwPeer.HasOwner()) {
+            //  チャットから呼びされた場合、チャットルーム情報が設定された場合に配信可能とする
+            let r = this.CastRoom.room;
+            return (r && r.hid);
+        }
+        else {
+            //  単体起動の場合
+            return true;
+        }
+    }
+
 };
