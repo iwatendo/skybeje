@@ -18,13 +18,12 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
 
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
-        let startButton = document.getElementById('sbj-cast-instance-start');
+        let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let roomName = document.getElementById('sbj-livecast-room-name');
         let note = document.getElementById('sbj-livecast-note');
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
-        let framerateRange = document.getElementById('sbj-screenshare-framerate') as HTMLInputElement;
-        let framerateTip = document.getElementById('sbj-screenshare-framerate-tip');
+        let framerateText = document.getElementById('sbj-screenshare-framerate') as HTMLInputElement;
         let option0 = document.getElementById('sbj-screenshare-option-0') as HTMLInputElement;
         let option1 = document.getElementById('sbj-screenshare-option-1') as HTMLInputElement;
         let option2 = document.getElementById('sbj-screenshare-option-2') as HTMLInputElement;
@@ -50,13 +49,12 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             this.Controller.CastStatus.isHide = false;
         }
 
-        framerateRange.onmousemove = (e) => {
-            framerateTip.textContent = framerateRange.value.toString();
+        framerateText.oninput = (e) => {
+            let fr = Number.parseInt(framerateText.value);
+            startButton.disabled = !(fr > 0 && fr <= 30);
         }
 
-        framerateRange.onchange = (e) => {
-            framerateTip.textContent = framerateRange.value.toString();
-        }
+
 
         //  ストリーミング開始ボタン
         startButton.onclick = (e) => {
@@ -69,7 +67,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
             if (option2.checked) { option = 2; width = 640; height = 360; }
             if (option3.checked) { option = 3; width = 800; height = 600; }
             if (option4.checked) { option = 4; width = 960; height = 540; }
-            let fr = Number.parseInt(framerateRange.value);
+            let fr = Number.parseInt(framerateText.value);
 
             LocalCache.SetScreenShareOptions((opt) => {
                 opt.Resolution = option;
@@ -108,7 +106,10 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         let options = LocalCache.ScreenShareOptions;
         if (options) {
 
-            framerateRange.value = options.FrameRage.toString();
+            if (options.FrameRage > 0) {
+                framerateText.value = options.FrameRage.toString();
+            }
+
             switch (options.Resolution) {
                 case 0: option0.checked = true; break;
                 case 1: option1.checked = true; break;

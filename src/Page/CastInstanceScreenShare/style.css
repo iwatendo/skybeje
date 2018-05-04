@@ -24,7 +24,7 @@
 }
 
 .sbj-cast-instance-actions{
-    margin: 16px 0px;
+    margin: 16px 0px 40px;
 }
 
 .sbj-cast-instance--header-row{
@@ -79,6 +79,12 @@
 	min-width: 36px;
     width: 36px;
     padding: 0px;
+}
+
+.sbj-screenshare-framerate-field{
+    width: 80px;
+    margin: 0px 20px 0px;
+    padding: 0px 0px 20px;
 }
 
 /*-----------------------------

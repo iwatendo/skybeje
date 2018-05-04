@@ -72,8 +72,11 @@
                         </div>
                         <div>
                             <h6 class="mdl-color-text--grey-600">フレームレート</h6>
-                            <input id="sbj-screenshare-framerate" class="mdl-slider mdl-js-slider" type="range" min="1" max="30" step="1" value="5">
-                            <span id="sbj-screenshare-framerate-tip" class="mdl-tooltip" for="sbj-screenshare-framerate">15</span>
+                            <div class="sbj-screenshare-framerate-field mdl-textfield mdl-js-textfield">
+                                <input class="mdl-textfield__input" type="number" min="1" max="30" value="15" pattern="/^-?\d+$/" id="sbj-screenshare-framerate">
+                                <label class="mdl-textfield__label" for="sbj-screenshare-framerate"></label>
+                                <span class="mdl-textfield__error">1~30で指定</span>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -121,8 +124,7 @@
                         <br/>ただし、一般的なビデオ通話に使用されるWebRTC(P2P)での配信であり、大規模配信には利用できません。
                         <br/>（双方向のビデオ通話ではなく、単方向のビデオ通話のイメージの機能です）
                         <br/>本サービスは、10人以下での利用を想定しています。
-                        <br/>
-                        「共有する画面の選択」からスクリーンシェアが開始できます。
+                        <br/> 「共有する画面の選択」からスクリーンシェアが開始できます。
                         <br/>チャットクライアントから呼出した場合、自動的にチャットルームで視聴ページが開きます。
                         <br/>単体で起動した場合は、接続URLをコピーするためのボタンが表示されますので視聴して欲しい人にURLを伝えてください。
                         <br/>
