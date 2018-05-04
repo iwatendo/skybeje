@@ -157,10 +157,11 @@ export default class CastVisitorController extends AbstractServiceController<Cas
             element.hidden = false;
             element.srcObject = stream;
             element.oncanplay = (e) => {
-                if( !StreamUtil.HasAudioStream(stream)){
+                if (!StreamUtil.HasAudioStream(stream)) {
                     this.View.VolumeHide();
                 }
                 element.play();
+                this.View.Cursor.DisplayAll();
             }
         }
     }
