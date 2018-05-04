@@ -272,7 +272,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 let castSender = new RoomSender();
                 castSender.room = room;
                 this.Controller.SwPeer.SendTo(conn, castSender);
-            })
+            });
 
             this.Controller.SwPeer.SendToOwner(serventSender);
         });

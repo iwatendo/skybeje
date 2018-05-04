@@ -32,7 +32,7 @@ export class CastInstanceMobileQRReceiver extends AbstractServiceReceiver<CastIn
         if (sender.type === RoomSender.ID) {
             let rs = sender as RoomSender;
             this.Controller.SwPeer.SendAll(sender);
-            this.Controller.View.SetRoom(rs.room);
+            this.Controller.View.SetRoomName(rs.room);
         }
 
         //  配信ステータスはオーナー側にも送信

@@ -3,7 +3,7 @@ import StdUtil from "../../Base/Util/StdUtil";
 import CastInstanceMobileQRModel from "./CastInstanceMobileQRModel";
 import CastInstanceMobileQRView from "./CastInstanceMobileQRView";
 import { CastInstanceMobileQRReceiver } from "./CastInstanceMobileQRReceiver";
-import CastStatusSender from "../../Base/Container/CastStatusSender";
+import CastStatusSender, { CastTypeEnum } from "../../Base/Container/CastStatusSender";
 
 
 export default class CastInstanceMobileQRController extends AbstractServiceController<CastInstanceMobileQRView, CastInstanceMobileQRModel> {
@@ -58,6 +58,11 @@ export default class CastInstanceMobileQRController extends AbstractServiceContr
      * オーナー接続時イベント
      */
     public OnOwnerConnection() {
+
+        //  オーナー側にQRコードのページの起動も通知
+        this.CastStatus = new CastStatusSender(CastTypeEnum.MobileQR);
+        this.SwPeer.SendToOwner(this.CastStatus);
+
         this.View.InitializeChatLink();
     }
 

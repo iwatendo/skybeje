@@ -10,6 +10,7 @@ export enum CastTypeEnum {
     ScreenShare = 2,
     Gadget = 3,
     LiveHTML = 4,
+    MobileQR = 5, 
 }
 
 

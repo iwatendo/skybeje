@@ -19,6 +19,11 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
      */
     public Initialize(callback: OnViewLoad) {
 
+        //  単体配信の場合
+        if (!LinkUtil.GetPeerID()) {
+            this.SetRoomName(null);
+        }        
+
         StdUtil.StopPropagation();
         this.SetLiveCastQRCode();
 
@@ -62,9 +67,9 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
      * 配信ルーム名の表示
      * @param room 
      */
-    public SetRoom(room: Room) {
-        let message = "「" + room.name + "」に配信";
-        document.getElementById("sbj-livecast-room-name").innerText = message;
+    public SetRoomName(room: Room) {
+        let title = (room ? room.name + "に配信" : "単体で配信");
+        document.getElementById("sbj-livecast-room-name").innerText = title;
     }
 
 

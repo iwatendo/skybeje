@@ -25,7 +25,7 @@
 }
 
 .sbj-cast-instance-option{
-    margin: 20px 4px 0px 0px;
+    margin: 0px 4px 20px 0px;
 }
 
 /*-----------------------------
@@ -68,4 +68,8 @@
     width: 400px;
     height: 400px;
     object-fit: contain;
+}
+
+#sbj-livecast-room-name{
+    color: var(--sbj-color-label);
 }
