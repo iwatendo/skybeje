@@ -234,4 +234,19 @@ export default class StreamUtil {
         }
     }
 
+
+    /**
+     * AudioStreamの有無
+     * @param stream 
+     */
+    public static HasAudioStream(stream: MediaStream): boolean {
+        if (stream) {
+            let tracks = stream.getAudioTracks();
+            return (tracks && tracks.length > 0);
+        }
+        else {
+            return false;
+        }
+    }
+
 }

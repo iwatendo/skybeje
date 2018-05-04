@@ -136,4 +136,15 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
         }
     }
 
+
+    /**
+     * ボリューム操作の為のコンポーネントを非表示
+     */
+    public VolumeHide() {
+        document.getElementById('sbj-cast-visitor-submenu-mobile').hidden = true;
+        document.getElementById('sbj-cast-visitor-volume-slider').hidden = true;
+        document.getElementById('sbj-cast-visitor-volume').hidden = true;
+    }
+
+
 }

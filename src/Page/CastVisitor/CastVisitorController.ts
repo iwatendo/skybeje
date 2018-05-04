@@ -8,6 +8,7 @@ import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
+import StreamUtil from "../../Base/Util/StreamUtil";
 
 
 export default class CastVisitorController extends AbstractServiceController<CastVisitorView, CastVisitorModel> {
@@ -156,6 +157,9 @@ export default class CastVisitorController extends AbstractServiceController<Cas
             element.hidden = false;
             element.srcObject = stream;
             element.oncanplay = (e) => {
+                if( !StreamUtil.HasAudioStream(stream)){
+                    this.View.VolumeHide();
+                }
                 element.play();
             }
         }
