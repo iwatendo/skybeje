@@ -242,7 +242,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      *  配信準備ができているか？
      */
     public IsReady() {
-        if (this.SwPeer.HasOwner()) {
+        if (this.SwPeer && this.SwPeer.HasOwner()) {
             //  チャットから呼びされた場合、チャットルーム情報が設定された場合に配信可能とする
             let r = this.CastRoom.room;
             return (r && r.hid);
