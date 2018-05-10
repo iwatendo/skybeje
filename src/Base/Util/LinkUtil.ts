@@ -11,6 +11,14 @@ export default class LinkUtil {
 
 
     /**
+     * URLのOneTimeKeyを取得します
+     */
+    public static GetOneTimeKey(): string {
+        return this.GetArgs('k');
+    }
+
+
+    /**
      * URLのPidを取得します
      */
     public static GetUrlPid(): number {
@@ -95,7 +103,7 @@ export default class LinkUtil {
         result = e.firstChild.href;
 
         if (peerid) {
-            result += "?p=" + peerid;
+            result += "?k=" + StdUtil.OneTimeKey + "&p=" + peerid;
         }
 
         return result;
@@ -109,7 +117,7 @@ export default class LinkUtil {
      * @param openBtn 
      * @param qrcode 
      */
-    public static SetCopyLinkButton(link: string, label:string, linkCopyBtn: HTMLButtonElement, openBtn: HTMLButtonElement = null, qrcode: HTMLFrameElement = null) {
+    public static SetCopyLinkButton(link: string, label: string, linkCopyBtn: HTMLButtonElement, openBtn: HTMLButtonElement = null, qrcode: HTMLFrameElement = null) {
 
         if (link) {
             if (linkCopyBtn) {

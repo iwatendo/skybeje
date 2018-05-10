@@ -4,6 +4,7 @@ import SWPeer from "./SWPeer";
 import Sender from "../Container/Sender";
 import ISWRoom from "./ISWRoom";
 import StreamUtil from "../Util/StreamUtil";
+import StdUtil from "../Util/StdUtil";
 
 
 export enum SWRoomMode {
@@ -99,7 +100,7 @@ export default class SWRoom {
      * @param name 
      */
     public static ToRoomName(name: string) {
-        return "skybeje-" + name;
+        return "skybeje-" + StdUtil.OneTimeKey + "-" + name;
     }
 
 

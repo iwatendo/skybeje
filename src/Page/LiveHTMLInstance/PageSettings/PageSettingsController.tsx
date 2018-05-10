@@ -593,7 +593,7 @@ export default class PageSettingsController {
      */
     public SetVoiceChatHTML() {
 
-        let url = LinkUtil.CreateLink("../VoiceChat/") + "?p={peer}&sfu=0";
+        let url = LinkUtil.CreateLink("../VoiceChat/") + "?k={key}&p={peer}&sfu=0";
 
         let element = (document.getElementById('sbj-livehtml-value-layer4') as HTMLInputElement);
         element.value = "<iframe class='voicechat' src='" + url + "'/>";

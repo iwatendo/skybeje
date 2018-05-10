@@ -3,11 +3,13 @@ import StdUtil from "../Util/StdUtil";
 export default abstract class Sender {
 
     constructor(type: string) {
-        this.uid = StdUtil.UserID;
         this.type = type;
+        this.uid = StdUtil.UserID;
+        this.key = StdUtil.OneTimeKey;
     }
 
-    uid: string;
     type: string;
+    uid: string;
+    key: string;
 
 }

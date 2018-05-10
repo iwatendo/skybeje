@@ -9,6 +9,7 @@ import IServiceReceiver from "./IServiceReceiver";
 import IServiceView from "./IServiceView";
 import IServiceModel from "./IServiceModel";
 import LocalCache from "../Contents/Cache/LocalCache";
+import StdUtil from "./Util/StdUtil";
 
 /**
  * Peerサービスコントローラーの抽象化クラス
@@ -166,6 +167,10 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
             return;
 
         if (sender.type === null)
+            return;
+
+        //  OneTimeKeyが一致しない場合はデータ送信しない
+        if (sender.key !== StdUtil.OneTimeKey)
             return;
 
         this.Receiver.Receive(conn, sender);
