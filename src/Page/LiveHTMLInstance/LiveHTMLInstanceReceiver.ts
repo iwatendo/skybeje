@@ -31,7 +31,9 @@ export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLIn
                 let cursor = sender as IconCursorSender;
                 this.Controller.CursorCache.Set(cursor);
                 this.Controller.SwPeer.SendAll(sender);
-                this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
+                if (this.Controller.View.Cursor) {
+                    this.Controller.View.Cursor.SetCursor(sender as IconCursorSender);
+                }
             }
         }
 
