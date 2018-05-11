@@ -147,4 +147,12 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
     }
 
 
+    /**
+     * 「接続中」の表示を消す
+     */
+    public MessageHide(){
+        document.getElementById('sbj-cast-visitor-message-port').hidden = true;
+    }
+
+
 }

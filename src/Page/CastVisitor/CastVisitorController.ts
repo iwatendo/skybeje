@@ -160,6 +160,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
                 if (!StreamUtil.HasAudioStream(stream)) {
                     this.View.VolumeHide();
                 }
+                this.View.MessageHide();
                 element.play();
                 this.View.Cursor.DisplayAll();
             }
