@@ -66,4 +66,14 @@ export default class CastInstanceMobileQRController extends AbstractServiceContr
         this.View.InitializeChatLink();
     }
 
+
+    /**
+     * オーナー側が切断した場合
+     */
+    public OnOwnerClose() {
+        //  全てのクライアントとの接続を終了します
+        this.SwPeer.Close();
+        this.PageClose();
+    }
+
 };

@@ -36,7 +36,7 @@ export default class VoiceChatSettingsView extends AbstractServiceView<VoiceChat
      * タブ毎閉じる
      */
     public Close() {
-        window.open('about:blank', '_self').close();
+        this.Controller.PageClose();
     }
 
 

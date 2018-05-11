@@ -47,8 +47,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         stopBotton.onclick = (e) => {
             this.Controller.StopStreaming();
             this.Controller.SwPeer.Close();
-            //  ページごと閉じる。
-            this.PageClose();
+            this.Controller.PageClose();
         };
 
         //  マイクボタン
@@ -155,14 +154,6 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
     public MenuClose() {
         var menu = document.getElementById('menu') as any;
         menu.close();
-    }
-
-
-    /**
-     * ページごと閉じる
-     */
-    public PageClose() {
-        window.open('about:blank', '_self').close();
     }
 
 

@@ -50,6 +50,28 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
     }
 
 
+    private static _reload = false;
+
+    /**
+     * ページの再読込
+     */
+    public PageReLoad() {
+        AbstractServiceController._reload = true;
+        location.href = "";
+    }
+
+
+    /**
+     * ページを閉じる
+     * ※但しリロードが先に実行されていた場合、リロードを優先
+     */
+    public PageClose() {
+        if (!AbstractServiceController._reload) {
+            window.open('about:blank', '_self').close();
+        }
+    }
+
+
     /**
      * エラーログ出力
      * @param message

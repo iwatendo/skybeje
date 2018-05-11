@@ -91,7 +91,7 @@ export default class CastInstanceScreenShareView extends AbstractServiceView<Cas
         //  ストリーミング停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.ServerSend(false, false);
-            location.href = "";
+            this.Controller.PageReLoad();
         };
 
 

@@ -78,7 +78,7 @@ export default class LiveHTMLInstanceController extends AbstractServiceControlle
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
         this.SwPeer.Close();
-        window.open('about:blank', '_self').close();
+        this.PageClose();
     }
 
 

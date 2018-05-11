@@ -55,7 +55,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         //  ストリーミング停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.ServerSend(false, false);
-            location.href = "";
+            this.Controller.PageReLoad();
         };
 
         let checkSfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;

@@ -41,7 +41,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         //  ストリーミング停止ボタン
         document.getElementById('sbj-livehtml-instance-stop').onclick = (e) => {
             this.Controller.ServerSend(false, false);
-            location.href = "";
+            this.Controller.PageReLoad();
         };
 
         //  ユーザーのカーソル表示可否の変更

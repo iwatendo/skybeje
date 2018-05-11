@@ -57,7 +57,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         //  停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.SendToOwner_Close();
-            location.href = "";
+            this.Controller.PageReLoad();
         };
 
         let options = LocalCache.GadgetCastOptions;

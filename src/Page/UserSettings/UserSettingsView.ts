@@ -42,7 +42,7 @@ export default class UserSettingsView extends AbstractServiceView<UserSettingsCo
     }
 
     public Close() {
-        window.open('about:blank', '_self').close();
+        this.Controller.PageClose();
     }
 
 
