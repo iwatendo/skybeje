@@ -170,7 +170,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
             return;
 
         //  OneTimeKeyが一致しない場合はデータ送信しない
-        if (sender.key !== StdUtil.OneTimeKey)
+        if (sender.key !== LinkUtil.OneTimeKey)
             return;
 
         this.Receiver.Receive(conn, sender);

@@ -1,11 +1,12 @@
 import StdUtil from "../Util/StdUtil";
+import LinkUtil from "../Util/LinkUtil";
 
 export default abstract class Sender {
 
     constructor(type: string) {
         this.type = type;
         this.uid = StdUtil.UserID;
-        this.key = StdUtil.OneTimeKey;
+        this.key = LinkUtil.OneTimeKey;
     }
 
     type: string;

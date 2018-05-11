@@ -1,6 +1,6 @@
 ﻿import AbstractIndexedDB from "../../Base/AbstractIndexedDB";
 import * as DBI from "../../Base/AbstractIndexedDB";
-import StdUtil from "../../Base/Util/StdUtil";
+import LinkUtil from "../../Base/Util/LinkUtil";
 
 
 export enum CtrlLayerEnum {
@@ -53,7 +53,7 @@ export class PageSettings {
 
     public static ReplasePeerId(html: string, peerid: string): string {
         if (html && html.length > 0) {
-            return html.replace("{key}", StdUtil.OneTimeKey).replace("{peer}", peerid);
+            return html.replace("{key}", LinkUtil.OneTimeKey).replace("{peer}", peerid);
         }
         else {
             return html;

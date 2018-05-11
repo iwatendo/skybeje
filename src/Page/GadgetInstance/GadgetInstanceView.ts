@@ -14,6 +14,7 @@ import GuideUtil from "../../Contents/Util/GuideUtil";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import YouTubeStatusSender from "../../Contents/Sender/YouTubeStatusSender";
 import LinkUtil from "../../Base/Util/LinkUtil";
+import MdlUtil from "../../Contents/Util/MdlUtil";
 
 export default class GadgetInstanceView extends AbstractServiceView<GadgetInstanceController> {
 
@@ -94,7 +95,7 @@ export default class GadgetInstanceView extends AbstractServiceView<GadgetInstan
         //  接続URLのコピー
         let linkurl = LinkUtil.CreateLink("../GadgetVisitor/", this.Controller.SwPeer.PeerId);
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
-        LinkUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn);
+        MdlUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn);
     }
 
 

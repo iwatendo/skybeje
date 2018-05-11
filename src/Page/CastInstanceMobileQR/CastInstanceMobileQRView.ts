@@ -9,6 +9,7 @@ import MapLocationSender from "../../Contents/Sender/MapLocationSender";
 import GMapsUtil from "../../Contents/Util/GMapsUtil";
 import PictureSender from "../../Contents/Sender/PictureSender";
 import { Room } from "../../Contents/IndexedDB/Home";
+import MdlUtil from "../../Contents/Util/MdlUtil";
 
 export default class CastInstanceMobileQRView extends AbstractServiceView<CastInstanceMobileQRController> {
 
@@ -22,7 +23,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
         //  単体配信の場合
         if (!LinkUtil.GetPeerID()) {
             this.SetRoomName(null);
-        }        
+        }
 
         StdUtil.StopPropagation();
         this.SetLiveCastQRCode();
@@ -107,7 +108,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
             let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
             let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
             let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
-            LinkUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
+            MdlUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
 
             this.ChangeDisplay(true, true);
         }

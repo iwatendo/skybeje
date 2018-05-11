@@ -255,7 +255,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
-        LinkUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
+        MdlUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
 
         this.Controller.ServerSend(true, false);
     }

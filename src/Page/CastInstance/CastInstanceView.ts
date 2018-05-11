@@ -16,6 +16,7 @@ import LocalCache from "../../Contents/Cache/LocalCache";
 import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
+import MdlUtil from "../../Contents/Util/MdlUtil";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -120,7 +121,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
-        LinkUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
+        MdlUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
 
         this.Controller.SetStreaming();
     }

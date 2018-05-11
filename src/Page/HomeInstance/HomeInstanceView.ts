@@ -10,6 +10,7 @@ import HomeInstanceController from "./HomeInstanceController";
 import { RoomView } from "./Room/RoomView";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import ClearTimelineSender from "../../Contents/Sender/ClearTimelineSender";
+import MdlUtil from "../../Contents/Util/MdlUtil";
 
 
 export default class HomeInstanceView extends AbstractServiceView<HomeInstanceController> {
@@ -33,7 +34,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         let clipcopybtn = document.getElementById('sbj-start-linkcopy') as HTMLButtonElement;
 
         //  「接続URLのコピー」
-        LinkUtil.SetCopyLinkButton(linkurl, "接続URL", clipcopybtn);
+        MdlUtil.SetCopyLinkButton(linkurl, "接続URL", clipcopybtn);
 
         document.getElementById('sbj-clear-timeline').onclick = (e) => {
             this.ClearTimeline();

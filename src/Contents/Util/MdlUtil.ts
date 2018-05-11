@@ -1,3 +1,5 @@
+import StdUtil from "../../Base/Util/StdUtil";
+import LinkUtil from "../../Base/Util/LinkUtil";
 
 
 export default class MdlUtil {
@@ -57,5 +59,41 @@ export default class MdlUtil {
         }
     }
 
+
+    /**
+     * 
+     * @param link 
+     * @param linkCopyBtn 
+     * @param openBtn 
+     * @param qrcode 
+     */
+    public static SetCopyLinkButton(link: string, label: string, linkCopyBtn: HTMLButtonElement, openBtn: HTMLButtonElement = null, qrcode: HTMLFrameElement = null) {
+
+        if (link) {
+            if (linkCopyBtn) {
+                linkCopyBtn.onclick = (e) => {
+                    StdUtil.ClipBoardCopy(link);
+                    linkCopyBtn.textContent = " " + label + "をクリップボードにコピーしました ";
+                    linkCopyBtn.classList.remove('mdl-button--colored');
+                    linkCopyBtn.classList.add('mdl-button--accent');
+                    window.setTimeout(() => {
+                        linkCopyBtn.textContent = " " + label + "のコピー ";
+                        linkCopyBtn.classList.remove('mdl-button--accent');
+                        linkCopyBtn.classList.add('mdl-button--colored');
+                    }, 2500);
+                };
+            }
+
+            if (openBtn) {
+                openBtn.onclick = (e) => { window.open(link, "_blank"); }
+            }
+
+            if (qrcode) {
+                qrcode.src = LinkUtil.CreateLink("../QrCode/") + "?linkurl=" + encodeURIComponent(link);
+            }
+
+        }
+
+    }
 
 }

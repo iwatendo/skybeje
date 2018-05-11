@@ -8,8 +8,6 @@ export default class StdUtil {
 
     public static UserID: string = StdUtil.CreateUserID();
 
-    public static OneTimeKey: string = StdUtil.CreateOneTimeKey();
-
     /**
      *  ユーザーID / 初回起動時にランダムで設定されます
      */
@@ -22,21 +20,6 @@ export default class StdUtil {
             localStorage.setItem('user-id', userid);
         }
         return userid;
-    }
-
-
-    /**
-     * ワンタイムパスワードを生成します
-     */
-    public static CreateOneTimeKey(): string {
-        let key: string;
-        if (LinkUtil) {
-            key = LinkUtil.GetOneTimeKey();
-        }
-        if (!key) {
-            key = this.createRandKey(8, "");
-        }
-        return key;
     }
 
 
@@ -245,17 +228,6 @@ export default class StdUtil {
      */
     public static UniqKey(): string {
         return this.CreateUuid();
-    }
-
-
-    /**
-     * 
-     * @param l 
-     * @param r 
-     */
-    private static createRandKey(l: number, r: string): string {
-        r = r ? r : '';
-        return l ? StdUtil.createRandKey(--l, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 60)) + r) : r;
     }
 
 

@@ -1,6 +1,7 @@
-﻿import StdUtil from "./StdUtil";
-
+﻿
 export default class LinkUtil {
+
+    public static OneTimeKey: string = LinkUtil.CreateOneTimeKey();
 
     /**
      * URLのPeerIDを取得します
@@ -103,47 +104,35 @@ export default class LinkUtil {
         result = e.firstChild.href;
 
         if (peerid) {
-            result += "?k=" + StdUtil.OneTimeKey + "&p=" + peerid;
+            result += "?k=" + LinkUtil.OneTimeKey + "&p=" + peerid;
         }
 
         return result;
     }
 
 
+
+
+    /**
+     * ワンタイムパスワードを生成します
+     */
+    public static CreateOneTimeKey(): string {
+        let key: string;
+        key = LinkUtil.GetOneTimeKey();
+        if (!key) {
+            key = this.createRandKey(8, "");
+        }
+        return key;
+    }
+
     /**
      * 
-     * @param link 
-     * @param linkCopyBtn 
-     * @param openBtn 
-     * @param qrcode 
+     * @param l 
+     * @param r 
      */
-    public static SetCopyLinkButton(link: string, label: string, linkCopyBtn: HTMLButtonElement, openBtn: HTMLButtonElement = null, qrcode: HTMLFrameElement = null) {
-
-        if (link) {
-            if (linkCopyBtn) {
-                linkCopyBtn.onclick = (e) => {
-                    StdUtil.ClipBoardCopy(link);
-                    linkCopyBtn.textContent = " " + label + "をクリップボードにコピーしました ";
-                    linkCopyBtn.classList.remove('mdl-button--colored');
-                    linkCopyBtn.classList.add('mdl-button--accent');
-                    window.setTimeout(() => {
-                        linkCopyBtn.textContent = " " + label + "のコピー ";
-                        linkCopyBtn.classList.remove('mdl-button--accent');
-                        linkCopyBtn.classList.add('mdl-button--colored');
-                    }, 2500);
-                };
-            }
-
-            if (openBtn) {
-                openBtn.onclick = (e) => { window.open(link, "_blank"); }
-            }
-
-            if (qrcode) {
-                qrcode.src = LinkUtil.CreateLink("../QrCode/") + "?linkurl=" + encodeURIComponent(link);
-            }
-
-        }
-
+    private static createRandKey(l: number, r: string): string {
+        r = r ? r : '';
+        return l ? LinkUtil.createRandKey(--l, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 60)) + r) : r;
     }
 
 }
