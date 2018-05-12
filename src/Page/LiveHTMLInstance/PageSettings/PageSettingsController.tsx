@@ -9,6 +9,7 @@ import StdUtil from "../../../Base/Util/StdUtil";
 import MdlUtil from "../../../Contents/Util/MdlUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
 import ChatStatusSender from "../../../Contents/Sender/ChatStatusSender";
+import HtmlGenerator from "../HtmlGenerator";
 
 
 /**
@@ -97,9 +98,15 @@ export default class PageSettingsController {
 
         //  レイヤ設定変更
         for (let i = 1; i <= 4; i++) {
-            let element = document.getElementById('sbj-livehtml-value-layer' + i.toString());
+            let element = document.getElementById('sbj-livehtml-value-layer' + i.toString()) as HTMLTextAreaElement;
             element.onchange = (e) => { this.ChangeHTML(this.GetPageSettings()); }
             element.oninput = (e) => { this.CheckChangeSaveDisable(); }
+            //  URL等のドロップ時処理(URLを加工しHTMLとして貼り付ける)
+            HtmlGenerator.SetEvent(element, (html) => {
+                element.value = html;
+                this.ChangeHTML(this.GetPageSettings());
+                this.CheckChangeSaveDisable();
+            });
         }
 
         //  コントロールレイヤオプション
