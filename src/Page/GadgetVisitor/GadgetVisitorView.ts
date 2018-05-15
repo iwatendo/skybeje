@@ -22,7 +22,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
     //
     public Initialize(callback: OnViewLoad) {
-        
+
         StdUtil.StopPropagation();
 
         let submenuMain = document.getElementById('sbj-cast-visitor-submenu');
@@ -69,9 +69,10 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
         let option = JSON.parse(sender.guide.embedstatus) as YouTubeOption;
         option.start = sender.status.current;
 
-        YouTubeUtil.GetPlayer(option, false, (player) => {
-            //  クライアント側は音がなる状態で起動
-            player.unMute();
+        YouTubeUtil.GetPlayer(option, true, (player) => {
+
+            //  ミュート状態で起動
+            player.mute();
 
             this.SetYouTubeListener(player);
             YouTubeUtil.CueVideo(option);
