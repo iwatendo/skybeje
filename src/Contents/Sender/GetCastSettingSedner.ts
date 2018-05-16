@@ -5,7 +5,7 @@ import Sender from "../../Base/Container/Sender";
  */
 export default class GetCastSettingSedner extends Sender {
 
-    public static ID = "GetCastInfo";
+    public static ID = "GetCastSetting";
 
     constructor() {
         super(GetCastSettingSedner.ID);
