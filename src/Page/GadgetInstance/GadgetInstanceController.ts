@@ -112,6 +112,9 @@ export default class GadgetInstanceController extends AbstractServiceController<
             this.SwPeer.SendTo(conn, cursor);
         });
 
+        //  配信設定の通知
+        this.SwPeer.SendTo(conn, this.CastSetting);
+
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
