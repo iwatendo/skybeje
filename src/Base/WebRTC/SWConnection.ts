@@ -39,11 +39,11 @@ export default class SWConnection {
         this._conn = conn;
         conn.on('open', () => { this.OnConnectionOpen(this._conn); });
         conn.on("data", (data) => { this._service.Recv(this._conn, data); });
-        conn.on('error', (e) => { this._service.OnChildError(e); });
+        conn.on('error', (e) => { this._service.OnDataConnectionError(e); });
         conn.on("close", () => {
             if (!this._isClose) {
                 this._isClose = true;
-                this._service.OnChildClose(this._conn);
+                this._service.OnDataConnectionClose(this._conn);
             }
         });
     }
@@ -81,7 +81,7 @@ export default class SWConnection {
         LogUtil.Info(this._service, "data connection [" + this._swpeer.PeerId + "] <-> [" + conn.remoteId + "]");
         this._sendQueue.forEach((data) => { conn.send(encodeURIComponent(data)); });
         this._sendQueue = new Array<any>();
-        this._service.OnChildConnection(conn);
+        this._service.OnDataConnectionOpen(conn);
     }
 
 
@@ -120,7 +120,7 @@ export default class SWConnection {
                 //  Closeイベントが発生しない状態で切断を検知した場合、ServiceControllerのCloseイベントを呼ぶ
                 if (!this._isClose) {
                     this._isClose = true;
-                    this._service.OnChildClose(this._conn);
+                    this._service.OnDataConnectionClose(this._conn);
                 }
                 return false;
             }

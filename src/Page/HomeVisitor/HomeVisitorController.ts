@@ -145,8 +145,8 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 
      * @param conn 
      */
-    public OnChildConnection(conn: PeerJs.DataConnection) {
-        super.OnChildConnection(conn);
+    public OnDataConnectionOpen(conn: PeerJs.DataConnection) {
+        super.OnDataConnectionOpen(conn);
     }
 
 
@@ -154,7 +154,7 @@ export default class HomeVisitorController extends AbstractServiceController<Hom
      * 
      * @param conn 
      */
-    public OnChildClose(conn: PeerJs.DataConnection) {
+    public OnDataConnectionClose(conn: PeerJs.DataConnection) {
 
         let sender = new ServentCloseSender();
         sender.serventPeerId = conn.remoteId;

@@ -33,14 +33,14 @@ export default interface IServiceController {
     //  オーナーPeerの切断時イベント
     OnOwnerClose();
 
-    //  子Peerからの接続時のイベント
-    OnChildConnection(conn: PeerJs.DataConnection);
+    //  データコネクション接続時のイベント
+    OnDataConnectionOpen(conn: PeerJs.DataConnection);
 
-    //  子Peerからのエラー
-    OnChildError(err: Error);
+    //  データコネクションエラー
+    OnDataConnectionError(err: Error);
 
-    //  子Peerからの接続解除時のイベント
-    OnChildClose(conn: PeerJs.DataConnection);
+    //  データコネクション接続解除時のイベント
+    OnDataConnectionClose(conn: PeerJs.DataConnection);
 
     //  データ取得時イベント
     Recv(conn: PeerJs.DataConnection, recv);

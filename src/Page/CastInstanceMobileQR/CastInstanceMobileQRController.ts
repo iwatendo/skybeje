@@ -35,10 +35,10 @@ export default class CastInstanceMobileQRController extends AbstractServiceContr
 
 
     /**
-     * 子Peerからの接続時イベント
+     * データコネクション接続時イベント
      * @param conn
      */
-    public OnChildConnection(conn: PeerJs.DataConnection) {
+    public OnDataConnectionOpen(conn: PeerJs.DataConnection) {
         this.View.SendOption();
     }
 
@@ -47,7 +47,7 @@ export default class CastInstanceMobileQRController extends AbstractServiceContr
      * 切断時イベント
      * @param conn
      */
-    public OnChildClose(conn: PeerJs.DataConnection) {
+    public OnDataConnectionClose(conn: PeerJs.DataConnection) {
         this.View.SetLiveCastQRCode();
         this.CastStatus.isCasting = false;
         this.SwPeer.SendToOwner(this.CastStatus);

@@ -92,8 +92,8 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      * 他クライアントからの接続時イベント
      * @param conn
      */
-    public OnChildConnection(conn: PeerJs.DataConnection) {
-        super.OnChildConnection(conn);
+    public OnDataConnectionOpen(conn: PeerJs.DataConnection) {
+        super.OnDataConnectionOpen(conn);
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
 
@@ -102,8 +102,8 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      * 切断時イベント
      * @param conn
      */
-    public OnChildClose(conn: PeerJs.DataConnection) {
-        super.OnChildClose(conn);
+    public OnDataConnectionClose(conn: PeerJs.DataConnection) {
+        super.OnDataConnectionClose(conn);
         this.Manager.Chat.RemoveConnection(conn.remoteId);
         this.Manager.Room.RemoveConnection(conn.remoteId);
         this.Manager.Servent.CloseServentOwner(conn.remoteId);

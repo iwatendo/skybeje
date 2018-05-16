@@ -145,10 +145,10 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
 
 
     /**
-     * 子Peerからの接続時イベント
+     * データコネクション接続時イベント
      * @param conn
      */
-    public OnChildConnection(conn: PeerJs.DataConnection) {
+    public OnDataConnectionOpen(conn: PeerJs.DataConnection) {
     }
 
 
@@ -156,7 +156,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * 子Peerのエラー発生時イベント
      * @param err
      */
-    public OnChildError(err: Error) {
+    public OnDataConnectionError(err: Error) {
         this.LogError('child peer', err);
     }
 
@@ -165,7 +165,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * 子Peerの切断時イベント
      * @param conn
      */
-    public OnChildClose(conn: PeerJs.DataConnection) {
+    public OnDataConnectionClose(conn: PeerJs.DataConnection) {
     }
 
 

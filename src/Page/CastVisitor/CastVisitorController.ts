@@ -67,8 +67,8 @@ export default class CastVisitorController extends AbstractServiceController<Cas
      * 
      * @param conn 
      */
-    public OnChildConnection(conn: PeerJs.DataConnection) {
-        super.OnChildConnection(conn);
+    public OnDataConnectionOpen(conn: PeerJs.DataConnection) {
+        super.OnDataConnectionOpen(conn);
     }
 
 
@@ -76,8 +76,8 @@ export default class CastVisitorController extends AbstractServiceController<Cas
      * 
      * @param conn 
      */
-    public OnChildClose(conn: PeerJs.DataConnection) {
-        super.OnChildClose(conn);
+    public OnDataConnectionClose(conn: PeerJs.DataConnection) {
+        super.OnDataConnectionClose(conn);
         this.View.Cursor.Remove(conn.remoteId);
     }
 

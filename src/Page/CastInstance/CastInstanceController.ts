@@ -87,8 +87,8 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      * 他クライアントからの接続時イベント
      * @param conn
      */
-    public OnChildConnection(conn: PeerJs.DataConnection) {
-        super.OnChildConnection(conn);
+    public OnDataConnectionOpen(conn: PeerJs.DataConnection) {
+        super.OnDataConnectionOpen(conn);
 
         //  配置済みカーソルの通知
         this.CursorCache.forEach((cursor) => {
@@ -101,8 +101,8 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      * 切断時イベント
      * @param conn
      */
-    public OnChildClose(conn: PeerJs.DataConnection) {
-        super.OnChildClose(conn);
+    public OnDataConnectionClose(conn: PeerJs.DataConnection) {
+        super.OnDataConnectionClose(conn);
         let cursor = this.CursorCache.Get(conn.remoteId);
         if (cursor) {
             //  切断が発生した場合、全クライアントでカーソルが消えた事を通知
