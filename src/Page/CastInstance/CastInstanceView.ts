@@ -4,7 +4,6 @@ import * as Home from "../../Contents/IndexedDB/Home";
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
-import SpeechUtil from "../../Base/Util/SpeechUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
 

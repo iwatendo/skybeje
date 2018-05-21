@@ -600,6 +600,7 @@ export default class InputPaneController {
         this._voiceRecognitionOff.hidden = this._isVoiceRecognition;
         if (this._isVoiceRecognition) {
             SpeechUtil.InitSpeechRecognition(
+                this._controller,
                 (text) => {
                     if (text) this.SendVoiceText(text);
                 }

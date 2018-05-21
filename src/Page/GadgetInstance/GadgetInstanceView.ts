@@ -5,7 +5,6 @@ import * as Personal from "../../Contents/IndexedDB/Personal";
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil from "../../Base/Util/DeviceUtil";
-import SpeechUtil from "../../Base/Util/SpeechUtil";
 
 import GadgetInstanceController from "./GadgetInstanceController";
 import YouTubeUtil, { YouTubeOption } from "../../Contents/Util/YouTubeUtil";

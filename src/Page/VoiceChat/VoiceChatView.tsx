@@ -6,7 +6,6 @@ import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from '../../Base/Util/LinkUtil';
 
 import { DialogMode } from "../../Contents/AbstractDialogController";
-import SpeechUtil from "../../Base/Util/SpeechUtil";
 import StreamUtil, { MobileCam } from '../../Base/Util/StreamUtil';
 import SWRoom, { SWRoomMode } from '../../Base/WebRTC/SWRoom';
 import DeviceUtil, { DeviceKind } from '../../Base/Util/DeviceUtil';
