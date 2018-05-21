@@ -100,7 +100,7 @@ export default class SpeechUtil {
 
         //
         this._recognition.onresult = (e: SpeechRecognitionEvent) => {
-            let text = this.Convert(e);
+            let text = this.SpeechRecToText(e);
             this._recognition.stop();
             callback(text);
         }
@@ -145,7 +145,7 @@ export default class SpeechUtil {
      * 
      * @param e 
      */
-    private static Convert(e: SpeechRecognitionEvent): string {
+    private static SpeechRecToText(e: SpeechRecognitionEvent): string {
 
         let text: string = "";
 
