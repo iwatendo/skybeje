@@ -26,10 +26,10 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
         StdUtil.StopTouchMove();
         StdUtil.StopTouchZoom();
 
-        //  リロード処理
-        document.getElementById('sbj-reload-button').onclick = (e) => {
-            location.reload();
-        }
+        //  リロードボタン
+        let reloadButton = document.getElementById('sbj-reload-button') as HTMLButtonElement;
+        reloadButton.hidden = StdUtil.IsMobile();   //  モバイル端末の場合は非表示
+        reloadButton.onclick = (e) => { location.reload(); }
 
         callback();
     }
