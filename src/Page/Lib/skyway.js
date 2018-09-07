@@ -15245,7 +15245,7 @@ class dataConnection_DataConnection extends peer_connection {
     if (!this.sendInterval) {
       // Define send interval
       // Try sending a new chunk with every callback
-      this.sendInterval = setInterval(() => {
+      this.sendInterval = ForcedTimer.setInterval(() => {
         // Might need more extensive buffering than this:
         const currMsg = this._sendBuffer.shift();
         try {
@@ -15255,7 +15255,7 @@ class dataConnection_DataConnection extends peer_connection {
         }
 
         if (this._sendBuffer.length === 0) {
-          clearInterval(this.sendInterval);
+          ForcedTimer.clearInterval(this.sendInterval);
           this.sendInterval = undefined;
         }
       }, config.sendInterval);
