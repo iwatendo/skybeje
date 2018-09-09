@@ -13,7 +13,7 @@ import CursorDispOffset from "../CastProp/CursorDispOffset";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import MdlUtil from "../../Contents/Util/MdlUtil";
 import PageSettingsController from "./PageSettings/PageSettingsController";
-import { PageSettings } from "../../Contents/IndexedDB/LiveHTML";
+import { EmbedPage } from "../../Contents/IndexedDB/LiveHTML";
 import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 
 export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLInstanceController> {
@@ -264,7 +264,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
     /**
      * 
      */
-    public SendLiveHTML(ps: PageSettings) {
+    public SendLiveHTML(ps: EmbedPage) {
 
         this.LiveHTML = new LiveHTMLSender(ps);
         this.Controller.SwPeer.SendAll(this.LiveHTML);

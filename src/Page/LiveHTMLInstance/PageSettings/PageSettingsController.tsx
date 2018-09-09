@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 
 import LiveHTMLInstanceController from '../LiveHTMLInstanceController';
 import PageSettingsComponent from './PageSettingsComponent';
-import { PageSettings, CtrlLayerEnum } from '../../../Contents/IndexedDB/LiveHTML';
+import { EmbedPage, CtrlLayerEnum } from '../../../Contents/IndexedDB/LiveHTML';
 import StdUtil from "../../../Base/Util/StdUtil";
 import MdlUtil from "../../../Contents/Util/MdlUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
@@ -19,10 +19,10 @@ export default class PageSettingsController {
 
     private _element: HTMLElement;
     private _controller: LiveHTMLInstanceController;
-    private _previewPageSetting: PageSettings;
-    private _selectPageSetting: PageSettings;
-    private _pageList: Array<PageSettings>;
-    private _chatlinkageMap: Map<string, PageSettings>;
+    private _previewPageSetting: EmbedPage;
+    private _selectPageSetting: EmbedPage;
+    private _pageList: Array<EmbedPage>;
+    private _chatlinkageMap: Map<string, EmbedPage>;
 
 
     /**
@@ -31,8 +31,8 @@ export default class PageSettingsController {
     public constructor(controller: LiveHTMLInstanceController, element: HTMLElement) {
         this._controller = controller;
         this._element = element;
-        this._previewPageSetting = new PageSettings();
-        this._selectPageSetting = new PageSettings();
+        this._previewPageSetting = new EmbedPage();
+        this._selectPageSetting = new EmbedPage();
 
         //  ESCキーで閉じる
         document.onkeydown = (e: KeyboardEvent) => {
@@ -146,12 +146,12 @@ export default class PageSettingsController {
      * 
      * @param pss 
      */
-    public SetChatLinkage(pss: Array<PageSettings>) {
+    public SetChatLinkage(pss: Array<EmbedPage>) {
 
-        this._chatlinkageMap = new Map<string, PageSettings>();
+        this._chatlinkageMap = new Map<string, EmbedPage>();
 
         pss.forEach(ps => {
-            let kw = (ps.chatLinkage ? ps.chatLinkage.trim() : "");
+            let kw = (ps.callWord ? ps.callWord.trim() : "");
             if (kw.length > 0) {
                 this._chatlinkageMap.set(kw.toLowerCase(), ps);
             }
@@ -193,7 +193,7 @@ export default class PageSettingsController {
      * @param ps 
      * @param st 
      */
-    public PageFilter(ps: PageSettings, st: string) {
+    public PageFilter(ps: EmbedPage, st: string) {
         if (ps) {
             if (ps.pageName.toLowerCase().indexOf(st) >= 0) return true;
             if (ps.pageTag.toLowerCase().indexOf(st) >= 0) return true;
@@ -206,7 +206,7 @@ export default class PageSettingsController {
      * 
      * @param pss 
      */
-    public DisplayList(pss: Array<PageSettings>) {
+    public DisplayList(pss: Array<EmbedPage>) {
 
         let searchText = (document.getElementById('sbj-livehtml-page-search-text') as HTMLInputElement).value.trim().toLowerCase();
         let dispList = pss;
@@ -234,7 +234,7 @@ export default class PageSettingsController {
      * @param a 
      * @param b 
      */
-    public PageSettingCompare(a: PageSettings, b: PageSettings): number {
+    public PageSettingCompare(a: EmbedPage, b: EmbedPage): number {
 
         let apn = a.pageName.toLocaleLowerCase();
         let bpn = b.pageName.toLocaleLowerCase();
@@ -281,13 +281,13 @@ export default class PageSettingsController {
     /**
      * 
      */
-    public GetPageSettings(): PageSettings {
-        let sender = new PageSettings();
+    public GetPageSettings(): EmbedPage {
+        let sender = new EmbedPage();
 
         sender.pageId = this._previewPageSetting.pageId;
         sender.pageName = (document.getElementById('sbj-livehtml-value-name') as HTMLInputElement).value;
         sender.pageTag = (document.getElementById('sbj-livehtml-value-tag') as HTMLInputElement).value;
-        sender.chatLinkage = (document.getElementById('sbj-livehtml-value-chatlinkage') as HTMLInputElement).value;
+        sender.callWord = (document.getElementById('sbj-livehtml-value-chatlinkage') as HTMLInputElement).value;
         sender.isAspectFix = (document.getElementById('sbj-check-aspect-disp') as HTMLInputElement).checked;
         sender.aspectW = Number.parseInt((document.getElementById('sbj-aspect-width') as HTMLInputElement).value);
         sender.aspectH = Number.parseInt((document.getElementById('sbj-aspect-height') as HTMLInputElement).value);
@@ -332,10 +332,10 @@ export default class PageSettingsController {
      * 
      * @param ps 
      */
-    public SetPageSettings(ps: PageSettings) {
+    public SetPageSettings(ps: EmbedPage) {
 
         if (!ps) {
-            ps = new PageSettings();
+            ps = new EmbedPage();
         }
 
         this.CtrlLayerMode = ps.ctrlLayerMode;
@@ -346,7 +346,7 @@ export default class PageSettingsController {
         (document.getElementById('sbj-aspect-height') as HTMLInputElement).value = ps.aspectH.toString();
         MdlUtil.SetTextField('sbj-livehtml-value-name', 'sbj-livehtml-value-name-field', ps.pageName, true);
         MdlUtil.SetTextField('sbj-livehtml-value-tag', 'sbj-livehtml-value-tag-field', ps.pageTag);
-        MdlUtil.SetTextField('sbj-livehtml-value-chatlinkage', 'sbj-livehtml-value-chatlink-field', ps.chatLinkage);
+        MdlUtil.SetTextField('sbj-livehtml-value-chatlinkage', 'sbj-livehtml-value-chatlink-field', ps.callWord);
         (document.getElementById('sbj-livehtml-value-layer1') as HTMLInputElement).value = ps.layerBackgroundB;
         (document.getElementById('sbj-livehtml-value-layer2') as HTMLInputElement).value = ps.layerBackgroundF;
         (document.getElementById('sbj-livehtml-value-layer3') as HTMLInputElement).value = ps.layerActive;
@@ -360,14 +360,14 @@ export default class PageSettingsController {
     /**
      * レイヤ情報の変更時イベント
      */
-    public ChangeHTML(dom: PageSettings) {
+    public ChangeHTML(dom: EmbedPage) {
 
         let layer1 = $("#sbj-backgroundB-layer");
         let layer2 = $("#sbj-backgroundF-layer");
         let layer3 = $("#sbj-active-layer");
         let layer4 = $("#sbj-cotrol-layer");
 
-        let mainHeight = (PageSettings.HasCtrl(dom) ? "calc(100% - 52px)" : "100%");
+        let mainHeight = (EmbedPage.HasCtrl(dom) ? "calc(100% - 52px)" : "100%");
         layer1.height(mainHeight);
         layer2.height(mainHeight);
         layer3.height(mainHeight);
@@ -400,7 +400,7 @@ export default class PageSettingsController {
         if (pre === cur) {
             return;
         }
-        let html = PageSettings.ReplasePeerId(cur, this._controller.SwPeer.PeerId);
+        let html = EmbedPage.ReplasePeerId(cur, this._controller.SwPeer.PeerId);
         layer.empty().append(html);
     }
 
@@ -408,7 +408,7 @@ export default class PageSettingsController {
     /**
      * 
      */
-    public ChangeAspectFixed(dom: PageSettings) {
+    public ChangeAspectFixed(dom: EmbedPage) {
 
         let aspectFixed = (document.getElementById('sbj-check-aspect-disp') as HTMLInputElement).checked;
 
@@ -424,10 +424,10 @@ export default class PageSettingsController {
     /**
      * アスペクト比の変更
      */
-    public ChangeAspect(ps: PageSettings) {
+    public ChangeAspect(ps: EmbedPage) {
         let content = document.getElementById('sbj-livehtml-content') as HTMLElement;
 
-        let _ctlSize = (PageSettings.HasCtrl(ps) ? 52 : 0);
+        let _ctlSize = (EmbedPage.HasCtrl(ps) ? 52 : 0);
         let _mpx = 480;
 
         let aspect = ps.aspectW / ps.aspectH;
@@ -489,7 +489,7 @@ export default class PageSettingsController {
     }
 
 
-    public SetSelect(sel: PageSettings) {
+    public SetSelect(sel: EmbedPage) {
         this._selectPageSetting = sel;
 
         let isAnySelect = (sel && sel.pageId.length > 0);
@@ -500,9 +500,9 @@ export default class PageSettingsController {
     }
 
 
-    public GetSelect(): PageSettings {
+    public GetSelect(): EmbedPage {
         if (!this._selectPageSetting) {
-            this._selectPageSetting = new PageSettings();
+            this._selectPageSetting = new EmbedPage();
         }
         return this._selectPageSetting;
     }
@@ -533,7 +533,7 @@ export default class PageSettingsController {
      */
     public OnClickPageAdd() {
 
-        let newPage = new PageSettings();
+        let newPage = new EmbedPage();
         newPage.pageId = StdUtil.UniqKey();
         newPage.isAspectFix = true;
         newPage.ctrlLayerMode = CtrlLayerEnum.Overlay;

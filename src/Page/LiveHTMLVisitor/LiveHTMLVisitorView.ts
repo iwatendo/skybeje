@@ -8,7 +8,7 @@ import LiveHTMLVisitorController from "./LiveHTMLVisitorController";
 import LiveHTMLSender from "../../Contents/Sender/LiveHTMLSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
-import { PageSettings, CtrlLayerEnum } from "../../Contents/IndexedDB/LiveHTML";
+import { EmbedPage, CtrlLayerEnum } from "../../Contents/IndexedDB/LiveHTML";
 
 /**
  * 
@@ -121,7 +121,7 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
      */
     public SetLiveHTMLElement(element: JQuery, pre: string, cur: string) {
         if (pre !== cur) {
-            let html = PageSettings.ReplasePeerId(cur, LinkUtil.GetPeerID());
+            let html = EmbedPage.ReplasePeerId(cur, LinkUtil.GetPeerID());
             element.empty().show().append(html);
         }
 

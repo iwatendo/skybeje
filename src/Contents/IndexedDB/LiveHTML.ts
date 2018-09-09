@@ -10,13 +10,13 @@ export enum CtrlLayerEnum {
 }
 
 
-export class PageSettings {
+export class EmbedPage {
 
     constructor() {
         this.pageId = "";
         this.pageName = "";
         this.pageTag = "";
-        this.chatLinkage = "";
+        this.callWord = "";
         this.ctrlLayerMode = CtrlLayerEnum.Overlay;
         this.isAspectFix = false;
         this.aspectW = 0;
@@ -30,7 +30,7 @@ export class PageSettings {
     public pageId: string;
     public pageName: string;
     public pageTag: string;
-    public chatLinkage: string;
+    public callWord: string;
     public ctrlLayerMode: CtrlLayerEnum;
     public isAspectFix: boolean;
     public aspectW: number;
@@ -41,7 +41,7 @@ export class PageSettings {
     public layerControl: string;
 
 
-    public static HasCtrl(ps: PageSettings): boolean {
+    public static HasCtrl(ps: EmbedPage): boolean {
         if (ps && ps.layerControl && ps.layerControl.length > 0) {
             return true;
         }
@@ -62,7 +62,7 @@ export class PageSettings {
 }
 
 export class Data {
-    Pages: Array<PageSettings>;
+    Pages: Array<EmbedPage>;
 }
 
 export class DB extends AbstractIndexedDB<Data> {
@@ -83,7 +83,7 @@ export class DB extends AbstractIndexedDB<Data> {
 
         let data = new Data();
 
-        this.ReadAll<PageSettings>(DB.PageSettings, (result: Array<PageSettings>) => {
+        this.ReadAll<EmbedPage>(DB.PageSettings, (result: Array<EmbedPage>) => {
             data.Pages = result;
             onload(data);
         });
@@ -91,7 +91,7 @@ export class DB extends AbstractIndexedDB<Data> {
 
     public WriteAllData(data: Data, callback: DBI.OnWriteComplete) {
 
-        this.WriteAll<PageSettings>(DB.PageSettings, (n) => n.pageId, data.Pages, () => {
+        this.WriteAll<EmbedPage>(DB.PageSettings, (n) => n.pageId, data.Pages, () => {
             callback();
         });
     }

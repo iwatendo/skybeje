@@ -26,7 +26,7 @@ export default class LiveHTMLInstanceModel extends AbstractServiceModel<LiveHTML
      * @param pageId 
      * @param callback 
      */
-    public GetPageSettings(pageId: string, callback: OnRead<LiveHTML.PageSettings>) {
+    public GetPageSettings(pageId: string, callback: OnRead<LiveHTML.EmbedPage>) {
         this._liveHTMLDB.Read(LiveHTML.DB.PageSettings, pageId, callback);
     }
 
@@ -36,7 +36,7 @@ export default class LiveHTMLInstanceModel extends AbstractServiceModel<LiveHTML
      * ページ設定の取得
      * @param callback 
      */
-    public GetPageSettingsAll(callback: OnRead<Array<LiveHTML.PageSettings>>) {
+    public GetPageSettingsAll(callback: OnRead<Array<LiveHTML.EmbedPage>>) {
         this._liveHTMLDB.ReadAll(LiveHTML.DB.PageSettings, callback);
     }
 
@@ -46,8 +46,8 @@ export default class LiveHTMLInstanceModel extends AbstractServiceModel<LiveHTML
      * @param ps 
      * @param callback 
      */
-    public UpdatePageSettings(ps: LiveHTML.PageSettings, callback: OnWrite = null) {
-        this._liveHTMLDB.Write<LiveHTML.PageSettings>(LiveHTML.DB.PageSettings, ps.pageId, ps, callback);
+    public UpdatePageSettings(ps: LiveHTML.EmbedPage, callback: OnWrite = null) {
+        this._liveHTMLDB.Write<LiveHTML.EmbedPage>(LiveHTML.DB.PageSettings, ps.pageId, ps, callback);
     }
 
 
@@ -56,8 +56,8 @@ export default class LiveHTMLInstanceModel extends AbstractServiceModel<LiveHTML
      * @param ps 
      * @param callback 
      */
-    public DeletePageSettings(ps: LiveHTML.PageSettings, callback: OnWrite = null) {
-        this._liveHTMLDB.Delete<LiveHTML.PageSettings>(LiveHTML.DB.PageSettings, ps.pageId, callback);
+    public DeletePageSettings(ps: LiveHTML.EmbedPage, callback: OnWrite = null) {
+        this._liveHTMLDB.Delete<LiveHTML.EmbedPage>(LiveHTML.DB.PageSettings, ps.pageId, callback);
     }
 
 }

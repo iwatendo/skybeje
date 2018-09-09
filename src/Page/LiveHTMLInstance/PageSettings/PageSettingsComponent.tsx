@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 import StdUtil from "../../../Base/Util/StdUtil";
 
 import LiveHTMLInstanceController from '../LiveHTMLInstanceController';
-import { PageSettings } from '../../../Contents/IndexedDB/LiveHTML';
+import { EmbedPage } from '../../../Contents/IndexedDB/LiveHTML';
 
 
 /**
@@ -12,7 +12,7 @@ import { PageSettings } from '../../../Contents/IndexedDB/LiveHTML';
  */
 export interface PageSettingsComponentProp {
     controller: LiveHTMLInstanceController;
-    items: Array<PageSettings>;
+    items: Array<EmbedPage>;
     selectItem: string;
 }
 
@@ -82,7 +82,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * 選択しているページ設定か？
      * @param id 
      */
-    public IsSelectPage(ps: PageSettings): boolean {
+    public IsSelectPage(ps: EmbedPage): boolean {
 
         let view = this.props.controller.View;
         if (view && view.PageSettings) {
@@ -100,7 +100,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * ライブ中のページか？
      * @param ps 
      */
-    public IsLivePage(ps: PageSettings): boolean {
+    public IsLivePage(ps: EmbedPage): boolean {
         let view = this.props.controller.View;
         if (view && view.LiveHTML) {
             return (ps.pageId === view.LiveHTML.pageId);
@@ -116,7 +116,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * @param ps 
      * @param e 
      */
-    public OnClickItem(ps: PageSettings, e) {
+    public OnClickItem(ps: EmbedPage, e) {
 
         this.props.controller.View.PageSettings.SetSelect(ps);
 
@@ -131,7 +131,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * @param ps 
      * @param e 
      */
-    public OnDoubleClickItem(ps: PageSettings, e) {
+    public OnDoubleClickItem(ps: EmbedPage, e) {
         this.props.controller.View.SendLiveHTML(ps);
         this.OnClickItem(ps, e);
     }
@@ -142,7 +142,7 @@ export default class PageSettingsComponent extends React.Component<PageSettingsC
      * @param ps 
      * @param e 
      */
-    public OnClickSend(ps: PageSettings, e) {
+    public OnClickSend(ps: EmbedPage, e) {
         this.props.controller.View.SendLiveHTML(ps);
     }
 

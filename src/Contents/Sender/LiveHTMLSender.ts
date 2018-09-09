@@ -1,5 +1,5 @@
 import Sender from "../../Base/Container/Sender";
-import { PageSettings, CtrlLayerEnum } from "../IndexedDB/LiveHTML";
+import { EmbedPage, CtrlLayerEnum } from "../IndexedDB/LiveHTML";
 
 
 /**
@@ -9,7 +9,7 @@ export default class LiveHTMLSender extends Sender {
 
     public static ID = "LiveHTML";
 
-    constructor(ps: PageSettings = new PageSettings()) {
+    constructor(ps: EmbedPage = new EmbedPage()) {
         super(LiveHTMLSender.ID);
         this.pageId = ps.pageId;
         this.pageName = ps.pageName;
