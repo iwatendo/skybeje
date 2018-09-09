@@ -4,9 +4,9 @@ body {
     overflow-y: hidden;
 }
 
-.sbj-logo{
-    height: 40px;
-    margin: -16px;
+.sbj-title{
+    margin: 0px;
+    color: whitesmoke;
 }
 
 .sbj-main {

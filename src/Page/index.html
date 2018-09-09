@@ -19,14 +19,8 @@
 
         <header class="dl-layout__header mdl-layout__header--scroll mdl-color--indigo-A100 mdl-color-text--grey-800">
             <div class="mdl-layout__header-row">
-                <img class="sbj-logo" src="/image/logo.png" />
+                <h5 class="sbj-title">Skybeje</h5>
                 <div class="mdl-layout-spacer"></div>
-                <nav class="mdl-navigation mdl-layout--large-screen-only">
-                    <a class="mdl-navigation__link" target="_blank" href="https://github.com/iwatendo/skybeje">
-                        <i class="material-icons">link</i>
-                        GitHub
-                    </a>
-                </nav>
             </div>
         </header>
 
@@ -35,119 +29,102 @@
 
                 <div class="mdl-cell mdl-cell--12-col">
                     <h4>
-                        Skybejeはブラウザを小さな「チャットサーバー」にします。
+                        Skybejeは、ブラウザ間でのリアルタイム通信サービスです。
+                        <br />新しい形のWebサービスを模索する為のサービスです。
                     </h4>
+                    <h6>
+                        各機能の推奨ブラウザは Google Chrome です。（一部機能については Safari/Firefox にも対応しています）
+                    </h6>
                 </div>
 
                 <div class="mdl-shadow--3dp mdl-cell mdl-cell--8-col sbj-cell">
                     <div class="mdl-card__actions">
-                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./homeinstance/", "_blank")'>
-                            <i class="material-icons">dashboard</i>
-                            &nbsp;チャットサーバーを起動します&nbsp;
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("https://skybeje.net/cboard/", "_blank")'>
+                            <i class="material-icons">videocam</i>
+                            &nbsp; コミュニケーションボード &nbsp;
                         </button>
                     </div>
-                    <div class="mdl-card__supporting-text">
-                        ・対応ブラウザは Google Chrome のみです
-                        <br/>・起動するとチャットサーバーへの接続URLが発行されます
-                        <br/> ・ブラウザを閉じればチャットサーバーは停止します
-                        <br/> ・接続URLは起動する度に変わります
-                        <br/> ・データは全て、ブラウザ内(IndexedDB)に保存されます
-                        <br/> ・プロフィール情報は、接続した各ユーザーのブラウザに保存されます
-                        <br/> ・タイムラインの情報はチャットーサーバーのブラウザに保存されます
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        <span class="sbj-text-warning">旧バージョン(β版)を試していた方は、エラーが発生して起動できない場合があります</span>
-                        <br/>
-                        <span class="sbj-text-warning">その場合、右の各種設定からデータの初期化を実行してください</span>
-                    </div>
                 </div>
+
                 <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
                     <div class="mdl-card__actions">
-                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./usersettings/", "_blank")'>
-                            <i class="material-icons">settings</i>
-                            &nbsp;各種設定&nbsp;
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("https://skybeje.net/cboard/livehtmleditor", "_blank")'>
+                            <i class="material-icons">web</i>
+                            &nbsp; LiveHTML &nbsp;
                         </button>
                     </div>
-                    <div class="mdl-card__supporting-text">
-                        ・チャットクライアントの設定
-                        <br/> ・データのインポート/エクスポート
-                        <br/> ・ブラウザ内DBの初期化処理
-                    </div>
                 </div>
 
-                <div class="mdl-cell mdl-cell--12-col">
-                    <h4>
-                        通常のチャット機能のほかに、以下の機能も利用できます
-                    </h4>
-                    <h6>
-                        ・チャットクライアントの「連動サービス」から起動できます
-                        <br/>・以下のリンクから起動すると、それぞれの機能を単体でも利用できます
-                        <br/>・推奨ブラウザは Google Chrome ですが、Safari 及び Firefox でも利用できます（スクリーンシェアは除く）
-                    </h6>
-                </div>
-
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--12-col sbj-cell">
                     <div class="mdl-card__actions">
                         <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstance/", "_blank")'>
                             <i class="material-icons">videocam</i>
                             &nbsp; ライブキャスト &nbsp;
                         </button>
                     </div>
-                    <div class="mdl-card__supporting-text">
-                        &nbsp;&nbsp; 一般的なビデオ通話で利用されているWebRTCを利用した、低遅延のライブキャスト機能です。
-                    </div>
                 </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--12-col sbj-cell">
                     <div class="mdl-card__actions">
                         <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstancemobileqr/", "_blank")'>
                             <i class="material-icons">smartphone</i>
                             &nbsp; ライブキャスト(モバイル) &nbsp;
                         </button>
                     </div>
-                    <div class="mdl-card__supporting-text">
-                        &nbsp;&nbsp; アプリのインストール不用で、スマートフォンやタブレットのカメラからライブキャストします。
-                    </div>
                 </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--12-col sbj-cell">
                     <div class="mdl-card__actions">
                         <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./castinstancescreenshare/", "_blank")'>
                             <i class="material-icons">screen_share</i>
                             &nbsp; スクリーンシェア &nbsp;
                         </button>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        &nbsp;&nbsp; ブラウザ(Google Chrome)のみで、パソコンのデスクトップの映像を配信をします。
+                        &nbsp;&nbsp; Google Chrome(PC版)にのみ対応
                     </div>
                 </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--12-col sbj-cell">
                     <div class="mdl-card__actions">
                         <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./gadgetinstance/", "_blank")'>
                             <i class="material-icons">ondemand_video</i>
                             &nbsp; YouTube同期再生 &nbsp;
                         </button>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        <span class="sbj-text-warning">β版です</span>
-                        <br/>
-                        <br/> &nbsp;&nbsp; 動画の再生位置・一時停止・再生速度・音量設定等を同期させることができます
+                        &nbsp;&nbsp;
                     </div>
                 </div>
 
-                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--12-col sbj-cell">
                     <div class="mdl-card__actions">
                         <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./livehtmlinstance/", "_blank")'>
                             <i class="material-icons">web</i>
                             &nbsp; LiveHTML &nbsp;
                         </button>
                     </div>
-                    <div class="mdl-card__supporting-text">
-                        &nbsp;&nbsp; 配信元からHTMLを送信して、視聴先で表示します。任意のタイミングで画像を表示したり、音声、楽曲/動画等の再生が可能です。
-                    </div>
                 </div>
 
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--8-col sbj-cell">
+                    <div class="mdl-card__actions">
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./homeinstance/", "_blank")'>
+                            <i class="material-icons">dashboard</i>
+                            &nbsp;ブラウザのチャットサーバー化&nbsp;
+                        </button>
+                        Google Chrome(PC版)にのみ対応
+                    </div>
+                </div>
+                <div class="mdl-shadow--3dp mdl-cell mdl-cell--4-col sbj-cell">
+                    <div class="mdl-card__actions">
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" onclick='window.open("./usersettings/", "_blank")'>
+                            <i class="material-icons">settings</i>
+                            &nbsp;チャット設定&nbsp;
+                        </button>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col">
+                    <br />
+                    当サービスは NTT Communications の <a href="https://webrtc.ecl.ntt.com" target="_blank">SkyWay</a>を利用しています。
+                    <br />
+                    <br />
+                </div>
             </div>
 
             <footer class="mdl-mini-footer mdl-color-text--grey-800">
@@ -155,10 +132,17 @@
                     <div class="mdl-logo"></div>
                 </div>
                 <div class="mdl-mini-footer__right-section">
+
                     <ul class="mdl-mini-footer__link-list">
                         <li>
                             <a target="_blank" href="https://github.com/iwatendo/skybeje/wiki/Terms-of-Service">
                                 プライバシーポリシーと利用規約
+                            </a>
+                        </li>
+                        <li>
+                            <a class="mdl-navigation__link" target="_blank" href="https://github.com/iwatendo/skybeje">
+                                <i class="material-icons">link</i>
+                                GitHub
                             </a>
                         </li>
                     </ul>
