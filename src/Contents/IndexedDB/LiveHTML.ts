@@ -69,11 +69,11 @@ export class DB extends AbstractIndexedDB<Data> {
 
     public static NAME = "LiveHTML";
     public static NOTE = "LiveHTML";
-    public static PageSettings: string = 'PageSettings';
+    public static EmbedPage: string = 'EmbedPage';
 
     constructor() {
         super(DB.NAME);
-        this.SetStoreList(DB.PageSettings);
+        this.SetStoreList(DB.EmbedPage);
     }
 
     public GetName(): string { return DB.NAME; }
@@ -83,7 +83,7 @@ export class DB extends AbstractIndexedDB<Data> {
 
         let data = new Data();
 
-        this.ReadAll<EmbedPage>(DB.PageSettings, (result: Array<EmbedPage>) => {
+        this.ReadAll<EmbedPage>(DB.EmbedPage, (result: Array<EmbedPage>) => {
             data.Pages = result;
             onload(data);
         });
@@ -91,7 +91,7 @@ export class DB extends AbstractIndexedDB<Data> {
 
     public WriteAllData(data: Data, callback: DBI.OnWriteComplete) {
 
-        this.WriteAll<EmbedPage>(DB.PageSettings, (n) => n.pageId, data.Pages, () => {
+        this.WriteAll<EmbedPage>(DB.EmbedPage, (n) => n.pageId, data.Pages, () => {
             callback();
         });
     }
@@ -106,7 +106,7 @@ export class DB extends AbstractIndexedDB<Data> {
 
 
     public Import(data: Data, callback: DBI.OnWriteComplete) {
-        this.ClearAll(DB.PageSettings, () => {
+        this.ClearAll(DB.EmbedPage, () => {
             this.WriteAllData(data, callback);
         });
     }
