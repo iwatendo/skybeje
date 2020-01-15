@@ -2884,7 +2884,7 @@ JSONPPolling.prototype.doPoll = function () {
   var isUAgecko = 'undefined' !== typeof navigator && /gecko/i.test(navigator.userAgent);
 
   if (isUAgecko) {
-    setTimeout(function () {
+    ForcedTimer.setTimeout(function () {
       var iframe = document.createElement('iframe');
       document.body.appendChild(iframe);
       document.body.removeChild(iframe);
@@ -3894,7 +3894,7 @@ WS.prototype.write = function (packets) {
 
     // fake drain
     // defer to next tick to allow Socket to clear writeBuffer
-    setTimeout(function () {
+    ForcedTimer.setTimeout(function () {
       self.writable = true;
       self.emit('drain');
     }, 0);
@@ -16916,7 +16916,7 @@ class dataConnection_DataConnection extends peer_connection {
     if (!this.sendInterval) {
       // Define send interval
       // Try sending a new chunk with every callback
-      this.sendInterval = setInterval(() => {
+      this.sendInterval = ForcedTimer.setInterval(() => {
         // Might need more extensive buffering than this:
         const currMsg = this._sendBuffer.shift();
         try {
@@ -16926,7 +16926,7 @@ class dataConnection_DataConnection extends peer_connection {
         }
 
         if (this._sendBuffer.length === 0) {
-          clearInterval(this.sendInterval);
+          ForcedTimer.clearInterval(this.sendInterval);
           this.sendInterval = undefined;
         }
       }, config.sendInterval);
