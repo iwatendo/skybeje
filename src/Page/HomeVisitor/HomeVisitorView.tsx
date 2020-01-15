@@ -56,10 +56,17 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
         //  「ユーザー設定」
         document.getElementById('sbj-user-settings').onclick = (e) => {
+
+            //  ブラウザのバージョンアップにより、
+            //  設定画面からの復帰ができなくなった為、別タブで開くように修正
+            window.open("../UserSettings/");
+
+            /*
             userSettingsFrame.src = LinkUtil.CreateLink("../UserSettings/");
             userSettingsFrame.onload = (e) => {
                 this.VisibleSetting(true);
             }
+            */
         };
 
 
