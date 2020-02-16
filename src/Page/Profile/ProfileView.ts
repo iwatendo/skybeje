@@ -223,6 +223,9 @@ export default class ProfileView extends AbstractServiceView<ProfileController> 
                     controller.PostChangeClose(actor.aid);
                 });
             }
+            else {
+                this.Controller.PostChangeClose("");
+            }
         }
         else {
             //  アクター情報の更新がキャンセルされた場合でも
