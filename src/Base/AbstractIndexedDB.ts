@@ -151,7 +151,7 @@ export default abstract class AbstractIndexedDB<D> {
      * @param data 登録データ
      * @param callback 登録成功時のコールバック
      */
-    public Write<T>(storeName: string, key: IDBKeyRange | IDBValidKey, data: T, callback: OnWriteDB<T>, trans: IDBTransaction = null) {
+    public Write<T>(storeName: string, key: IDBValidKey, data: T, callback: OnWriteDB<T>, trans: IDBTransaction = null) {
 
         if (!trans) {
             trans = this.CreateTransaction(storeName, 'readwrite');
@@ -237,7 +237,7 @@ export default abstract class AbstractIndexedDB<D> {
      * @param key 読込データキー 
      * @param callback 読込成功時のコールバック
      */
-    public Read<T, K>(storeName: string, key: K, callback: OnReadObject<T>, trans: IDBTransaction = null) {
+    public Read<T, K extends string | IDBKeyRange>(storeName: string, key: K, callback: OnReadObject<T>, trans: IDBTransaction = null) {
 
         if (!trans) {
             trans = this.CreateTransaction(storeName, 'readonly');

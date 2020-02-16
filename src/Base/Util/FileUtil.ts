@@ -56,7 +56,7 @@ export default class FileUtil {
 
         reader.onload = (ev) => {
             try {
-                data = JSON.parse(reader.result);
+                data = JSON.parse(reader.result.toString());
             }
             catch (err) {
                 hasError = true;

@@ -64,7 +64,7 @@ export default class FileAttachUtil {
                 let reader = new FileReader();
                 reader.onload = function (event) {
                     let target = event.target as FileReader;
-                    callback(file, target.result);
+                    callback(file, target.result.toString());
                 };
                 reader.readAsDataURL(file);
             }
