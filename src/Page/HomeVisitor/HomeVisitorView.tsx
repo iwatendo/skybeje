@@ -59,7 +59,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
 
             //  ブラウザのバージョンアップにより、
             //  設定画面からの復帰ができなくなった為、別タブで開くように修正
-            window.open("../UserSettings/");
+            window.open("../usersettings/");
 
             /*
             userSettingsFrame.src = LinkUtil.CreateLink("../UserSettings/");
