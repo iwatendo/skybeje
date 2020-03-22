@@ -36,6 +36,7 @@ Skybejeはブラウザ上で動作する小さなチャットサーバーです�
 - [はじめに](#はじめに)
 - [SkyWayについて](#SkyWayについて)
 - [開発環境](#開発環境)
+- [アーキテクチャ](#アーキテクチャ)
 - [ドキュメント](#ドキュメント)
 
 ## チャットの利用方法
@@ -81,7 +82,7 @@ Skybejeは©NTT Communications様の [SkyWay](https://webrtc.ecl.ntt.com/) を�
 Skybejeはオープンソース(AGPL3.0)です。<br>
 AGPL3.0はソフトウェアの改変や商用利用が許可されたライセンスです。<br>
 <br>
-但し、以下の機能を実現する為、様々な外部サービスの**(商用利用禁止またはグレーゾーンの）無料版API**を使用しております。<br>
+但し、以下の機能を実現する為、様々な外部サービスの  **無料版(一部商用利用禁止の)API** を使用しております。<br>
 そのため、公開サーバーのSkybejeについては商用利用を禁止します。<br>
 <br>
 別のサーバーにプログラムを設置し、商用利用可能なAPIライセンスを取得して頂ければ、商用利用可能となります。<br>
@@ -102,26 +103,33 @@ Skybejeは、Google Chrome の Web Speech APIを利用する事により、音�
 ### YouTube同期再生機能について
 
 YouTubeの埋め込み型プレイヤーは商用利用禁止となるケースがあります。<br>
-[参考：YouTubeヘルプ](https://support.google.com/youtube/answer/71011?hl=ja)<br>
+・[参考：YouTubeヘルプ](https://support.google.com/youtube/answer/71011?hl=ja)<br>
 <br>
-Skybejeでは、利用方法によってはYouTubeをメインにもできる為、商用利用する場合は規約違反となる可能性があります。<br>
-その為、Skybejeを商用利用したい場合、この機能を削除するのが望ましいと判断されます。
+YouTubeの同期再生をメインで使用する場合、非商用では規約違反とはなりませんが、商用利用では規約違反となる可能性があります。<br>
+Skybejeを商用利用する場合はこの機能を削除するのが望ましいと判断されます。
 
 ## 開発者ガイド
 
 ### はじめに
-Skybejeは、バグの報告やドキュメント改善等、開発の手助けを歓迎します。
+Skybejeは、バグの報告やドキュメント改善等を歓迎します。
 
 バグ報告や要望は、GitHubのIssueまたはTwitterにお願いします。<br>
  ・[Skybeje / Issues](https://github.com/iwatendo/skybeje/issues)<br>
  ・[Twitter (Iwatendo)](https://twitter.com/iwatendo)<br>
+<br>
 コードのプルリクエストも歓迎します。<br>
  ・[Skybeje / Pull Request](https://github.com/iwatendo/skybeje/pulls)
  
+### アーキテクチャ
+Skybejeは、P2PとIndexedDBを利用し、ブラウザだけで殆どの処理を完結させる事を目標としたWebサービスです。<br>
+詳細については以下のページを参照してください。<br>
+・[Skybejeのアーキテクチャ](https://github.com/iwatendo/skybeje/wiki/Architecture)
+
 ### 開発環境
+開発環境の構築については以下のページを参照してください。<br>
+ ・[開発環境の構築手順](https://github.com/iwatendo/skybeje/wiki/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83%E6%A7%8B%E7%AF%89)<br>
+ ・[SkyWayの設定手順](https://github.com/iwatendo/skybeje/wiki/Skyway%E3%81%AE%E8%A8%AD%E5%AE%9A)<br>
 
 ### ドキュメント
 
 ページ間の通信のシーケンス図のみ PlantUML で作成予定です。<br>
-PlantUMLについては、以下のQiita記事が参考になります。<br>
-[Visual Studio Code でUMLを描こう！](https://qiita.com/couzie/items/9dedb834c5aff09ea7b2)
