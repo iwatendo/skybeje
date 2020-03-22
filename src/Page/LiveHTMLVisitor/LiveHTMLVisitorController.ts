@@ -1,7 +1,5 @@
 ﻿import AbstractServiceController from "../../Base/AbstractServiceController";
-import SWPeer from "../../Base/WebRTC/SWPeer";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
-import * as Personal from "../../Contents/IndexedDB/Personal";
 import { LiveHTMLVisitorView } from "./LiveHTMLVisitorView";
 import LiveHTMLVisitorModel from "./LiveHTMLVisitorModel";
 import { LiveHTMLVisitorReceiver } from "./LiveHTMLVisitorReceiver";
@@ -14,8 +12,6 @@ export default class LiveHTMLVisitorController extends AbstractServiceController
     public ControllerName(): string { return "LiveHTMLVisitor"; }
 
     public View: LiveHTMLVisitorView;
-
-    private _castPeerId: string;
 
     /**
      * コンストラクタ

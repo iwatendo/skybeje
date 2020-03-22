@@ -2,7 +2,6 @@
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
-import * as Personal from "../../Contents/IndexedDB/Personal";
 import { CastVisitorView } from "./CastVisitorView";
 import CastVisitorModel from "./CastVisitorModel";
 import { CastVisitorReceiver } from "./CastVisitorReceiver";
@@ -177,6 +176,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
         if (peerid == this._castPeerId) {
             document.getElementById('sbj-cast-visitor-message-port').hidden = false;
             document.getElementById('sbj-cast-visitor-message').textContent = "ライブキャストは終了しました";
+            this.PageClose();
         }
     }
 
