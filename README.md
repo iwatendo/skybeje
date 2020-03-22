@@ -93,7 +93,7 @@ WebRTCを利用したP2Pを実現する為、©NTT Communications様の[SkyWay](
 （商用利用する場合は Enterprise Edition を利用するのが望ましいと判断しています）
 
 ### 音声合成機能：Skybeje.Speakerについて
-Skybejeは、Skybeje.Speakerと連動させる事により、外部の音声合成サービスをボイスチャット等で利用する事が可能です。<br>
+Skybejeは、[Skybeje.Speaker](https://github.com/iwatendo/Skybeje.Speaker)と連動させる事により、外部の音声合成サービスをボイスチャット等で利用する事が可能です。<br>
 外部の音声合成サービスについては、利用するサービスの利用規約に従ってください。
 
 ### 音声認識機能：WebSpeechAPIについて
