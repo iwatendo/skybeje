@@ -133,3 +133,5 @@ Skybejeは、P2PとIndexedDBを利用し、ブラウザだけで殆どの処理�
 ### ドキュメント
 
 ページ間の通信のシーケンス図のみ PlantUML で作成予定です。<br>
+ ・参考：[Visual Studio Code で UML を描こう](https://qiita.com/couzie/items/9dedb834c5aff09ea7b2)
+ ・プレビュー表示　ATL+D

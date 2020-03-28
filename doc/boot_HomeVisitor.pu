@@ -1,0 +1,49 @@
+@startuml
+
+title チャットクライアントの起動
+
+actor       "チャット\nユーザー"                         as ChatUser
+participant "Home Visitor\nチャットクライアント"         as HomeVisitor
+database    "Personal\n(IndexedDB)"                    as IndexedDB_Personal
+control     "SkyWay\n(API)"                            as SkyWay
+participant "Home Instance\nチャットサーバーインスタンス" as HomeInstance
+
+ChatUser             -> HomeVisitor         : 接続URLにアクセス
+HomeVisitor         <-> IndexedDB_Personal  : DB有無チェック
+HomeVisitor          -> IndexedDB_Personal  : CreateDB
+note left : DBが存在しない場合、生成する
+
+IndexedDB_Personal  --> IndexedDB_Personal  : DB初期化
+IndexedDB_Personal  --> IndexedDB_Personal  : 初期データ作成
+HomeVisitor          -> IndexedDB_Personal  : アクター情報要求
+HomeVisitor         <-- IndexedDB_Personal  : アクター情報
+
+HomeVisitor          -> SkyWay              : PeerID要求
+HomeVisitor         <-- SkyWay              : PeerID払出
+HomeVisitor          -> SkyWay              : 接続(Data Connection)
+SkyWay               -> HomeInstance        : 接続(Data Connection)
+
+HomeVisitor          -> HomeInstance        : Send : ClientBoot
+note left  : クライアント接続通知
+HomeVisitor         <-  HomeInstance        : Send : ConnInfo
+note right : 接続情報のチェック通知
+HomeVisitor          -> HomeInstance        : Send : UseActor
+note left  : 使用するアクター情報を通知
+HomeVisitor         <-  HomeInstance        : Send : RoomActorMember
+note right : チャットルームの\n接続アクター情報を通知
+
+HomeVisitor          -> HomeInstance        : Send : GetRoom
+note left  : ルーム情報の要求
+HomeVisitor         <-  HomeInstance        : Send : RoomServent
+note right : ルーム情報の通知
+
+ChatUser            <-  HomeVisitor         : ページ表示（ルーム情報）
+
+HomeVisitor          -> HomeInstance        : Send : GetTimeline
+note left  : タイムライン情報の要求
+HomeVisitor         <-  HomeInstance        : Send : ChatMessage
+note right : チャットメッセージの通知
+
+ChatUser            <-  HomeVisitor         : ページ表示（タイムライン）
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+
+actor       "チャット\nインスタンス\nオーナー" as User_ChatOwner
+participant "Home Instance\nチャットサーバー\nインスタンス" as HomeInstance
+database    "Home\n(IndexedDB)" as IndexedDB_Home
+control     "SkyWay\n(API)" as SkyWay
+
+title チャットサーバーインスタンスの起動
+User_ChatOwner   -> HomeInstance    : 起動URLにアクセス
+HomeInstance    <-> IndexedDB_Home  : DB有無チェック
+HomeInstance     -> IndexedDB_Home  : CreateDB
+note left : DB(チャットサーバー用）が\n存在しない場合、生成する
+
+IndexedDB_Home  --> IndexedDB_Home  : DB初期化
+IndexedDB_Home  --> IndexedDB_Home  : 初期データ作成
+HomeInstance     -> IndexedDB_Home  : チャットルーム情報要求
+HomeInstance    <-- IndexedDB_Home  : チャットルーム情報
+User_ChatOwner  <-- HomeInstance    : ページ表示
+
+HomeInstance     -> SkyWay          : PeerID要求
+HomeInstance    <-- SkyWay          : PeerID払出
+User_ChatOwner  <-- HomeInstance    : クライアントURL払出
+note right : チャットクライアントURL生成
+
+@enduml
