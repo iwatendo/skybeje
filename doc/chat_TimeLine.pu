@@ -1,0 +1,27 @@
+@startuml
+
+title チャットメッセージ送信
+
+actor       "チャット\nユーザーA"                          as ChatUserA
+participant "Home Visitor\nチャット\nクライアントA"        as HomeVisitorA
+participant "Home Instance\nチャットサーバー\nインスタンス" as HomeInstance
+database    "Timeline\n(IndexedDB)"                       as IndexedDB_Timeline
+participant "Home Visitor\n全てのチャット\nクライアント"    as HomeVisitorB
+actor       "全てのチャット\nユーザー"                      as ChatUserAll
+
+ChatUserA            -> HomeVisitorA        : チャット\n入力中
+HomeVisitorA         -> HomeInstance        : Send :\nChatInputing
+HomeInstance         -> HomeVisitorB        : Send :\nChatInputing
+HomeVisitorB         -> ChatUserAll         : チャット入力中\nの表示
+note left : 入力者も含む\n全てのユーザーに通知
+
+ChatUserA            -> HomeVisitorA        : チャット\n入力確定
+HomeVisitorA         -> HomeInstance        : Send :\nChatMessage
+HomeInstance         -> IndexedDB_Timeline  : チャット\nメッセージ登録
+IndexedDB_Timeline   -> IndexedDB_Timeline  : DB登録
+HomeInstance         -> HomeVisitorB        : Send :\nChatMessage
+HomeVisitorB         -> ChatUserAll         : チャットメッセージ\nの表示
+note left : 入力者も含む\n全てのユーザーに通知
+
+
+@enduml

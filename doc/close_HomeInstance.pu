@@ -1,0 +1,14 @@
+@startuml
+
+title チャットクライアントの終了処理
+
+actor       "チャット\nオーナー"                           as ChatOwner
+participant "Home Instance\nチャットサーバー\nインスタンス" as HomeInstance
+participant "Home Visitor\n全てのチャット\nクライアント"    as HomeVisitorAll
+actor       "残っている\nチャットユーザー"                  as ChatUserAll
+
+ChatOwner            -> HomeInstance        : ページを閉じる
+HomeInstance         -> HomeVisitorAll      : event : \nOnOwnerClose
+HomeVisitorAll       -> ChatUserAll         : 切断通知ページを表示
+
+@enduml

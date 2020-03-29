@@ -1,0 +1,17 @@
+@startuml
+
+title チャットクライアントの終了処理
+
+actor       "チャット\nユーザーA"                          as ChatUserA
+participant "Home Visitor\nチャット\nクライアントA"        as HomeVisitorA
+participant "Home Instance\nチャットサーバー\nインスタンス" as HomeInstance
+participant "Home Visitor\n全てのチャット\nクライアント"    as HomeVisitorAll
+actor       "残っている\nチャットユーザー"                  as ChatUserAll
+
+ChatUserA            -> HomeVisitorA        : ブラウザを\n閉じる
+HomeVisitorA        --> HomeInstance        : event : \nOnDataConnectionClose
+HomeInstance         -> HomeVisitorAll      : Send :\nRoomActorMember
+HomeInstance         -> HomeVisitorAll      : Send :\nVoiceChatMemberList
+HomeVisitorAll       -> ChatUserAll         : 接続メンバー情報\nの表示変更
+
+@enduml

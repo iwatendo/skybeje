@@ -7,6 +7,7 @@ control     "SkyWay\n(API)" as SkyWay
 
 title チャットサーバーインスタンスの起動
 User_ChatOwner   -> HomeInstance    : 起動URLにアクセス
+activate HomeInstance
 HomeInstance    <-> IndexedDB_Home  : DB有無チェック
 HomeInstance     -> IndexedDB_Home  : CreateDB
 note left : DB(チャットサーバー用）が\n存在しない場合、生成する
@@ -16,9 +17,11 @@ IndexedDB_Home  --> IndexedDB_Home  : 初期データ作成
 HomeInstance     -> IndexedDB_Home  : チャットルーム情報要求
 HomeInstance    <-- IndexedDB_Home  : チャットルーム情報
 User_ChatOwner  <-- HomeInstance    : ページ表示
-
 HomeInstance     -> SkyWay          : PeerID要求
-HomeInstance    <-- SkyWay          : PeerID払出
+activate SkyWay
+HomeInstance    <-- SkyWay          : PeerID払出\n(event : OnPeerOpen)
+deactivate SkyWay 
+
 User_ChatOwner  <-- HomeInstance    : クライアントURL払出
 note right : チャットクライアントURL生成
 

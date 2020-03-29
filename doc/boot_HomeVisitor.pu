@@ -8,7 +8,9 @@ database    "Personal\n(IndexedDB)"                    as IndexedDB_Personal
 control     "SkyWay\n(API)"                            as SkyWay
 participant "Home Instance\nチャットサーバーインスタンス" as HomeInstance
 
+activate HomeInstance
 ChatUser             -> HomeVisitor         : 接続URLにアクセス
+activate HomeVisitor
 HomeVisitor         <-> IndexedDB_Personal  : DB有無チェック
 HomeVisitor          -> IndexedDB_Personal  : CreateDB
 note left : DBが存在しない場合、生成する
@@ -19,9 +21,12 @@ HomeVisitor          -> IndexedDB_Personal  : アクター情報要求
 HomeVisitor         <-- IndexedDB_Personal  : アクター情報
 
 HomeVisitor          -> SkyWay              : PeerID要求
-HomeVisitor         <-- SkyWay              : PeerID払出
-HomeVisitor          -> SkyWay              : 接続(Data Connection)
-SkyWay               -> HomeInstance        : 接続(Data Connection)
+activate SkyWay
+HomeVisitor         <-- SkyWay              : PeerID払出\n(event : OnPeerOpen)
+HomeVisitor          -> SkyWay              : P2P接続要求
+SkyWay               -> HomeInstance        : P2P接続要求
+HomeVisitor         <-- HomeInstance        : 接続通知\n(event : OnOwnerConnection)
+deactivate SkyWay
 
 HomeVisitor          -> HomeInstance        : Send : ClientBoot
 note left  : クライアント接続通知
