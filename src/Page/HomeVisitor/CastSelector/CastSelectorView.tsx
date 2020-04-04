@@ -1,39 +1,29 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import HomeVisitorController from "../HomeVisitorController";
 import CastSelectorController from "./CastSelectorController";
-import ActorCache from "../Cache/ActorCache";
-import { CastTypeEnum } from "../../../Base/Container/CastStatusSender";
-import ServentElementPack from "./ServentElementPack";
-import ServentSender from "../../../Contents/Sender/ServentSender";
+import ServentFrame from "./ServentFrame";
+import ServentListComponent from './ServentListComponent';
+import StdUtil from '../../../Base/Util/StdUtil';
+import ServentSender from '../../../Contents/Sender/ServentSender';
 
 
+/**
+ * 配信表示
+ */
 export default class CastSelectorView {
+
+    private _castListElement = document.getElementById('sbj-home-visitor-servent-list');
 
     private _homeController: HomeVisitorController;
     private _castSelectorController: CastSelectorController;
-
-    private _castSelectorElement = document.getElementById('sbj-home-visitor-castselect-pane');
-    private _castFrameElement = document.getElementById('sbj-home-visitor-castfrmae-pane');
-    private _layoutButton = document.getElementById('sbj-home-visitor-livecast-layout');
-    private _layoutButtonIcon = document.getElementById('sbj-home-visitor-livecast-layout-icon');
-    private _layoutButton1 = document.getElementById('sbj-home-visitor-livecast-layout-1');
-    private _layoutButton2 = document.getElementById('sbj-home-visitor-livecast-layout-2');
-    private _layoutButton4 = document.getElementById('sbj-home-visitor-livecast-layout-4');
-    private _livecastStatus = document.getElementById('sbj-home-visitor-livecast-display-status-label');
-
-    private _isLayoutMode = false;
     private _dispFrameCount = 1;
     private _dispFrameArray = new Array<number>();
-
-    private _servnetElementPacks = new Array<ServentElementPack>();
-
-    public GetFrame(frameIndex: number): HTMLFrameElement {
-        return this._servnetElementPacks[frameIndex].Frame;
-    }
-
+    private _serventFrameList = new Array<ServentFrame>();
 
     /**
-     * コンスとタクタ
+     * コンストラクタ
      * @param controller 
      * @param castSelectorController 
      */
@@ -42,22 +32,25 @@ export default class CastSelectorView {
         this._homeController = controller;
         this._castSelectorController = castSelectorController;
 
-        for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
+        for (let idx = 0; idx < this._castSelectorController.FrameCount; idx++) {
 
-            let slp = new ServentElementPack(controller, i);
-            this._servnetElementPacks.push(slp);
+            let sf = new ServentFrame(controller, idx);
 
-            slp.Button.onclick = (ev) => {
-                let index = i;
-                this.LiveCastSelectClick(index);
+            sf.onselect = () => {
+                this.LiveCastSelectClick(sf.FrameIndex);
             }
 
+            this._serventFrameList.push(sf);
         }
+    }
 
-        this._layoutButton.onclick = (ev) => { this.ChangeLayout() };
-        this._layoutButton1.onclick = (ev) => { this.ChangeDisplayFrameCount(1); };
-        this._layoutButton2.onclick = (ev) => { this.ChangeDisplayFrameCount(2); };
-        this._layoutButton4.onclick = (ev) => { this.ChangeDisplayFrameCount(4); };
+
+    /**
+     * 
+     * @param frameIndex 
+     */
+    public GetFrame(frameIndex: number): HTMLFrameElement {
+        return this._serventFrameList[frameIndex].Frame;
     }
 
 
@@ -68,7 +61,7 @@ export default class CastSelectorView {
      */
     public SetServentFrame(frameIndex: number, servent: ServentSender) {
 
-        let slp = this._servnetElementPacks[frameIndex];
+        let slp = this._serventFrameList[frameIndex];
 
         if (servent) {
             slp.SetServent(servent);
@@ -87,7 +80,7 @@ export default class CastSelectorView {
      */
     public RemoveServentFrame(frameIndex: number) {
 
-        let slp = this._servnetElementPacks[frameIndex];
+        let slp = this._serventFrameList[frameIndex];
         slp.RemoveServent();
 
         if (this._dispFrameArray.length > 0) {
@@ -105,28 +98,22 @@ export default class CastSelectorView {
      */
     public CheckChangeActiveFrame() {
 
-        let first: HTMLElement = null;
-
         for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
 
-            let slp = this._servnetElementPacks[i];
+            let slp = this._serventFrameList[i];
 
-            if (slp.Button.hidden)
+            if (slp.IsCasting)
                 continue;
 
             if (slp.Frame.hidden) {
                 return;
             }
 
-            if (!first)
-                first = slp.Button;
+            slp.onselect();
+            return;
         }
 
-        if (first)
-            first.click();
     }
-
-
 
 
     /**
@@ -155,32 +142,6 @@ export default class CastSelectorView {
         }
 
         this.SetCastFrame();
-    }
-
-
-    /**
-     * レイアウト変更
-     */
-    private ChangeLayout() {
-        this._isLayoutMode = !this._isLayoutMode;
-        let isMenuHide = !this._isLayoutMode;
-        this._layoutButtonIcon.textContent = (this._isLayoutMode ? "fullscreen" : "view_module");
-
-        this._castSelectorElement.hidden = isMenuHide;
-        this._layoutButton1.hidden = isMenuHide;
-        this._layoutButton2.hidden = isMenuHide;
-        this._layoutButton4.hidden = isMenuHide;
-        let xpx = (this._isLayoutMode ? 64 : 0).toString() + "px";
-        let ypx = (this._isLayoutMode ? 48 : 0).toString() + "px";
-        this._castFrameElement.style.left = xpx;
-        this._castFrameElement.style.top = ypx;
-        this._castFrameElement.style.width = "calc(100% - " + xpx + ")"
-        this._castFrameElement.style.height = "calc(100% - " + ypx + ")"
-
-        for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
-            let slp = this._servnetElementPacks[i];
-            slp.Status.hidden = !(this._isLayoutMode && slp.IsDispStatus());
-        }
     }
 
 
@@ -225,7 +186,7 @@ export default class CastSelectorView {
 
         for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
 
-            let sep = this._servnetElementPacks[i];
+            let sep = this._serventFrameList[i];
             if (sep.IsCasting) {
                 let pre = this._dispFrameArray.filter(n => (n === i));
 
@@ -245,20 +206,24 @@ export default class CastSelectorView {
     private SetCastFrame() {
 
         for (let frameIndex = 0; frameIndex < this._homeController.View.CastSelector.FrameCount; frameIndex++) {
-            let slp = this._servnetElementPacks[frameIndex];
+            let slp = this._serventFrameList[frameIndex];
             slp.Frame.hidden = true;
-            slp.Status.hidden = true;
-            slp.Button.removeAttribute('disabled');
         }
 
-        let displayLabel = "";
+        let key = StdUtil.CreateUuid();
+        ReactDOM.render(<ServentListComponent
+            key={key}
+            controller={this._castSelectorController}
+            servents={this._serventFrameList} />
+        ,this._castListElement);
+
 
         for (let dispIndex = 0; dispIndex < this._dispFrameArray.length; dispIndex++) {
             let frameIndex = this._dispFrameArray[dispIndex];
-            let slp = this._servnetElementPacks[frameIndex];
+            let slp = this._serventFrameList[frameIndex];
             this.SetFrameStatus(dispIndex, frameIndex, slp);
-            slp.Button.setAttribute('disabled', "1");
         }
+
     }
 
 
@@ -268,17 +233,13 @@ export default class CastSelectorView {
      * @param frameIndex
      * @param slp 
      */
-    private SetFrameStatus(dispIndex: number, frameIndex: number, slp: ServentElementPack) {
+    private SetFrameStatus(dispIndex: number, frameIndex: number, slp: ServentFrame) {
 
         slp.Frame.hidden = false;
         slp.Frame.style.position = "absolute";
         slp.Frame.style.zIndex = "2";
         slp.Frame.style.height = "calc(" + (this._dispFrameCount > 1 ? "50%" : "100%") + " - 8px)";
         slp.Frame.style.width = "calc(" + (this._dispFrameCount > 2 ? "50%" : "100%") + " - 8px)";
-
-        slp.Status.hidden = !(this._isLayoutMode && slp.IsDispStatus());
-        slp.Status.style.position = "absolute";
-        slp.Status.style.zIndex = "3";
 
         let topPos = "0px";
         let leftPos = "0px";
@@ -302,8 +263,6 @@ export default class CastSelectorView {
 
         slp.Frame.style.top = topPos;
         slp.Frame.style.left = leftPos;
-        slp.Status.style.top = topPos;
-        slp.Status.style.left = leftPos;
     }
 
 }

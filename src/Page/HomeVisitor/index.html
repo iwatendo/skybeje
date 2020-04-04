@@ -43,6 +43,13 @@
 					&nbsp; 接続URLのコピー &nbsp;
 				</button>
 				<div class="mdl-layout-spacer"></div>
+
+				<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-menu--bottom-right" id="sbj-home-visitor-servent-list-disp">
+					<i class="material-icons">arrow_drop_down</i>
+				</button>
+				<ul id="sbj-home-visitor-servent-list" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="sbj-home-visitor-servent-list-disp">
+				</ul>
+
 				<button id='sbj-service-list-disp' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
 					<i class="material-icons">apps</i>
 					&nbsp; 連動サービス &nbsp;
@@ -51,6 +58,7 @@
 					<i class="material-icons">settings</i>
 					<div class="mdl-tooltip" data-mdl-for="sbj-user-settings">ユーザー設定</div>
 				</button>
+
 				<ul id="sbj-service-list" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="sbj-service-list-disp">
 					<div>
 						<li class="sbj-service-list-item mdl-list__item" id="sbj-service-castinstance">
@@ -213,75 +221,16 @@
 			<div class="split-pane-divider" id="sbj-home-visitor-divider"></div>
 
 			<div class="split-pane-component sbj-split-pane-component-right" id="sbj-home-visitor-gadget-component">
-
-				<div class="sbj-home-visitor-livecast-layout-pane">
-					<button id='sbj-home-visitor-livecast-layout' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="z-index:3;">
-						<i id="sbj-home-visitor-livecast-layout-icon" class="material-icons">view_module</i>
-					</button>
-					<button id='sbj-home-visitor-livecast-layout-1' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" hidden>
-						<i class="material-icons">looks_one</i>
-					</button>
-					<button id='sbj-home-visitor-livecast-layout-2' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" hidden>
-						<i class="material-icons">looks_two</i>
-						<div class="mdl-tooltip" data-mdl-for="sbj-home-visitor-livecast-layout-2">上下表示</div>
-					</button>
-					<button id='sbj-home-visitor-livecast-layout-4' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" hidden>
-						<i class="material-icons">looks_4</i>
-						<div class="mdl-tooltip" data-mdl-for="sbj-home-visitor-livecast-layout-4">４マス表示</div>
-					</button>
-				</div>
-
-				<div id="sbj-home-visitor-castselect-pane" hidden>
-					<div>
-						<button id="sbj-home-visitor-livecast-select-0" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored sbj-home-visitor-livecast-select-button"
-						 hidden>
-							<i id="sbj-home-visitor-livecast-select-icon-0" class="sbj-livecast-select-icon material-icons">videocam</i>
-							<span id="sbj-home-visitor-livecast-select-title-0"></span>
-						</button>
-						<button id="sbj-home-visitor-livecast-select-1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored sbj-home-visitor-livecast-select-button"
-						 hidden>
-							<i id="sbj-home-visitor-livecast-select-icon-1" class="sbj-livecast-select-icon material-icons">videocam</i>
-							<span id="sbj-home-visitor-livecast-select-title-1"></span>
-						</button>
-						<button id="sbj-home-visitor-livecast-select-2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored sbj-home-visitor-livecast-select-button"
-						 hidden>
-							<i id="sbj-home-visitor-livecast-select-icon-2" class="sbj-livecast-select-icon material-icons">videocam</i>
-							<span id="sbj-home-visitor-livecast-select-title-2"></span>
-						</button>
-						<button id="sbj-home-visitor-livecast-select-3" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored sbj-home-visitor-livecast-select-button"
-						 hidden>
-							<i id="sbj-home-visitor-livecast-select-icon-3" class="sbj-livecast-select-icon material-icons">videocam</i>
-							<span id="sbj-home-visitor-livecast-select-title-3"></span>
-						</button>
-						<button id="sbj-home-visitor-livecast-select-4" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored sbj-home-visitor-livecast-select-button"
-						 hidden>
-							<i id="sbj-home-visitor-livecast-select-icon-4" class="sbj-livecast-select-icon material-icons">videocam</i>
-							<span id="sbj-home-visitor-livecast-select-title-4"></span>
-						</button>
-						<button id="sbj-home-visitor-livecast-select-5" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored sbj-home-visitor-livecast-select-button"
-						 hidden>
-							<i id="sbj-home-visitor-livecast-select-icon-5" class="sbj-livecast-select-icon material-icons">videocam</i>
-							<span id="sbj-home-visitor-livecast-select-title-5"></span>
-						</button>
+				<div id="sbj-home-visitor-castfrmae-pane">
+						<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-0"></iframe>
+						<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-1"></iframe>
+						<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-2"></iframe>
+						<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-3"></iframe>
+						<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-4"></iframe>
+						<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-5"></iframe>
 					</div>
 				</div>
-
-				<div id="sbj-home-visitor-castfrmae-pane">
-					<h6 class="sbj-home-visitor-livecast-status" id="sbj-home-visitor-livecast-status-0" hidden></h6>
-					<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-0"></iframe>
-					<h6 class="sbj-home-visitor-livecast-status" id="sbj-home-visitor-livecast-status-1" hidden></h6>
-					<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-1"></iframe>
-					<h6 class="sbj-home-visitor-livecast-status" id="sbj-home-visitor-livecast-status-2" hidden></h6>
-					<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-2"></iframe>
-					<h6 class="sbj-home-visitor-livecast-status" id="sbj-home-visitor-livecast-status-3" hidden></h6>
-					<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-3"></iframe>
-					<h6 class="sbj-home-visitor-livecast-status" id="sbj-home-visitor-livecast-status-4" hidden></h6>
-					<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-4"></iframe>
-					<h6 class="sbj-home-visitor-livecast-status" id="sbj-home-visitor-livecast-status-5" hidden></h6>
-					<iframe class="sbj-home-visitor-livecast" id="sbj-home-visitor-livecast-5"></iframe>
-				</div>
 			</div>
-		</div>
 
 		<div class="sbj-home-visitor mdl-color-text--grey-600" id="sbj-home-visitor-disconnect" hidden>
 			<div class="mdl-card__supporting-text">

@@ -3,25 +3,44 @@ import HomeVisitorController from "../HomeVisitorController";
 import ServentSender from "../../../Contents/Sender/ServentSender";
 
 
+/**
+ * 
+ */
+export default class ServentFrame {
 
-export default class ServentElementPack {
-
+    /**
+     * チャットクライアントのコントローラー
+     */
     private _homeController: HomeVisitorController;
 
+    /**
+     * サーバント表示用のフレーム
+     */
     public Frame: HTMLFrameElement;
-    public Status: HTMLElement;
-    public Button: HTMLElement;
-    public Title: HTMLElement;
-    public Icon: HTMLElement;
 
 
     /**
-     * 対象のフレームが配信中か？
+     * フレーム番号
      */
-    public get IsCasting() {
-        //  ボタンの表示非表示状態で判定
-        return !this.Button.hidden;
-    }
+    public FrameIndex: number;
+
+    /**
+     * 配信中か？
+     */
+    public IsCasting: boolean;
+
+
+    /**
+     * 配信タイトル
+     */
+    public Title: string = "";
+
+
+    /**
+     * 選択時イベント
+     */
+    public onselect: (() => any) | null;
+
 
     /**
      * 
@@ -31,19 +50,14 @@ export default class ServentElementPack {
     public constructor(controller: HomeVisitorController, frameIndex: number) {
         this._homeController = controller;
         this.Frame = document.getElementById("sbj-home-visitor-livecast-" + frameIndex.toString()) as HTMLFrameElement;
-        this.Status = document.getElementById("sbj-home-visitor-livecast-status-" + frameIndex.toString()) as HTMLElement;
-        this.Button = document.getElementById("sbj-home-visitor-livecast-select-" + frameIndex.toString());
-        this.Title = document.getElementById("sbj-home-visitor-livecast-select-title-" + frameIndex.toString());
-        this.Icon = document.getElementById("sbj-home-visitor-livecast-select-icon-" + frameIndex.toString());
+        this.FrameIndex = frameIndex;
     }
 
 
     public RemoveServent() {
         this.Frame.setAttribute('src', '');
-        this.Status.textContent = "";
-        this.Button.hidden = true;
-        this.Icon.textContent = "";
-        this.Title.textContent = "";
+        this.Title = "";
+        this.IsCasting = false;
     }
 
 
@@ -56,21 +70,19 @@ export default class ServentElementPack {
      */
     public SetServent(servent: ServentSender) {
         this._homeController.ActorCache.GetActor(servent.ownerPeerid, servent.ownerAid, (actor) => {
-            this.Title.textContent = actor.name;
-            this.Icon.textContent = this.GetCastIconName(servent.castType);
+            this.Title = this.GetDisplayNameStatus(servent) + " : " + actor.name;
         });
 
-        this.Button.hidden = false;
-        this.Status.textContent = this.GetDisplayNameStatus(servent);
-        this.SetServentMain(this.Frame, servent);
+        this.IsCasting = true;
+        this.SetFrame(this.Frame, servent);
     }
 
 
     /**
-     * フレームにサーバントを設定
+     * フレームにサーバントを
      * @param servent 
      */
-    private SetServentMain(frame: HTMLFrameElement, servent: ServentSender) {
+    private SetFrame(frame: HTMLFrameElement, servent: ServentSender) {
 
         if (servent.hid !== this._homeController.CurrentHid) {
             return;
@@ -106,7 +118,6 @@ export default class ServentElementPack {
      */
     private GetDisplayNameStatus(servent: ServentSender): string {
 
-        let name = this.Title.textContent;
         let castTypeName = "";
         switch (servent.castType) {
             case CastTypeEnum.LiveCast:
@@ -118,43 +129,11 @@ export default class ServentElementPack {
                 }
                 break;
             case CastTypeEnum.ScreenShare: castTypeName = "スクリーンシェア"; break;
-            case CastTypeEnum.Gadget: castTypeName = "ガジェット配信"; break;
+            case CastTypeEnum.Gadget: castTypeName = "YouTube同期再生"; break;
             case CastTypeEnum.LiveHTML: castTypeName = "ライブHTML"; break;
         }
 
-        return name + "：" + castTypeName;
-    }
-
-
-    /**
-     * キャスト名称の取得
-     * @param servent 
-     */
-    private GetCastIconName(castType: CastTypeEnum) {
-        switch (castType) {
-            case CastTypeEnum.LiveCast: return "videocam";
-            case CastTypeEnum.ScreenShare: return "screen_share";
-            case CastTypeEnum.Gadget: return "ondemand_video";
-            case CastTypeEnum.LiveHTML: return "web";
-        }
-    }
-
-
-    /**
-     * ステータスの表示判定
-     */
-    public IsDispStatus(): boolean {
-
-        //  フレーム上のステータス表示を一時廃止
-        return false;
-
-        // //  フレームが非表示の場合はステータスも表示しない
-        // if (this.Frame.hidden) {
-        //     return false;
-        // }
-
-        // //  文言が設定されている場合のみ表示する
-        // return (this.Status && this.Status.textContent.length > 0);
+        return castTypeName;
     }
 
 }
