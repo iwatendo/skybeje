@@ -183,7 +183,6 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
         if (sender.type === SettingsChangeSender.ID) {
             let scs = sender as SettingsChangeSender;
             if (scs.isClose) {
-                this.Controller.View.VisibleSetting(false);
                 this.Controller.View.InputPane.UserSettingChange();
             }
         }
