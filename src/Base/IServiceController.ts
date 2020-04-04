@@ -45,4 +45,7 @@ export default interface IServiceController {
     //  データ取得時イベント
     Recv(conn: PeerJs.DataConnection, recv);
 
+    //  ページクローズ時イベント
+    OnBeforeUnload();
+
 }

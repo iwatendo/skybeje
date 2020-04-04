@@ -112,7 +112,7 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
                 //  モバイル端末の場合はミュート状態で起動
                 this.IsSpeakerMute = StdUtil.IsMobile();
                 let peer = this.Controller.SwPeer;
-                let ownerid = this.Controller.SwPeer.OwnerPeerId;
+                let ownerid = this.Controller.SwPeer.OwnerReomteId;
 
                 let mode = (this.UseSFU() ? SWRoomMode.SFU : SWRoomMode.Mesh);
                 this.Controller.SwRoom = new SWRoom(this.Controller, ownerid, mode, stream);

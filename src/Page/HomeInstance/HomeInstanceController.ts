@@ -37,6 +37,18 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
 
     /**
+     * インスタンス起動情報のクリア処理
+     */
+    public ClearBootInfo() {
+        //  インスタンスが正常終了した場合、接続情報はクリアする
+        if (this.PeerID === LocalCache.BootHomeInstancePeerID) {
+            LocalCache.BootHomeInstancePeerID = "";
+        }
+    }
+
+
+
+    /**
      * 自身のPeer生成時イベント
      * ※サーバー用のPeerID取得時イベント
      * @param peer
@@ -79,12 +91,16 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     /**
      * 
      */
-    public OnPeerClose() {
+    public OnBeforeUnload() {
+        this.ClearBootInfo();
+    }
 
-        //  インスタンスが正常終了した場合、接続情報はクリアする
-        if (this.PeerID === LocalCache.BootHomeInstancePeerID) {
-            LocalCache.BootHomeInstancePeerID = "";
-        }
+
+    /**
+     * 
+     */
+    public OnPeerClose() {
+        this.ClearBootInfo();
     }
 
 
@@ -111,7 +127,6 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
         conn.close();
         this.View.SetPeerCount(this.SwPeer.GetAliveConnectionCount());
     }
-
 
 
     /**

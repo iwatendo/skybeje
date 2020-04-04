@@ -9,7 +9,7 @@ import IServiceReceiver from "./IServiceReceiver";
 import IServiceView from "./IServiceView";
 import IServiceModel from "./IServiceModel";
 import LocalCache from "../Contents/Cache/LocalCache";
-import StdUtil from "./Util/StdUtil";
+import CloseRequestSender from "./Container/CloseRequestSender";
 
 /**
  * Peerサービスコントローラーの抽象化クラス
@@ -174,7 +174,7 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
      * @param conn
      * @param recv
      */
-    public Recv(conn: PeerJs.DataConnection, recv) {
+    public Recv(conn: PeerJs.DataConnection, recv: any) {
 
         if (recv === null)
             return;
@@ -195,7 +195,33 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
         if (sender.key !== LinkUtil.OneTimeKey)
             return;
 
-        this.Receiver.Receive(conn, sender);
+        //  ページクローズ処理の場合
+        if(sender.type === CloseRequestSender.ID){
+
+            if(conn){
+                let remoteId = conn.remoteId;
+                if(remoteId){
+                    if( remoteId === this.SwPeer.OwnerReomteId){
+                        this.SwPeer.Close(conn.remoteId);
+                        this.OnOwnerClose();
+                    }
+                    else{
+                        this.SwPeer.Close(conn.remoteId);
+                        this.OnDataConnectionClose(conn);
+                    }
+                }
+            }
+        }
+        else{
+            this.Receiver.Receive(conn, sender);
+        }
+    }
+
+    /**
+     * 
+     */
+    public OnBeforeUnload(){
+
     }
 
 

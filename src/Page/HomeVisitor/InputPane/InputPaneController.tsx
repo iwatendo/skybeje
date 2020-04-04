@@ -645,7 +645,7 @@ export default class InputPaneController {
                 this._voiceChatStream = stream;
                 this.IsMicMute = true;
                 let peer = this._controller.SwPeer;
-                let ownerid = this._controller.SwPeer.OwnerPeerId;
+                let ownerid = this._controller.SwPeer.OwnerReomteId;
                 this._controller.SwRoom = new SWRoom(this._controller, ownerid, SWRoomMode.SFU, stream);
             }, (errname) => {
                 alert(errname);

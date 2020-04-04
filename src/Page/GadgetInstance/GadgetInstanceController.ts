@@ -76,7 +76,7 @@ export default class GadgetInstanceController extends AbstractServiceController<
      */
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
-        this.SwPeer.Close();
+        this.SwPeer.CloseAll();
         this.PageClose();
     }
 

@@ -80,7 +80,7 @@ export default class CastInstanceMobileController extends AbstractServiceControl
      */
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
-        this.SwPeer.Close();
+        this.SwPeer.CloseAll();
         this.PageClose();
     }
 

@@ -46,7 +46,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         //  ストリーミング停止ボタン
         stopBotton.onclick = (e) => {
             this.Controller.StopStreaming();
-            this.Controller.SwPeer.Close();
+            this.Controller.SwPeer.CloseAll();
             this.Controller.PageClose();
         };
 
@@ -224,7 +224,7 @@ export default class CastInstanceMobileView extends AbstractServiceView<CastInst
         let msg = "カメラ及びマイクへの接続に失敗しました\n";
         msg += "LINE等のアプリから開いた場合、アプリ内のブラウザから標準ブラウザ（iPhoneの場合 Safari / Androidの場合 Chrome)を開いてください。";
         alert(msg);
-        this.Controller.SwPeer.Close();
+        this.Controller.SwPeer.CloseAll();
     }
 
 

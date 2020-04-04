@@ -3,6 +3,7 @@ import LogUtil from "../Util/LogUtil";
 import SWConnectionCache from "./SWConnectionCache";
 import IServiceController from "../IServiceController";
 import LocalCache from "../../Contents/Cache/LocalCache";
+import CloseRequestSender from "../Container/CloseRequestSender";
 
 
 interface OnSWPeerOpen { (): void }
@@ -11,7 +12,6 @@ export default class SWPeer {
 
     private _peer: any;
     private _ownerId: string;
-    private _owner: PeerJs.DataConnection;
     private _connCache: SWConnectionCache;
     private _service: IServiceController;
     private _opencb: OnSWPeerOpen
@@ -32,8 +32,8 @@ export default class SWPeer {
     /**
      * 
      */
-    public get OwnerPeerId(): string {
-        return (this._owner ? this._owner.remoteId : "");
+    public get OwnerReomteId(): string {
+        return this._ownerId;
     }
 
 
@@ -70,18 +70,19 @@ export default class SWPeer {
             let debugMode = (LocalCache.DebugMode > 1 ? 3 : 1);
             let peer = new Peer({ key: apikey, debug: debugMode });
 
-            window.onunload = window.onbeforeunload = () => {
-                if (peer && !peer.destroyed) {
-                    peer.destroy();
-                }
-            };
-
             //  
             this.PeerSetting(service, peer, ownerId);
 
             //
             this._peer = peer;
         });
+
+        //  ページが閉じられた場合の通知処理
+        window.onbeforeunload = (event: BeforeUnloadEvent) => {
+            this._service.OnBeforeUnload();
+            this.AllCloseRequest();
+        };
+
     }
 
 
@@ -202,9 +203,39 @@ export default class SWPeer {
      *  WebRTCServiceの停止
      *  全てクライアントとの接続を切断します
      */
-    public Close() {
-        this._connCache.Close();
+    public CloseAll() {
+        this._connCache.CloseAll();
         this._peer.destroy();
+    }
+
+
+    /**
+     * 全ての接続先に、切断を要求する
+     * ※切断はリトライ処理が行われ、切断が検出されるまでにタイムラグが発生する為
+     */
+    public AllCloseRequest() {
+        if (this._peer && !this._peer.destroyed) {
+            const sender = new CloseRequestSender();
+            this.SendToOwner(sender);
+            this.SendAll(sender);
+            this._peer.close();
+        }
+    }
+
+
+    /**
+     * 指定されたIDとの接続を閉じる
+     * @param remoteId 
+     */
+    public Close(remoteId: string) {
+        if (this._connCache) {
+            if (this._connCache.IsOwnerRemoveId(remoteId)) {
+                this._connCache.CloseOwner();
+            }
+            else {
+                this._connCache.Close(remoteId);
+            }
+        }
     }
 
 

@@ -61,7 +61,8 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
                 //  多重起動が検出された場合はエラー表示して終了
                 this.Controller.HasError = true;
                 this.Controller.View.MutilBootError();
-                this.Controller.SwPeer.Close();
+                this.Controller.SwPeer.AllCloseRequest();
+                //  this.Controller.SwPeer.CloseAll();
             }
             return;
         }

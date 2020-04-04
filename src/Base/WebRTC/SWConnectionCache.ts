@@ -35,7 +35,7 @@ export default class SWConnectionCache {
         pp.Set(conn);
     }
 
-
+    
     /**
      * 
      * @param conn 
@@ -111,7 +111,7 @@ export default class SWConnectionCache {
     /**
      * 全接続クローズ
      */
-    public Close() {
+    public CloseAll() {
         this._map.forEach((peerPair, key) => {
             if (peerPair.IsAlive()) {
                 peerPair.Close();
@@ -157,6 +157,44 @@ export default class SWConnectionCache {
             let pp = new SWConnection(this._swpeer, remoteId);
             map.set(remoteId, pp);
             return pp;
+        }
+    }
+
+    /**
+     * オーナーIDか？
+     * @param remoteId 
+     */
+    public IsOwnerRemoveId(remoteId: string): boolean {
+        if (this._owner) {
+            if (this._owner.remoteId === remoteId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 
+     */
+    public CloseOwner() {
+        if (this._owner) {
+            this._owner.Close();
+            this._owner = null;
+        }
+    }
+
+    /**
+     * 接続情報を取得
+     * @param remoteId 
+     */
+    public Close(remoteId: string) {
+
+        let map = this._map;
+
+        if (map.has(remoteId)) {
+            let conn = map.get(remoteId);
+            conn.Close();
+            map.delete(remoteId);
         }
     }
 
