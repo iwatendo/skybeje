@@ -226,11 +226,12 @@
 }
 
 .sbj-inputpanel-button{
-    padding: 0px 8px;
+    padding: 0px 4px;
     color: #757575;    
 }
 
 .sbj-inputpanel-button-right{
+    padding: 0px 8px 0px 0px;    
     float: right;
 }
 
