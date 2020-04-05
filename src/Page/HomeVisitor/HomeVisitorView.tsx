@@ -284,7 +284,9 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
      */
     private DoResize() {
         this.MoveLastTimeline();
-        this.InputPane.UserSettingChange();
+        if(this.InputPane){
+            this.InputPane.UserSettingChange();
+        }
     }
 
 
