@@ -54,10 +54,6 @@
 					<i class="material-icons">apps</i>
 					&nbsp; 連動サービス &nbsp;
 				</button>
-				<button id='sbj-user-settings' class="mdl-button mdl-js-button mdl-button--colored">
-					<i class="material-icons">settings</i>
-					<div class="mdl-tooltip" data-mdl-for="sbj-user-settings">ユーザー設定</div>
-				</button>
 
 				<ul id="sbj-service-list" class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="sbj-service-list-disp">
 					<div>
@@ -168,8 +164,12 @@
 							</textarea>
 						</div>
 						<div class="mdl-card__actions sbj-inputpanel-action">
+							<button id='sbj-user-settings' class="mdl-button mdl-js-button mdl-button--colored">
+								<i class="material-icons">settings</i>設定
+								<div class="mdl-tooltip" data-mdl-for="sbj-user-settings">ユーザー設定</div>
+							</button>
 							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-actor-edit-button">
-								<i class="material-icons">account_box</i>プロフィールを編集
+								<i class="material-icons">account_box</i>プロフィール
 							</button>
 							<button class="sbj-inputpanel-button mdl-button mdl-button--colored" id="sbj-inputpanel-select-actor-button" hidden>
 								<i class="material-icons">recent_actors</i>アクター
@@ -215,7 +215,6 @@
 						</button>
 					</div>
 				</div>
-
 			</div>
 
 			<div class="split-pane-divider" id="sbj-home-visitor-divider"></div>
