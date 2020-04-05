@@ -14,6 +14,7 @@ import ServentSender from '../../../Contents/Sender/ServentSender';
  */
 export default class CastSelectorView {
 
+    private _castListDispElement = document.getElementById('sbj-home-visitor-servent-list-disp');
     private _castListElement = document.getElementById('sbj-home-visitor-servent-list');
 
     private _homeController: HomeVisitorController;
@@ -205,17 +206,28 @@ export default class CastSelectorView {
      */
     private SetCastFrame() {
 
+        //  配信状態のサービスがあるか？
+        let isCasting = false;
+
         for (let frameIndex = 0; frameIndex < this._homeController.View.CastSelector.FrameCount; frameIndex++) {
-            let slp = this._serventFrameList[frameIndex];
-            slp.Frame.hidden = true;
+            let sf = this._serventFrameList[frameIndex];
+            sf.Frame.hidden = true;
+
+            if (sf.IsCasting) {
+                isCasting = true;
+            }
         }
+
+        //  配信中サービス一覧ボタンの表示／非表示切替
+        //  ※１つでも配信中のサービスがあれば表示する
+        this._castListDispElement.hidden = !isCasting;
 
         let key = StdUtil.CreateUuid();
         ReactDOM.render(<ServentListComponent
             key={key}
             controller={this._castSelectorController}
             servents={this._serventFrameList} />
-        ,this._castListElement);
+            , this._castListElement);
 
 
         for (let dispIndex = 0; dispIndex < this._dispFrameArray.length; dispIndex++) {
