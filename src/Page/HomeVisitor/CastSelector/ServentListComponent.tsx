@@ -4,13 +4,14 @@ import * as ReactDOM from 'react-dom';
 import RoomItemComponent from "./ServentListtemComponent";
 import CastSelectorController from './CastSelectorController';
 import ServentFrame from './ServentFrame';
+import CastSelectorView from './CastSelectorView';
 
 
 /**
  * プロパティ
  */
 export interface ServentListProp {
-    controller: CastSelectorController;
+    view: CastSelectorView;
     servents: Array<ServentFrame>;
 }
 
@@ -23,9 +24,9 @@ export default class ServentListComponent extends React.Component<ServentListPro
     public render() {
 
         let list = this.props.servents.map((serventFrame) => {
-            let key = serventFrame.FrameIndex;
+            let key = serventFrame.FrameNo;
             if( serventFrame.IsCasting){
-                return (<RoomItemComponent key={key} controller={this.props.controller} servent={serventFrame} />);
+                return (<RoomItemComponent key={key} view={this.props.view} servent={serventFrame} />);
             }
         });
 

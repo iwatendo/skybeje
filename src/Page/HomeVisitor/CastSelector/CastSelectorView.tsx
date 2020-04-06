@@ -2,11 +2,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import HomeVisitorController from "../HomeVisitorController";
-import CastSelectorController from "./CastSelectorController";
 import ServentFrame from "./ServentFrame";
 import ServentListComponent from './ServentListComponent';
 import StdUtil from '../../../Base/Util/StdUtil';
 import ServentSender from '../../../Contents/Sender/ServentSender';
+import ServentMap from './ServentMap';
 
 
 /**
@@ -14,162 +14,123 @@ import ServentSender from '../../../Contents/Sender/ServentSender';
  */
 export default class CastSelectorView {
 
-    private _castListDispElement = document.getElementById('sbj-home-visitor-servent-list-disp');
+    //  最大フレーム数
+    private _MAX_FRAME_COUNT = 4;
+
+    //  配信リスト一覧表示エレメント
     private _castListElement = document.getElementById('sbj-home-visitor-servent-list');
 
-    private _homeController: HomeVisitorController;
-    private _castSelectorController: CastSelectorController;
+    //  配信リスト表示ボタンエレメント
+    private _castListDispButtonElement = document.getElementById('sbj-home-visitor-servent-list-disp');
+
+    //  配信情報MAP
+    private _serventMap: ServentMap;
+
+    //  フレーム一覧
+    private _serventFrameList: Array<ServentFrame>;
+
+    //  表示するフレーム数
     private _dispFrameCount = 1;
-    private _dispFrameArray = new Array<number>();
-    private _serventFrameList = new Array<ServentFrame>();
+
+    //  フレームの表示順
+    private _dispFrameNoArray = new Array<number>();
+
 
     /**
      * コンストラクタ
      * @param controller 
-     * @param castSelectorController 
      */
-    constructor(controller: HomeVisitorController, castSelectorController: CastSelectorController) {
+    constructor(controller: HomeVisitorController) {
 
-        this._homeController = controller;
-        this._castSelectorController = castSelectorController;
+        this._serventMap = new ServentMap(this, this._MAX_FRAME_COUNT);
+        this._serventFrameList = new Array<ServentFrame>();
 
-        for (let idx = 0; idx < this._castSelectorController.FrameCount; idx++) {
-
-            let sf = new ServentFrame(controller, idx);
-
-            sf.onselect = () => {
-                this.LiveCastSelectClick(sf.FrameIndex);
-            }
-
+        for (let frameNo = 0; frameNo < this._MAX_FRAME_COUNT; frameNo++) {
+            let sf = new ServentFrame(controller, frameNo);
             this._serventFrameList.push(sf);
         }
     }
 
 
     /**
-     * 
-     * @param frameIndex 
+     * サーバントの表示
+     * @param servents 
      */
-    public GetFrame(frameIndex: number): HTMLFrameElement {
-        return this._serventFrameList[frameIndex].Frame;
-    }
+    public SetServents(servents: ServentSender[]) {
 
-
-    /**
-     * 指定したフレームにサーバントを設定します。
-     * @param frameIndex 
-     * @param servent 
-     */
-    public SetServentFrame(frameIndex: number, servent: ServentSender) {
-
-        let slp = this._serventFrameList[frameIndex];
-
-        if (servent) {
-            slp.SetServent(servent);
-
-            if (this._dispFrameCount < this._dispFrameArray.length) {
-                this._dispFrameArray.push(frameIndex);
-                this.SetCastFrame();
-            }
-        }
-    }
-
-
-    /**
-     * 指定フレームのサーバントをクリア
-     * @param frameIndex 
-     */
-    public RemoveServentFrame(frameIndex: number) {
-
-        let slp = this._serventFrameList[frameIndex];
-        slp.RemoveServent();
-
-        if (this._dispFrameArray.length > 0) {
-            //  フレーム番号と表示番号の対応表の更新
-            let newArray = new Array<number>();
-            this._dispFrameArray.filter((i) => (i !== frameIndex)).forEach((i) => { newArray.push(i); });
-            this._dispFrameArray = newArray;
-        }
-        this.SetCastFrame();
-    }
-
-
-    /**
-     * アクティブボタンが閉じられた場合、表示されている先頭タブをアクティブにする
-     */
-    public CheckChangeActiveFrame() {
-
-        for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
-
-            let slp = this._serventFrameList[i];
-
-            if (slp.IsCasting)
-                continue;
-
-            if (slp.Frame.hidden) {
-                return;
-            }
-
-            slp.onselect();
-            return;
-        }
-
-    }
-
-
-    /**
-     * 表示するライブキャストのボタン
-     * @param index 
-     */
-    private LiveCastSelectClick(index: number) {
-
-        let isDisp = false;
-
-        this._dispFrameArray.forEach((pre) => {
-            if (pre === index) {
-                isDisp = true;
-            }
+        this._serventMap.SetServents(servents, () => {
+            //  変更があった場合
+            this.ChangeDispFrameCount(servents.length);
+            this.SetLayout();
         });
 
-        //  表示済みの場合は何も処理しない
-        if (isDisp)
-            return;
-
-        //  未表示キャストが選択された場合は最後尾に追加
-        this._dispFrameArray.push(index);
-
-        if (this._dispFrameArray.length > this._dispFrameCount) {
-            this._dispFrameArray = this._dispFrameArray.slice(1);
-        }
-
-        this.SetCastFrame();
     }
 
 
     /**
-     * 表示するサーバント件数を変更します
+     * 指定フレームにサーバント(配信URL)を設定
+     * @param frameNo フレーム番号
+     * @param servent 配信URL
+     */
+    public SetFrame(frameNo: number, servent: ServentSender) {
+
+        if (servent) {
+
+            this._serventFrameList[frameNo].Set(servent);
+
+            if (this._dispFrameCount < this._dispFrameNoArray.length) {
+                this._dispFrameNoArray.push(frameNo);
+                this.SetLayout();
+            }
+       }
+    }
+
+
+    /**
+     * 指定フレームのサーバント（配信URL）をクリア
+     * @param frameNo 
+     */
+    public ClearFrame(frameNo: number) {
+
+        let sf = this._serventFrameList[frameNo];
+        sf.Clear();
+
+        if (this._dispFrameNoArray.length > 0) {
+            //  フレーム番号と表示番号の対応表の更新
+            let newArray = new Array<number>();
+            this._dispFrameNoArray.filter((i) => (i !== frameNo)).forEach((i) => { newArray.push(i); });
+            this._dispFrameNoArray = newArray;
+        }
+
+        this.SetLayout();
+    }
+
+
+    /**
+     * 表示するサーバント件数を変更
      * @param serventCount 
      */
-    public ChangeDisplayFrameCount(serventCount: number) {
+    private ChangeDispFrameCount(serventCount: number) {
+        
         this._dispFrameCount = this.ToDispFrameCount(serventCount);
-        this._dispFrameArray = this._dispFrameArray.slice(0, this._dispFrameCount);
+        this._dispFrameNoArray = this._dispFrameNoArray.slice(0, this._dispFrameCount);
 
-        while (this._dispFrameArray.length < this._dispFrameCount) {
-            let index = this.GetNoDispFrameIndex();
-            if (index >= 0) {
-                this._dispFrameArray.push(index);
+        while (this._dispFrameNoArray.length < this._dispFrameCount) {
+
+            let frameNo = this.GetNonDispFrameNo();
+
+            if (frameNo >= 0) {
+                this._dispFrameNoArray.push(frameNo);
             }
             else {
                 break;
             }
         }
-
-        this.SetCastFrame();
     }
 
 
     /**
-     * 
+     * 画面分割数を取得
      * @param serventCount 
      */
     private ToDispFrameCount(serventCount: number) {
@@ -181,18 +142,20 @@ export default class CastSelectorView {
 
 
     /**
-     * キャスト中かつ非表示のフレーム番号を取得
+     * キャスト中
+     * かつ非表示のフレーム番号を取得
      */
-    private GetNoDispFrameIndex(): number {
+    private GetNonDispFrameNo(): number {
 
-        for (let i = 0; i < this._castSelectorController.FrameCount; i++) {
+        for (let frameNo = 0; frameNo < this._MAX_FRAME_COUNT; frameNo++) {
 
-            let sep = this._serventFrameList[i];
-            if (sep.IsCasting) {
-                let pre = this._dispFrameArray.filter(n => (n === i));
+            let sf = this._serventFrameList[frameNo];
+
+            if (sf.IsCasting) {
+                let pre = this._dispFrameNoArray.filter(n => (n === frameNo));
 
                 if (pre.length === 0) {
-                    return i;
+                    return frameNo;
                 }
             }
         }
@@ -202,79 +165,42 @@ export default class CastSelectorView {
 
 
     /**
-     * 
+     * レイアウト
      */
-    private SetCastFrame() {
+    public SetLayout() {
 
         //  配信状態のサービスがあるか？
-        let isCasting = false;
+        let hasCasting = false;
 
-        for (let frameIndex = 0; frameIndex < this._homeController.View.CastSelector.FrameCount; frameIndex++) {
+        for (let frameIndex = 0; frameIndex < this._MAX_FRAME_COUNT; frameIndex++) {
+
+            //  一度全てのフレームを非表示状態にする
             let sf = this._serventFrameList[frameIndex];
             sf.Frame.hidden = true;
 
+            //  配信状態のサービスがある場合
             if (sf.IsCasting) {
-                isCasting = true;
+                hasCasting = true;
             }
         }
 
         //  配信中サービス一覧ボタンの表示／非表示切替
         //  ※１つでも配信中のサービスがあれば表示する
-        this._castListDispElement.hidden = !isCasting;
+        this._castListDispButtonElement.hidden = !hasCasting;
+
+        for (let dispIndex = 0; dispIndex < this._dispFrameNoArray.length; dispIndex++) {
+            let frameNo = this._dispFrameNoArray[dispIndex];
+            let sf = this._serventFrameList[frameNo];
+            sf.SetLayout(dispIndex, this._dispFrameCount);
+        }
 
         let key = StdUtil.CreateUuid();
+
         ReactDOM.render(<ServentListComponent
             key={key}
-            controller={this._castSelectorController}
+            view={this}
             servents={this._serventFrameList} />
             , this._castListElement);
-
-
-        for (let dispIndex = 0; dispIndex < this._dispFrameArray.length; dispIndex++) {
-            let frameIndex = this._dispFrameArray[dispIndex];
-            let slp = this._serventFrameList[frameIndex];
-            this.SetFrameStatus(dispIndex, frameIndex, slp);
-        }
-
-    }
-
-
-    /**
-     * キャストフレームとステータスの表示位置設定
-     * @param dispIndex 
-     * @param frameIndex
-     * @param slp 
-     */
-    private SetFrameStatus(dispIndex: number, frameIndex: number, slp: ServentFrame) {
-
-        slp.Frame.hidden = false;
-        slp.Frame.style.position = "absolute";
-        slp.Frame.style.zIndex = "2";
-        slp.Frame.style.height = "calc(" + (this._dispFrameCount > 1 ? "50%" : "100%") + " - 8px)";
-        slp.Frame.style.width = "calc(" + (this._dispFrameCount > 2 ? "50%" : "100%") + " - 8px)";
-
-        let topPos = "0px";
-        let leftPos = "0px";
-
-        switch (this._dispFrameCount) {
-            case 1:
-            case 2:
-                switch (dispIndex) {
-                    case 1: topPos = "50%"; break;
-                }
-                break;
-            case 4:
-                switch (dispIndex) {
-                    case 0: topPos = "0px"; leftPos = "0px"; break;
-                    case 1: topPos = "50%"; leftPos = "0px"; break;
-                    case 2: topPos = "0px"; leftPos = "50%"; break;
-                    case 3: topPos = "50%"; leftPos = "50%"; break;
-                }
-                break;
-        }
-
-        slp.Frame.style.top = topPos;
-        slp.Frame.style.left = leftPos;
     }
 
 }

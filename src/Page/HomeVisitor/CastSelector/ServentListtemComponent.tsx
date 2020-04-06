@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import CastSelectorController from './CastSelectorController';
 import ServentFrame from './ServentFrame';
+import CastSelectorView from './CastSelectorView';
 
 
 
@@ -10,7 +11,7 @@ import ServentFrame from './ServentFrame';
  * プロパティ
  */
 export interface ServentListItemProp {
-    controller: CastSelectorController;
+    view: CastSelectorView;
     servent: ServentFrame;
 }
 

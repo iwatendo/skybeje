@@ -18,11 +18,10 @@ export default class ServentFrame {
      */
     public Frame: HTMLFrameElement;
 
-
     /**
-     * フレーム番号
+     * フレーム番号(0～3)
      */
-    public FrameIndex: number;
+    public FrameNo: number;
 
     /**
      * 配信中か？
@@ -37,12 +36,6 @@ export default class ServentFrame {
 
 
     /**
-     * 選択時イベント
-     */
-    public onselect: (() => any) | null;
-
-
-    /**
      * 
      * @param controller 
      * @param frameIndex 
@@ -50,16 +43,8 @@ export default class ServentFrame {
     public constructor(controller: HomeVisitorController, frameIndex: number) {
         this._homeController = controller;
         this.Frame = document.getElementById("sbj-home-visitor-livecast-" + frameIndex.toString()) as HTMLFrameElement;
-        this.FrameIndex = frameIndex;
+        this.FrameNo = frameIndex;
     }
-
-
-    public RemoveServent() {
-        this.Frame.setAttribute('src', '');
-        this.Title = "";
-        this.IsCasting = false;
-    }
-
 
     /**
      * 各コンポーネントにサーバントを設定
@@ -68,13 +53,23 @@ export default class ServentFrame {
      * @param toolTipElement 
      * @param servent 
      */
-    public SetServent(servent: ServentSender) {
+    public Set(servent: ServentSender) {
         this._homeController.ActorCache.GetActor(servent.ownerPeerid, servent.ownerAid, (actor) => {
             this.Title = this.GetDisplayNameStatus(servent) + " : " + actor.name;
         });
 
         this.IsCasting = true;
         this.SetFrame(this.Frame, servent);
+    }
+
+
+    /**
+     * 
+     */
+    public Clear() {
+        this.Frame.setAttribute('src', '');
+        this.Title = "";
+        this.IsCasting = false;
     }
 
 
@@ -108,6 +103,44 @@ export default class ServentFrame {
             }
             frame.setAttribute('src', url);
         }
+    }
+
+
+    /**
+     * キャストフレームとステータスの表示位置設定
+     * @param dispIndex 
+     * @param dispFrameCount 
+     */
+    public SetLayout(dispIndex: number, dispFrameCount: number) {
+
+        this.Frame.hidden = false;
+        this.Frame.style.position = "absolute";
+        this.Frame.style.zIndex = "2";
+        this.Frame.style.height = "calc(" + (dispFrameCount > 1 ? "50%" : "100%") + " - 8px)";
+        this.Frame.style.width = "calc(" + (dispFrameCount > 2 ? "50%" : "100%") + " - 8px)";
+
+        let topPos = "0px";
+        let leftPos = "0px";
+
+        switch (dispFrameCount) {
+            case 1:
+            case 2:
+                switch (dispIndex) {
+                    case 1: topPos = "50%"; break;
+                }
+                break;
+            case 4:
+                switch (dispIndex) {
+                    case 0: topPos = "0px"; leftPos = "0px"; break;
+                    case 1: topPos = "50%"; leftPos = "0px"; break;
+                    case 2: topPos = "0px"; leftPos = "50%"; break;
+                    case 3: topPos = "50%"; leftPos = "50%"; break;
+                }
+                break;
+        }
+
+        this.Frame.style.top = topPos;
+        this.Frame.style.left = leftPos;
     }
 
 

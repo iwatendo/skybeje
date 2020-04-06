@@ -1,5 +1,6 @@
 import CastSelectorController from "./CastSelectorController";
 import ServentSender from "../../../Contents/Sender/ServentSender";
+import CastSelectorView from "./CastSelectorView";
 
 
 /**
@@ -7,16 +8,18 @@ import ServentSender from "../../../Contents/Sender/ServentSender";
  */
 export default class ServentMap {
 
-    private _controller: CastSelectorController;
+    private _maxServentCount = 0;
+    private _view: CastSelectorView;
     private _map = new Map<number, ServentSender>();
 
 
     /**
      * 
-     * @param controller 
+     * @param view 
      */
-    constructor(controller: CastSelectorController) {
-        this._controller = controller;
+    constructor(view: CastSelectorView, maxServentCount : number ) {
+        this._maxServentCount = maxServentCount;
+        this._view = view;
     }
 
 
@@ -62,10 +65,10 @@ export default class ServentMap {
         });
 
         //  削除されたサーバントの除去
-        for (let i = 0; i < this._controller.FrameCount; i++) {
+        for (let i = 0; i < this._maxServentCount; i++) {
             if (!preMap.has(i)) {
                 if (this._map.has(i)) {
-                    this._controller.RemoveServentFrame(i);
+                    this._view.ClearFrame(i);
                     this._map.delete(i);
                     isDelete = true;
                 }
@@ -74,14 +77,14 @@ export default class ServentMap {
 
         //  新規サーバントの追加
         newServent.forEach((servent) => {
-            for (let i = 0; i < this._controller.FrameCount; i++) {
+            for (let i = 0; i < this._maxServentCount; i++) {
                 if (preMap.has(i))
                     continue;
 
-                this._controller.SetServentFrame(i, servent);
+                this._view.SetFrame(i, servent);
                 preMap.set(i, servent);
                 this._map.set(i, servent);
-                i = this._controller.FrameCount;
+                i =this._maxServentCount;
 
                 isAppend = true;
             }

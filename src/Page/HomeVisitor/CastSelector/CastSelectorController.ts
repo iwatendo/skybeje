@@ -1,14 +1,9 @@
 import HomeVisitorController from "../HomeVisitorController";
-import ServentMap from "./ServentMap";
 import CastSelectorView from "./CastSelectorView";
 import RoomServentSender from "../../../Contents/Sender/RoomServentSender";
-import ServentSender from "../../../Contents/Sender/ServentSender";
 
 
 export default class CastSelectorController {
-
-    public FrameCount = 6;
-    public Servents: ServentMap;
 
     private _ownerController: HomeVisitorController;
     private _view: CastSelectorView;
@@ -18,10 +13,8 @@ export default class CastSelectorController {
      * @param controller 
      */
     constructor(controller: HomeVisitorController) {
-
         this._ownerController = controller;
-        this._view = new CastSelectorView(controller, this);
-        this.Servents = new ServentMap(this);
+        this._view = new CastSelectorView(controller);
     }
 
 
@@ -38,40 +31,18 @@ export default class CastSelectorController {
 
     /**
      * サーバント一覧表示切替
-     * @param url 
+     * @param rs 
      */
     public ChangeRoomServentList(rs: RoomServentSender) {
 
         let servents = rs.servents;
 
         if (servents) {
-            this.Servents.SetServents(servents, () => {
-                //  変更があった場合
-                this._view.ChangeDisplayFrameCount(servents.length);
-            });
+            this._view.SetServents(servents);
         }
 
-        //  アクティブタブの確認
-        this._view.CheckChangeActiveFrame();
-    }
-
-
-    /**
-     * 
-     * @param index 
-     * @param servent 
-     */
-    public SetServentFrame(index: number, servent: ServentSender) {
-        this._view.SetServentFrame(index, servent);
-    }
-
-
-    /**
-     * 
-     * @param index 
-     */
-    public RemoveServentFrame(index: number) {
-        this._view.RemoveServentFrame(index);
+        //
+        this._view.SetLayout();
     }
 
 }
