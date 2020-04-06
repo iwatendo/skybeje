@@ -1,7 +1,6 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import ServantSelectorController from './ServantSelectorController';
 import ServentFrame from './ServentFrame';
 import ServantSelectorView from './ServantSelectorView';
 
@@ -33,11 +32,12 @@ export default class ServentListItemComponent extends React.Component<ServentLis
 
 
     /**
-     * 
+     * 並び順の変更
      * @param e 
      */
-    private OnClick(e) {
-
+    private OnClick(e: any) {
+        let sf = this.props.servent;
+        this.props.view.ChangeOrder(sf);
     }
 
 }

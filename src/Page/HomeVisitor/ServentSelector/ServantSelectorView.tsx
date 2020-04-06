@@ -27,13 +27,13 @@ export default class ServantSelectorView {
     private _serventMap: ServentMap;
 
     //  フレーム一覧
-    private _serventFrameList: Array<ServentFrame>;
+    private _serventFrames: Array<ServentFrame>;
 
     //  表示するフレーム数
     private _dispFrameCount = 1;
 
     //  フレームの表示順
-    private _dispFrameNoArray = new Array<number>();
+    private _dispFrameNoList = new Array<number>();
 
 
     /**
@@ -43,11 +43,11 @@ export default class ServantSelectorView {
     constructor(controller: HomeVisitorController) {
 
         this._serventMap = new ServentMap(this, this._MAX_FRAME_COUNT);
-        this._serventFrameList = new Array<ServentFrame>();
+        this._serventFrames = new Array<ServentFrame>();
 
         for (let frameNo = 0; frameNo < this._MAX_FRAME_COUNT; frameNo++) {
             let sf = new ServentFrame(controller, frameNo);
-            this._serventFrameList.push(sf);
+            this._serventFrames.push(sf);
         }
     }
 
@@ -76,13 +76,13 @@ export default class ServantSelectorView {
 
         if (servent) {
 
-            this._serventFrameList[frameNo].Set(servent);
+            this._serventFrames[frameNo].Set(servent);
 
-            if (this._dispFrameCount < this._dispFrameNoArray.length) {
-                this._dispFrameNoArray.push(frameNo);
+            if (this._dispFrameCount < this._dispFrameNoList.length) {
+                this._dispFrameNoList.push(frameNo);
                 this.SetLayout();
             }
-       }
+        }
     }
 
 
@@ -92,14 +92,14 @@ export default class ServantSelectorView {
      */
     public ClearFrame(frameNo: number) {
 
-        let sf = this._serventFrameList[frameNo];
+        let sf = this._serventFrames[frameNo];
         sf.Clear();
 
-        if (this._dispFrameNoArray.length > 0) {
+        if (this._dispFrameNoList.length > 0) {
             //  フレーム番号と表示番号の対応表の更新
             let newArray = new Array<number>();
-            this._dispFrameNoArray.filter((i) => (i !== frameNo)).forEach((i) => { newArray.push(i); });
-            this._dispFrameNoArray = newArray;
+            this._dispFrameNoList.filter((i) => (i !== frameNo)).forEach((i) => { newArray.push(i); });
+            this._dispFrameNoList = newArray;
         }
 
         this.SetLayout();
@@ -111,16 +111,16 @@ export default class ServantSelectorView {
      * @param serventCount 
      */
     private ChangeDispFrameCount(serventCount: number) {
-        
-        this._dispFrameCount = this.ToDispFrameCount(serventCount);
-        this._dispFrameNoArray = this._dispFrameNoArray.slice(0, this._dispFrameCount);
 
-        while (this._dispFrameNoArray.length < this._dispFrameCount) {
+        this._dispFrameCount = this.ToDispFrameCount(serventCount);
+        this._dispFrameNoList = this._dispFrameNoList.slice(0, this._dispFrameCount);
+
+        while (this._dispFrameNoList.length < this._dispFrameCount) {
 
             let frameNo = this.GetNonDispFrameNo();
 
             if (frameNo >= 0) {
-                this._dispFrameNoArray.push(frameNo);
+                this._dispFrameNoList.push(frameNo);
             }
             else {
                 break;
@@ -149,10 +149,10 @@ export default class ServantSelectorView {
 
         for (let frameNo = 0; frameNo < this._MAX_FRAME_COUNT; frameNo++) {
 
-            let sf = this._serventFrameList[frameNo];
+            let sf = this._serventFrames[frameNo];
 
             if (sf.IsCasting) {
-                let pre = this._dispFrameNoArray.filter(n => (n === frameNo));
+                let pre = this._dispFrameNoList.filter(n => (n === frameNo));
 
                 if (pre.length === 0) {
                     return frameNo;
@@ -161,6 +161,30 @@ export default class ServantSelectorView {
         }
 
         return -1;
+    }
+
+
+    /**
+     * 並び順の変更
+     * @param servent 
+     */
+    public ChangeOrder(servent:ServentFrame){
+
+        let nweDispFrameList = [];
+        nweDispFrameList.push(servent.FrameNo);
+
+        for (let dispIndex = 0; dispIndex < this._dispFrameNoList.length; dispIndex++) {
+
+            let frameNo = this._dispFrameNoList[dispIndex];
+
+            if( frameNo !== servent.FrameNo){
+                nweDispFrameList.push(frameNo);
+            }
+
+        }
+
+        this._dispFrameNoList = nweDispFrameList.slice(0,this._dispFrameCount);
+        this.SetLayout();
     }
 
 
@@ -175,7 +199,7 @@ export default class ServantSelectorView {
         for (let frameIndex = 0; frameIndex < this._MAX_FRAME_COUNT; frameIndex++) {
 
             //  一度全てのフレームを非表示状態にする
-            let sf = this._serventFrameList[frameIndex];
+            let sf = this._serventFrames[frameIndex];
             sf.Frame.hidden = true;
 
             //  配信状態のサービスがある場合
@@ -188,10 +212,14 @@ export default class ServantSelectorView {
         //  ※１つでも配信中のサービスがあれば表示する
         this._castListDispButtonElement.hidden = !hasCasting;
 
-        for (let dispIndex = 0; dispIndex < this._dispFrameNoArray.length; dispIndex++) {
-            let frameNo = this._dispFrameNoArray[dispIndex];
-            let sf = this._serventFrameList[frameNo];
+        //  画面に表示するサーバントリスト
+        let dispFrameList = [];
+
+        for (let dispIndex = 0; dispIndex < this._dispFrameNoList.length; dispIndex++) {
+            let frameNo = this._dispFrameNoList[dispIndex];
+            let sf = this._serventFrames[frameNo];
             sf.SetLayout(dispIndex, this._dispFrameCount);
+            dispFrameList.push(sf);
         }
 
         let key = StdUtil.CreateUuid();
@@ -199,7 +227,7 @@ export default class ServantSelectorView {
         ReactDOM.render(<ServentListComponent
             key={key}
             view={this}
-            servents={this._serventFrameList} />
+            servents={dispFrameList} />
             , this._castListElement);
     }
 
