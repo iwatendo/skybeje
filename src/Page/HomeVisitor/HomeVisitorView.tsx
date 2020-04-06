@@ -12,7 +12,7 @@ import ImageInfo from "../../Base/Container/ImageInfo";
 import { TimelineComponent } from "./Timeline/TimelineComponent";
 import HomeVisitorController from "./HomeVisitorController";
 import RoomMemberComponent from "./RoomMember/RoomMemberComponent";
-import CastSelectorController from "./CastSelector/CastSelectorController";
+import ServantSelectorController from "./ServentSelector/ServantSelectorController";
 import InputPaneController from "./InputPane/InputPaneController";
 import LinkUtil from '../../Base/Util/LinkUtil';
 import ChatInfoSender from '../../Contents/Sender/ChatInfoSender';
@@ -32,7 +32,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     private _headTitleAccountCountElement = document.getElementById('sbj-home-visitor-account-count');
     private _headRoomMemberElement = document.getElementById('sbj-home-visitor-room-member');
 
-    public CastSelector: CastSelectorController;
+    public CastSelector: ServantSelectorController;
 
     public InputPane: InputPaneController;
 
@@ -42,7 +42,7 @@ export default class HomeVisitorView extends AbstractServiceView<HomeVisitorCont
     protected Initialize(callback: OnViewLoad) {
 
         this.SetSplitPane();
-        this.CastSelector = new CastSelectorController(this.Controller);
+        this.CastSelector = new ServantSelectorController(this.Controller);
 
         window.onresize = (e) => {
             this.DoResize();

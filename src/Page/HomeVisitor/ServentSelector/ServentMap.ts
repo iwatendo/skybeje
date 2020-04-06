@@ -1,6 +1,6 @@
-import CastSelectorController from "./CastSelectorController";
+import ServantSelectorController from "./ServantSelectorController";
 import ServentSender from "../../../Contents/Sender/ServentSender";
-import CastSelectorView from "./CastSelectorView";
+import ServantSelectorView from "./ServantSelectorView";
 
 
 /**
@@ -9,7 +9,7 @@ import CastSelectorView from "./CastSelectorView";
 export default class ServentMap {
 
     private _maxServentCount = 0;
-    private _view: CastSelectorView;
+    private _view: ServantSelectorView;
     private _map = new Map<number, ServentSender>();
 
 
@@ -17,7 +17,7 @@ export default class ServentMap {
      * 
      * @param view 
      */
-    constructor(view: CastSelectorView, maxServentCount : number ) {
+    constructor(view: ServantSelectorView, maxServentCount : number ) {
         this._maxServentCount = maxServentCount;
         this._view = view;
     }

@@ -1,9 +1,9 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import CastSelectorController from './CastSelectorController';
+import ServantSelectorController from './ServantSelectorController';
 import ServentFrame from './ServentFrame';
-import CastSelectorView from './CastSelectorView';
+import ServantSelectorView from './ServantSelectorView';
 
 
 
@@ -11,7 +11,7 @@ import CastSelectorView from './CastSelectorView';
  * プロパティ
  */
 export interface ServentListItemProp {
-    view: CastSelectorView;
+    view: ServantSelectorView;
     servent: ServentFrame;
 }
 

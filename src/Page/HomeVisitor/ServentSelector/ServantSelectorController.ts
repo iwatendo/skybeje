@@ -1,12 +1,12 @@
 import HomeVisitorController from "../HomeVisitorController";
-import CastSelectorView from "./CastSelectorView";
+import ServantSelectorView from "./ServantSelectorView";
 import RoomServentSender from "../../../Contents/Sender/RoomServentSender";
 
 
-export default class CastSelectorController {
+export default class ServantSelectorController {
 
     private _ownerController: HomeVisitorController;
-    private _view: CastSelectorView;
+    private _view: ServantSelectorView;
 
     /**
      * コンストラクタ
@@ -14,7 +14,7 @@ export default class CastSelectorController {
      */
     constructor(controller: HomeVisitorController) {
         this._ownerController = controller;
-        this._view = new CastSelectorView(controller);
+        this._view = new ServantSelectorView(controller);
     }
 
 

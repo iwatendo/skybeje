@@ -12,7 +12,7 @@ import ServentMap from './ServentMap';
 /**
  * 配信表示
  */
-export default class CastSelectorView {
+export default class ServantSelectorView {
 
     //  最大フレーム数
     private _MAX_FRAME_COUNT = 4;

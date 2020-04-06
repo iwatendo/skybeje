@@ -2,16 +2,16 @@
 import * as ReactDOM from 'react-dom';
 
 import RoomItemComponent from "./ServentListtemComponent";
-import CastSelectorController from './CastSelectorController';
+import ServantSelectorController from './ServantSelectorController';
 import ServentFrame from './ServentFrame';
-import CastSelectorView from './CastSelectorView';
+import ServantSelectorView from './ServantSelectorView';
 
 
 /**
  * プロパティ
  */
 export interface ServentListProp {
-    view: CastSelectorView;
+    view: ServantSelectorView;
     servents: Array<ServentFrame>;
 }
 
