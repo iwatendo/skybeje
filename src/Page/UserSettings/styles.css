@@ -1,3 +1,6 @@
+body{
+	user-select: none;
+}
 
 .mdl-layout__header-row{
 	padding: 0 40px 0 54px;
