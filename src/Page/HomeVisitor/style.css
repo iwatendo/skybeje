@@ -199,9 +199,10 @@
     bottom: 8px;
     left: 8px;
     right: 8px;
-    background-color: var(--sbj-color-default-background);
+    background-color: var(--sbj-color-inputarea-background);
     padding-left: 12px;
-    border-radius: 6px;    
+    border-radius: 6px;
+    border: 1px solid var(--sbj-color-inputarea-border);        
 }
 
 .sbj-speechpanel{
@@ -277,14 +278,14 @@
 }
 
 textarea.sbj-inputpanel-text {
-    width: calc(100% - 128px);
-    height:58px;
+    width: calc(100% - 124px);
+    height: 62px;
     margin: 4px;
-    border-radius: 10px;
+    border-radius: 8px;
     outline: none;
-    padding: .5em 1em;
+    padding: 4px 8px;
     resize: none;
-    float:left;
+    float: left;
 }
 
 .sbj-icon{

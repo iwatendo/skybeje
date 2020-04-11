@@ -16,13 +16,16 @@ body {
     --sbj-color-link-text: #0099ff;
     --sbj-color-warning-text: #FF3333;
     
-    --sbj-color-default-chatroom: rgb(230,236,240);
+    --sbj-color-default-chatroom: rgb(245,245,245);
     --sbj-color-default-background:  rgba(255,255,255,.75);
     --sbj-color-edge-background:  rgba(0,0,0,.3);
     --sbj-color-cast-background:  rgba(255,255,255,.3);
     --sbj-color-timeline-panel:  rgba(255,255,255,.3);
     --sbj-color-room-default-background: #F5F5F5;
     --sbj-color-livecast-background:  rgba(255,255,255,.2);
+
+    --sbj-color-inputarea-background: rgba(230,236,240,.75);
+    --sbj-color-inputarea-border: darkgray;
     
     --sbj-color-menu-navi: rgba(255, 255, 255, 0.56);
     --sbj-color-menu-navi-text: #37474F;
