@@ -67,6 +67,7 @@
 .sbj-home-instance-room-panel{
     background-color: var(--sbj-color-default-chatroom);
     height: 280px;
+    cursor: grab;
 }
 
 .sbj-home-instance-room-header{
