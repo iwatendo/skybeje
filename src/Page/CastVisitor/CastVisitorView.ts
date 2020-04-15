@@ -37,7 +37,6 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             document.getElementById('sbj-cast-visitor-submenu-mobile').hidden = false;
             document.getElementById('sbj-cast-visitor-volume-mobile').onclick = (e) => { this.SetMute(!video.muted); };
             this.SetMute(true);
-
         }
         else {
 
@@ -54,9 +53,8 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
             document.getElementById('sbj-cast-visitor-volume').onclick = (e) => { this.SetMute(!video.muted); };
 
-            //  ミュート初期設定
-            let muteArg = LinkUtil.GetArgs("mute");
-            this.SetMute(muteArg && muteArg.length > 0);
+            //  
+            this.SetMute(true);
 
             //  ボリューム設定
             let valumeRange = document.getElementById('sbj-cast-visitor-volume-value') as HTMLInputElement;
