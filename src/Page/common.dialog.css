@@ -186,6 +186,7 @@
 .sbj-icon{
 	width:100%;
 	height:100%;
+	cursor: grab;
 }
 
 .sbj-icon-select{
@@ -195,6 +196,7 @@
 	border-bottom: 3px;
 	border-style: solid;
 	border-color: var(--sbj-color-icon-selection);
+	cursor: grab;
 }
 
 .sbj-icon-cell{
