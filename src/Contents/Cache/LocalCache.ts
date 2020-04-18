@@ -124,7 +124,8 @@ export default class LocalCache {
     }
     public static get VoiceRecognitionMode(): number {
         let value = localStorage.getItem('voice-recognition-mode');
-        return (value ? Number.parseInt(value) : 0);
+        //  デフォルト値は「直接チャットメッセージとして送信」とする
+        return (value ? Number.parseInt(value) : 1);
     }
 
     //  チャットメッセージ送信時の動作
