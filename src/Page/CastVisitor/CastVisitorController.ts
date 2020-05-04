@@ -90,27 +90,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     }
 
 
-    /**
-     *【削除予定】
-     * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
-     * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
-     */
-    public DummyJoin() {
-        SWPeer.GetApiKey((apikey) => {
-            let peer = new Peer({ key: apikey, debug: 1 }) as any;
-            peer.on('open', async () => {
-                await this.Sleep(1000);
-                let name = this.SwRoom.RoomName;
-                let room = peer.joinRoom(name, { mode: "sfu" });
-                room.on('open', async () => {
-                    await this.Sleep(2000);
-                    peer.destroy();
-                });
-            });
-        });
-    }
-
-
     public JoinRoom() {
         if (!this.SwRoom) {
             let roomMode = (this.UseSFU() ? SWRoomMode.SFU : SWRoomMode.Mesh);
@@ -135,9 +114,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
      * 
      */
     public OnRoomOpen() {
-        if (this.UseSFU()) {
-            this.DummyJoin();
-        }
     }
 
 

@@ -3,7 +3,6 @@ import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
 import Sender from "../../Base/Container/Sender";
 
 import LiveHTMLInstanceController from "./LiveHTMLInstanceController";
-import LiveHTMLInstanceView from "./LiveHTMLInstanceView";
 import RoomSender from "../../Contents/Sender/RoomSender";
 import GetCastSettingSedner from "../../Contents/Sender/GetCastSettingSedner";
 import IconCursorSender from "../../Contents/Sender/IconCursorSender";
@@ -11,9 +10,6 @@ import IconSender from "../../Contents/Sender/IconSender";
 import GetLiveHTMLSender from "../../Contents/Sender/GetLiveHTMLSender";
 import LiveHTMLMessageSender from "../../Contents/Sender/LiveHTMLMessageSender";
 import VoiceChatMemberSender from "../../Contents/Sender/VoiceChatMemberSender";
-import SWPeer from "../../Base/WebRTC/SWPeer";
-import StdUtil from "../../Base/Util/StdUtil";
-import SWRoom from "../../Base/WebRTC/SWRoom";
 import ChatStatusSender from "../../Contents/Sender/ChatStatusSender";
 
 
@@ -78,33 +74,6 @@ export class LiveHTMLInstanceReceiver extends AbstractServiceReceiver<LiveHTMLIn
             //  if (isAppend) { this.DummyJoin(vcm.isSFU); }
         }
 
-    }
-
-
-    /**
-     *【削除予定】
-     * 受信モードでRoomに接続すると、SFUのストリームが流れて来ないケースが発生
-     * PeerJoin / PeerLeave が発生すると streamが流れてくる来るようなので、SkyWay側での対応されるまでの暫定対応
-     */
-    public DummyJoin(isSFU: boolean) {
-
-        SWPeer.GetApiKey((apikey) => {
-
-            let peer = new Peer({ key: apikey, debug: 1 }) as any;
-
-            peer.on('open', async () => {
-
-                await StdUtil.Sleep(1000);
-
-                let name = SWRoom.ToRoomName(this.Controller.SwPeer.PeerId);
-                let room = peer.joinRoom(name, { mode: (isSFU ? "sfu" : "mesh") });
-
-                room.on('open', async () => {
-                    await StdUtil.Sleep(2000);
-                    peer.destroy();
-                });
-            });
-        });
     }
 
 }
