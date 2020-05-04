@@ -122,7 +122,7 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
 
 
     /**
-     * ライブキャストの設定変更
+     * プライベート配信の設定変更
      * @param sender
      */
     public SetCastSetting(sender: CastSettingSender) {

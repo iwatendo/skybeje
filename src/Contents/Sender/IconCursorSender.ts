@@ -19,7 +19,7 @@ export default class IconCursorSender extends Sender {
     }
 
     /**
-     *  ライブキャストやガジェットキャストの配信先のPeerID 
+     *  プライベート配信やガジェットキャストの配信先のPeerID 
      */
     visitorPeerId: string;
     /**

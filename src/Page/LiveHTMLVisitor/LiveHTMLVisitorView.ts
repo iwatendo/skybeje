@@ -132,7 +132,7 @@ export class LiveHTMLVisitorView extends AbstractServiceView<LiveHTMLVisitorCont
 
 
     /**
-     * ライブキャストの設定変更
+     * プライベート配信の設定変更
      * @param sender
      */
     public SetCastSetting(sender: CastSettingSender) {

@@ -54,7 +54,7 @@ export default class LocalCache {
 
 
     /**
-     *  ライブキャストのオプション設定
+     *  プライベート配信のオプション設定
      */
     public static get LiveCastOptions(): LiveCastOptions {
         let value = localStorage.getItem('live-cast-options');
@@ -167,7 +167,7 @@ export class VoiceChatOptions {
 
 
 /**
- * オプション設定の保持：ライブキャスト
+ * オプション設定の保持：プライベート配信
  */
 export class LiveCastOptions {
     SelectMic: string;

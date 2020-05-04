@@ -259,7 +259,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
 
     /**
-     * ライブキャストの設定変更
+     * プライベート配信の設定変更
      * @param sender
      */
     public SetCastSetting(sender: CastSettingSender) {

@@ -1,5 +1,5 @@
 /**
- * ライブキャスト上に表示するカーソル情報
+ * プライベート配信上に表示するカーソル情報
  */
 export default class CastCursor {
 

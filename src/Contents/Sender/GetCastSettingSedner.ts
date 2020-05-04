@@ -1,7 +1,7 @@
 import Sender from "../../Base/Container/Sender";
 
 /**
- * ライブキャストの設定要求
+ * プライベート配信の設定要求
  */
 export default class GetCastSettingSedner extends Sender {
 

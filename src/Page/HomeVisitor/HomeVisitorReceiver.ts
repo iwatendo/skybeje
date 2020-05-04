@@ -136,12 +136,12 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             this.Controller.IconCache.SetOtherUserIcon(conn.remoteId, (sender as IconSender).icon);
         }
 
-        //  ライブキャストからの、起動通知 及び 設定変更通知
+        //  プライベート配信からの、起動通知 及び 設定変更通知
         if (sender.type === CastStatusSender.ID) {
             this.SendCastInstance(conn, sender as CastStatusSender);
         }
 
-        //  サーバント（ライブキャストを含む）の変更通知
+        //  サーバント（プライベート配信を含む）の変更通知
         if (sender.type === RoomServentSender.ID) {
             let rs = sender as RoomServentSender;
             this.Controller.ServentCache.SetRoomServent(rs);
@@ -255,7 +255,7 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
 
 
     /**
-     * ライブキャストからの起動（設定変更）通知
+     * プライベート配信からの起動（設定変更）通知
      * @param serventPid 
      * @param cib 
      */

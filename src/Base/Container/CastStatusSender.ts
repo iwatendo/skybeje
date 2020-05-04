@@ -15,7 +15,7 @@ export enum CastTypeEnum {
 
 
 /**
- *  ライブキャストの起動通知 及び 設定変更通知
+ *  プライベート配信の起動通知 及び 設定変更通知
  *  CastInstance の起動元クライアント (HomeVisitor) へ通知
  */
 export default class CastStatusSender extends Sender {

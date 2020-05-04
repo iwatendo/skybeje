@@ -174,7 +174,7 @@ export default class LiveHTMLInstanceView extends AbstractServiceView<LiveHTMLIn
 
 
     /**
-     * ライブキャストの設定変更
+     * プライベート配信の設定変更
      * @param sender
      */
     public SetCastSetting(sender: CastSettingSender) {

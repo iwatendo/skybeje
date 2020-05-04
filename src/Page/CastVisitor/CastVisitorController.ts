@@ -45,7 +45,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     //  Peerエラー
     public OnPeerError(err: Error) {
         document.getElementById('sbj-cast-visitor-message-port').hidden = false;
-        document.getElementById('sbj-cast-visitor-message').textContent = "接続に失敗、またはライブキャストは終了しています";
+        document.getElementById('sbj-cast-visitor-message').textContent = "接続に失敗、またはプライベート配信は終了しています";
     }
 
 
@@ -175,7 +175,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
 
         if (peerid == this._castPeerId) {
             document.getElementById('sbj-cast-visitor-message-port').hidden = false;
-            document.getElementById('sbj-cast-visitor-message').textContent = "ライブキャストは終了しました";
+            document.getElementById('sbj-cast-visitor-message').textContent = "プライベート配信は終了しました";
             this.PageClose();
         }
     }

@@ -55,7 +55,7 @@ export class GadgetVisitorView extends AbstractServiceView<GadgetVisitorControll
 
 
     /**
-     * ライブキャストの設定変更
+     * プライベート配信の設定変更
      * @param sender
      */
     public SetGadgetSetting(sender: GadgetCastSettingSender) {
