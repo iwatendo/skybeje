@@ -87,7 +87,7 @@ export default class InputPaneController {
         this._unreadMap = new Map<string, number>();
         this._lastTlmCtime = 0;
 
-        document.onkeyup = this.OnOtherKeyPress;
+        document.onkeydown = this.OnOtherKeyPress;
 
         //  イベント設定
         this._textareaElement.onkeydown = (e) => { this.OnKeyDown(e); };
@@ -165,6 +165,12 @@ export default class InputPaneController {
         if (e.keyCode === 13) {
             document.getElementById('sbj-inputpanel-text').focus();
         }
+        //  エスケープキーは入力中の文字をクリアして終了
+        if (e.keyCode === 27) {
+            e.returnValue = false;
+            RecognitionUtil.Cancel();
+            return;
+        }        
     }
 
 
@@ -602,18 +608,20 @@ export default class InputPaneController {
         if (this._isVoiceRecognition) {
             RecognitionUtil.InitSpeechRecognition(
                 this._controller,
-                (text,isFinal) => {
-
-                    if(text){
-                        if(isFinal){
+                (text, isFinal) => {
+                    if (text) {
+                        if (isFinal) {
                             this.SendVoiceText(text);
                             this._textareaElement.value = "";
                         }
-                        else{
+                        else {
                             this._textareaElement.value = text;
                         }
                     }
-                }
+                    else{
+                        this._textareaElement.value = "";
+                    }
+               }
                 , () => {
                     this._voiceRecognitionOn.classList.remove("mdl-button--colored");
                     this._voiceRecognitionOn.classList.add("mdl-button--accent");

@@ -286,6 +286,8 @@ textarea.sbj-inputpanel-text {
     padding: 4px 8px;
     resize: none;
     float: left;
+    font-family: "Helvetica","Arial",sans-serif;
+    font-size: 16px;    
 }
 
 .sbj-icon{
