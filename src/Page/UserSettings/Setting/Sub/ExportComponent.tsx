@@ -123,8 +123,8 @@ export default class ExportComponent extends React.Component<ExportProp, any> {
         model.TimelineDB.ReadAllData((timeline) => {
             model.HomeDB.ReadAllData((home) => {
                 let result = this.ToPlainText(timeline.Messages, home.Rooms);
-                let filename = FileUtil.GetDefaultFileName("Timeline", "txt");
-                FileUtil.Export(filename, result);
+                let filename = FileUtil.GetDefaultFileName("Timeline", ".csv");
+                FileUtil.ExportCsv(filename, result);
             });
         });
     }
