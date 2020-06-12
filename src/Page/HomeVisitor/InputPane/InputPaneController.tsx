@@ -28,6 +28,7 @@ import StyleCache from '../../../Contents/Cache/StyleCache';
 import MessageChannelUtil from '../../../Base/Util/MessageChannelUtil';
 import ProfileChangeSender from '../../../Contents/Sender/ProfileChangeSender';
 import IntervalSend from '../../../Base/Util/IntervalSend';
+import RecognitionUtil from '../../../Base/Util/RecognitionUtil';
 
 export default class InputPaneController {
 
@@ -599,10 +600,19 @@ export default class InputPaneController {
         this._voiceRecognitionOn.hidden = !this._isVoiceRecognition;
         this._voiceRecognitionOff.hidden = this._isVoiceRecognition;
         if (this._isVoiceRecognition) {
-            SpeechUtil.InitSpeechRecognition(
+            RecognitionUtil.InitSpeechRecognition(
                 this._controller,
-                (text) => {
-                    if (text) this.SendVoiceText(text);
+                (text,isFinal) => {
+
+                    if(text){
+                        if(isFinal){
+                            this.SendVoiceText(text);
+                            this._textareaElement.value = "";
+                        }
+                        else{
+                            this._textareaElement.value = text;
+                        }
+                    }
                 }
                 , () => {
                     this._voiceRecognitionOn.classList.remove("mdl-button--colored");
@@ -616,10 +626,10 @@ export default class InputPaneController {
                     this._textareaElement.focus();
                 }
             );
-            SpeechUtil.StartSpeechRecognition();
+            RecognitionUtil.Start();
         }
         else {
-            SpeechUtil.StopSpeechRecognition();
+            RecognitionUtil.Stop();
             this._textareaElement.disabled = false;
         }
     }
