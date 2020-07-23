@@ -11,6 +11,7 @@ import { TimelineMsgGroup } from "./TimelineComponent";
 import SpeechUtil from '../../../Base/Util/SpeechUtil';
 import ImageInfo from '../../../Base/Container/ImageInfo';
 import StyleCache from '../../../Contents/Cache/StyleCache';
+import GetAudioBlobSender from '../../../Contents/Sender/GetAudioBlobSender';
 
 
 /**
@@ -44,18 +45,33 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
             let tmclass = "sbj-timeline-message" + (tlmsg.visible ? "" : " sbj-timeline-message-ignore");
             let icon = (tlmsg.visible ? "clear" : "undo");
 
-            //  自分のメッセージの場合は削除ボタンを表示
+
             let button = (<span></span>);
 
-            //  メッセージの削除ボタンの廃止
+            //  音声再生ボタン
+            if(tlmsg.voiceRecog){
+                button = (
+                    <span>
+                        <button className='mdl-button mdl-js-button mdl-button--icon mdl-button--colored sbj-timeline-ignore'
+                            onClick={(e) => { this.OnVoiceClick(tlmsg); }}>
+                            <i className='material-icons' id={mid}>volume_up</i>
+                        </button>
+                    </span>
+                );
+            }
 
-            // if (this.IsMyChatMessage()) {
-            //     button = (
-            //         <button className='mdl-button mdl-js-button mdl-button--icon mdl-button--colored sbj-timeline-ignore' onClick={(e) => { this.OnIgnoreClick(tlmsg); }}>
-            //             <i className='sbj-timeline-message-icon material-icons' id={mid}>{icon}</i>
-            //         </button>
-            //     );
-            // }
+            //  自分のメッセージの場合は削除ボタンを表示
+            //  ※削除ボタンは廃止
+            /*
+            if (this.IsMyChatMessage()) {
+                button = (
+                    <button className='mdl-button mdl-js-button mdl-button--icon mdl-button--colored sbj-timeline-ignore'
+                        onClick={(e) => { this.OnIgnoreClick(tlmsg); }}>
+                        <i className='sbj-timeline-message-icon material-icons' id={mid}>{icon}</i>
+                    </button>
+                );
+            }
+            */
 
             let msgs = StdUtil.TextLineSplit(tlmsg.text);
             let ln = 0;
@@ -197,9 +213,21 @@ export class TimelineMsgItemComponent extends React.Component<TimelineMsgItemPro
      * @param event
      */
     public OnIgnoreClick(tml: Timeline.Message) {
-
         tml.visible = !tml.visible;
         this.props.controller.UpdateTimeline(tml);
+    }
+
+
+    /**
+     * スピーカーボタン押下時イベント
+     * @param tml 
+     */
+    public OnVoiceClick(tml: Timeline.Message) {
+
+        //  音声を要求
+        let sender = new GetAudioBlobSender();
+        sender.mid = tml.mid;
+        this.props.controller.SwPeer.SendToOwner(sender);
 
     }
 

@@ -10,6 +10,7 @@ export default class ChatMessageSender extends Sender {
 
     constructor() {
         super(ChatMessageSender.ID);
+        this.mid = "";
         this.aid = "";
         this.peerid = "";
         this.iid = "";
@@ -19,6 +20,11 @@ export default class ChatMessageSender extends Sender {
         this.isSpeech = false;
         this.isVoiceRecog = false;
     }
+
+    /**
+     * メッセージID
+     */
+    public mid: string;
 
     public aid: string;
 
@@ -35,5 +41,5 @@ export default class ChatMessageSender extends Sender {
     public isSpeech: boolean;
 
     public isVoiceRecog: boolean;
-    
+
 }

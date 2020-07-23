@@ -3,21 +3,16 @@ import * as ReactDOM from 'react-dom';
 
 import StdUtil from "../../../Base/Util/StdUtil";
 import LinkUtil from "../../../Base/Util/LinkUtil";
-import ImageInfo from "../../../Base/Container/ImageInfo";
-import { DialogMode } from "../../../Contents/AbstractDialogController";
-import SpeechUtil from "../../../Base/Util/SpeechUtil";
 import StreamUtil from '../../../Base/Util/StreamUtil';
 import SWRoom, { SWRoomMode } from '../../../Base/WebRTC/SWRoom';
 import DeviceUtil, { DeviceKind } from '../../../Base/Util/DeviceUtil';
 
 import LocalCache from '../../../Contents/Cache/LocalCache';
-import * as Personal from "../../../Contents/IndexedDB/Personal";
 import * as Timeline from "../../../Contents/IndexedDB/Timeline";
 
 import HomeVisitorController from "../HomeVisitorController";
 import RoomComponent, { RoomUnread } from "./RoomComponent";
 import { VoiceSfuRoomMemberComponent } from './VoiceSfuRoomMemberComponent';
-import IconCache from '../Cache/IconCache';
 import VoiceChatSettingDialog from './VoiceChatSettingDialog/VoiceChatSettingDialog';
 import { DeviceView } from '../../DeviceView/DeviceVew';
 import ChatMessageSender from '../../../Contents/Sender/ChatMessageSender';
@@ -25,10 +20,12 @@ import VoiceChatMemberSender from '../../../Contents/Sender/VoiceChatMemberSende
 import VoiceChatMemberListSender from '../../../Contents/Sender/VoiceChatMemberListSender';
 import ChatInfoSender from '../../../Contents/Sender/ChatInfoSender';
 import StyleCache from '../../../Contents/Cache/StyleCache';
-import MessageChannelUtil from '../../../Base/Util/MessageChannelUtil';
 import ProfileChangeSender from '../../../Contents/Sender/ProfileChangeSender';
 import IntervalSend from '../../../Base/Util/IntervalSend';
 import RecognitionUtil from '../../../Base/Util/RecognitionUtil';
+import RecordingUtil from "../../../Base/Util/RecordingUtil";
+import AudioBlobSender from '../../../Contents/Sender/AudioBlobSender';
+import SWMsgPack from '../../../Base/WebRTC/SWMsgPack';
 
 export default class InputPaneController {
 
@@ -170,7 +167,7 @@ export default class InputPaneController {
             e.returnValue = false;
             RecognitionUtil.Cancel();
             return;
-        }        
+        }
     }
 
 
@@ -283,7 +280,7 @@ export default class InputPaneController {
      * 音声認識のテキスト処理
      * @param text 
      */
-    private SendVoiceText(text) {
+    private SendVoiceText(text): ChatMessageSender | undefined {
         switch (LocalCache.VoiceRecognitionMode) {
             case 0:
                 //  チャットのテキストエリアにセット
@@ -293,11 +290,10 @@ export default class InputPaneController {
                 this._textareaElement.selectionStart = start;
                 this._textareaElement.selectionEnd = start + end;
                 this.OnTextChange();
-                break;
+                return undefined;
             case 1:
                 //  直接チャットメッセージとして送信
-                this.SendChatMessage(text, true);
-                break;
+                return this.SendChatMessage(text, true);
         }
     }
 
@@ -305,13 +301,14 @@ export default class InputPaneController {
     private CreateChatMessage(text: string, isVoiceRecognition: boolean): ChatMessageSender {
         let chm = new ChatMessageSender();
         let actor = this._controller.CurrentActor;
+        chm.mid = StdUtil.CreateUuid();
         chm.peerid = this._controller.PeerId;
         chm.aid = actor.aid;
         chm.name = actor.name;
         chm.iid = actor.dispIid;
         chm.text = text;
-        chm.isVoiceRecog = isVoiceRecognition;
         chm.isSpeech = this._isVoiceSpeech;
+        chm.isVoiceRecog = isVoiceRecognition;
         return chm;
     }
 
@@ -320,7 +317,7 @@ export default class InputPaneController {
      * メッセージ送信
      * @param text 
      */
-    private SendChatMessage(text: string, isVoiceRecognition: boolean) {
+    private SendChatMessage(text: string, isVoiceRecognition: boolean): ChatMessageSender {
 
         let chm = this.CreateChatMessage(text, isVoiceRecognition);
         this._controller.SendChatMessage(chm);
@@ -348,6 +345,7 @@ export default class InputPaneController {
         //  最終発言をサーバント側に通知
         let actorType = this._controller.CurrentActor.actorType;
         this._controller.PostChatStatus(actorType, text);
+        return chm;
     }
 
 
@@ -605,29 +603,47 @@ export default class InputPaneController {
         }
         this._voiceRecognitionOn.hidden = !this._isVoiceRecognition;
         this._voiceRecognitionOff.hidden = this._isVoiceRecognition;
+
+        RecordingUtil.initilize((audioBlob) => {
+
+            SWMsgPack.BlobToArray(audioBlob).then((value) => {
+                if (RecordingUtil.Mid) {
+                    let sender = new AudioBlobSender();
+                    sender.mid = RecordingUtil.Mid;
+                    sender.binary = value as ArrayBuffer;
+                    this._controller.SwPeer.SendToOwner(sender);
+                    RecordingUtil.Mid = "";
+                }
+            });
+        });
+
+
         if (this._isVoiceRecognition) {
             RecognitionUtil.InitSpeechRecognition(
                 this._controller,
                 (text, isFinal) => {
                     if (text) {
                         if (isFinal) {
-                            this.SendVoiceText(text);
+                            let chm = this.SendVoiceText(text);
+                            RecordingUtil.Mid = chm.mid;
                             this._textareaElement.value = "";
                         }
                         else {
                             this._textareaElement.value = text;
                         }
                     }
-                    else{
+                    else {
                         this._textareaElement.value = "";
                     }
-               }
+                }
                 , () => {
+                    RecordingUtil.start();
                     this._voiceRecognitionOn.classList.remove("mdl-button--colored");
                     this._voiceRecognitionOn.classList.add("mdl-button--accent");
                     this._textareaElement.disabled = true;
                 }
                 , () => {
+                    RecordingUtil.stop();
                     this._voiceRecognitionOn.classList.remove("mdl-button--accent");
                     this._voiceRecognitionOn.classList.add("mdl-button--colored");
                     this._textareaElement.disabled = false;
