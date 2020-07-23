@@ -26,14 +26,15 @@ import RoomServentSender from "../../Contents/Sender/RoomServentSender";
 import VoiceChatMemberListSender from "../../Contents/Sender/VoiceChatMemberListSender";
 import ProfileSender from "../../Contents/Sender/ProfileSender";
 import GuideSender from "../../Contents/Sender/GuideSender";
-import ChatInfoSender from "../../Contents/Sender/ChatInfoSender";
 import ProfileChangeSender from "../../Contents/Sender/ProfileChangeSender";
 import SettingsChangeSender from "../../Contents/Sender/SettingsChangeSender";
 import InitializeSender from "../../Contents/Sender/InitializeSender";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LiveHTMLMessageSender from "../../Contents/Sender/LiveHTMLMessageSender";
 import ChatMessageSender from "../../Contents/Sender/ChatMessageSender";
-import ActorCache from "./Cache/ActorCache";
+import AudioBlobSender from "../../Contents/Sender/AudioBlobSender";
+import SWMsgPack from "../../Base/WebRTC/SWMsgPack";
+import RecordingUtil from "../../Base/Util/RecordingUtil";
 
 export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVisitorController> {
 
@@ -162,6 +163,18 @@ export default class HomeVisitorReceiver extends AbstractServiceReceiver<HomeVis
             this.ConvertLiveHTMLMessage(sender as LiveHTMLMessageSender, (chatmsg) => {
                 this.Controller.SwPeer.SendToOwner(chatmsg);
             });
+        }
+
+
+        //  音声再生
+        if (sender.type === AudioBlobSender.ID) {
+            let abs = sender as AudioBlobSender;
+            let blob = SWMsgPack.ArrayToBlob(abs.binary);
+
+            //  再生処理
+            let url =URL.createObjectURL(blob);
+            var music = new Audio(url);
+            music.play();
         }
 
     }

@@ -2,8 +2,6 @@
 import Sender from "../../Base/Container/Sender";
 
 import HomeInstanceController from "./HomeInstanceController";
-import ChatManager from "./Manager/ChatManager";
-import LogUtil from "../../Base/Util/LogUtil";
 
 import ClientBootSender from "../../Contents/Sender/ClientBootSender";
 import GetRoomSender from "../../Contents/Sender/GetRoomSender";
@@ -15,9 +13,10 @@ import TimelineSender from "../../Contents/Sender/TimelineSender";
 import UpdateTimelineSender from "../../Contents/Sender/UpdateTimelineSender";
 import ServentSender from "../../Contents/Sender/ServentSender";
 import ServentCloseSender from "../../Contents/Sender/ServentCloseSender";
-import ForcedTerminationSender from "../../Contents/Sender/ForcedTerminationSender";
 import VoiceChatMemberSender from "../../Contents/Sender/VoiceChatMemberSender";
 import ChatInfoSender from "../../Contents/Sender/ChatInfoSender";
+import AudioBlobSender from "../../Contents/Sender/AudioBlobSender";
+import GetAudioBlobSender from "../../Contents/Sender/GetAudioBlobSender";
 
 
 export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeInstanceController> {
@@ -91,6 +90,20 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
             this.Controller.Manager.VoiceChat.SetMember(sender as VoiceChatMemberSender);
         }
 
+        //  音声の登録
+        if (sender.type === AudioBlobSender.ID) {
+            let abs = sender as AudioBlobSender;
+            this.Controller.Model.SaveVoice(abs, () => { });
+        }
+
+        //  音声の要求
+        if (sender.type === GetAudioBlobSender.ID) {
+            let key = sender as GetAudioBlobSender;
+            this.Controller.Model.LoadVoice(key, (resultAbs) => {
+                //  要求があったクライアントに音声情報を返す
+                this.Controller.SwPeer.SendTo(conn, resultAbs);
+            });
+        }
     }
 
 

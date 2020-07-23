@@ -1,20 +1,22 @@
 
 import * as Home from "../../Contents/IndexedDB/Home";
 import * as Timeline from "../../Contents/IndexedDB/Timeline";
+import * as Voice from "../../Contents/IndexedDB/Voice";
 
-import LinkUtil from "../../Base/Util/LinkUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/AbstractServiceModel";
 
 import HomeInstanceController from "./HomeInstanceController";
 import ImageInfo from "../../Base/Container/ImageInfo";
+import AudioBlobSender from "../../Contents/Sender/AudioBlobSender";
+import GetAudioBlobSender from "../../Contents/Sender/GetAudioBlobSender";
 
 
 export default class HomeInstanceModel extends AbstractServiceModel<HomeInstanceController> {
 
     private _homeDB: Home.DB;
     private _timelineDB: Timeline.DB;
-
+    private _voiceDB: Voice.DB;
 
     /**
      * 初期化処理
@@ -24,12 +26,15 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
 
         this._homeDB = new Home.DB();
         this._timelineDB = new Timeline.DB();
+        this._voiceDB = new Voice.DB();
 
         this._homeDB.Connect(() => {
             this._timelineDB.Connect(() => {
-                this.GetTimelineAll((tlmsgs) => {
-                    this.Controller
-                    callback();
+                this._voiceDB.Connect(() => {
+                    this.GetTimelineAll((tlmsgs) => {
+                        this.Controller
+                        callback();
+                    });
                 });
             });
         });
@@ -135,9 +140,33 @@ export default class HomeInstanceModel extends AbstractServiceModel<HomeInstance
     public ClearTimeline(callback: OnWrite) {
 
         if (window.confirm('タイムラインのメッセージを全て削除します。\nよろしいですか？')) {
-            this._timelineDB.ClearAll(Timeline.DB.Message, callback);
+            this._timelineDB.ClearAll(Timeline.DB.Message, () => {
+                this._voiceDB.ClearAll(Voice.DB.Voice, callback);
+            });
         }
+    }
 
+
+    /**
+     * 音声をIndexedDBに保存
+     * @param abs 
+     */
+    public SaveVoice(abs: AudioBlobSender, callback: OnWrite) {
+        this._voiceDB.Write<ArrayBuffer>(Voice.DB.Voice, abs.mid, abs.binary, callback);
+    }
+
+
+    /**
+     * 音声をIndexedDBから取得
+     * @param key 
+     */
+    public LoadVoice(key: GetAudioBlobSender, callback: OnRead<AudioBlobSender>) {
+        this._voiceDB.Read<ArrayBuffer, string>(Voice.DB.Voice, key.mid, (result) => {
+            let abs = new AudioBlobSender();
+            abs.mid = key.mid;
+            abs.binary = result;
+            callback(abs);
+        });
     }
 
 }

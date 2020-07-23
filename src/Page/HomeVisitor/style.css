@@ -450,6 +450,8 @@ p.sbj-timeline-message-ignore {
 
 .sbj-timeline-ignore{
     height: 24px;
+    margin: 0px 8px 4px;
+    border: 0px;
 }
 
 /*-----------------------------
