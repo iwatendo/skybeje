@@ -153,6 +153,7 @@ export default class ChatManager {
         tlmsg.utime = ctime;
         tlmsg.visible = true;
         tlmsg.speech = chm.isSpeech;
+        tlmsg.voiceRecog = chm.isVoiceRecog;
         return tlmsg;
     }
 
