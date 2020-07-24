@@ -127,6 +127,11 @@ export default class LocalCache {
         //  デフォルト値は「直接チャットメッセージとして送信」とする
         return (value ? Number.parseInt(value) : 1);
     }
+    //  音声を録音するか？
+    public static get IsVoiceRecrding(): boolean{
+        let value = this.VoiceRecognitionMode;
+        return (value == 2);
+    }
 
     //  チャットメッセージ送信時の動作
     public static set ChatMessageCopyMode(val: number) {

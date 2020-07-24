@@ -292,7 +292,10 @@ export default class InputPaneController {
                 this.OnTextChange();
                 return undefined;
             case 1:
-                //  直接チャットメッセージとして送信
+                //  直接チャットメッセージとして送信（録音無し）
+                return this.SendChatMessage(text, false);
+            case 2:
+                //  直接チャットメッセージとして送信（録音有り）
                 return this.SendChatMessage(text, true);
         }
     }
@@ -604,19 +607,19 @@ export default class InputPaneController {
         this._voiceRecognitionOn.hidden = !this._isVoiceRecognition;
         this._voiceRecognitionOff.hidden = this._isVoiceRecognition;
 
-        RecordingUtil.initilize((audioBlob) => {
-
-            SWMsgPack.BlobToArray(audioBlob).then((value) => {
-                if (RecordingUtil.Mid) {
-                    let sender = new AudioBlobSender();
-                    sender.mid = RecordingUtil.Mid;
-                    sender.binary = value as ArrayBuffer;
-                    this._controller.SwPeer.SendToOwner(sender);
-                    RecordingUtil.Mid = "";
-                }
+        if(LocalCache.IsVoiceRecrding){
+            RecordingUtil.initilize((audioBlob) => {
+                SWMsgPack.BlobToArray(audioBlob).then((value) => {
+                    if (RecordingUtil.Mid) {
+                        let sender = new AudioBlobSender();
+                        sender.mid = RecordingUtil.Mid;
+                        sender.binary = value as ArrayBuffer;
+                        this._controller.SwPeer.SendToOwner(sender);
+                        RecordingUtil.Mid = "";
+                    }
+                });
             });
-        });
-
+        }
 
         if (this._isVoiceRecognition) {
             RecognitionUtil.InitSpeechRecognition(
@@ -637,23 +640,31 @@ export default class InputPaneController {
                     }
                 }
                 , () => {
-                    RecordingUtil.start();
+                    if(LocalCache.IsVoiceRecrding) {
+                        RecordingUtil.start();
+                    }
                     this._voiceRecognitionOn.classList.remove("mdl-button--colored");
                     this._voiceRecognitionOn.classList.add("mdl-button--accent");
                     this._textareaElement.disabled = true;
                 }
                 , () => {
-                    RecordingUtil.stop();
+                    if(LocalCache.IsVoiceRecrding) {
+                        RecordingUtil.stop();
+                    }
                     this._voiceRecognitionOn.classList.remove("mdl-button--accent");
                     this._voiceRecognitionOn.classList.add("mdl-button--colored");
                     this._textareaElement.disabled = false;
                     this._textareaElement.focus();
                 }
             );
-            RecognitionUtil.Start();
+            if(LocalCache.IsVoiceRecrding) {
+                RecognitionUtil.Start();
+            }
         }
         else {
-            RecognitionUtil.Stop();
+            if(LocalCache.IsVoiceRecrding) {
+                RecognitionUtil.Stop();
+            }
             this._textareaElement.disabled = false;
         }
     }

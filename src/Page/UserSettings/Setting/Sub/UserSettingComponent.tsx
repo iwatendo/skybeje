@@ -96,6 +96,10 @@ export default class UserSettingComponent extends React.Component<UserSettingPro
                                 <input type="radio" name="sbj-options-voiceRecognition-key" checked={this.state.voiceRecognitionMode === 1}></input>
                                 <span className={this.state.voiceRecognitionMode === 1 ? selectClass : noSelectClass}>直接チャットメッセージとして送信</span>
                             </div>
+                            <div className="sbj-option" onClick={(e) => { this.OnVoiceRecognitionModeSelect(2) }}>
+                                <input type="radio" name="sbj-options-voiceRecognition-key" checked={this.state.voiceRecognitionMode === 2}></input>
+                                <span className={this.state.voiceRecognitionMode === 2 ? selectClass : noSelectClass}>直接チャットメッセージとして送信（録音有り）</span>
+                            </div>
                         </h6>
                     </div>
                     <div className="mdl-card__supporting-text">
