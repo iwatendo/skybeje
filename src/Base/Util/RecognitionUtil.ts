@@ -14,6 +14,9 @@ export default class RecognitionUtil {
     private static _useRecognition: boolean;
     private static _isCancel: boolean = false;
 
+    //  音を検出してから、以下の時間（ミリ秒）文字検知出来なかった場合音声認識を停止
+    private static NOWORD_TIMEOUT = 2500;
+
 
 
     /**
@@ -67,6 +70,8 @@ export default class RecognitionUtil {
         this._recognition.interimResults = true;
         this._recognition.continuous = true;
 
+        let workText = "";
+
         //
         this._recognition.onerror = (sre: SpeechRecognitionError) => {
 
@@ -89,10 +94,22 @@ export default class RecognitionUtil {
             this.Stop();
         };
 
-        //
-        if (onSpeechStart) {
-            //  音声認識開始イベント
-            this._recognition.onsoundstart = (e: Event) => {
+        let self = this;
+
+        //  音声認識開始イベント
+        this._recognition.onsoundstart = (e: Event) => {
+
+            workText = "";
+
+            //  ２秒以内に言葉を認識できなければ停止する
+            setTimeout(() => {
+                if (!workText) {
+                    self._recognition.stop();
+                }
+            }, this.NOWORD_TIMEOUT);
+
+            //
+            if (onSpeechStart) {
                 onSpeechStart();
             }
         }
@@ -118,6 +135,7 @@ export default class RecognitionUtil {
                         isFinal = true;
                     }
                 }
+                workText = text;
             }
 
             if (isFinal) {
@@ -143,33 +161,6 @@ export default class RecognitionUtil {
                 this._recognition.start();
             }
         }
-    }
-
-
-    /**
-     * 
-     * @param e 
-     */
-    private static SpeechRecToText(e: SpeechRecognitionEvent): string {
-
-        let text: string = "";
-
-        if (e || e.results) {
-
-            let srrList: SpeechRecognitionResultList = e.results;
-
-            if (srrList.length > 0) {
-
-                let srr: SpeechRecognitionResult = srrList.item(0);
-
-                if (srr.length > 0) {
-                    text = srr.item(0).transcript;
-                }
-
-            }
-        }
-
-        return text;
     }
 
 }
