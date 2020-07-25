@@ -1,5 +1,4 @@
-﻿
-import AbstractServiceController from "../../Base/AbstractServiceController";
+﻿import AbstractServiceController from "../../Base/AbstractServiceController";
 import VoiceChatSettingsModel from "./VoiceChatSettingsModel";
 import VoiceChatSettingsView from "./VoiceChatSettingsView";
 

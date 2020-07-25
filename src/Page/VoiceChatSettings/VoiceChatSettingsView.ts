@@ -2,8 +2,6 @@
 import StdUtil from "../../Base/Util/StdUtil";
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import VoiceChatSettingsController from "./VoiceChatSettingsController";
-import MessageChannelUtil from "../../Base/Util/MessageChannelUtil";
-import SettingsChangeSender from "../../Contents/Sender/SettingsChangeSender";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 import { DeviceView } from "../DeviceView/DeviceVew";

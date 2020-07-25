@@ -4,9 +4,6 @@ import LogUtil from "../../Base/Util/LogUtil";
 import VoiceChatReceiver from "./VoiceChatReceiver";
 import VoiceChatView from "./VoiceChatView";
 import VoiceChatModel from "./VoiceChatModel";
-import SWPeer from "../../Base/WebRTC/SWPeer";
-import { SWRoomMode } from "../../Base/WebRTC/SWRoom";
-import StdUtil from "../../Base/Util/StdUtil";
 
 /**
  * 

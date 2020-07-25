@@ -1,19 +1,13 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from '../../Base/Util/LinkUtil';
 
-import { DialogMode } from "../../Contents/AbstractDialogController";
 import StreamUtil, { MobileCam } from '../../Base/Util/StreamUtil';
 import SWRoom, { SWRoomMode } from '../../Base/WebRTC/SWRoom';
-import DeviceUtil, { DeviceKind } from '../../Base/Util/DeviceUtil';
 
 import LocalCache from '../../Contents/Cache/LocalCache';
 
 import VoiceChatController from "./VoiceChatController";
-import { DeviceView } from '../DeviceView/DeviceVew';
 import VoiceChatMemberSender from '../../Contents/Sender/VoiceChatMemberSender';
 import VoiceChatMemberListSender from '../../Contents/Sender/VoiceChatMemberListSender';
 import MdlUtil from '../../Contents/Util/MdlUtil';
@@ -25,7 +19,6 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
     private _isMicMute: boolean;
     private _isSpeakerMute: boolean;
     private _voiceChatStream: MediaStream;
-    private _audioDevice: string;
 
     private _audioMediaStream: MediaStream;
 

@@ -1,5 +1,4 @@
 ﻿import AbstractServiceReceiver from "../../Base/AbstractServiceReceiver";
-import StdUtil from "../../Base/Util/StdUtil";
 
 import Sender from "../../Base/Container/Sender";
 import VoiceChatController from "./VoiceChatController";
