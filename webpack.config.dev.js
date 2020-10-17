@@ -9,6 +9,7 @@ module.exports = {
     homeinstance: './src/Page/HomeInstance/Script.ts',
     homevisitor: './src/Page/HomeVisitor/Script.ts',
     castinstance: './src/Page/CastInstance/Script.ts',
+    castinstanceraspi: './src/Page/CastInstanceRasPi/Script.ts',
     castinstancemobile: './src/Page/CastInstanceMobile/Script.ts',
     castinstancemobileqr: './src/Page/CastInstanceMobileQR/Script.ts',
     castinstancescreenshare: './src/Page/CastInstanceScreenShare/Script.ts',

@@ -51,24 +51,26 @@ export default class CastPropController {
         CastPropController._getOffset = getOffset;
         this._cursorDispElement = cursorDivElement;
 
-        itemDivElement.onmousedown = (ev: MouseEvent) => {
-            if (ev.buttons === 1 && this.IsCursorPort(ev)) {
-                this.SendCastCursor(ev.clientX, ev.clientY, true);
-            }
-        };
+        if (itemDivElement) {
+            itemDivElement.onmousedown = (ev: MouseEvent) => {
+                if (ev.buttons === 1 && this.IsCursorPort(ev)) {
+                    this.SendCastCursor(ev.clientX, ev.clientY, true);
+                }
+            };
 
-        itemDivElement.onmousemove = (ev: MouseEvent) => {
-            if (ev.buttons === 1 && this.IsCursorPort(ev)) {
-                this.SendCastCursor(ev.clientX, ev.clientY, true);
-            }
-        };
+            itemDivElement.onmousemove = (ev: MouseEvent) => {
+                if (ev.buttons === 1 && this.IsCursorPort(ev)) {
+                    this.SendCastCursor(ev.clientX, ev.clientY, true);
+                }
+            };
 
-        if (LocalCache.DebugMode === 0) {
-            itemDivElement.oncontextmenu = (pv: PointerEvent) => {
-                //  右クリック時カーソルを消す。
-                this.SendCastCursor(0, 0, false);
-                //  コンテキストメニューのキャンセル
-                return false;
+            if (LocalCache.DebugMode === 0) {
+                itemDivElement.oncontextmenu = (pv: PointerEvent) => {
+                    //  右クリック時カーソルを消す。
+                    this.SendCastCursor(0, 0, false);
+                    //  コンテキストメニューのキャンセル
+                    return false;
+                }
             }
         }
 

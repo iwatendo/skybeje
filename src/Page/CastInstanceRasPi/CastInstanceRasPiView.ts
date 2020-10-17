@@ -4,20 +4,18 @@ import * as Home from "../../Contents/IndexedDB/Home";
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
-import LogUtil from "../../Base/Util/LogUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
 
 import { DeviceView } from "../DeviceView/DeviceVew";
-import CastInstanceController from "./CastInstanceController";
+import CastInstanceControllerRasPi from "./CastInstanceRasPiController";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import { DialogMode } from "../../Contents/AbstractDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import MdlUtil from "../../Contents/Util/MdlUtil";
 
-export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
+export default class CastInstanceViewRasPi extends AbstractServiceView<CastInstanceControllerRasPi> {
 
     public Cursor: CastPropController;
 
@@ -98,7 +96,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let camElement = document.getElementById('webcam-select-div');
         let sfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;
         let linkElement = document.getElementById('sbj-client-link');
-        let noteElement = document.getElementById('sbj-livecast-note');
 
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
@@ -107,7 +104,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         camElement.hidden = isLiveCasting;
         sfuElement.disabled = isLiveCasting;
         linkElement.hidden = !isLiveCasting;
-        noteElement.hidden = isLiveCasting;
     }
 
 
@@ -200,7 +196,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         DeviceUtil.GetVideoDevice((devices) => {
 
-            //  let previewElement = document.getElementById('sbj-video') as HTMLVideoElement;
+            let previewElement = document.getElementById('sbj-video') as HTMLVideoElement;
             let textElement = document.getElementById('webcam-select') as HTMLInputElement;
             var listElement = document.getElementById('webcam-list') as HTMLElement;
 
@@ -211,15 +207,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 this.ReadyCheck();
 
                 if (deviceId) {
-
-                    /*
                     let msc = StreamUtil.GetMediaStreamConstraints(deviceId, null);
                     StreamUtil.GetStreaming(msc, (stream) => {
                         StreamUtil.StartPreview(previewElement, stream);
                     }, (errname) => {
                         alert(errname);
                     });
-                    */
                 }
             });
 
@@ -253,11 +246,11 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      * カーソル表示設定
      */
     public InitializeCursor() {
-        let video = document.getElementById('sbj-video') as HTMLVideoElement;
-        let itemport = document.getElementById('sbj-item-layer') as HTMLElement;
-        let curport = document.getElementById('sbj-cursor-layer') as HTMLElement;
-        this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return CursorDispOffset.GetVideoDispOffset(video); });
-        this.Cursor.DisplayAll();
+        //  let video = document.getElementById('sbj-video') as HTMLVideoElement;
+        //  let itemport = document.getElementById('sbj-item-layer') as HTMLElement;
+        //  let curport = document.getElementById('sbj-cursor-layer') as HTMLElement;
+        //  this.Cursor = new CastPropController(this.Controller, itemport, curport, () => { return CursorDispOffset.GetVideoDispOffset(video); });
+        //  this.Cursor.DisplayAll();
     }
 
 

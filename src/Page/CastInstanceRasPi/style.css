@@ -1,0 +1,115 @@
+﻿
+.sbj-container {
+    max-width: 1600px;
+    min-width: 900px;
+    width: calc(100% - 16px);
+    margin: 0 auto;
+}
+
+.sbj-split-left {
+    float: left;
+    width: 550px;
+    padding: 0px;
+}
+
+.sbj-split-right {
+    float: right;
+    width: calc(100% - 568px);
+}
+
+#sbj-cast-instance-main{
+    margin: 16px 32px;
+}
+
+#sbj-livecast-room-name{
+    color: var(--sbj-color-label);
+}
+
+.sbj-cast-instance-actions{
+    margin: 16px 0px;
+}
+
+.sbj-cast-instance-device{
+    padding: 0px 0px 16px 0px;
+}
+
+.sbj-cast-instance-device-select{
+    outline: 0;
+    width: 420px;
+}
+
+.sbj-cast-instance--header-row{
+    padding: 0px 20px 0px 32px;
+}
+
+#sbj-cast-instance-title {
+    padding: 0px 20px 0px 0px;
+}
+
+#sbj-cast-instance-account-count{
+    margin-right: 16px;
+}
+
+.sbj-cast-instance-option{
+    margin: 20px 4px 0px 0px;
+}
+
+.sbj-cast-instance-setting-card.mdl-card {
+    padding: 10px;
+    width: 400px;
+    height: 600px;
+    position: absolute;
+    top: 72px;
+    left: 256px;
+}
+
+
+/*-----------------------------
+ *
+ *---------------------------*/
+
+.sbj-video-content{
+    position: relative;
+    width: 480px;
+    height: 360px;
+    overflow: hidden;
+}
+
+#sbj-video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-item-layer{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#sbj-cursor-layer{
+    height: 100%;
+    width: 100%;
+    user-select: none;
+}
+
+
+/*-----------------------------
+ *
+ *---------------------------*/
+
+.sbj-client-link{
+    padding: 16px 0px;
+}
+
+.sbj-client-link-qrcode-box{
+    margin: 24px 0px;
+    width: 340px;
+    height: 340px;
+}
+
+.sbj-client-link-qrcode-frame{
+    width: 340px;
+    height: 340px;
+}
