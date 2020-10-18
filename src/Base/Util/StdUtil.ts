@@ -36,6 +36,10 @@ export default class StdUtil {
             return true;
         }
 
+        if (name === 'chromium') {
+            return true;
+        }
+
         let errmsg = "";
 
         if (isGeneral) {
@@ -78,6 +82,7 @@ export default class StdUtil {
         let name = platform.name.toLocaleLowerCase();
 
         if (name === 'chrome') return true;
+        if (name === 'chromium') return true;
         if (name === 'firefox') return true;
         if (name === 'safari') {
             return (platform.version >= '10.2');
