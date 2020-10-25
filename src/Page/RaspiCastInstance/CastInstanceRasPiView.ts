@@ -12,7 +12,6 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
-import CursorDispOffset from "../CastProp/CursorDispOffset";
 import MdlUtil from "../../Contents/Util/MdlUtil";
 
 export default class CastInstanceViewRasPi extends AbstractServiceView<CastInstanceControllerRasPi> {
@@ -69,6 +68,11 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
 
         this.SetMediaDevice();
         this.InitializeCursor();
+
+        setTimeout(() => {
+            this.ChangeDisplayMode(true);
+            this.StartStreaming();
+        }, 3000);
     }
 
 
@@ -111,14 +115,27 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
      * 
      */
     public StartStreaming() {
-        let linkurl = LinkUtil.CreateLink("../CastVisitor/", this.Controller.SwPeer.PeerId);
+        let linkurl = LinkUtil.CreateLink("../RasPiCastVisitor/", this.Controller.SwPeer.PeerId);
         linkurl += "&sfu=" + (this.Controller.CastSetting.isSFU ? "1" : "0");
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLButtonElement;
         let clientopenbtn = document.getElementById('sbj-start-client') as HTMLButtonElement;
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
         MdlUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
-
         this.Controller.SetStreaming();
+
+        /*
+        //  試験実装
+        var fd = new FormData();
+        fd.append('key', linkurl);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/raspitest/keyset.php');
+        xhr.send(fd);
+        xhr.onreadystatechange = function () {
+            if ((xhr.readyState == 4) && (xhr.status == 200)) {
+                //  _returnValues = JSON.parse(xhr.responseText);
+            }
+        };
+        */
     }
 
 

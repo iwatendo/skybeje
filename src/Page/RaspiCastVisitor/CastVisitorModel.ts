@@ -1,10 +1,9 @@
 
 import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/AbstractServiceModel";
+import CastVisitorController from "./CastVisitorController";
 
-import CastInstanceControllerRasPi from "./CastInstanceRasPiController";
 
-
-export default class CastInstanceModelRasPi extends AbstractServiceModel<CastInstanceControllerRasPi> {
+export default class CastVisitorModel extends AbstractServiceModel<CastVisitorController> {
 
     /**
      * 初期化処理

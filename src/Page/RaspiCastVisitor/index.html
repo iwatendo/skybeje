@@ -1,0 +1,72 @@
+<html>
+
+<head>
+    <title>Skybeje Streaming</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
+    <script src='/lib/forcedtimer.js'></script>
+    <script src='/lib/skyway.min.js'></script>
+    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='../common.castprop.css?v={version}' />
+    <link rel='stylesheet' href='style.css?v={version}' />
+
+    <script src="/lib/material.min.js"></script>
+</head>
+
+<body>
+
+    <div class="mdl-layout mdl-js-layout">
+        <main class="sbj-cast-visitor-contents mdl-layout__content">
+
+            <video id='sbj-video' autoplay="true" playsinline="true"></video>
+
+            <div id="sbj-item-layer">
+                <div id="sbj-cursor-layer">
+                    <!-- React -->
+                </div>
+            </div>
+
+            <h2 id="sbj-cast-visitor-voice-only" hidden>Voice only</h2>
+
+            <div id="sbj-cast-visitor-message-port">
+                <h4 id="sbj-cast-visitor-message">接続中</h4>
+            </div>
+
+            <div id="sbj-cast-visitor-submenu" hidden>
+                <div id="sbj-cast-visitor-volume-slider">
+                    <input id="sbj-cast-visitor-volume-value" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="100" tabindex="0">
+                </div>
+                <button id="sbj-cast-visitor-volume" class="sbj-cast-visitor-button mdl-button mdl-js-button mdl-button--icon">
+                    <i id="sbj-cast-visitor-volume-on" class="material-icons">volume_up</i>
+                    <i id="sbj-cast-visitor-volume-off" hidden class="material-icons">volume_off</i>
+                </button>
+                <button id="sbj-cast-visitor-reload" class="sbj-cast-visitor-button mdl-button mdl-js-button mdl-button--icon">
+                    <i class="material-icons">refresh</i>
+                </button>
+            </div>
+
+            <div id="sbj-cast-visitor-submenu-mobile" hidden>
+                <button id="sbj-cast-visitor-volume-mobile" class="sbj-cast-visitor-mobile-button mdl-button mdl-button--icon mdl-button--raised mdl-button--colored">
+                    <span id="sbj-cast-visitor-volume-mobile-on">
+                        <i class="material-icons sbj-cast-visitor-mobile-button-icon">volume_up</i>
+                    </span>
+                    <span id="sbj-cast-visitor-volume-mobile-off" hidden>
+                        <i class="material-icons sbj-cast-visitor-mobile-button-icon">volume_off</i>
+                    </span>
+                </button>
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
+    <script src="bundle.js?v={version}"></script>
+
+</body>
+
+</html>

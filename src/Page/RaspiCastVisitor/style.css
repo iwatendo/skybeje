@@ -1,0 +1,107 @@
+﻿
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.sbj-cast-visitor-contents {
+    width: 100%;
+    height: 100%;
+}
+
+#sbj-cast-visitor-message-port{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-cast-visitor-message{
+    position: absolute;
+    margin: 0px;
+    width: 100%;
+    text-align: center;
+    top: calc(50% - 20px);
+    color: var(--sbj-color-default-text);
+}
+
+#sbj-video {
+    height: 100%;
+    width: 100%;
+    background-color: var(--sbj-color-cast-background);
+}
+
+#sbj-cast-visitor-submenu{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom : 0px;
+    height: 52px;
+    background-color: var(--sbj-color-edge-background);
+}
+
+#sbj-cast-visitor-submenu-mobile{
+    position: absolute;
+    left: 24px;
+    bottom : 24px;
+    right: 0px;
+}
+
+.sbj-cast-visitor-button {
+    position: absolute;
+    background-color: var(--sbj-color-timeline-panel);
+    border-radius: 6px;
+}
+
+#sbj-cast-visitor-volume{
+    bottom: 10px;
+    left: 10px;
+}
+
+#sbj-cast-visitor-volume-slider{
+    position: absolute;
+    bottom:16px;
+    left:24px;
+}
+
+#sbj-cast-visitor-reload{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+#sbj-cast-visitor-voice-only{
+    position: absolute;
+    margin: 0px;
+    width: 240px;
+    text-align: center;
+    top: calc(50% - 20px);
+    left: calc(50% - 120px);
+}
+
+.sbj-cast-visitor-mobile-button{
+    height: 48px;
+    width: 48px;
+}
+
+#sbj-item-layer{
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#sbj-cursor-layer{
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
