@@ -33,6 +33,14 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
             this.ChangeVoiceChat();
         }
 
+        //  自動起動オプション
+        if(this.IsAutoBoot()){
+            setTimeout(()=>{
+                this.JoinButtonDisabled = true;
+                this.ChangeVoiceChat();
+            },2000);
+        }
+
         let settingsElement = document.getElementById('sbj-voicechat-settings');
 
         settingsElement.hidden = StdUtil.IsMobile();
@@ -154,6 +162,17 @@ export default class VoiceChatView extends AbstractServiceView<VoiceChatControll
         }
 
         //  return StreamUtil.GetMediaStreamConstraints_DefaultDevice();
+    }
+
+
+    /** 
+     * 
+     */
+    public IsAutoBoot(): boolean {
+        let arg = LinkUtil.GetArgs('auto');
+        if (arg === "1") return true;
+        if (arg === "0") return false;
+        return true;
     }
 
 
