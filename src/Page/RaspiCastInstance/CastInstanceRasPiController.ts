@@ -11,6 +11,7 @@ import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 import CursorCache from "../../Contents/Cache/CursorCache";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import RoomSender from "../../Contents/Sender/RoomSender";
+import { isString } from "../Lib/skyway";
 
 export default class CastInstanceControllerRasPi extends AbstractServiceController<CastInstanceViewRasPi, CastInstanceModelRasPi> {
 
@@ -145,7 +146,7 @@ export default class CastInstanceControllerRasPi extends AbstractServiceControll
             let roommode = (this.CastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
             this.SwRoom = new SWRoom(this, roomname, roommode, stream);
             //  オーナー 及び 接続クライアントに通知
-            this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
+            this.ServerSend((!this.AudioSource || !this.VideoSource), false);
         }, (errname) => {
             alert(errname);
         });

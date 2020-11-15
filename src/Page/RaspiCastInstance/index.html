@@ -3,45 +3,22 @@
 <head>
     <title>Skybeje プライベート配信</title>
     <meta charset='utf-8'>
-    <meta name="description" content="WebRTC(SkyWay)を使ったプライベート配信" />
-    <meta property="og:title" content="Skybeje プライベート配信">
-    <meta property="og:description" content="WebRTC(SkyWay)を使ったプライベート配信">
-    <meta property="og:url" content="https://skybeje.net/castinstance/">
-    <meta property="og:image" content="https://skybeje.net/image/ogp-image.jpg">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:description" content="WebRTC(SkyWay)を使ったプライベート配信">
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon_cast.ico">
     <script src='/lib/forcedtimer.js'></script>
     <script src='/lib/skyway.min.js'></script>
-    <link rel='stylesheet' href='/lib/material.min.css' />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='../common.castprop.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
-    <script src="/lib/material.min.js"></script>
 </head>
 
 <body>
 
-    <div id="sbj-cast-instance-layout"
-        class="sbj-cast-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
-
-        <header class="sbj-cast-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
-            <div class="sbj-cast-instance--header-row mdl-layout__header-row">
-                <span id="sbj-cast-instance-title" class="mdl-layout-title">
-                    Skybeje プライベート配信
-                </span>
-                <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap"
-                    data-badge="0" hidden>person</div>
-                <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
-            </div>
-        </header>
+    <div>
 
         <main class="mdl-layout__content">
             <div class="sbj-container">
                 <div class="sbj-split-left">
                     <div class="mdl-color-text--grey-600" id="sbj-cast-instance-main">
-                        <h4 id="sbj-livecast-room-name">接続確認中</h4>
                         <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
                             <button id="sbj-cast-instance-start"
                                 class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
@@ -57,11 +34,10 @@
 
                         <div class="sbj-cast-instance-device">
                             <!-- Mic -->
-                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select"
+                            <div class="sbj-cast-instance-device-select"
                                 id="mic-select-div">
                                 <input class="mdl-textfield__input" type="text" spellcheck="false" readonly
                                     id="mic-select" />
-                                <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
                                 <ul id="mic-list"
                                     class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
                                     for="mic-select">
@@ -69,11 +45,10 @@
                                 </ul>
                             </div>
                             <!-- Camera -->
-                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select"
+                            <div class="sbj-cast-instance-device-select"
                                 id="webcam-select-div">
                                 <input class="mdl-textfield__input" type="text" spellcheck="false" readonly
                                     id="webcam-select" />
-                                <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
                                 <ul id="webcam-list"
                                     class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
                                     for="webcam-select">
@@ -86,7 +61,7 @@
                             class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
                             for="sbj-check-sfu" hidden>
                             <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input">
-                            <span class="mdl-switch__label">SFUを使用（配信中は変更できません）</span>
+                            <span class="mdl-switch__label">SFUを使用</span>
                         </label>
                         <label id="sbj-check-cursor-disp-label"
                             class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
@@ -98,12 +73,11 @@
                 </div>
 
                 <div class="sbj-split-right">
-                    <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
-                        <button id="sbj-start-client"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                    <div id="sbj-client-link" hidden>
+                        <button id="sbj-start-client">
                             &nbsp; 視聴ページ起動 &nbsp;
                         </button>
-                        <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
+                        <button id='sbj-linkcopy'>
                             &nbsp; 視聴URLのコピー &nbsp;
                         </button>
                     </div>

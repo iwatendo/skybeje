@@ -96,7 +96,7 @@ export default class StreamUtil {
      * @param videoSource 
      * @param audioSource 
      */
-    public static GetMediaStreamConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
+    public static GetMediaStreamConstraints(videoSource: string | undefined, audioSource: string| undefined): MediaStreamConstraints {
 
         let result: MediaStreamConstraints = {
             video: (videoSource ? { advanced: ([{ deviceId: videoSource }]) } : false),

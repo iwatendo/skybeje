@@ -27,14 +27,8 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
      */
     public Initialize() {
 
-        StdUtil.StopPropagation();
-        StdUtil.StopTouchMove();
         let startButton = document.getElementById('sbj-cast-instance-start');
-        let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let accountCount = document.getElementById('sbj-cast-instance-account-count');
-        let micElement = document.getElementById('mic-select-div');
-        let camElement = document.getElementById('webcam-select-div');
 
         window.onfocus = (ev) => {
             if (this.Controller && this.Controller.CastStatus) {
@@ -72,7 +66,7 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
         setTimeout(() => {
             this.ChangeDisplayMode(true);
             this.StartStreaming();
-        }, 3000);
+        }, 5000);
     }
 
 
@@ -95,7 +89,7 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
 
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let accountCount = document.getElementById('sbj-cast-instance-account-count');
+        //  let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
         let sfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;
@@ -103,7 +97,7 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
 
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
-        accountCount.hidden = !isLiveCasting;
+        //  accountCount.hidden = !isLiveCasting;
         micElement.hidden = isLiveCasting;
         camElement.hidden = isLiveCasting;
         sfuElement.disabled = isLiveCasting;
@@ -123,7 +117,6 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
         MdlUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
         this.Controller.SetStreaming();
 
-        /*
         //  試験実装
         var fd = new FormData();
         fd.append('key', linkurl);
@@ -135,7 +128,6 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
                 //  _returnValues = JSON.parse(xhr.responseText);
             }
         };
-        */
     }
 
 
@@ -144,7 +136,7 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
      * @param count 
      */
     public SetPeerCount(count: number) {
-        document.getElementById("sbj-cast-instance-account-count").setAttribute("data-badge", count.toString());
+        //  document.getElementById("sbj-cast-instance-account-count").setAttribute("data-badge", count.toString());
     }
 
 
@@ -153,8 +145,8 @@ export default class CastInstanceViewRasPi extends AbstractServiceView<CastInsta
      * @param room 
      */
     public SetRoomName(room: Home.Room) {
-        let title = (room ? room.name + "に配信" : "単体で配信");
-        document.getElementById("sbj-livecast-room-name").innerText = title;
+        //  let title = (room ? room.name + "に配信" : "単体で配信");
+        //  document.getElementById("sbj-livecast-room-name").innerText = title;
         this.ReadyCheck();
     }
 
