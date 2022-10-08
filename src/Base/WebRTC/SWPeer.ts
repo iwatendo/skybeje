@@ -52,9 +52,6 @@ export default class SWPeer {
      */
     constructor(service: IServiceController, ownerId: string, opencb: OnSWPeerOpen) {
 
-        //  ストリーミング用設定
-        navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
-
         //
         this._service = service;
         this._ownerId = ownerId;

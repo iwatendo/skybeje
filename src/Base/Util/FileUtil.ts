@@ -144,17 +144,12 @@ export default class FileUtil {
         let strValue = this.JsonFormatter(value);
 
         this.str2bytes(strValue, (buffer: ArrayBuffer) => {
-
-            if (window.navigator.msSaveBlob) {
-                window.navigator.msSaveBlob(new Blob([buffer], { type: "text/plain" }), filename);
-            } else {
-                let a: any = document.createElement("a");
-                a.href = URL.createObjectURL(new Blob([buffer], { type: "text/plain" }));
-                a.download = filename;
-                document.body.appendChild(a) //  FireFox specification
-                a.click();
-                document.body.removeChild(a) //  FireFox specification
-            }
+            let a: any = document.createElement("a");
+            a.href = URL.createObjectURL(new Blob([buffer], { type: "text/plain" }));
+            a.download = filename;
+            document.body.appendChild(a) //  FireFox specification
+            a.click();
+            document.body.removeChild(a) //  FireFox specification
         });
     }
 
@@ -166,19 +161,15 @@ export default class FileUtil {
     public static ExportCsv(filename: string, value: string) {
 
         //ファイル作成
-        let bom  = new Uint8Array([0xEF, 0xBB, 0xBF]);
-        var blob = new Blob([bom, value] , { type: "text/csv;" });        
+        let bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+        var blob = new Blob([bom, value], { type: "text/csv;" });
 
-        if (window.navigator.msSaveBlob) {
-            window.navigator.msSaveBlob(blob, filename);
-        } else {
-            let a: any = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = filename;
-            document.body.appendChild(a) //  FireFox specification
-            a.click();
-            document.body.removeChild(a) //  FireFox specification
-        }
+        let a: any = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a) //  FireFox specification
+        a.click();
+        document.body.removeChild(a) //  FireFox specification
     }
 
 

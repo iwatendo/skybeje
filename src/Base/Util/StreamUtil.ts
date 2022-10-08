@@ -65,7 +65,7 @@ export default class StreamUtil {
                 callback(stream);
             });
 
-            p.catch((err: MediaStreamError) => {
+            p.catch((err: any) => {
 
                 let errmsg = err.name + "\n" + err.message;
 
@@ -223,7 +223,7 @@ export default class StreamUtil {
             this._screenShare.startScreenShare(option,
                 (stream) => {
                     callback(stream);
-                }, (err: MediaStreamError) => {
+                }, (err) => {
                     LogUtil.Error(service, err.name);
                     LogUtil.Error(service, err.message);
                 }, () => {

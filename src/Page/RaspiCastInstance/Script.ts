@@ -12,8 +12,8 @@ if (StdUtil.IsSupoortPlatform(true)) {
             LocalCache.IsCheckDevicePermision = true;
             location.reload();
         };
-        navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
-        navigator.getUserMedia({ video: true, audio: true }, (stream) => { reload(); }, (err) => { reload(); });
+        navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => { reload(); }).catch((err) => { reload(); });
     }
     else {
         let controller = new CastInstanceControllerRasPi();

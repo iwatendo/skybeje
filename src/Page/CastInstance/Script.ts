@@ -2,7 +2,6 @@
 import LinkUtil from "../../Base/Util/LinkUtil";
 import CastInstanceController from "./CastInstanceController";
 import SWPeer from "../../Base/WebRTC/SWPeer";
-import SWRoom, { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 import LocalCache from "../../Contents/Cache/LocalCache";
 
 if (StdUtil.IsSupoortPlatform(true)) {
@@ -12,8 +11,8 @@ if (StdUtil.IsSupoortPlatform(true)) {
             LocalCache.IsCheckDevicePermision = true;
             location.reload();
         };
-        navigator.getUserMedia = navigator.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
-        navigator.getUserMedia({ video: true, audio: true }, (stream) => { reload(); }, (err) => { reload(); });
+        navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia || (navigator as any).webkitGetUserMedia || (navigator as any).mozGetUserMedia;
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => { reload(); }).catch((err) => { reload(); });
     }
     else {
         let controller = new CastInstanceController();

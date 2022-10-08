@@ -84,7 +84,7 @@ export default class GMapsUtil {
                 result.longitude = position.coords.longitude;
                 callback(result);
             },
-            error: (error: PositionError) => {
+            error: (error) => {
 
                 //  位置情報の取得を拒否した場合
                 if (error.code === error.PERMISSION_DENIED) {

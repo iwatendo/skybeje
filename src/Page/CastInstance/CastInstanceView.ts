@@ -4,13 +4,11 @@ import * as Home from "../../Contents/IndexedDB/Home";
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
-import LogUtil from "../../Base/Util/LogUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
 
 import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import { DialogMode } from "../../Contents/AbstractDialogController";
 import LocalCache from "../../Contents/Cache/LocalCache";
 import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
@@ -200,7 +198,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         DeviceUtil.GetVideoDevice((devices) => {
 
-            //  let previewElement = document.getElementById('sbj-video') as HTMLVideoElement;
+            let previewElement = document.getElementById('sbj-video') as HTMLVideoElement;
             let textElement = document.getElementById('webcam-select') as HTMLInputElement;
             var listElement = document.getElementById('webcam-list') as HTMLElement;
 
@@ -212,14 +210,12 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
                 if (deviceId) {
 
-                    /*
                     let msc = StreamUtil.GetMediaStreamConstraints(deviceId, null);
                     StreamUtil.GetStreaming(msc, (stream) => {
                         StreamUtil.StartPreview(previewElement, stream);
                     }, (errname) => {
                         alert(errname);
                     });
-                    */
                 }
             });
 

@@ -1,43 +1,45 @@
 <html>
 
 <head>
-    <title>Skybeje LiveHTML</title>
+    <title>Skyway Walkers LiveHTML</title>
     <meta charset='utf-8'>
-    <meta name="description"
-        content="WebRTC(SkyWay)を使った動的なHTML配信サービス" />
+    <meta name="description" content="WebRTC(SkyWay)を使った動的なHTML配信サービス" />
     <meta property="og:title" content="Skybeje プライベート配信(モバイル)">
     <meta property="og:description" content="WebRTC(SkyWay)を使った動的なHTML配信サービス">
     <meta property="og:url" content="https://skybeje.net/livehtmlinstance/">
     <meta property="og:image" content="https://skybeje.net/image/ogp-image.jpg">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:description" content="WebRTC(SkyWay)を使った動的なHTML配信サービス">
-    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon_livehtml.ico">
-    <script src='/lib/forcedtimer.js'></script>
-    <script src='/lib/skyway.min.js'></script>
-    <link rel='stylesheet' href='/lib/material.min.css' />
+    <link rel="icon" type="image/vnd.microsoft.icon" href="../image/favicon_livehtml.ico">
+    <script src='../lib/forcedtimer.js'></script>
+    <script src='../lib/skyway.min.js'></script>
+    <link rel='stylesheet' href='../lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='../common.castprop.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
-    <script src='/lib/jquery-2.2.3.min.js'></script>
-    <script src="/lib/material.min.js"></script>
+    <script src='../lib/jquery-2.2.3.min.js'></script>
+    <script src="../lib/material.min.js"></script>
 </head>
 
 <body>
 
-    <div id="sbj-livehtml-instance-layout" class="sbj-livehtml-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+    <div id="sbj-livehtml-instance-layout"
+        class="sbj-livehtml-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
 
         <header class="sbj-livehtml-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
             <div class="sbj-livehtml-instance--header-row mdl-layout__header-row">
                 <span id="sbj-livehtml-instance-title" class="mdl-layout-title">
-                    Skybeje LiveHTML
+                    Skyway Walkers LiveHTML
                 </span>
-                <div id="sbj-livehtml-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0">person</div>
+                <div id="sbj-livehtml-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap"
+                    data-badge="0">person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-livehtml-instance-account-count">この配信への接続数</div>
 
                 <div id="sbj-livehtml-page-edit-menu">
 
-                    <button id='sbj-livehtml-page-add' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    <button id='sbj-livehtml-page-add'
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                         <i class='material-icons'>add</i>
                         ページの追加
                     </button>
@@ -59,7 +61,8 @@
                             <i class="material-icons">search</i>
                         </label>
                         <div class="mdl-textfield__expandable-holder">
-                            <input class="mdl-textfield__input" type="text" spellcheck="false" id="sbj-livehtml-page-search-text">
+                            <input class="mdl-textfield__input" type="text" spellcheck="false"
+                                id="sbj-livehtml-page-search-text">
                             <label class="mdl-textfield__label" id="sbj-livehtml-page-search-label">ページの絞り込み</label>
                         </div>
                     </div>
@@ -83,12 +86,14 @@
                         </h5>
 
                         <div class="sbj-livehtml-instance-actions mdl-list__item-primary-content">
-                            <button id="sbj-livehtml-instance-start" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored"
+                            <button id="sbj-livehtml-instance-start"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored"
                                 disabled>
                                 <i class="material-icons">play_arrow</i>
                                 &nbsp;配信開始&nbsp;
                             </button>
-                            <button id="sbj-livehtml-instance-stop" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
+                            <button id="sbj-livehtml-instance-stop"
+                                class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
                                 hidden>
                                 <i class="material-icons">stop</i>
                                 &nbsp;配信停止&nbsp;
@@ -101,7 +106,8 @@
                                 LiveHTML配信中
                             </h5>
 
-                            <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                            <button id="sbj-start-client"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                                 &nbsp; 視聴ページ起動 &nbsp;
                             </button>
                             <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
@@ -112,44 +118,46 @@
                             </div>
                         </div>
 
-                        <label id="sbj-check-cursor-disp-label" class="sbj-livehtml-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                        <label id="sbj-check-cursor-disp-label"
+                            class="sbj-livehtml-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
                             for="sbj-check-cursor-disp" hidden>
                             <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
                         </label>
 
-                        <label id="sbj-check-chatlinkage-label" class="sbj-livehtml-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                        <label id="sbj-check-chatlinkage-label"
+                            class="sbj-livehtml-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
                             for="sbj-check-chatlinkage" hidden>
                             <input type="checkbox" id="sbj-check-chatlinkage" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">チャット連動を許可</span>
                         </label>
 
                         <div class="mdl-color-text--grey-600" id="sbj-livehtml-note">
-                            <br/>
+                            <br />
                             <h4 class="mdl-color-text--grey-800">
                                 LiveHTMLについて
                             </h4>
                             &nbsp;&nbsp;登録したHTMLを視聴ページに表示する機能です。
-                            <br/>&nbsp;&nbsp;任意のタイミングで表示するHTMLの切り替えが可能です。
-                            <br/>&nbsp;&nbsp;登録したHTMLはブラウザのDB(IndexedDB)に保存されます。
-                            <br/>
-                            <br/>&nbsp;&nbsp;WebRTC(P2P)でのデータ通信のため大規模な配信はできません。
-                            <br/>&nbsp;&nbsp;本サービスは10人以下での利用を想定しています。
-                            <br/>
+                            <br />&nbsp;&nbsp;任意のタイミングで表示するHTMLの切り替えが可能です。
+                            <br />&nbsp;&nbsp;登録したHTMLはブラウザのDB(IndexedDB)に保存されます。
+                            <br />
+                            <br />&nbsp;&nbsp;WebRTC(P2P)でのデータ通信のため大規模な配信はできません。
+                            <br />&nbsp;&nbsp;本サービスは10人以下での利用を想定しています。
+                            <br />
                             <h5 class="mdl-color-text--grey-800">
                                 使い方
                             </h5>
                             ・表示したいページを選択し「配信先に表示」を押します。
-                            <br/>・「配信開始」を押します。
-                            <br/>・単体起動した場合は、視聴して欲しい人にURLを伝えてください。
-                            <br/>・Skybejeチャットからの起動時は、自動的にチャット側に表示されます。
-                            <br/>・配信中も表示するHTMLページの切替えが可能です
-                            <br/>
+                            <br />・「配信開始」を押します。
+                            <br />・単体起動した場合は、視聴して欲しい人にURLを伝えてください。
+                            <br />・Skybejeチャットからの起動時は、自動的にチャット側に表示されます。
+                            <br />・配信中も表示するHTMLページの切替えが可能です
+                            <br />
                             <h5 class="mdl-color-text--grey-800">
                                 注意事項
                             </h5>
                             &nbsp;&nbsp;外部のWebサービスおよび各種Webサービスの埋込コードの利用が可能ですが、各Webサービスの利用規約に違反しないように注意してください。
-                            <br/>
+                            <br />
                         </div>
 
 
@@ -177,36 +185,44 @@
                     <h4 id="sbj-livehtml-edit-title">
                     </h4>
 
-                    <div id="sbj-livehtml-value-name-field" class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-name" spellcheck="false" maxlength="64" autocomplete="off"
-                            required autofocus></input>
+                    <div id="sbj-livehtml-value-name-field"
+                        class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-name" spellcheck="false"
+                            maxlength="64" autocomplete="off" required autofocus></input>
                         <label class="mdl-textfield__label" for="sbj-livehtml-value-name">ページ名</label>
                         <span class="mdl-textfield__error">ページ名称を入力してください</span>
                     </div>
 
-                    <div id="sbj-livehtml-value-tag-field" class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-tag" spellcheck="false" maxlength="64"></input>
+                    <div id="sbj-livehtml-value-tag-field"
+                        class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-tag" spellcheck="false"
+                            maxlength="64"></input>
                         <label class="mdl-textfield__label" for="sbj-livehtml-value-tag">タグ</label>
                     </div>
 
-                    <div id="sbj-livehtml-value-chatlink-field" class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-chatlinkage" spellcheck="false" maxlength="64"></input>
+                    <div id="sbj-livehtml-value-chatlink-field"
+                        class="sbj-livehtml-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="sbj-livehtml-value-chatlinkage"
+                            spellcheck="false" maxlength="64"></input>
                         <label class="mdl-textfield__label" for="sbj-livehtml-value-chatlinkage">チャット連動</label>
                     </div>
 
-                    <label id="sbj-check-aspect-disp-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-aspect-disp">
+                    <label id="sbj-check-aspect-disp-label" class="mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                        for="sbj-check-aspect-disp">
                         <input type="checkbox" id="sbj-check-aspect-disp" class="mdl-switch__input" checked>
                         <span class="mdl-switch__label">表示エリアのアスペクト比率を固定</span>
                     </label>
 
                     <span id="sbj-aspect-setting">
                         <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-width">
+                            <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?"
+                                id="sbj-aspect-width">
                             <label class="mdl-textfield__label" for="sbj-aspect-width"></label>
                         </div>
                         <span> : </span>
                         <div class="sbj-aspect-value mdl-textfield mdl-js-textfield">
-                            <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="sbj-aspect-height">
+                            <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?"
+                                id="sbj-aspect-height">
                             <label class="mdl-textfield__label" for="sbj-aspect-height"></label>
                         </div>
                     </span>
@@ -242,54 +258,67 @@
 
                     <div class="sbj-livehtml-value-div">
                         <h6 class="sbj-livehtml-label"> 背景レイヤ１</h6>
-                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer1" rows="6" cols="80" spellCheck='false'></textarea>
+                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer1" rows="6" cols="80"
+                            spellCheck='false'></textarea>
                     </div>
                     <div class="sbj-livehtml-value-div">
                         <h6 class="sbj-livehtml-label"> 背景レイヤ２</h6>
-                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer2" rows="6" cols="80" spellCheck='false'></textarea>
+                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer2" rows="6" cols="80"
+                            spellCheck='false'></textarea>
                     </div>
                     <div class="sbj-livehtml-value-div">
                         <h6 class="sbj-livehtml-label"> アクティブレイヤ
                         </h6>
                         &nbsp;・このレイヤに配置するHTMLはユーザーの操作が可能です
-                        <br/>&nbsp;・アイコン／字幕のレイヤがこのレイヤの背面に回り、操作不能となるので注意
-                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer3" rows="6" cols="80" spellCheck='false'></textarea>
+                        <br />&nbsp;・アイコン／字幕のレイヤがこのレイヤの背面に回り、操作不能となるので注意
+                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer3" rows="6" cols="80"
+                            spellCheck='false'></textarea>
                     </div>
                     <div class="sbj-livehtml-value-div">
 
                         <h6 class="sbj-livehtml-label"> コントロールレイヤ</h6>
                         <div>
-                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-1" id="sbj-ctrl-layer-option-label-1">
-                                <input type="radio" id="sbj-ctrl-layer-option-1" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="1" checked>
+                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect"
+                                for="sbj-ctrl-layer-option-1" id="sbj-ctrl-layer-option-label-1">
+                                <input type="radio" id="sbj-ctrl-layer-option-1" class="mdl-radio__button"
+                                    name="sbj-ctrl-layer-option" value="1" checked>
                                 <span class="mdl-radio__label">フォーカス時のみ表示</span>
                             </label>
-                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-2" id="sbj-ctrl-layer-option-label-2">
-                                <input type="radio" id="sbj-ctrl-layer-option-2" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="2">
+                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect"
+                                for="sbj-ctrl-layer-option-2" id="sbj-ctrl-layer-option-label-2">
+                                <input type="radio" id="sbj-ctrl-layer-option-2" class="mdl-radio__button"
+                                    name="sbj-ctrl-layer-option" value="2">
                                 <span class="mdl-radio__label">常に表示</span>
                             </label>
-                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-ctrl-layer-option-3" id="sbj-ctrl-layer-option-label-3">
-                                <input type="radio" id="sbj-ctrl-layer-option-3" class="mdl-radio__button" name="sbj-ctrl-layer-option" value="3">
+                            <label class="sbj-radio mdl-radio mdl-js-radio mdl-js-ripple-effect"
+                                for="sbj-ctrl-layer-option-3" id="sbj-ctrl-layer-option-label-3">
+                                <input type="radio" id="sbj-ctrl-layer-option-3" class="mdl-radio__button"
+                                    name="sbj-ctrl-layer-option" value="3">
                                 <span class="mdl-radio__label">非表示</span>
                             </label>
                         </div>
-                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer4" rows="6" cols="80" spellCheck='false'></textarea>
+                        <textarea class="sbj-livehtml-value" id="sbj-livehtml-value-layer4" rows="6" cols="80"
+                            spellCheck='false'></textarea>
                         <button id="sbj-livehtml-set-voicecaht" class="mdl-button mdl-button--colored">
                             グループ通話機能を設置
                         </button>
                     </div>
 
                     <div class="sbj-livehtml-instance-actions mdl-list__item-primary-content">
-                        <button id="sbj-livehtml-pagesettings-save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
+                        <button id="sbj-livehtml-pagesettings-save"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
                             <i class="material-icons">done</i>
                             &nbsp;
                             <span id="sbj-livehtml-pagesettings-save-label"></span>&nbsp;
                         </button>
-                        <button id="sbj-livehtml-pagesettings-save-close" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
+                        <button id="sbj-livehtml-pagesettings-save-close"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored mdl-button--raised">
                             <i class="material-icons">done</i>
                             &nbsp;
                             <span id="sbj-livehtml-pagesettings-save-close-label"></span>して閉じる&nbsp;
                         </button>
-                        <button id="sbj-livehtml-pagesettings-cancel" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
+                        <button id="sbj-livehtml-pagesettings-cancel"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored">
                             &nbsp;キャンセル&nbsp;
                         </button>
                     </div>
@@ -299,8 +328,8 @@
         </div>
     </div>
 
-    <script src="/lib/react.min.js"></script>
-    <script src="/lib/react-dom.min.js"></script>
+    <script src="../lib/react.min.js"></script>
+    <script src="../lib/react-dom.min.js"></script>
     <script src="bundle.js?v={version}"></script>
 
 </body>
