@@ -1,16 +1,16 @@
 <html>
 
 <head>
-    <title>Skybeje プライベート配信</title>
+    <title>Skyway Walkers Private Cast</title>
     <meta charset='utf-8'>
     <meta name="description"
-        content="WebRTC(SkyWay)を使ったプライベート配信" />
-    <meta property="og:title" content="Skybeje プライベート配信">
-    <meta property="og:description" content="WebRTC(SkyWay)を使ったプライベート配信">
+        content="Skyway Walkers Private Cast" />
+    <meta property="og:title" content="Skyway Walkers Private Cast">
+    <meta property="og:description" content="Skyway Walkers Private Cast">
     <meta property="og:url" content="https://skybeje.net/castinstance/">
     <meta property="og:image" content="https://skybeje.net/image/ogp-image.jpg">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:description" content="WebRTC(SkyWay)を使ったプライベート配信">
+    <meta name="twitter:description" content="Skyway Walkers Private Cast">
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon_cast.ico">
     <script src='/lib/forcedtimer.js'></script>
     <script src='/lib/skyway.min.js'></script>
@@ -29,7 +29,7 @@
         <header class="sbj-cast-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
             <div class="sbj-cast-instance--header-row mdl-layout__header-row">
                 <span id="sbj-cast-instance-title" class="mdl-layout-title">
-                    Skybeje プライベート配信
+                    Skyway Walkers Private Cast
                 </span>
                 <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
@@ -80,8 +80,8 @@
                                 </div>
                             </div>
                         </div>
-                        <label id="sbj-check-sfu-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu">
-                            <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input" checked>
+                        <label id="sbj-check-sfu-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu" hidden>
+                            <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input">
                             <span class="mdl-switch__label">SFUを使用（配信中は変更できません）</span>
                         </label>
                         <label id="sbj-check-cursor-disp-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-cursor-disp"
@@ -118,20 +118,18 @@
                         <h4 class="mdl-color-text--grey-800">
                             プライベート配信機能について
                         </h4>
-                        ブラウザのみでWebカメラから配信できる機能です。
-                        <br/>
-                        <br/>ただし、一般的なビデオ通話に使用されるWebRTC(P2P)での配信であり、大規模配信には利用できません。
-                        <br/>（双方向のビデオ通話ではなく、単方向のビデオ通話のイメージの機能です）
-                        <br/>本サービスは 10人以下での利用を想定しています。
+                        ・Webカメラから1～2名に向けてに低遅延配信できるサービスです
+                        <br/>・OBSのブラウザソースとして使用可能です
                         <br/>
                         <br/>
                         <b>使い方</b>
-                        <br/>・マイクとカメラを選択し「開始」ボタンを押すだけで配信が開始されます。
-                        <br/>・単体で起動した場合は、接続URLをコピーするためのボタンが表示されますので、視聴して欲しい人にURLを伝えてください。
-                        <br/>・Skybejeチャットから呼出した場合は、自動的にチャット側で視聴ページが開きます。
-                        <br/>・チャット側でグループ通話を使用している場合等で、音声が不要な場合は、マイクの項目は空を選択してください。
+                        <br/>・マイクとカメラを選択し「開始」ボタンを押すだけで配信が開始されます
+                        <br/>・接続URLをコピーするためのボタンが表示されますので、視聴して欲しい人にURLを伝えてください
+                        <br/>・OBSで利用する場合は、接続URLをブラウザのプロパティのURLに指定してください
+                        <br/>・別途通話等している場合で、音声が不要な場合はマイクの項目は空を選択してください
                         <br/>
                         <br/>
+                        <!--
                         <h4 class="mdl-color-text--grey-800">
                             ３名以上のメンバーに配信をしたい場合
                         </h4>
@@ -149,6 +147,7 @@
                         <br/> 環境にもよりますが、SFUを使用しない方が安定するケースもあるようです。
                         <br/>
                         <br/>
+                        -->
                         <h4 class="mdl-color-text--grey-800">
                             プライベート配信または視聴ができない場合
                         </h4>

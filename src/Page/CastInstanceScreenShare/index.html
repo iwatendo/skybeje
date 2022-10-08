@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Skybeje-ScreenShare</title>
+    <title>Skyway Walkers Screen Cast</title>
     <meta charset='utf-8'>
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon_screen.ico">
     <script src='/lib/forcedtimer.js'></script>
@@ -16,14 +16,16 @@
 
 <body>
 
-    <div id="sbj-cast-instance-layout" class="sbj-cast-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+    <div id="sbj-cast-instance-layout"
+        class="sbj-cast-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
 
         <header class="sbj-cast-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
             <div class="sbj-cast-instance--header-row mdl-layout__header-row">
                 <span id="sbj-cast-instance-title" class="mdl-layout-title">
-                    Skybeje スクリーンシェア
+                    Skyway Walkers Screen Cast
                 </span>
-                <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
+                <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap"
+                    data-badge="0" hidden>person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
             </div>
         </header>
@@ -36,11 +38,13 @@
                     <h4 id="sbj-livecast-room-name">接続確認中</h4>
 
                     <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
-                        <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
+                        <button id="sbj-cast-instance-start"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
                             <i class="material-icons">screen_share</i>
                             &nbsp;配信する画面の選択&nbsp;
                         </button>
-                        <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                        <button id="sbj-cast-instance-stop"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
                             <i class="material-icons">stop</i>
                             &nbsp;停止&nbsp;
                         </button>
@@ -50,30 +54,36 @@
                         <h6 class="sbj-screenshare-label mdl-color-text--grey-600">配信解像度</h6>
                         <div class="sbj-screenshare-resolution">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-1">
-                                <input type="radio" id="sbj-screenshare-option-1" class="mdl-radio__button" name="sbj-screenshare-option" value="1" checked/>
+                                <input type="radio" id="sbj-screenshare-option-1" class="mdl-radio__button"
+                                    name="sbj-screenshare-option" value="1" checked />
                                 <span class="mdl-radio__label">低：縦横比 4:3</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-2">
-                                <input type="radio" id="sbj-screenshare-option-2" class="mdl-radio__button" name="sbj-screenshare-option" value="2" />
+                                <input type="radio" id="sbj-screenshare-option-2" class="mdl-radio__button"
+                                    name="sbj-screenshare-option" value="2" />
                                 <span class="mdl-radio__label">低：縦横比 16:9</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-3">
-                                <input type="radio" id="sbj-screenshare-option-3" class="mdl-radio__button" name="sbj-screenshare-option" value="3" />
+                                <input type="radio" id="sbj-screenshare-option-3" class="mdl-radio__button"
+                                    name="sbj-screenshare-option" value="3" />
                                 <span class="mdl-radio__label">中：縦横比 4:3</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-4">
-                                <input type="radio" id="sbj-screenshare-option-4" class="mdl-radio__button" name="sbj-screenshare-option" value="4" />
+                                <input type="radio" id="sbj-screenshare-option-4" class="mdl-radio__button"
+                                    name="sbj-screenshare-option" value="4" />
                                 <span class="mdl-radio__label">中：縦横比 16:9</span>
                             </label>
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-0">
-                                <input type="radio" id="sbj-screenshare-option-0" class="mdl-radio__button" name="sbj-screenshare-option" value="0" />
+                                <input type="radio" id="sbj-screenshare-option-0" class="mdl-radio__button"
+                                    name="sbj-screenshare-option" value="0" />
                                 <span class="mdl-radio__label">高：選択画面の解像度</span>
                             </label>
                         </div>
                         <div>
                             <h6 class="mdl-color-text--grey-600">フレームレート</h6>
                             <div class="sbj-screenshare-framerate-field mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="number" min="1" max="30" value="15" pattern="/^-?\d+$/" id="sbj-screenshare-framerate">
+                                <input class="mdl-textfield__input" type="number" min="1" max="30" value="15"
+                                    pattern="/^-?\d+$/" id="sbj-screenshare-framerate">
                                 <label class="mdl-textfield__label" for="sbj-screenshare-framerate"></label>
                                 <span class="mdl-textfield__error">1~30で指定</span>
                             </div>
@@ -81,12 +91,15 @@
                     </div>
                     <div>
                         <h6 id="sbj-cast-setting-label" class="mdl-color-text--grey-600">配信設定</h6>
-                        <label id="sbj-check-sfu-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu">
-                            <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input" checked>
+                        <label id="sbj-check-sfu-label"
+                            class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                            for="sbj-check-sfu" hidden>
+                            <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input">
                             <span class="mdl-switch__label">SFUを使用（配信中は変更できません）</span>
                         </label>
-                        <label id="sbj-check-cursor-disp-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-cursor-disp"
-                            hidden>
+                        <label id="sbj-check-cursor-disp-label"
+                            class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                            for="sbj-check-cursor-disp" hidden>
                             <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
                         </label>
@@ -95,7 +108,8 @@
 
                 <div class="sbj-split-right">
                     <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
-                        <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                        <button id="sbj-start-client"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                             &nbsp; 視聴ページ起動 &nbsp;
                         </button>
                         <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
@@ -109,39 +123,41 @@
                             モバイル端末での接続について
                         </h4>
                         QRコードを読みとる事で、モバイル端末でも視聴できます。
-                        <br/>・iPhoneの場合、標準カメラでQRコードを読取ってください。
-                        <br/>・Android端末の場合、QRコード読みとり後、Chromeで開いてください。
-                        <br/>※アプリ内ブラウザ(WebView)から接続した場合、正常に動作しないケースがあります。
-                        <br/>
-                        <br/>
+                        <br />・iPhoneの場合、標準カメラでQRコードを読取ってください。
+                        <br />・Android端末の場合、QRコード読みとり後、Chromeで開いてください。
+                        <br />※アプリ内ブラウザ(WebView)から接続した場合、正常に動作しないケースがあります。
+                        <br />
+                        <br />
                     </div>
                     <div class="mdl-color-text--grey-600" id="sbj-livecast-note">
                         <h4 class="mdl-color-text--grey-800">
-                            スクリーンシェアについて
+                            スクリーンシェア配信について
                         </h4>
-                        自分のパソコンの画面を、複数のメンバーに見せる事ができます。
-                        <br/>
-                        <br/>ただし、一般的なビデオ通話に使用されるWebRTC(P2P)での配信であり、大規模配信には利用できません。
-                        <br/>（双方向のビデオ通話ではなく、単方向のビデオ通話のイメージの機能です）
-                        <br/>本サービスは、10人以下での利用を想定しています。
-                        <br/> 「共有する画面の選択」からスクリーンシェアが開始できます。
-                        <br/>チャットクライアントから呼出した場合、自動的にチャットルームで視聴ページが開きます。
-                        <br/>単体で起動した場合は、接続URLをコピーするためのボタンが表示されますので視聴して欲しい人にURLを伝えてください。
-                        <br/>
+                        ・スクリーン上の映像を、1～2名に向けてに低遅延配信できるサービスです
+                        <br />・OBSのブラウザソースとして使用可能です
+                        <br />
+                        <br />
+                        <b>使い方</b>
+                        <br />・「配信する画面の選択」ボタンを押し、配信する画面またはウィンドウを選択します
+                        <br />・視聴URLをコピーするためのボタンが表示されますので、視聴して欲しい人にURLを伝えてください
+                        <br />・OBSで利用する場合は、接続URLをブラウザのプロパティのURLに指定してください
+                        <br />
+                        <br />
                         <h4 class="mdl-color-text--grey-800">
                             スクリーンシェアの配信設定について
                         </h4>
                         高解像度／高フレームレートでの利用は、端末に高負荷が掛かるので注意してください。
-                        <br/> 画面の動きが少ない資料等を表示したい場合は「選択画面の解像度」を選択し、フレームレートは低めで指定してください。
-                        <br/>
-                        <br/> 動きが多いゲーム等の画面を配信したい場合は、仮想ウェブカメラを使用してプライベート配信する事をお勧めします。
-                        <br/> 仮想ウェブカメラとはデスクトップのキャプチャー映像をWebカメラとして扱えるソフトウェアで、以下のようなものがあります。
-                        <br/>
-                        <br/> ・ManyCam
-                        <br/> ・OBS-VirtualCam
-                        <br/> ・ニコ生デスクトップキャプチャー
-                        <br/>
-                        <br/>
+                        <br /> 画面の動きが少ない資料等を表示したい場合は「選択画面の解像度」を選択し、フレームレートは低めで指定してください。
+                        <br />
+                        <br /> 動きが多いゲーム等の画面を配信したい場合は、仮想ウェブカメラを使用してプライベート配信する事をお勧めします。
+                        <br /> 仮想ウェブカメラとはデスクトップのキャプチャー映像をWebカメラとして扱えるソフトウェアで、以下のようなものがあります。
+                        <br />
+                        <br /> ・ManyCam
+                        <br /> ・OBS-VirtualCam
+                        <br /> ・ニコ生デスクトップキャプチャー
+                        <br />
+                        <br />
+                        <!--
                         <h4 class="mdl-color-text--grey-800">
                             ３名以上のメンバーに配信をしたい場合
                         </h4>
@@ -159,13 +175,15 @@
                         <br/> 環境にもよりますが、SFUを使用しない方が安定するケースもあるようです。
                         <br/>
                         <br/>
+                        -->
                         <h4 class="mdl-color-text--grey-800">
                             プライベート配信または視聴ができない場合
                         </h4>
-                        <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">トラブルシュート</a>を確認してみてください。
-                        <br/>
-                        <br/>
-                        <br/>
+                        <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting"
+                            target="_blunk">トラブルシュート</a>を確認してみてください。
+                        <br />
+                        <br />
+                        <br />
                     </div>
                 </div>
             </div>
@@ -174,13 +192,14 @@
         <main id="sbj-cast-instance-main-no-extension" class="mdl-layout__content" hidden>
             <h6 class="sbj-screenshare-note">
                 スクリーンシェア機能を利用するには、
-                <br/> 以下の Chrome Extension の追加が必要です。
-                <br/>
-                <br/>
-                <a href="https://chrome.google.com/webstore/detail/skybeje-screen-share/ofehfbpdidnjcafogdedlnghhcijgpdd?hl=ja" target="_blank">SyBeje Screen Share Extension</a>
-                <br/>
-                <br/>※Extensionの追加後、このページを再読込してください。
-                <br/>
+                <br /> 以下の Chrome Extension の追加が必要です。
+                <br />
+                <br />
+                <a href="https://chrome.google.com/webstore/detail/skybeje-screen-share/ofehfbpdidnjcafogdedlnghhcijgpdd?hl=ja"
+                    target="_blank">SyBeje Screen Share Extension</a>
+                <br />
+                <br />※Extensionの追加後、このページを再読込してください。
+                <br />
                 <a href="" onclick="location.reload()">ページの再読込</a>
             </h6>
         </main>
