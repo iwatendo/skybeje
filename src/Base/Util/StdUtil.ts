@@ -30,7 +30,7 @@ export default class StdUtil {
         //  対応ブラウザかチェック
         let name = platform.name.toLocaleLowerCase();
 
-        if (name === 'chrome' || name === 'chrome mobile') {
+        if (name === 'chrome' || name === 'chrome mobile' || name=='microsoft edge') {
             return true;
         }
 
