@@ -1,4 +1,3 @@
-
 .sbj-container {
     max-width: 1600px;
     min-width: 900px;
@@ -6,25 +5,25 @@
     margin: 0 auto;
 }
 
-.sbj-header{
+.sbj-header {
     padding-left: 40px;
 }
 
-.sbj-layout{
+.sbj-layout {
     padding: 10px 40px;
 }
 
-.sbj-mobile-qrcode-frame{
+.sbj-mobile-qrcode-frame {
     width: 340px;
     height: 340px;
 }
 
-.sbj-mobile-qrcode-box{
+.sbj-mobile-qrcode-box {
     width: 340px;
     height: 340px;
 }
 
-.sbj-cast-instance-option{
+.sbj-cast-instance-option {
     margin: 0px 4px 20px 0px;
 }
 
@@ -48,28 +47,32 @@
  *
  *---------------------------*/
 
- .sbj-client-link{
+.sbj-client-link {
     padding: 16px 0px;
 }
 
-.sbj-client-link-qrcode-box{
+.sbj-client-link-qrcode-box {
     margin: 24px 0px;
     width: 340px;
     height: 340px;
 }
 
-.sbj-client-link-qrcode-frame{
+.sbj-client-link-qrcode-frame {
     width: 340px;
     height: 340px;
 }
 
-#sbj-picture{
-    background-color: gray;    
+#sbj-picture {
+    background-color: gray;
     width: 400px;
     height: 400px;
     object-fit: contain;
 }
 
-#sbj-livecast-room-name{
+#sbj-livecast-room-name {
     color: var(--sbj-color-label);
+}
+
+.sbj-google-adsense{
+    margin: 16px 0px;
 }

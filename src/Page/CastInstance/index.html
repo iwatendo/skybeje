@@ -3,8 +3,7 @@
 <head>
     <title>Skyway Walkers Private Cast</title>
     <meta charset='utf-8'>
-    <meta name="description"
-        content="Skyway Walkers Private Cast" />
+    <meta name="description" content="Skyway Walkers Private Cast" />
     <meta property="og:title" content="Skyway Walkers Private Cast">
     <meta property="og:description" content="Skyway Walkers Private Cast">
     <meta property="og:url" content="https://skybeje.net/castinstance/">
@@ -24,14 +23,16 @@
 
 <body>
 
-    <div id="sbj-cast-instance-layout" class="sbj-cast-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+    <div id="sbj-cast-instance-layout"
+        class="sbj-cast-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
 
         <header class="sbj-cast-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
             <div class="sbj-cast-instance--header-row mdl-layout__header-row">
                 <span id="sbj-cast-instance-title" class="mdl-layout-title">
                     Skyway Walkers Private Cast
                 </span>
-                <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap" data-badge="0" hidden>person</div>
+                <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap"
+                    data-badge="0" hidden>person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
             </div>
         </header>
@@ -42,11 +43,13 @@
                     <div class="mdl-color-text--grey-600" id="sbj-cast-instance-main">
                         <h4 id="sbj-livecast-room-name">接続確認中</h4>
                         <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
-                            <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
+                            <button id="sbj-cast-instance-start"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
                                 <i class="material-icons">play_arrow</i>
                                 &nbsp;開始&nbsp;
                             </button>
-                            <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                            <button id="sbj-cast-instance-stop"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
                                 <i class="material-icons">stop</i>
                                 &nbsp;停止&nbsp;
                             </button>
@@ -54,18 +57,26 @@
 
                         <div class="sbj-cast-instance-device">
                             <!-- Mic -->
-                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
-                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
+                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select"
+                                id="mic-select-div">
+                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly
+                                    id="mic-select" />
                                 <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
-                                <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
+                                <ul id="mic-list"
+                                    class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+                                    for="mic-select">
                                     <li class="mdl-menu__item"></li>
                                 </ul>
                             </div>
                             <!-- Camera -->
-                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
-                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
+                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select"
+                                id="webcam-select-div">
+                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly
+                                    id="webcam-select" />
                                 <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
-                                <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
+                                <ul id="webcam-list"
+                                    class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+                                    for="webcam-select">
                                     <li class="mdl-menu__item" onclick=""></li>
                                 </ul>
                             </div>
@@ -80,21 +91,36 @@
                                 </div>
                             </div>
                         </div>
-                        <label id="sbj-check-sfu-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-sfu" hidden>
+                        <label id="sbj-check-sfu-label"
+                            class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                            for="sbj-check-sfu" hidden>
                             <input type="checkbox" id="sbj-check-sfu" class="mdl-switch__input">
                             <span class="mdl-switch__label">SFUを使用（配信中は変更できません）</span>
                         </label>
-                        <label id="sbj-check-cursor-disp-label" class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect" for="sbj-check-cursor-disp"
-                            hidden>
+                        <label id="sbj-check-cursor-disp-label"
+                            class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
+                            for="sbj-check-cursor-disp" hidden>
                             <input type="checkbox" id="sbj-check-cursor-disp" class="mdl-switch__input" checked>
                             <span class="mdl-switch__label">ユーザーアイコン／字幕表示を許可</span>
                         </label>
+                    </div>
+                    <div class="sbj-google-adsense">
+                        <script async
+                            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1998981139705890"
+                            crossorigin="anonymous"></script>
+                        <!-- ディスプレイ広告 -->
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1998981139705890"
+                            data-ad-slot="5240587615" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
                     </div>
                 </div>
 
                 <div class="sbj-split-right">
                     <div id="sbj-client-link" class="sbj-client-link mdl-color-text--grey-600" hidden>
-                        <button id="sbj-start-client" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                        <button id="sbj-start-client"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                             &nbsp; 視聴ページ起動 &nbsp;
                         </button>
                         <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--colored">
@@ -108,27 +134,27 @@
                             モバイル端末での接続について
                         </h4>
                         QRコードを読みとる事で、モバイル端末でも視聴できます。
-                        <br/>・iPhoneの場合、標準カメラでQRコードを読取ってください。
-                        <br/>・Android端末の場合、QRコード読みとり後、Chromeで開いてください。
-                        <br/>※アプリ内ブラウザ(WebView)から接続した場合、正常に動作しないケースがあります。
-                        <br/>
-                        <br/>
+                        <br />・iPhoneの場合、標準カメラでQRコードを読取ってください。
+                        <br />・Android端末の場合、QRコード読みとり後、Chromeで開いてください。
+                        <br />※アプリ内ブラウザ(WebView)から接続した場合、正常に動作しないケースがあります。
+                        <br />
+                        <br />
                     </div>
                     <div class="mdl-color-text--grey-600" id="sbj-livecast-note">
                         <h4 class="mdl-color-text--grey-800">
                             プライベート配信機能について
                         </h4>
                         ・Webカメラから1～2名に向けてに低遅延配信できるサービスです
-                        <br/>・OBSのブラウザソースとして使用可能です
-                        <br/>
-                        <br/>
+                        <br />・OBSのブラウザソースとして使用可能です
+                        <br />
+                        <br />
                         <b>使い方</b>
-                        <br/>・マイクとカメラを選択し「開始」ボタンを押すだけで配信が開始されます
-                        <br/>・接続URLをコピーするためのボタンが表示されますので、視聴して欲しい人にURLを伝えてください
-                        <br/>・OBSで利用する場合は、接続URLをブラウザのプロパティのURLに指定してください
-                        <br/>・別途通話等している場合で、音声が不要な場合はマイクの項目は空を選択してください
-                        <br/>
-                        <br/>
+                        <br />・マイクとカメラを選択し「開始」ボタンを押すだけで配信が開始されます
+                        <br />・接続URLをコピーするためのボタンが表示されますので、視聴して欲しい人にURLを伝えてください
+                        <br />・OBSで利用する場合は、接続URLをブラウザのプロパティのURLに指定してください
+                        <br />・別途通話等している場合で、音声が不要な場合はマイクの項目は空を選択してください
+                        <br />
+                        <br />
                         <!--
                         <h4 class="mdl-color-text--grey-800">
                             ３名以上のメンバーに配信をしたい場合
@@ -151,10 +177,11 @@
                         <h4 class="mdl-color-text--grey-800">
                             プライベート配信または視聴ができない場合
                         </h4>
-                        <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting" target="_blunk">トラブルシュート</a>を確認してみてください。
-                        <br/>
-                        <br/>
-                        <br/>
+                        <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting"
+                            target="_blunk">トラブルシュート</a>を確認してみてください。
+                        <br />
+                        <br />
+                        <br />
                     </div>
                 </div>
             </div>
