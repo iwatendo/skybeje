@@ -94,6 +94,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
+
+        let highresoElement = document.getElementById('sbj-check-highreso-label');
         let sfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;
         let linkElement = document.getElementById('sbj-client-link');
         let noteElement = document.getElementById('sbj-livecast-note');
@@ -101,6 +103,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
         accountCount.hidden = !isLiveCasting;
+        highresoElement.hidden = isLiveCasting;
         micElement.hidden = isLiveCasting;
         camElement.hidden = isLiveCasting;
         sfuElement.disabled = isLiveCasting;
@@ -120,7 +123,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
         MdlUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
 
-        this.Controller.SetStreaming();
+        let isHigh = (document.getElementById('sbj-check-highreso') as HTMLInputElement).checked;
+        this.Controller.SetStreaming(isHigh);
     }
 
 

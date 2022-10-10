@@ -138,9 +138,9 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     /**
      * ストリーミングの開始
      */
-    public SetStreaming() {
+    public SetStreaming(isHigh: boolean) {
 
-        let msc = StreamUtil.GetMediaStreamConstraints(this.VideoSource, this.AudioSource);
+        let msc = (isHigh ? StreamUtil.GetMediaStreamConstraintsHD(this.VideoSource, this.AudioSource) : StreamUtil.GetMediaStreamConstraints(this.VideoSource, this.AudioSource));
 
         StreamUtil.GetStreaming(msc, (stream) => {
             //  PeerIDをルーム名称とする

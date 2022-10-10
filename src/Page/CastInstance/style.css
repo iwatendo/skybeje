@@ -1,5 +1,4 @@
-﻿
-.sbj-container {
+﻿.sbj-container {
     max-width: 1600px;
     min-width: 900px;
     width: calc(100% - 16px);
@@ -17,28 +16,28 @@
     width: calc(100% - 568px);
 }
 
-#sbj-cast-instance-main{
+#sbj-cast-instance-main {
     margin: 16px 32px;
 }
 
-#sbj-livecast-room-name{
+#sbj-livecast-room-name {
     color: var(--sbj-color-label);
 }
 
-.sbj-cast-instance-actions{
+.sbj-cast-instance-actions {
     margin: 16px 0px;
 }
 
-.sbj-cast-instance-device{
+.sbj-cast-instance-device {
     padding: 0px 0px 16px 0px;
 }
 
-.sbj-cast-instance-device-select{
+.sbj-cast-instance-device-select {
     outline: 0;
     width: 420px;
 }
 
-.sbj-cast-instance--header-row{
+.sbj-cast-instance--header-row {
     padding: 0px 20px 0px 32px;
 }
 
@@ -46,11 +45,11 @@
     padding: 0px 20px 0px 0px;
 }
 
-#sbj-cast-instance-account-count{
+#sbj-cast-instance-account-count {
     margin-right: 16px;
 }
 
-.sbj-cast-instance-option{
+.sbj-cast-instance-option {
     margin: 20px 4px 0px 0px;
 }
 
@@ -68,10 +67,10 @@
  *
  *---------------------------*/
 
-.sbj-video-content{
+.sbj-video-content {
     position: relative;
     width: 480px;
-    height: 360px;
+    height: 270px;
     overflow: hidden;
 }
 
@@ -82,13 +81,13 @@
     background-color: var(--sbj-color-edge-background);
 }
 
-#sbj-item-layer{
+#sbj-item-layer {
     position: absolute;
     height: 100%;
     width: 100%;
 }
 
-#sbj-cursor-layer{
+#sbj-cursor-layer {
     height: 100%;
     width: 100%;
     user-select: none;
@@ -99,21 +98,21 @@
  *
  *---------------------------*/
 
-.sbj-client-link{
+.sbj-client-link {
     padding: 16px 0px;
 }
 
-.sbj-client-link-qrcode-box{
+.sbj-client-link-qrcode-box {
     margin: 24px 0px;
     width: 340px;
     height: 340px;
 }
 
-.sbj-client-link-qrcode-frame{
+.sbj-client-link-qrcode-frame {
     width: 340px;
     height: 340px;
 }
 
-.sbj-google-adsense{
+.sbj-google-adsense {
     margin: 16px 32px;
 }
