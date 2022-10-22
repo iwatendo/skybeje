@@ -1,4 +1,6 @@
-﻿
+﻿import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
 import * as Home from "../../Contents/IndexedDB/Home";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
@@ -17,6 +19,8 @@ import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import MdlUtil from "../../Contents/Util/MdlUtil";
 import StreamChecker from "../../Base/Util/StreamChecker";
+import { MessageUtil } from '../MessageModal/MessageUtil';
+
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -29,7 +33,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     /**
      * 初期化処理
      */
-    public Initialize() {
+    public async Initialize() {
 
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
@@ -66,8 +70,18 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             this.SetRoomName(null);
         }
 
-        this.SetMediaDevice();
-        this.InitializeCursor();
+        let sbcResult = await StreamChecker.BlockCheck();
+
+        if (sbcResult.IsBlock) {
+            let msgUtil = new MessageUtil(document.getElementById("sbj-message-dialog") as HTMLElement);
+            msgUtil.ShowModal(sbcResult.ErrorTitle,sbcResult.ErrorDetail);
+
+        }
+        else{
+            this.SetMediaDevice();
+            this.InitializeCursor();
+        }
+
     }
 
 
@@ -273,7 +287,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     }
 
 
-
     /**
      * フレームを閉じる
      */
@@ -318,5 +331,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             }
         }
     }
+
 
 }

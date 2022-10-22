@@ -62,8 +62,17 @@
     left: 256px;
 }
 
-#sbj-wait-overlay{
-    position:absolute;
+#sbj-message-dialog {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+
+#sbj-wait-overlay {
+    position: absolute;
     width: 100%;
     height: 100%;
     z-index: 10000;

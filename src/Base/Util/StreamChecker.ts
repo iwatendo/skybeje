@@ -1,4 +1,18 @@
 
+export class BlckCheckResult {
+
+    constructor() {
+    }
+
+    IsBlock: boolean;
+    CanUseMic: boolean;
+    CanUseCamera: boolean;
+    ErrorTitle: string;
+    ErrorDetail: string;
+}
+
+
+
 export default class StreamChecker {
 
 
@@ -14,14 +28,43 @@ export default class StreamChecker {
 
 
     /**
-     * マイクとカメラの使用許可チェック
+     * 
      */
-    public static async BlockCheck(): Promise<boolean> {
+    public static async BlockCheck(): Promise<BlckCheckResult> {
+
+        let result = new BlckCheckResult();
+
         this.CanUseMic = await this.CheckUserMedia({ audio: true });
         this.CanUseCamera = await this.CheckUserMedia({ video: true });
-        return (this.CanUseMic && this.CanUseCamera);
-    }
 
+        result.CanUseMic = this.CanUseMic;
+        result.CanUseCamera = this.CanUseCamera;
+
+        if (this.CanUseMic && this.CanUseCamera) {
+            result.IsBlock = false;
+            result.ErrorTitle = "";
+            result.ErrorDetail = "";
+        }
+        else {
+            let target = "";
+            if (!StreamChecker.CanUseCamera) {
+                if (!StreamChecker.CanUseMic) {
+                    target = "カメラとマイク";
+                }
+                else {
+                    target = "カメラ";
+                }
+            } else {
+                target = "マイク";
+            }
+
+            result.IsBlock = true;
+            result.ErrorTitle = `${target}がブロックされています`;
+            result.ErrorDetail = `${target}へのアクセスを許可する必要があります。ブラウザのアドレスバー上のインフォメーションアイコンをクリックし、ブロックされた${target}の利用を許可してください`;
+        }
+
+        return result;
+    }
 
 
     public static async GetRanges(deviceId: string, deviceName: string): Promise<Array<MediaStreamConstraints>> {
