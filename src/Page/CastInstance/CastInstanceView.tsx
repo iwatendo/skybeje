@@ -1,7 +1,4 @@
-﻿import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-
-import * as Home from "../../Contents/IndexedDB/Home";
+﻿import * as Home from "../../Contents/IndexedDB/Home";
 
 import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
@@ -77,10 +74,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             msgUtil.ShowModal(sbcResult.ErrorTitle,sbcResult.ErrorDetail);
 
         }
-        else{
-            this.SetMediaDevice();
-            this.InitializeCursor();
-        }
+
+        this.SetMediaDevice();
+        this.InitializeCursor();
 
     }
 
@@ -224,17 +220,14 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceId);
                 this.ReadyCheck();
 
-                if (deviceId) {
+                try {
+                    this.WaitOverlay(true);
+                    let streamCheckers = await StreamChecker.GetRanges(deviceId, deviceName);
 
-                    try {
-                        this.WaitOverlay(true);
-                        let streamCheckers = await StreamChecker.GetRanges(deviceId, deviceName);
-
-                        //  選択リストに解像度をセット
-                        this.SetWebCameraSizeList(controller, streamCheckers);
-                    } finally {
-                        this.WaitOverlay(false);
-                    }
+                    //  選択リストに解像度をセット
+                    this.SetWebCameraSizeList(controller, streamCheckers);
+                } finally {
+                    this.WaitOverlay(false);
                 }
             });
 

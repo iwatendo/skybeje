@@ -1,3 +1,4 @@
+import { ThreeSixty } from '@mui/icons-material';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -32,6 +33,10 @@ export class CameraResolutionView {
         this._mscList = mscList;
         this._onChangeCameraResolution = resolutionSelector;
         this.Create();
+
+        if(!msc){
+            this.SelectClear();
+        }
     }
 
 
@@ -53,7 +58,7 @@ export class CameraResolutionView {
         //  リストを非表示にする為のクリックアクション
         this._textElement.click();
 
-        this._selectMsc = JSON.parse(mscJsonStr);
+        this._selectMsc = (mscJsonStr ? JSON.parse(mscJsonStr) : null);
         this._textElement.value = dispName;
         if (this._onChangeCameraResolution) {
             this._onChangeCameraResolution(this._selectMsc, dispName);

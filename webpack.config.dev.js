@@ -29,10 +29,6 @@ module.exports = {
     path: __dirname + '/dist',
     filename: '[name]/bundle.js'
   },
-  externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM'
-  },
   devtool: 'source-map',
 
   resolve: {
