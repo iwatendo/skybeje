@@ -7,6 +7,8 @@ import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
 
 import { DeviceView } from "../DeviceView/DeviceVew";
+import { CameraResolutionView } from "../DeviceView/CameraResolutionView";
+
 import CastInstanceController from "./CastInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LocalCache from "../../Contents/Cache/LocalCache";
@@ -14,6 +16,7 @@ import CastPropController from "../CastProp/CastPropController";
 import CastSettingSender from "../../Contents/Sender/CastSettingSender";
 import CursorDispOffset from "../CastProp/CursorDispOffset";
 import MdlUtil from "../../Contents/Util/MdlUtil";
+import StreamChecker from "../../Base/Util/StreamChecker";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -31,11 +34,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         StdUtil.StopPropagation();
         StdUtil.StopTouchMove();
         let startButton = document.getElementById('sbj-cast-instance-start');
-        let cancelButton = document.getElementById('sbj-cast-instance-cancel');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let accountCount = document.getElementById('sbj-cast-instance-account-count');
-        let micElement = document.getElementById('mic-select-div');
-        let camElement = document.getElementById('webcam-select-div');
 
         window.onfocus = (ev) => {
             if (this.Controller && this.Controller.CastStatus) {
@@ -206,7 +205,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             let textElement = document.getElementById('webcam-select') as HTMLInputElement;
             var listElement = document.getElementById('webcam-list') as HTMLElement;
 
-            var view = new DeviceView(DeviceKind.Video, textElement, listElement, devices, (deviceId, deviceName) => {
+            var view = new DeviceView(DeviceKind.Video, textElement, listElement, devices, async (deviceId, deviceName) => {
 
                 controller.VideoSource = deviceId;
                 LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceId);
@@ -214,7 +213,16 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
                 if (deviceId) {
 
-                    let msc = StreamUtil.GetMediaStreamConstraints(deviceId, null);
+                    //  砂時計にする
+                    document.body.style.cursor = "wait";
+                    let streamCheckers = await StreamChecker.GetRanges(deviceId, deviceName);
+
+                    //  選択リストに解像度をセット
+                    this.SetWebCameraSizeList(streamCheckers);
+
+                    document.body.style.cursor = "default";
+
+                    let msc = streamCheckers[streamCheckers.length - 1];   // StreamUtil.GetMediaStreamConstraints(deviceId, null);
                     StreamUtil.GetStreaming(msc, (stream) => {
                         StreamUtil.StartPreview(previewElement, stream);
                     }, (errname) => {
@@ -272,6 +280,41 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 this.Cursor.Clear();
             }
         }
+    }
+
+
+    /**
+     * 
+     * @param mscs 
+     */
+    private async SetWebCameraSizeList(mscs: Array<MediaStreamConstraints>) {
+
+        let msc = mscs[mscs.length - 1];
+        let textElement = document.getElementById('webcam-size-select') as HTMLInputElement;
+        var listElement = document.getElementById('webcam-size-list') as HTMLElement;
+
+        var view = new CameraResolutionView(msc, textElement, listElement, mscs, async (selectMsc, dispResolution) => {
+
+            //  controller.VideoSource = deviceId;
+            //  LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceId);
+            //  this.ReadyCheck();
+
+            /*
+            if (selectMsc) {
+
+                let msc = streamCheckers[streamCheckers.length - 1];   // StreamUtil.GetMediaStreamConstraints(deviceId, null);
+                StreamUtil.GetStreaming(msc, (stream) => {
+                    StreamUtil.StartPreview(previewElement, stream);
+                }, (errname) => {
+                    alert(errname);
+                });
+            }
+            */
+        });
+
+        view.SelectLastCameraResolution();
+        document.getElementById("webcam-size-select-div").classList.add("is-dirty");
+
     }
 
 

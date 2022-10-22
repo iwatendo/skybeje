@@ -80,12 +80,18 @@
                                     <li class="mdl-menu__item" onclick=""></li>
                                 </ul>
                             </div>
-                            <label id="sbj-check-highreso-label"
-                                class="sbj-cast-instance-option mdl-switch mdl-js-switch mdl-js-ripple-effect"
-                                for="sbj-check-highreso">
-                                <input type="checkbox" id="sbj-check-highreso" class="mdl-switch__input">
-                                <span class="mdl-switch__label">高画質配信</span>
-                            </label>
+                            <!-- Camera Size -->
+                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select"
+                                id="webcam-size-select-div">
+                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly
+                                    id="webcam-size-select" />
+                                <label class="mdl-textfield__label" for="webcam-size-select" maxlength='32'>解像度</label>
+                                <ul id="webcam-size-list"
+                                    class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+                                    for="webcam-size-select">
+                                    <li class="mdl-menu__item" onclick=""></li>
+                                </ul>
+                            </div>
                         </div>
 
                         <div class="mdl-list__item-primary-content sbj-video-content">
