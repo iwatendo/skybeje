@@ -31,6 +31,19 @@ export default class StreamUtil {
 
 
     /**
+     * プレビュー停止
+     * @param element 
+     * @param stream メディアストリーム
+     */
+     public static StopPreview(element: HTMLVideoElement) {
+        if (element) {
+            element.src = null;
+            element.srcObject = null;
+        }
+    }
+
+
+    /**
      * メディアストリームの取得
      * @param msc MediaStreamConstraints
      * @param callback OnGetMediaStream

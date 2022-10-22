@@ -70,7 +70,6 @@ export default class StreamChecker {
                     if (count > 0) {
                         if (deviceName == tracks[0].label) {
                             result.push(constraints);
-                            console.info(`width:${size.width} height:${size.height}`);
                         }
                     }
                     this.Stop(stream);

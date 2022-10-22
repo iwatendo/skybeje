@@ -93,8 +93,8 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let accountCount = document.getElementById('sbj-cast-instance-account-count');
         let micElement = document.getElementById('mic-select-div');
         let camElement = document.getElementById('webcam-select-div');
+        let camSizeElement = document.getElementById('webcam-size-select-div');
 
-        let highresoElement = document.getElementById('sbj-check-highreso-label');
         let sfuElement = document.getElementById('sbj-check-sfu') as HTMLInputElement;
         let linkElement = document.getElementById('sbj-client-link');
         let noteElement = document.getElementById('sbj-livecast-note');
@@ -102,9 +102,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
         accountCount.hidden = !isLiveCasting;
-        highresoElement.hidden = isLiveCasting;
         micElement.hidden = isLiveCasting;
         camElement.hidden = isLiveCasting;
+        camSizeElement.hidden = isLiveCasting;
         sfuElement.disabled = isLiveCasting;
         linkElement.hidden = !isLiveCasting;
         noteElement.hidden = isLiveCasting;
@@ -122,8 +122,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let qrcode = document.getElementById('sbj-link-qrcode') as HTMLFrameElement;
         MdlUtil.SetCopyLinkButton(linkurl, "視聴URL", clipcopybtn, clientopenbtn, qrcode);
 
-        let isHigh = (document.getElementById('sbj-check-highreso') as HTMLInputElement).checked;
-        this.Controller.SetStreaming(isHigh);
+        this.Controller.SetStreaming();
     }
 
 
@@ -213,21 +212,15 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
                 if (deviceId) {
 
-                    //  砂時計にする
-                    document.body.style.cursor = "wait";
-                    let streamCheckers = await StreamChecker.GetRanges(deviceId, deviceName);
+                    try {
+                        this.WaitOverlay(true);
+                        let streamCheckers = await StreamChecker.GetRanges(deviceId, deviceName);
 
-                    //  選択リストに解像度をセット
-                    this.SetWebCameraSizeList(streamCheckers);
-
-                    document.body.style.cursor = "default";
-
-                    let msc = streamCheckers[streamCheckers.length - 1];   // StreamUtil.GetMediaStreamConstraints(deviceId, null);
-                    StreamUtil.GetStreaming(msc, (stream) => {
-                        StreamUtil.StartPreview(previewElement, stream);
-                    }, (errname) => {
-                        alert(errname);
-                    });
+                        //  選択リストに解像度をセット
+                        this.SetWebCameraSizeList(controller, streamCheckers);
+                    } finally {
+                        this.WaitOverlay(false);
+                    }
                 }
             });
 
@@ -246,6 +239,42 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
 
     /**
+     * 
+     * @param controller 
+     * @param mscs 
+     */
+    private async SetWebCameraSizeList(controller: CastInstanceController, mscs: Array<MediaStreamConstraints>) {
+
+        let msc = mscs[mscs.length - 1];
+        let previewElement = document.getElementById('sbj-video') as HTMLVideoElement;
+        let textElement = document.getElementById('webcam-size-select') as HTMLInputElement;
+        var listElement = document.getElementById('webcam-size-list') as HTMLElement;
+
+        var view = new CameraResolutionView(msc, textElement, listElement, mscs, async (selectMsc, dispResolution) => {
+
+            controller.VideoMediaStreamConstraints = selectMsc;
+
+            if (selectMsc) {
+                StreamUtil.GetStreaming(selectMsc, (stream) => {
+                    StreamUtil.StartPreview(previewElement, stream);
+                }, (errname) => {
+                    alert(errname);
+                });
+            }
+            else {
+                StreamUtil.StopPreview(previewElement);
+            }
+
+        });
+
+        view.SelectLastCameraResolution();
+        document.getElementById("webcam-size-select-div").classList.add("is-dirty");
+
+    }
+
+
+
+    /**
      * フレームを閉じる
      */
     public Close() {
@@ -254,6 +283,14 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         //  ストリーミングしていない場合、フレームを閉じる
         this.Controller.CastStatus.isClose = !this.Controller.CastStatus.isCasting;
         this.Controller.SendCastInfo();
+    }
+
+
+    /**
+     * 
+     */
+    private WaitOverlay(isOverlay: boolean) {
+        document.getElementById("sbj-wait-overlay").hidden = !isOverlay;
     }
 
 
@@ -281,41 +318,5 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             }
         }
     }
-
-
-    /**
-     * 
-     * @param mscs 
-     */
-    private async SetWebCameraSizeList(mscs: Array<MediaStreamConstraints>) {
-
-        let msc = mscs[mscs.length - 1];
-        let textElement = document.getElementById('webcam-size-select') as HTMLInputElement;
-        var listElement = document.getElementById('webcam-size-list') as HTMLElement;
-
-        var view = new CameraResolutionView(msc, textElement, listElement, mscs, async (selectMsc, dispResolution) => {
-
-            //  controller.VideoSource = deviceId;
-            //  LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceId);
-            //  this.ReadyCheck();
-
-            /*
-            if (selectMsc) {
-
-                let msc = streamCheckers[streamCheckers.length - 1];   // StreamUtil.GetMediaStreamConstraints(deviceId, null);
-                StreamUtil.GetStreaming(msc, (stream) => {
-                    StreamUtil.StartPreview(previewElement, stream);
-                }, (errname) => {
-                    alert(errname);
-                });
-            }
-            */
-        });
-
-        view.SelectLastCameraResolution();
-        document.getElementById("webcam-size-select-div").classList.add("is-dirty");
-
-    }
-
 
 }
