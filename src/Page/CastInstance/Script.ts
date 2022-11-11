@@ -4,6 +4,7 @@ import CastInstanceController from "./CastInstanceController";
 import SWPeer from "../../Base/WebRTC/SWPeer";
 import LocalCache from "../../Contents/Cache/LocalCache";
 
+
 if (StdUtil.IsSupoortPlatform(true)) {
 
     if (!LocalCache.IsCheckDevicePermision) {
