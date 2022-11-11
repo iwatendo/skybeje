@@ -1,6 +1,6 @@
 ﻿import * as Home from "../../Contents/IndexedDB/Home";
 
-import AbstractServiceView, { OnViewLoad } from "../../Base/AbstractServiceView";
+import AbstractServiceView from "../../Base/AbstractServiceView";
 import StdUtil from "../../Base/Util/StdUtil";
 import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
@@ -71,7 +71,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         if (sbcResult.IsBlock) {
             let msgUtil = new MessageUtil(document.getElementById("sbj-message-dialog") as HTMLElement);
-            msgUtil.ShowModal(sbcResult.ErrorTitle,sbcResult.ErrorDetail);
+            msgUtil.ShowModal(sbcResult.ErrorTitle, sbcResult.ErrorDetail);
 
         }
 
@@ -324,6 +324,5 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             }
         }
     }
-
 
 }

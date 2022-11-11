@@ -1,5 +1,5 @@
 
-import AbstractServiceModel, { OnModelLoad, OnRead, OnWrite } from "../../Base/AbstractServiceModel";
+import AbstractServiceModel, { OnModelLoad } from "../../Base/AbstractServiceModel";
 
 import CastInstanceController from "./CastInstanceController";
 
