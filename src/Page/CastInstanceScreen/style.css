@@ -1,33 +1,28 @@
-﻿
-.sbj-container {
+﻿.sbj-container {
     max-width: 1600px;
     min-width: 900px;
     width: calc(100% - 16px);
     margin: 0 auto;
 }
 
-.sbj-cast-instance-layout{
+.sbj-cast-instance-layout {
     width: 100%;
     height: 100%;
 }
 
-#sbj-cast-instance-main{
+#sbj-cast-instance-main {
     padding: 16px 32px
 }
 
-#sbj-cast-instance-main-no-extension{
-    padding: 16px 32px
-}
-
-#sbj-livecast-room-name{
+#sbj-livecast-room-name {
     color: var(--sbj-color-label);
 }
 
-.sbj-cast-instance-actions{
+.sbj-cast-instance-actions {
     margin: 16px 0px 40px;
 }
 
-.sbj-cast-instance--header-row{
+.sbj-cast-instance--header-row {
     padding: 0px 20px 0px 32px;
 }
 
@@ -35,19 +30,19 @@
     padding: 0px 20px 0px 0px;
 }
 
-#sbj-cast-instance-account-count{
+#sbj-cast-instance-account-count {
     margin-right: 16px;
 }
 
-#sbj-cast-instance-start{
+#sbj-cast-instance-start {
     margin: 0px;
 }
 
-#sbj-cast-instance-stop{
+#sbj-cast-instance-stop {
     margin: 0px;
 }
 
-.sbj-cast-instance-option{
+.sbj-cast-instance-option {
     margin: 0px 0px 16px 20px;
 }
 
@@ -62,26 +57,26 @@
     width: calc(100% - 568px);
 }
 
-.sbj-screenshare-resolution{
+.sbj-screenshare-resolution {
     margin: 24px;
     width: 240px;
 }
 
-.sbj-screenshare-label{
+.sbj-screenshare-label {
     margin: 12px 0px;
 }
 
-.sbj-screenshare-note{
+.sbj-screenshare-note {
     margin: 12px 0px;
 }
 
-.sbj-dialog-close{
-	min-width: 36px;
+.sbj-dialog-close {
+    min-width: 36px;
     width: 36px;
     padding: 0px;
 }
 
-.sbj-screenshare-framerate-field{
+.sbj-screenshare-framerate-field {
     width: 80px;
     margin: 0px 20px 0px;
     padding: 0px 0px 20px;
@@ -91,21 +86,41 @@
  *
  *---------------------------*/
 
- .sbj-client-link{
+
+.sbj-video-content {
+    position: relative;
+    width: 480px;
+    height: 270px;
+    overflow: hidden;
+}
+
+#sbj-video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: var(--sbj-color-edge-background);
+}
+
+
+/*-----------------------------
+ *
+ *---------------------------*/
+
+.sbj-client-link {
     padding: 16px 0px;
 }
 
-.sbj-client-link-qrcode-box{
+.sbj-client-link-qrcode-box {
     margin: 24px 0px;
     width: 340px;
     height: 340px;
 }
 
-.sbj-client-link-qrcode-frame{
+.sbj-client-link-qrcode-frame {
     width: 340px;
     height: 340px;
 }
 
-.sbj-google-adsense{
+.sbj-google-adsense {
     margin: 16px 0px;
 }

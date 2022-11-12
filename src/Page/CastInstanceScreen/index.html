@@ -12,6 +12,8 @@
     <link rel='stylesheet' href='style.css?v={version}' />
     <script src="../lib/screenshare.min.js"></script>
     <script src="../lib/material.min.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1998981139705890"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -21,9 +23,9 @@
 
         <header class="sbj-cast-instance-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
             <div class="sbj-cast-instance--header-row mdl-layout__header-row">
-                <span id="sbj-cast-instance-title" class="mdl-layout-title">
+                <a id="sbj-cast-instance-title" class="mdl-layout-title" href="/">
                     Skyway Walkers Screen Cast
-                </span>
+                </a>
                 <div id="sbj-cast-instance-account-count" class="material-icons mdl-badge mdl-badge--overlap"
                     data-badge="0" hidden>person</div>
                 <div class="mdl-tooltip" data-mdl-for="sbj-cast-instance-account-count">この配信への接続数</div>
@@ -39,7 +41,7 @@
 
                     <div class="sbj-cast-instance-actions mdl-list__item-primary-content">
                         <button id="sbj-cast-instance-start"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" hidden>
                             <i class="material-icons">screen_share</i>
                             &nbsp;配信する画面の選択&nbsp;
                         </button>
@@ -50,44 +52,9 @@
                         </button>
                     </div>
 
-                    <div id="sbj-screenshare-setting">
-                        <h6 class="sbj-screenshare-label mdl-color-text--grey-600">配信解像度</h6>
-                        <div class="sbj-screenshare-resolution">
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-1">
-                                <input type="radio" id="sbj-screenshare-option-1" class="mdl-radio__button"
-                                    name="sbj-screenshare-option" value="1" checked />
-                                <span class="mdl-radio__label">低：縦横比 4:3</span>
-                            </label>
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-2">
-                                <input type="radio" id="sbj-screenshare-option-2" class="mdl-radio__button"
-                                    name="sbj-screenshare-option" value="2" />
-                                <span class="mdl-radio__label">低：縦横比 16:9</span>
-                            </label>
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-3">
-                                <input type="radio" id="sbj-screenshare-option-3" class="mdl-radio__button"
-                                    name="sbj-screenshare-option" value="3" />
-                                <span class="mdl-radio__label">中：縦横比 4:3</span>
-                            </label>
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-4">
-                                <input type="radio" id="sbj-screenshare-option-4" class="mdl-radio__button"
-                                    name="sbj-screenshare-option" value="4" />
-                                <span class="mdl-radio__label">中：縦横比 16:9</span>
-                            </label>
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sbj-screenshare-option-0">
-                                <input type="radio" id="sbj-screenshare-option-0" class="mdl-radio__button"
-                                    name="sbj-screenshare-option" value="0" />
-                                <span class="mdl-radio__label">高：選択画面の解像度</span>
-                            </label>
-                        </div>
-                        <div>
-                            <h6 class="mdl-color-text--grey-600">フレームレート</h6>
-                            <div class="sbj-screenshare-framerate-field mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="number" min="1" max="30" value="15"
-                                    pattern="/^-?\d+$/" id="sbj-screenshare-framerate">
-                                <label class="mdl-textfield__label" for="sbj-screenshare-framerate"></label>
-                                <span class="mdl-textfield__error">1~30で指定</span>
-                            </div>
-                        </div>
+                    <div class="mdl-list__item-primary-content sbj-video-content">
+                        <video id='sbj-video' autoplay="true">
+                        </video>
                     </div>
 
                     <div hidden>
@@ -107,12 +74,10 @@
                     </div>
 
                     <div class="sbj-google-adsense">
-                        <script async
-                            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1998981139705890"
-                            crossorigin="anonymous"></script>
-                        <!-- ディスプレイ広告 -->
-                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1998981139705890"
-                            data-ad-slot="5240587615" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <!-- インフィード広告 -->
+                        <ins class="adsbygoogle" style="display:block" data-ad-format="fluid"
+                            data-ad-layout-key="-fb+5w+4e-db+86" data-ad-client="ca-pub-1998981139705890"
+                            data-ad-slot="6594161767"></ins>
                         <script>
                             (adsbygoogle = window.adsbygoogle || []).push({});
                         </script>
@@ -157,15 +122,6 @@
                         <br />・OBSで利用する場合は、接続URLをブラウザのプロパティのURLに指定してください
                         <br />
                         <br />
-                        <h4 class="mdl-color-text--grey-800">
-                            スクリーンシェアの配信設定について
-                        </h4>
-                        高解像度／高フレームレートでの利用は、端末に高負荷が掛かるので注意してください。
-                        <br />
-                        <br /> 画面の動きが少ない資料等を表示したい場合は「選択画面の解像度」を選択し、フレームレートは低めで指定してください。
-                        <br /> 画面の動きが激しいゲーム等の画面を配信したい場合、OBSの仮想カメラ等を使用してプライベート配信する事をお勧めします。
-                        <br />
-                        <br />
                         <!--
                         <h4 class="mdl-color-text--grey-800">
                             ３名以上のメンバーに配信をしたい場合
@@ -186,7 +142,7 @@
                         <br/>
                         -->
                         <h4 class="mdl-color-text--grey-800">
-                            プライベート配信または視聴ができない場合
+                            配信または視聴ができない場合
                         </h4>
                         <a href="https://github.com/iwatendo/skybeje/wiki/Troubleshooting"
                             target="_blunk">トラブルシュート</a>を確認してみてください。
@@ -196,21 +152,6 @@
                     </div>
                 </div>
             </div>
-        </main>
-
-        <main id="sbj-cast-instance-main-no-extension" class="mdl-layout__content" hidden>
-            <h6 class="sbj-screenshare-note">
-                スクリーンシェア機能を利用するには、
-                <br /> 以下の Chrome Extension の追加が必要です。
-                <br />
-                <br />
-                <a href="https://chrome.google.com/webstore/detail/skybeje-screen-share/ofehfbpdidnjcafogdedlnghhcijgpdd?hl=ja"
-                    target="_blank">SyBeje Screen Share Extension</a>
-                <br />
-                <br />※Extensionの追加後、このページを再読込してください。
-                <br />
-                <a href="" onclick="location.reload()">ページの再読込</a>
-            </h6>
         </main>
 
     </div>

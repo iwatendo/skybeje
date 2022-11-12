@@ -11,7 +11,7 @@ module.exports = {
     castinstance: './src/Page/CastInstance/Script.ts',
     castinstancemobile: './src/Page/CastInstanceMobile/Script.ts',
     castinstancemobileqr: './src/Page/CastInstanceMobileQR/Script.ts',
-    castinstancescreenshare: './src/Page/CastInstanceScreenShare/Script.ts',
+    castinstancescreen: './src/Page/CastInstanceScreen/Script.ts',
     castvisitor: './src/Page/CastVisitor/Script.ts',
     raspicastinstance: './src/Page/RaspiCastInstance/Script.ts',
     raspicastvisitor: './src/Page/RaspiCastVisitor/Script.ts',

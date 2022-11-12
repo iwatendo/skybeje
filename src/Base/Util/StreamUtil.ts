@@ -35,7 +35,7 @@ export default class StreamUtil {
      * @param element 
      * @param stream メディアストリーム
      */
-     public static StopPreview(element: HTMLVideoElement) {
+    public static StopPreview(element: HTMLVideoElement) {
         if (element) {
             element.src = null;
             element.srcObject = null;
@@ -130,7 +130,7 @@ export default class StreamUtil {
      * @param videoSource 
      * @param audioSource 
      */
-     public static GetMediaStreamConstraintsHD(videoSource: string, audioSource: string): MediaStreamConstraints {
+    public static GetMediaStreamConstraintsHD(videoSource: string, audioSource: string): MediaStreamConstraints {
 
         let result: MediaStreamConstraints = {
             video: (videoSource ? {
@@ -285,6 +285,46 @@ export default class StreamUtil {
         }
         else {
             return false;
+        }
+    }
+
+
+    /**
+     * スクリーンキャプチャの開始
+     * @param videoElem 
+     */
+    public static async StartCapture(videoElem: HTMLVideoElement, callback) {
+
+
+        var displayMediaOptions: any = {
+            video: {
+                cursor: "always"
+            },
+            audio: true
+        };
+
+        try {
+            var stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+
+            await this.StopCapture(videoElem);
+            StreamUtil.StartPreview(videoElem, stream);
+            callback(stream);
+        } catch (err) {
+            console.error("Error: " + err);
+        }
+    }
+
+
+    /**
+     * 
+     * @param videoElem 
+     */
+    public static async StopCapture(videoElem: any) {
+
+        if (videoElem && videoElem.srcObject) {
+            let tracks = videoElem.srcObject.getTracks();
+            tracks.forEach(track => track.stop());
+            videoElem.srcObject = null;
         }
     }
 

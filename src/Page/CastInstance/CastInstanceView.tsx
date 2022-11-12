@@ -150,7 +150,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      * @param room 
      */
     public SetRoomName(room: Home.Room) {
-        let title = (room ? room.name + "に配信" : "単体で配信");
+        let title = (room ? room.name + "に配信" : "プライベート配信");
         document.getElementById("sbj-livecast-room-name").innerText = title;
         this.ReadyCheck();
     }

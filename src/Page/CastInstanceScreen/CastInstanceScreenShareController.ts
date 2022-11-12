@@ -158,14 +158,14 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
 
     /**
      * ストリーミング開始
-     * @param width 
-     * @param height 
-     * @param fr 
      * @param callback 
      */
-    public SetStreaming(width: number, height: number, fr: number, callback) {
+    public SetStreaming(callback) {
 
-        StreamUtil.GetScreenSheare(this, width, height, fr, (stream) => {
+
+        let videoElement = document.getElementById("sbj-video") as HTMLVideoElement;
+
+        StreamUtil.StartCapture(videoElement, (stream) => {
             //  PeerIDをルーム名称とする
             let roomname = this.SwPeer.PeerId;
             let roommode = (this.CastSetting.isSFU ? SWRoomMode.SFU : SWRoomMode.Mesh);
@@ -173,6 +173,7 @@ export default class CastInstanceScreenShareController extends AbstractServiceCo
             this.ServerSend(true, false);
             callback();
         });
+
 
     }
 

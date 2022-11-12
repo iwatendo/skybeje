@@ -69,7 +69,7 @@ export default class CastInstanceMobileQRView extends AbstractServiceView<CastIn
      * @param room 
      */
     public SetRoomName(room: Room) {
-        let title = (room ? room.name + "に配信" : "単体で配信");
+        let title = (room ? room.name + "に配信" : "プライベートモバイル配信");
         document.getElementById("sbj-livecast-room-name").innerText = title;
     }
 
