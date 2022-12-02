@@ -73,6 +73,10 @@
     color: var(--sbj-color-label);
 }
 
-.sbj-google-adsense{
+.sbj-google-adsense {
     margin: 16px 0px;
+}
+
+#sbj-cast-instance-title {
+    color: inherit;
 }
